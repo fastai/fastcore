@@ -1,30 +1,18 @@
-import io,operator,sys,os,re,os,mimetypes,csv,itertools,json,shutil,glob,pickle,tarfile,collections
-import hashlib,itertools,types,random,inspect,functools,random,time,math,bz2,types,typing,numbers,string
-import multiprocessing,threading,urllib,ipykernel,tempfile,concurrent.futures,matplotlib,warnings,zipfile
+import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile
+import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings
 
-from concurrent.futures import as_completed
-from functools import partial,reduce
-from itertools import starmap,dropwhile,takewhile,zip_longest
-from copy import copy,deepcopy
-from multiprocessing import Lock,Process,Queue,queues
-from datetime import datetime
+from functools import partial
+from copy import copy
 from contextlib import redirect_stdout,contextmanager
-from collections.abc import Iterable,Iterator,Generator,Sequence
-from typing import Union,Optional
+from collections.abc import Iterable,Iterator,Generator
 from types import SimpleNamespace
 from pathlib import Path
-from collections import OrderedDict,defaultdict,Counter,namedtuple
-from enum import Enum,IntEnum
-from warnings import warn
-from textwrap import TextWrapper
-from operator import itemgetter,attrgetter,methodcaller
-from urllib.request import urlopen
+from collections import defaultdict,Counter
+from operator import itemgetter,attrgetter
 
 # External modules
-import requests,yaml,matplotlib.pyplot as plt,numpy as np,pandas as pd,scipy
-from pandas.api.types import is_categorical_dtype,is_numeric_dtype
+import matplotlib.pyplot as plt,numpy as np,pandas as pd
 from numpy import array,ndarray
-from scipy import ndimage
 from IPython.core.debugger import set_trace
 
 try:

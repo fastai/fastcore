@@ -93,7 +93,7 @@ class TypeDispatch:
         ts = L(args).map(type)[:2]
         f = self[tuple(ts)]
         if not f: return args[0]
-        if self.inst is not None: f = types.MethodType(f, self.inst)
+        if self.inst is not None: f = MethodType(f, self.inst)
         return f(*args, **kwargs)
 
     def __get__(self, inst, owner):

@@ -55,8 +55,8 @@ class BypassNewMeta(FixSigMeta):
 #Cell
 def copy_func(f):
     "Copy a non-builtin function (NB `copy.copy` does not work for this)"
-    if not isinstance(f,types.FunctionType): return copy(f)
-    fn = types.FunctionType(f.__code__, f.__globals__, f.__name__, f.__defaults__, f.__closure__)
+    if not isinstance(f,FunctionType): return copy(f)
+    fn = FunctionType(f.__code__, f.__globals__, f.__name__, f.__defaults__, f.__closure__)
     fn.__dict__.update(f.__dict__)
     return fn
 
@@ -145,7 +145,7 @@ def funcs_kwargs(cls):
         for k in cls._methods:
             arg = kwargs.pop(k,None)
             if arg is not None:
-                if isinstance(arg,types.MethodType): arg = types.MethodType(arg.__func__, self)
+                if isinstance(arg,MethodType): arg = MethodType(arg.__func__, self)
                 setattr(self, k, arg)
         old_init(self, *args, **kwargs)
     functools.update_wrapper(_init, old_init)
@@ -156,7 +156,7 @@ def funcs_kwargs(cls):
 def method(f):
     "Mark `f` as a method"
     # `1` is a dummy instance since Py3 doesn't allow `None` any more
-    return types.MethodType(f, 1)
+    return MethodType(f, 1)
 
 #Cell
 def add_docs(cls, cls_doc=None, **docs):

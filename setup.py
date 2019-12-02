@@ -37,6 +37,9 @@ setuptools.setup(
     packages = setuptools.find_packages(),
     include_package_data = True,
     install_requires = requirements,
+    extras_require = {
+        'dev': dev_requirements
+    },
     python_requires  = '>=' + cfg['min_python'],
     long_description = open('README.md').read(),
     long_description_content_type = 'text/markdown',

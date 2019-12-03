@@ -23,7 +23,7 @@ entries:
       url: /dispatch
     - output: web,pdf
       title: Transforms
-      url: /04.transform
+      url: /transform
     - output: web,pdf
       title: Title
       url: /script

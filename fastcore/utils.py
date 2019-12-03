@@ -6,10 +6,8 @@ __all__ = ['ifnone', 'get_class', 'mk_class', 'wrap_class', 'store_attr', 'attrd
            'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'Inf', 'true', 'stop', 'gen', 'chunked',
            'retain_type', 'retain_types', 'show_title', 'ShowTitle', 'Int', 'Float', 'Str', 'num_methods',
            'rnum_methods', 'inum_methods', 'Tuple', 'TupleTitled', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'subplots', 'show_image',
-           'show_titled_image', 'show_images', 'ArrayBase', 'ArrayImageBase', 'ArrayImage', 'ArrayImageBW', 'ArrayMask',
-           'PrettyString', 'get_empty_df', 'display_df', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
-           'change_attr', 'change_attrs']
+           'instantiate', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'get_empty_df',
+           'display_df', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
 
 #Cell
 from .imports import *
@@ -36,7 +34,7 @@ def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, **flds):
 
     def _repr(self):
         return '\n'.join(f'{o}: {getattr(self,o)}' for o in set(dir(self))
-                         if not o.startswith('_') and not isinstance(getattr(self,o), types.MethodType))
+                         if not o.startswith('_') and not isinstance(getattr(self,o), MethodType))
 
     if not sup: attrs['__repr__'] = _repr
     attrs['__init__'] = _init
@@ -173,7 +171,7 @@ class ReindexCollection(GetAttr, IterLen):
     def __init__(self, coll, idxs=None, cache=None):
         self.coll,self.idxs,self.cache = coll,ifnone(idxs,L.range(coll)),cache
         def _get(self, i): return self.coll[i]
-        self._get = types.MethodType(_get,self)
+        self._get = MethodType(_get,self)
         if cache is not None: self._get = functools.lru_cache(maxsize=cache)(self._get)
 
     def __getitem__(self, i): return self._get(self.idxs[i])
@@ -514,68 +512,6 @@ def sort_by_run(fs):
                 break
         else: raise Exception("Impossible to sort")
     return res
-
-#Cell
-@delegates(plt.subplots, keep=True)
-def subplots(nrows=1, ncols=1, figsize=None, imsize=4, **kwargs):
-    if figsize is None: figsize=(imsize*ncols,imsize*nrows)
-    fig,ax = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
-    if nrows*ncols==1: ax = array([ax])
-    return fig,ax
-
-#Cell
-def show_image(im, ax=None, figsize=None, title=None, ctx=None, **kwargs):
-    "Show a PIL or PyTorch image on `ax`."
-    ax = ifnone(ax,ctx)
-    if ax is None: _,ax = plt.subplots(figsize=figsize)
-    # Handle pytorch axis order
-    if hasattrs(im, ('data','cpu','permute')):
-        im = im.data.cpu()
-        if im.shape[0]<5: im=im.permute(1,2,0)
-    elif not isinstance(im,np.ndarray): im=array(im)
-    # Handle 1-channel images
-    if im.shape[-1]==1: im=im[...,0]
-    ax.imshow(im, **kwargs)
-    if title is not None: ax.set_title(title)
-    ax.axis('off')
-    return ax
-
-#Cell
-def show_titled_image(o, **kwargs):
-    "Call `show_image` destructuring `o` to `(img,title)`"
-    show_image(o[0], title=str(o[1]), **kwargs)
-
-#Cell
-@delegates(subplots)
-def show_images(ims, rows=1, titles=None, **kwargs):
-    "Show all images `ims` as subplots with `rows` using `titles`"
-    cols = int(math.ceil(len(ims)/rows))
-    if titles is None: titles = [None]*len(ims)
-    axs = subplots(rows,cols,**kwargs)[1].flat
-    for im,t,ax in zip(ims, titles, axs): show_image(im, ax=ax, title=t)
-
-#Cell
-class ArrayBase(ndarray):
-    def __new__(cls, x, *args, **kwargs):
-        if isinstance(x,tuple): super().__new__(cls, x, *args, **kwargs)
-        if args or kwargs: raise RuntimeError('Unknown array init args')
-        if not isinstance(x,ndarray): x = array(x)
-        return x.view(cls)
-
-#Cell
-class ArrayImageBase(ArrayBase):
-    _show_args = {'cmap':'viridis'}
-    def show(self, ctx=None, **kwargs):
-        return show_image(self, ctx=ctx, **{**self._show_args, **kwargs})
-
-#Cell
-class ArrayImage(ArrayImageBase): pass
-
-#Cell
-class ArrayImageBW(ArrayImage): _show_args = {'cmap':'Greys'}
-
-#Cell
-class ArrayMask(ArrayImageBase): _show_args = {'alpha':0.5, 'cmap':'tab20', 'interpolation':'nearest'}
 
 #Cell
 class PrettyString(str):

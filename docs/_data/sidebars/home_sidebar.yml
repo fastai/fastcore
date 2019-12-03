@@ -7,24 +7,27 @@ entries:
 - folders:
   - folderitems:
     - output: web,pdf
-      title: Export to modules
-      url: /export.html
+      title: Overview
+      url: /
     - output: web,pdf
-      title: Convert to html
-      url: /export2html.html
+      title: Test
+      url: /test
     - output: web,pdf
-      title: Show doc
-      url: /showdoc.html
+      title: Core
+      url: /foundation
     - output: web,pdf
-      title: Test functions
-      url: /test.html
+      title: Utility functions
+      url: /utils
     - output: web,pdf
-      title: Core functions
-      url: /core.html
+      title: Type dispatch
+      url: /dispatch
     - output: web,pdf
-      title: Command line functions
-      url: /cli.html
+      title: Transforms
+      url: /04.transform
+    - output: web,pdf
+      title: Title
+      url: /script
     output: web
-    title: Notebook
+    title: fastcore
   output: web
   title: Sidebar

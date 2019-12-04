@@ -125,27 +125,24 @@ index = {"test_fail": "00_test.ipynb",
          "TypeDispatch": "03_dispatch.ipynb",
          "DispatchReg": "03_dispatch.ipynb",
          "typedispatch": "03_dispatch.ipynb",
-         "Transform": "04.transform.ipynb",
-         "InplaceTransform": "04.transform.ipynb",
-         "TupleTransform": "04.transform.ipynb",
-         "ItemTransform": "04.transform.ipynb",
-         "get_func": "04.transform.ipynb",
-         "Func": "04.transform.ipynb",
-         "Sig": "04.transform.ipynb",
-         "compose_tfms": "04.transform.ipynb",
-         "mk_transform": "04.transform.ipynb",
-         "gather_attrs": "04.transform.ipynb",
-         "gather_attr_names": "04.transform.ipynb",
-         "Pipeline": "04.transform.ipynb",
-         "anno_parser": "05_script.ipynb",
-         "call_parse": "05_script.ipynb"}
+         "Transform": "04_transform.ipynb",
+         "InplaceTransform": "04_transform.ipynb",
+         "TupleTransform": "04_transform.ipynb",
+         "ItemTransform": "04_transform.ipynb",
+         "get_func": "04_transform.ipynb",
+         "Func": "04_transform.ipynb",
+         "Sig": "04_transform.ipynb",
+         "compose_tfms": "04_transform.ipynb",
+         "mk_transform": "04_transform.ipynb",
+         "gather_attrs": "04_transform.ipynb",
+         "gather_attr_names": "04_transform.ipynb",
+         "Pipeline": "04_transform.ipynb"}
 
 modules = ["test.py",
            "foundation.py",
            "utils.py",
            "dispatch.py",
-           "transform.py",
-           "script.py"]
+           "transform.py"]
 
 git_url = "https://github.com/fastai/fastcore/tree/master/"
 

@@ -5,7 +5,6 @@
     "Core": "/foundation",
     "Utility functions": "/utils",
     "Type dispatch": "/dispatch",
-    "Transforms": "/transform",
-    "Title": "/script"
+    "Transforms": "/transform"
   }
 }

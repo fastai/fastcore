@@ -138,16 +138,13 @@ index = {"test_fail": "00_test.ipynb",
          "mk_transform": "04_transform.ipynb",
          "gather_attrs": "04_transform.ipynb",
          "gather_attr_names": "04_transform.ipynb",
-         "Pipeline": "04_transform.ipynb",
-         "anno_parser": "05_script.ipynb",
-         "call_parse": "05_script.ipynb"}
+         "Pipeline": "04_transform.ipynb"}
 
 modules = ["test.py",
            "foundation.py",
            "utils.py",
            "dispatch.py",
-           "transform.py",
-           "script.py"]
+           "transform.py"]
 
 git_url = "https://github.com/fastai/fastcore/tree/master/"
 

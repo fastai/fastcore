@@ -24,9 +24,6 @@ entries:
     - output: web,pdf
       title: Transforms
       url: /transform
-    - output: web,pdf
-      title: Title
-      url: /script
     output: web
     title: fastcore
   output: web

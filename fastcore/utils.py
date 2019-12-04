@@ -4,10 +4,10 @@ __all__ = ['ifnone', 'get_class', 'mk_class', 'wrap_class', 'store_attr', 'attrd
            'snake2camel', 'class2attr', 'hasattrs', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
            'is_listy', 'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'lt', 'gt', 'le',
            'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'Inf', 'true', 'stop', 'gen', 'chunked',
-           'retain_type', 'retain_types', 'show_title', 'ShowTitle', 'Int', 'Float', 'Str', 'num_methods',
-           'rnum_methods', 'inum_methods', 'Tuple', 'TupleTitled', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'get_empty_df',
-           'display_df', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
+           'show_title', 'ShowTitle', 'Int', 'Float', 'Str', 'num_methods', 'rnum_methods', 'inum_methods', 'Tuple',
+           'TupleTitled', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'Self', 'Self', 'bunzip',
+           'join_path_file', 'sort_by_run', 'PrettyString', 'get_empty_df', 'display_df', 'round_multiple',
+           'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
 
 #Cell
 from .imports import *
@@ -36,8 +36,12 @@ def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, **flds):
         return '\n'.join(f'{o}: {getattr(self,o)}' for o in set(dir(self))
                          if not o.startswith('_') and not isinstance(getattr(self,o), MethodType))
 
+    def _eq(self,b):
+        return all([getattr(self,k)==getattr(b,k) for k in [*fld_names,*flds.keys()]])
+
     if not sup: attrs['__repr__'] = _repr
     attrs['__init__'] = _init
+    attrs['__eq__'] = _eq
     res = type(nm, sup, attrs)
     if doc is not None: res.__doc__ = doc
     return res
@@ -237,24 +241,6 @@ def chunked(it, cs, drop_last=False):
         res = list(itertools.islice(it, cs))
         if res and (len(res)==cs or not drop_last): yield res
         if len(res)<cs: return
-
-#Cell
-def retain_type(new, old=None, typ=None):
-    "Cast `new` to type of `old` or `typ` if it's a superclass"
-    # e.g. old is TensorImage, new is Tensor - if not subclass then do nothing
-    if new is None: return new
-    assert old is not None or typ is not None
-    if typ is None:
-        if not isinstance(old, type(new)): return new
-        typ = old if isinstance(old,type) else type(old)
-    # Do nothing the new type is already an instance of requested type (i.e. same type)
-    return typ(new, **getattr(old, '_meta', {})) if typ!=NoneType and not isinstance(new, typ) else new
-
-#Cell
-def retain_types(new, old=None, typs=None):
-    "Cast each item of `new` to type of matching item in `old` if it's a superclass"
-    if not is_listy(new): return retain_type(new, old, typs)
-    return type(new)(L(new, old, typs).map_zip(retain_type, cycled=True))
 
 #Cell
 @patch

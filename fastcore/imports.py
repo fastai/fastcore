@@ -1,7 +1,9 @@
-import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile
-import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings
+import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile,subprocess
+import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings,threading
 
 from functools import partial
+from threading import Thread
+from time import sleep
 from copy import copy
 from contextlib import redirect_stdout,contextmanager
 from collections.abc import Iterable,Iterator,Generator
@@ -11,9 +13,13 @@ from collections import defaultdict,Counter
 from operator import itemgetter,attrgetter
 
 # External modules
-import matplotlib.pyplot as plt,numpy as np,pandas as pd
+import numpy as np,pandas as pd
 from numpy import array,ndarray
 from IPython.core.debugger import set_trace
+
+#Optional modules
+try: import matplotlib.pyplot as plt
+except: pass
 
 try:
     from types import WrapperDescriptorType,MethodWrapperType,MethodDescriptorType

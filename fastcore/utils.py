@@ -153,8 +153,9 @@ def groupby(x, key):
 
 #Cell
 def first(x):
-    "First element of `x`; i.e. a shortcut for `next(iter(x))`"
-    return next(iter(x))
+    "First element of `x`, or None if missing"
+    try: return next(iter(x))
+    except StopIteration: return None
 
 #Cell
 def shufflish(x, pct=0.04):

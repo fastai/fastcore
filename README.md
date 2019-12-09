@@ -15,7 +15,7 @@
 
 ## Installing
 
-fastcore is is on PyPI so you can just run:
+fastcore is on PyPI so you can just run:
 ``` 
 pip install fastcore
 ```

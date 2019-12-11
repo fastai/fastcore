@@ -16,7 +16,7 @@ from operator import itemgetter,attrgetter
 import numpy as np,pandas as pd
 from numpy import array,ndarray
 from pandas import DataFrame
-from IPython.core.debugger import set_trace
+from pdb import set_trace
 
 #Optional modules
 try: import matplotlib.pyplot as plt

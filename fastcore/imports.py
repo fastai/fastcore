@@ -15,6 +15,7 @@ from operator import itemgetter,attrgetter
 # External modules
 import numpy as np,pandas as pd
 from numpy import array,ndarray
+from pandas import DataFrame
 from IPython.core.debugger import set_trace
 
 #Optional modules

@@ -14,7 +14,7 @@ docs: $(SRC)
 test:
 	nbdev_test_nbs
 
-release: bump
+release: bump clean
 	$(DIST)
 	twine upload --repository pypi dist/*
 

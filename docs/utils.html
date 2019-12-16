@@ -29,9 +29,9 @@ summary: "Utility functions used in the fastai library"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 </pre></div>
 
@@ -103,7 +103,54 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_class" class="doc_header"><code>get_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
+<h4 id="maybe_attr" class="doc_header"><code>maybe_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>maybe_attr</code>(<strong><code>o</code></strong>, <strong><code>attr</code></strong>)</p>
+</blockquote>
+<p><code>getattr(o,attr,o)</code></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="basic_repr" class="doc_header"><code>basic_repr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>basic_repr</code>(<strong><code>flds</code></strong>=<em><code>None</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="get_class" class="doc_header"><code>get_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
 </blockquote>
 <p>Dynamically create a class, optionally inheriting from <code>sup</code>, containing <code>fld_names</code></p>
 
@@ -130,6 +177,8 @@ summary: "Utility functions used in the fastai library"
 <span class="n">t</span> <span class="o">=</span> <span class="n">_t</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="s1">&#39;a: 1</span><span class="se">\n</span><span class="s1">b: 3&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">t</span><span class="p">)))</span>
 </pre></div>
 
     </div>
@@ -156,7 +205,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mk_class" class="doc_header"><code>mk_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L50" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mk_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong><code>mod</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
+<h4 id="mk_class" class="doc_header"><code>mk_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mk_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong><code>mod</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
 </blockquote>
 <p>Create a class using <a href="utils.html#get_class"><code>get_class</code></a> and add to the caller's module</p>
 
@@ -226,7 +275,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__._t at 0x7fc861b42f10&gt;</pre>
+<pre>&lt;__main__._t at 0x7fa9ba026510&gt;</pre>
 </div>
 
 </div>
@@ -247,7 +296,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="wrap_class" class="doc_header"><code>wrap_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L57" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>wrap_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
+<h4 id="wrap_class" class="doc_header"><code>wrap_class</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>wrap_class</code>(<strong><code>nm</code></strong>, <strong>*<code>fld_names</code></strong>, <strong><code>sup</code></strong>=<em><code>None</code></em>, <strong><code>doc</code></strong>=<em><code>None</code></em>, <strong><code>funcs</code></strong>=<em><code>None</code></em>, <strong>**<code>flds</code></strong>)</p>
 </blockquote>
 <p>Decorator: makes function a method of a new class <code>nm</code> passing parameters to <a href="utils.html#mk_class"><code>mk_class</code></a></p>
 
@@ -286,7 +335,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="noop" class="doc_header"><code>noop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>noop</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="noop" class="doc_header"><code>noop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L53" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>noop</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Do nothing</p>
 
@@ -321,7 +370,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="noops" class="doc_header"><code>noops</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L55" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>noops</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="noops" class="doc_header"><code>noops</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L57" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>noops</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Do nothing (method)</p>
 
@@ -359,7 +408,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="store_attr" class="doc_header"><code>store_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>store_attr</code>(<strong><code>nms</code></strong>)</p>
+<h4 id="store_attr" class="doc_header"><code>store_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>store_attr</code>(<strong><code>nms</code></strong>)</p>
 </blockquote>
 <p>Store params named in comma-separated <code>nms</code> from calling context into attrs in <code>self</code></p>
 
@@ -377,7 +426,7 @@ summary: "Utility functions used in the fastai library"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">T</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span> <span class="n">store_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;a,b, c&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span> <span class="n">store_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;a,b, c&#39;</span><span class="p">)</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">t</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="o">==</span><span class="mi">3</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">c</span><span class="o">==</span><span class="mi">2</span>
@@ -400,7 +449,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="attrdict" class="doc_header"><code>attrdict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>attrdict</code>(<strong><code>o</code></strong>, <strong>*<code>ks</code></strong>)</p>
+<h4 id="attrdict" class="doc_header"><code>attrdict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L79" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>attrdict</code>(<strong><code>o</code></strong>, <strong>*<code>ks</code></strong>)</p>
 </blockquote>
 <p>Dict from each <code>k</code> in <code>ks</code> to <code>getattr(o,k)</code></p>
 
@@ -437,7 +486,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="properties" class="doc_header"><code>properties</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L76" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>properties</code>(<strong>*<code>ps</code></strong>)</p>
+<h4 id="properties" class="doc_header"><code>properties</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L84" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>properties</code>(<strong>*<code>ps</code></strong>)</p>
 </blockquote>
 <p>Change attrs in <code>cls</code> with names in <code>ps</code> to properties</p>
 
@@ -483,7 +532,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="camel2snake" class="doc_header"><code>camel2snake</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>camel2snake</code>(<strong><code>name</code></strong>)</p>
+<h4 id="camel2snake" class="doc_header"><code>camel2snake</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L93" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>camel2snake</code>(<strong><code>name</code></strong>)</p>
 </blockquote>
 <p>Convert CamelCase to snake_case</p>
 
@@ -520,7 +569,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="snake2camel" class="doc_header"><code>snake2camel</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L91" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>snake2camel</code>(<strong><code>s</code></strong>)</p>
+<h4 id="snake2camel" class="doc_header"><code>snake2camel</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L99" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>snake2camel</code>(<strong><code>s</code></strong>)</p>
 </blockquote>
 <p>Convert snake_case to CamelCase</p>
 
@@ -557,7 +606,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="class2attr" class="doc_header"><code>class2attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L96" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>class2attr</code>(<strong><code>cls_name</code></strong>)</p>
+<h4 id="class2attr" class="doc_header"><code>class2attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L104" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>class2attr</code>(<strong><code>cls_name</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -580,7 +629,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="hasattrs" class="doc_header"><code>hasattrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>hasattrs</code>(<strong><code>o</code></strong>, <strong><code>attrs</code></strong>)</p>
+<h4 id="hasattrs" class="doc_header"><code>hasattrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L108" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>hasattrs</code>(<strong><code>o</code></strong>, <strong><code>attrs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -623,7 +672,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="tuplify" class="doc_header"><code>tuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L106" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>tuplify</code>(<strong><code>o</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="tuplify" class="doc_header"><code>tuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L114" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>tuplify</code>(<strong><code>o</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Make <code>o</code> a tuple</p>
 
@@ -662,7 +711,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="detuplify" class="doc_header"><code>detuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L111" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detuplify</code>(<strong><code>x</code></strong>)</p>
+<h4 id="detuplify" class="doc_header"><code>detuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L119" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detuplify</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>If <code>x</code> is a tuple with one thing, extract it</p>
 
@@ -702,7 +751,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="replicate" class="doc_header"><code>replicate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>replicate</code>(<strong><code>item</code></strong>, <strong><code>match</code></strong>)</p>
+<h4 id="replicate" class="doc_header"><code>replicate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>replicate</code>(<strong><code>item</code></strong>, <strong><code>match</code></strong>)</p>
 </blockquote>
 <p>Create tuple of <code>item</code> copied <code>len(match)</code> times</p>
 
@@ -741,7 +790,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="uniqueify" class="doc_header"><code>uniqueify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L121" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>uniqueify</code>(<strong><code>x</code></strong>, <strong><code>sort</code></strong>=<em><code>False</code></em>, <strong><code>bidir</code></strong>=<em><code>False</code></em>, <strong><code>start</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="uniqueify" class="doc_header"><code>uniqueify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L129" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>uniqueify</code>(<strong><code>x</code></strong>, <strong><code>sort</code></strong>=<em><code>False</code></em>, <strong><code>bidir</code></strong>=<em><code>False</code></em>, <strong><code>start</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Return the unique elements in <code>x</code>, optionally <code>sort</code>-ed, optionally return the reverse correspondence.</p>
 
@@ -786,7 +835,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="setify" class="doc_header"><code>setify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L130" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>setify</code>(<strong><code>o</code></strong>)</p>
+<h4 id="setify" class="doc_header"><code>setify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>setify</code>(<strong><code>o</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -827,7 +876,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge" class="doc_header"><code>merge</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L133" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge</code>(<strong>*<code>ds</code></strong>)</p>
+<h4 id="merge" class="doc_header"><code>merge</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge</code>(<strong>*<code>ds</code></strong>)</p>
 </blockquote>
 <p>Merge all dictionaries in <code>ds</code></p>
 
@@ -866,7 +915,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_listy" class="doc_header"><code>is_listy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_listy</code>(<strong><code>x</code></strong>)</p>
+<h4 id="is_listy" class="doc_header"><code>is_listy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L146" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_listy</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p><code>isinstance(x, (tuple,list,L))</code></p>
 
@@ -906,7 +955,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="range_of" class="doc_header"><code>range_of</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L143" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>range_of</code>(<strong><code>x</code></strong>)</p>
+<h4 id="range_of" class="doc_header"><code>range_of</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L151" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>range_of</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>All indices of collection <code>x</code> (i.e. <code>list(range(len(x)))</code>)</p>
 
@@ -943,7 +992,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="groupby" class="doc_header"><code>groupby</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L148" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>groupby</code>(<strong><code>x</code></strong>, <strong><code>key</code></strong>)</p>
+<h4 id="groupby" class="doc_header"><code>groupby</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L156" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>groupby</code>(<strong><code>x</code></strong>, <strong><code>key</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.groupby</code> but doesn't need to be sorted, and isn't lazy</p>
 
@@ -980,7 +1029,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="first" class="doc_header"><code>first</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L155" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>first</code>(<strong><code>x</code></strong>)</p>
+<h4 id="first" class="doc_header"><code>first</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L163" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>first</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>First element of <code>x</code>, or None if missing</p>
 
@@ -1004,7 +1053,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="shufflish" class="doc_header"><code>shufflish</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L161" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>shufflish</code>(<strong><code>x</code></strong>, <strong><code>pct</code></strong>=<em><code>0.04</code></em>)</p>
+<h4 id="shufflish" class="doc_header"><code>shufflish</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L169" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>shufflish</code>(<strong><code>x</code></strong>, <strong><code>pct</code></strong>=<em><code>0.04</code></em>)</p>
 </blockquote>
 <p>Randomly relocate items of <code>x</code> up to <code>pct</code> of <code>len(x)</code> from their starting location</p>
 
@@ -1045,7 +1094,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IterLen" class="doc_header"><code>class</code> <code>IterLen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L167" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IterLen</code>()</p>
+<h2 id="IterLen" class="doc_header"><code>class</code> <code>IterLen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L175" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IterLen</code>()</p>
 </blockquote>
 <p>Base class to add iteration to anything supporting <code>len</code> and <code>__getitem__</code></p>
 
@@ -1069,7 +1118,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ReindexCollection" class="doc_header"><code>class</code> <code>ReindexCollection</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L173" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReindexCollection</code>(<strong><code>coll</code></strong>, <strong><code>idxs</code></strong>=<em><code>None</code></em>, <strong><code>cache</code></strong>=<em><code>None</code></em>) :: <a href="foundation.html#GetAttr"><code>GetAttr</code></a></p>
+<h2 id="ReindexCollection" class="doc_header"><code>class</code> <code>ReindexCollection</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L181" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReindexCollection</code>(<strong><code>coll</code></strong>, <strong><code>idxs</code></strong>=<em><code>None</code></em>, <strong><code>cache</code></strong>=<em><code>None</code></em>) :: <a href="foundation.html#GetAttr"><code>GetAttr</code></a></p>
 </blockquote>
 <p>Reindexes collection <code>coll</code> with indices <code>idxs</code> and optional LRU cache of size <code>cache</code></p>
 
@@ -1204,7 +1253,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Inf" class="doc_header"><code>class</code> <code>Inf</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L219" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Inf</code>()</p>
+<h2 id="Inf" class="doc_header"><code>class</code> <code>Inf</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L227" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Inf</code>()</p>
 </blockquote>
 <p>Infinite lists</p>
 
@@ -1258,7 +1307,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="true" class="doc_header"><code>true</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L224" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>true</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="true" class="doc_header"><code>true</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L232" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>true</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Predicate: always <code>True</code></p>
 
@@ -1282,7 +1331,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="stop" class="doc_header"><code>stop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L229" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stop</code>(<strong><code>e</code></strong>=<em><code>'StopIteration'</code></em>)</p>
+<h4 id="stop" class="doc_header"><code>stop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L237" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stop</code>(<strong><code>e</code></strong>=<em><code>'StopIteration'</code></em>)</p>
 </blockquote>
 <p>Raises exception <code>e</code> (by default <code>StopException</code>) even if in an expression</p>
 
@@ -1306,7 +1355,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="gen" class="doc_header"><code>gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L234" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gen</code>(<strong><code>func</code></strong>, <strong><code>seq</code></strong>, <strong><code>cond</code></strong>=<em><code>'true'</code></em>)</p>
+<h4 id="gen" class="doc_header"><code>gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L242" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gen</code>(<strong><code>func</code></strong>, <strong><code>seq</code></strong>, <strong><code>cond</code></strong>=<em><code>'true'</code></em>)</p>
 </blockquote>
 <p>Like <code>(func(o) for o in seq if cond(func(o)))</code> but handles <code>StopIteration</code></p>
 
@@ -1348,7 +1397,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="chunked" class="doc_header"><code>chunked</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L239" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>chunked</code>(<strong><code>it</code></strong>, <strong><code>cs</code></strong>, <strong><code>drop_last</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="chunked" class="doc_header"><code>chunked</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L247" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>chunked</code>(<strong><code>it</code></strong>, <strong><code>cs</code></strong>, <strong><code>drop_last</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -1395,7 +1444,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="DataFrame.split_arr" class="doc_header"><code>DataFrame.split_arr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L247" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>DataFrame.split_arr</code>(<strong><code>df</code></strong>:<code>DataFrame</code>, <strong><code>from_col</code></strong>)</p>
+<h4 id="DataFrame.split_arr" class="doc_header"><code>DataFrame.split_arr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L255" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>DataFrame.split_arr</code>(<strong><code>df</code></strong>:<code>DataFrame</code>, <strong><code>from_col</code></strong>)</p>
 </blockquote>
 <p>Split col <code>from_col</code> (containing arrays) in <code>DataFrame</code> <code>df</code> into separate colums</p>
 
@@ -1440,7 +1489,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_title" class="doc_header"><code>show_title</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L257" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_title</code>(<strong><code>o</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>label</code></strong>=<em><code>None</code></em>, <strong><code>color</code></strong>=<em><code>'black'</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="show_title" class="doc_header"><code>show_title</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L265" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_title</code>(<strong><code>o</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>label</code></strong>=<em><code>None</code></em>, <strong><code>color</code></strong>=<em><code>'black'</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Set title of <code>ax</code> to <code>o</code>, or print <code>o</code> if <code>ax</code> is <code>None</code></p>
 
@@ -1479,7 +1528,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ShowTitle" class="doc_header"><code>class</code> <code>ShowTitle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L271" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ShowTitle</code>()</p>
+<h2 id="ShowTitle" class="doc_header"><code>class</code> <code>ShowTitle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L279" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ShowTitle</code>()</p>
 </blockquote>
 <p>Base class that adds a simple <code>show</code></p>
 
@@ -1500,7 +1549,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h3 id="Int" class="doc_header"><code>class</code> <code>Int</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L276" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Int</code>() :: <code>int</code></p>
+<h3 id="Int" class="doc_header"><code>class</code> <code>Int</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L284" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Int</code>() :: <code>int</code></p>
 </blockquote>
 <p>An <code>int</code> with <code>show</code></p>
 
@@ -1521,7 +1570,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h3 id="Str" class="doc_header"><code>class</code> <code>Str</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L278" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Str</code>() :: <code>str</code></p>
+<h3 id="Str" class="doc_header"><code>class</code> <code>Str</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L286" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Str</code>() :: <code>str</code></p>
 </blockquote>
 <p>An <code>str</code> with <code>show</code></p>
 
@@ -1542,7 +1591,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h3 id="Float" class="doc_header"><code>class</code> <code>Float</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L277" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Float</code>(<strong><code>x</code></strong>=<em><code>0</code></em>) :: <code>float</code></p>
+<h3 id="Float" class="doc_header"><code>class</code> <code>Float</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L285" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>Float</code>(<strong><code>x</code></strong>=<em><code>0</code></em>) :: <code>float</code></p>
 </blockquote>
 <p>An <code>float</code> with <code>show</code></p>
 
@@ -1583,7 +1632,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Tuple" class="doc_header"><code>class</code> <code>Tuple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L296" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Tuple</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <code>tuple</code></p>
+<h2 id="Tuple" class="doc_header"><code>class</code> <code>Tuple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L304" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Tuple</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <code>tuple</code></p>
 </blockquote>
 <p>A <code>tuple</code> with elementwise ops and more friendly <strong>init</strong> behavior</p>
 
@@ -1637,7 +1686,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="TupleTitled" class="doc_header"><code>class</code> <code>TupleTitled</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L333" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TupleTitled</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <a href="utils.html#Tuple"><code>Tuple</code></a></p>
+<h2 id="TupleTitled" class="doc_header"><code>class</code> <code>TupleTitled</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L341" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TupleTitled</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <a href="utils.html#Tuple"><code>Tuple</code></a></p>
 </blockquote>
 <p>A <a href="utils.html#Tuple"><code>Tuple</code></a> with <code>show</code></p>
 
@@ -1667,7 +1716,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="trace" class="doc_header"><code>trace</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L338" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>trace</code>(<strong><code>f</code></strong>)</p>
+<h4 id="trace" class="doc_header"><code>trace</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L346" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>trace</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Add <code>set_trace</code> to an existing function <code>f</code></p>
 
@@ -1691,7 +1740,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="compose" class="doc_header"><code>compose</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L346" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>compose</code>(<strong>*<code>funcs</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="compose" class="doc_header"><code>compose</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L354" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>compose</code>(<strong>*<code>funcs</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Create a function that composes all functions in <code>funcs</code>, passing along remaining <code>*args</code> and <code>**kwargs</code> to all</p>
 
@@ -1735,7 +1784,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="maps" class="doc_header"><code>maps</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L358" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>maps</code>(<strong>*<code>args</code></strong>, <strong><code>retain</code></strong>=<em><code>'noop'</code></em>)</p>
+<h4 id="maps" class="doc_header"><code>maps</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L366" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>maps</code>(<strong>*<code>args</code></strong>, <strong><code>retain</code></strong>=<em><code>'noop'</code></em>)</p>
 </blockquote>
 <p>Like <code>map</code>, except funcs are composed first</p>
 
@@ -1774,7 +1823,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="partialler" class="doc_header"><code>partialler</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>partialler</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="partialler" class="doc_header"><code>partialler</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L373" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>partialler</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>functools.partial</code> but also copies over docstring</p>
 
@@ -1821,7 +1870,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mapped" class="doc_header"><code>mapped</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L374" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mapped</code>(<strong><code>f</code></strong>, <strong><code>it</code></strong>)</p>
+<h4 id="mapped" class="doc_header"><code>mapped</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mapped</code>(<strong><code>f</code></strong>, <strong><code>it</code></strong>)</p>
 </blockquote>
 <p>map <code>f</code> over <code>it</code>, unless it's not listy, in which case return <code>f(it)</code></p>
 
@@ -1860,7 +1909,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="instantiate" class="doc_header"><code>instantiate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L379" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>instantiate</code>(<strong><code>t</code></strong>)</p>
+<h4 id="instantiate" class="doc_header"><code>instantiate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L387" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>instantiate</code>(<strong><code>t</code></strong>)</p>
 </blockquote>
 <p>Instantiate <code>t</code> if it's a type, otherwise do nothing</p>
 
@@ -1954,7 +2003,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.readlines" class="doc_header"><code>Path.readlines</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L416" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.readlines</code>(<strong><code>hint</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.readlines" class="doc_header"><code>Path.readlines</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L424" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.readlines</code>(<strong><code>hint</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Read the content of <code>fname</code></p>
 
@@ -1978,7 +2027,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.read" class="doc_header"><code>Path.read</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L422" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.read</code>(<strong><code>size</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.read" class="doc_header"><code>Path.read</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L430" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.read</code>(<strong><code>size</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Read the content of <code>fname</code></p>
 
@@ -2002,7 +2051,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.write" class="doc_header"><code>Path.write</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L428" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.write</code>(<strong><code>txt</code></strong>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.write" class="doc_header"><code>Path.write</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L436" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.write</code>(<strong><code>txt</code></strong>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Write <code>txt</code> to <code>self</code>, creating directories as needed</p>
 
@@ -2045,7 +2094,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.save" class="doc_header"><code>Path.save</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L435" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.save</code>(<strong><code>fn</code></strong>:<code>Path</code>, <strong><code>o</code></strong>)</p>
+<h4 id="Path.save" class="doc_header"><code>Path.save</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L443" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.save</code>(<strong><code>fn</code></strong>:<code>Path</code>, <strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Save a pickle file, to a file name or opened file</p>
 
@@ -2069,7 +2118,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.load" class="doc_header"><code>Path.load</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L443" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.load</code>(<strong><code>fn</code></strong>:<code>Path</code>)</p>
+<h4 id="Path.load" class="doc_header"><code>Path.load</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L451" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.load</code>(<strong><code>fn</code></strong>:<code>Path</code>)</p>
 </blockquote>
 <p>Load a pickle file from a file name or opened file</p>
 
@@ -2110,7 +2159,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.ls" class="doc_header"><code>Path.ls</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L451" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.ls</code>(<strong><code>n_max</code></strong>=<em><code>None</code></em>, <strong><code>file_type</code></strong>=<em><code>None</code></em>, <strong><code>file_exts</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="Path.ls" class="doc_header"><code>Path.ls</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L459" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.ls</code>(<strong><code>n_max</code></strong>=<em><code>None</code></em>, <strong><code>file_type</code></strong>=<em><code>None</code></em>, <strong><code>file_exts</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Contents of path as a list</p>
 
@@ -2218,7 +2267,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bunzip" class="doc_header"><code>bunzip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L462" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bunzip</code>(<strong><code>fn</code></strong>)</p>
+<h4 id="bunzip" class="doc_header"><code>bunzip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L470" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bunzip</code>(<strong><code>fn</code></strong>)</p>
 </blockquote>
 <p>bunzip <code>fn</code>, raising exception if output already exists</p>
 
@@ -2261,7 +2310,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="join_path_file" class="doc_header"><code>join_path_file</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L472" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>join_path_file</code>(<strong><code>file</code></strong>, <strong><code>path</code></strong>, <strong><code>ext</code></strong>=<em><code>''</code></em>)</p>
+<h4 id="join_path_file" class="doc_header"><code>join_path_file</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L480" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>join_path_file</code>(<strong><code>file</code></strong>, <strong><code>path</code></strong>, <strong><code>ext</code></strong>=<em><code>''</code></em>)</p>
 </blockquote>
 <p>Return <code>path/file</code> if file is a string or a <code>Path</code>, file otherwise</p>
 
@@ -2316,7 +2365,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="sort_by_run" class="doc_header"><code>sort_by_run</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L492" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sort_by_run</code>(<strong><code>fs</code></strong>)</p>
+<h4 id="sort_by_run" class="doc_header"><code>sort_by_run</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L500" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sort_by_run</code>(<strong><code>fs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -2381,7 +2430,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrettyString" class="doc_header"><code>class</code> <code>PrettyString</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L504" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrettyString</code>() :: <code>str</code></p>
+<h2 id="PrettyString" class="doc_header"><code>class</code> <code>PrettyString</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L512" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrettyString</code>() :: <code>str</code></p>
 </blockquote>
 <p>Little hack to get strings to show properly in Jupyter.</p>
 
@@ -2405,7 +2454,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_empty_df" class="doc_header"><code>get_empty_df</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L509" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_empty_df</code>(<strong><code>n</code></strong>)</p>
+<h4 id="get_empty_df" class="doc_header"><code>get_empty_df</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L517" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_empty_df</code>(<strong><code>n</code></strong>)</p>
 </blockquote>
 <p>Return <code>n</code> empty rows of a dataframe</p>
 
@@ -2429,7 +2478,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="display_df" class="doc_header"><code>display_df</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L515" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>display_df</code>(<strong><code>df</code></strong>)</p>
+<h4 id="display_df" class="doc_header"><code>display_df</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L523" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>display_df</code>(<strong><code>df</code></strong>)</p>
 </blockquote>
 <p>Display <code>df</code> in a notebook or defaults to print</p>
 
@@ -2453,7 +2502,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="round_multiple" class="doc_header"><code>round_multiple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L522" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>round_multiple</code>(<strong><code>x</code></strong>, <strong><code>mult</code></strong>, <strong><code>round_down</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="round_multiple" class="doc_header"><code>round_multiple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L530" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>round_multiple</code>(<strong><code>x</code></strong>, <strong><code>mult</code></strong>, <strong><code>round_down</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Round <code>x</code> to nearest multiple of <code>mult</code></p>
 
@@ -2495,7 +2544,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="even_mults" class="doc_header"><code>even_mults</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L529" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>even_mults</code>(<strong><code>start</code></strong>, <strong><code>stop</code></strong>, <strong><code>n</code></strong>)</p>
+<h4 id="even_mults" class="doc_header"><code>even_mults</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L537" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>even_mults</code>(<strong><code>start</code></strong>, <strong><code>stop</code></strong>, <strong><code>n</code></strong>)</p>
 </blockquote>
 <p>Build log-stepped array from <code>start</code> to <a href="utils.html#stop"><code>stop</code></a> in <code>n</code> steps.</p>
 
@@ -2534,7 +2583,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="num_cpus" class="doc_header"><code>num_cpus</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L537" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>num_cpus</code>()</p>
+<h4 id="num_cpus" class="doc_header"><code>num_cpus</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L545" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>num_cpus</code>()</p>
 </blockquote>
 <p>Get number of cpus</p>
 
@@ -2558,7 +2607,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="add_props" class="doc_header"><code>add_props</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L545" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_props</code>(<strong><code>f</code></strong>, <strong><code>n</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="add_props" class="doc_header"><code>add_props</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L553" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_props</code>(<strong><code>f</code></strong>, <strong><code>n</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Create properties passing each of <code>range(n)</code> to f</p>
 
@@ -2599,7 +2648,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="change_attr" class="doc_header"><code>change_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L550" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attr</code>(<strong><code>o</code></strong>, <strong><code>name</code></strong>, <strong><code>new_val</code></strong>)</p>
+<h4 id="change_attr" class="doc_header"><code>change_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L558" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attr</code>(<strong><code>o</code></strong>, <strong><code>name</code></strong>, <strong><code>new_val</code></strong>)</p>
 </blockquote>
 <p>Change the attr <code>name</code> in <code>o</code> with <code>new_val</code> if it exists and return the old value</p>
 
@@ -2623,7 +2672,7 @@ summary: "Utility functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="change_attrs" class="doc_header"><code>change_attrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L557" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attrs</code>(<strong><code>o</code></strong>, <strong><code>names</code></strong>, <strong><code>new_vals</code></strong>, <strong><code>do</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="change_attrs" class="doc_header"><code>change_attrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L565" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attrs</code>(<strong><code>o</code></strong>, <strong><code>names</code></strong>, <strong><code>new_vals</code></strong>, <strong><code>do</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Change the attr <code>names</code> in <code>o</code> with <code>new_vals</code> if it exists and return the old values</p>
 

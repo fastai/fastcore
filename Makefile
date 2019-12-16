@@ -1,4 +1,5 @@
-SRC = $(wildcard nbs/*.ipynb)
+SRC := $(wildcard nbs/*.ipynb)
+DIST := python setup.py sdist bdist_wheel
 
 all: fastcore docs
 
@@ -13,7 +14,8 @@ docs: $(SRC)
 test:
 	nbdev_test_nbs
 
-release: bump dist
+release: bump
+	$(DIST)
 	twine upload --repository pypi dist/*
 
 pypi: dist
@@ -23,7 +25,7 @@ bump:
 	nbdev_bump_version
 
 dist: clean
-	python setup.py sdist bdist_wheel
+	$(DIST)
 
 clean:
 	rm -rf dist

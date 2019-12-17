@@ -1,6 +1,7 @@
 import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile,subprocess
 import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings,threading
 
+from dataclasses import dataclass
 from functools import partial
 from threading import Thread
 from time import sleep

@@ -467,6 +467,15 @@ def ls(self:Path, n_max=None, file_type=None, file_exts=None):
     return L(res)
 
 # Cell
+@patch
+def __repr__(self:Path):
+    b = getattr(Path, 'BASE_PATH', None)
+    if b:
+        try: self = self.relative_to(b)
+        except: pass
+    return f"Path({self.as_posix()!r})"
+
+# Cell
 def bunzip(fn):
     "bunzip `fn`, raising exception if output already exists"
     fn = Path(fn)

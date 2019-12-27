@@ -106,6 +106,7 @@ index = {"test_fail": "00_test.ipynb",
          "Path.save": "02_utils.ipynb",
          "Path.load": "02_utils.ipynb",
          "Path.ls": "02_utils.ipynb",
+         "Path.__repr__": "02_utils.ipynb",
          "bunzip": "02_utils.ipynb",
          "join_path_file": "02_utils.ipynb",
          "sort_by_run": "02_utils.ipynb",
@@ -149,6 +150,5 @@ modules = ["test.py",
            "transform.py"]
 
 git_url = "https://github.com/fastai/fastcore/tree/master/"
-
 
 def custom_doc_links(name): return None

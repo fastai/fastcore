@@ -149,7 +149,7 @@ modules = ["test.py",
            "dispatch.py",
            "transform.py"]
 
-doc_url = "https://fastai.github.io/fastcore/"
+doc_url = "http:/fastcore.fast.ai/"
 
 git_url = "https://github.com/fastai/fastcore/tree/master/"
 

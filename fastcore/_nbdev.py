@@ -149,6 +149,8 @@ modules = ["test.py",
            "dispatch.py",
            "transform.py"]
 
+doc_url = "https://fastai.github.io/fastcore/"
+
 git_url = "https://github.com/fastai/fastcore/tree/master/"
 
 def custom_doc_links(name): return None

@@ -15,9 +15,8 @@ from operator import itemgetter,attrgetter
 from uuid import uuid4
 
 # External modules
-import numpy as np,pandas as pd
+import numpy as np
 from numpy import array,ndarray
-from pandas import DataFrame
 from pdb import set_trace
 
 #Optional modules
@@ -32,7 +31,6 @@ except ImportError:
     MethodDescriptorType = type(str.join)
 from types import BuiltinFunctionType,BuiltinMethodType,MethodType,FunctionType
 
-pd.options.display.max_colwidth = 600
 NoneType = type(None)
 string_classes = (str,bytes)
 

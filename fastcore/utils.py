@@ -190,9 +190,10 @@ class IterLen:
 class ReindexCollection(GetAttr, IterLen):
     "Reindexes collection `coll` with indices `idxs` and optional LRU cache of size `cache`"
     _default='coll'
-    def __init__(self, coll, idxs=None, cache=None):
-        self.coll,self.idxs,self.cache = coll,ifnone(idxs,L.range(coll)),cache
-        def _get(self, i): return self.coll[i]
+    def __init__(self, coll, idxs=None, cache=None, tfm=noop):
+        store_attr(self, 'coll,cache,tfm')
+        self.idxs = L.range(coll) if idxs is None else idxs
+        def _get(self, i): return self.tfm(self.coll[i])
         self._get = MethodType(_get,self)
         if cache is not None: self._get = functools.lru_cache(maxsize=cache)(self._get)
 

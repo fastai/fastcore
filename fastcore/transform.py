@@ -41,7 +41,7 @@ class _TfmMeta(type):
 # Cell
 class Transform(metaclass=_TfmMeta):
     "Delegates (`__call__`,`decode`,`setup`) to (`encodes`,`decodes`,`setups`) if `split_idx` matches"
-    split_idx,init_enc,as_item_force,as_item,order = None,False,None,True,0
+    split_idx,init_enc,as_item_force,as_item,order,train_setup = None,False,None,True,0,None
     def __init__(self, enc=None, dec=None, split_idx=None, as_item=False, order=None):
         self.split_idx,self.as_item = ifnone(split_idx, self.split_idx),as_item
         if order is not None: self.order=order
@@ -54,14 +54,18 @@ class Transform(metaclass=_TfmMeta):
         if enc:
             self.encodes.add(enc)
             self.order = getattr(enc,'order',self.order)
+            if len(type_hints(enc)) > 0: self.input_types = first(type_hints(enc).values())
         if dec: self.decodes.add(dec)
 
     @property
     def use_as_item(self): return ifnone(self.as_item_force, self.as_item)
     def __call__(self, x, **kwargs): return self._call('encodes', x, **kwargs)
     def decode  (self, x, **kwargs): return self._call('decodes', x, **kwargs)
-    def setup(self, items=None): return self.setups(items)
     def __repr__(self): return f'{self.__class__.__name__}: {self.use_as_item} {self.encodes} {self.decodes}'
+
+    def setup(self, items=None, train_setup=False):
+        train_setup = train_setup if self.train_setup is None else self.train_setup
+        return self.setups(getattr(items, 'train', items) if train_setup else items)
 
     def _call(self, fn, x, split_idx=None, **kwargs):
         if split_idx!=self.split_idx and self.split_idx is not None: return x
@@ -163,13 +167,13 @@ class Pipeline:
         self.as_item = as_item
         for f in self.fs: f.as_item = as_item
 
-    def setup(self, items=None):
+    def setup(self, items=None, train_setup=False):
         tfms = self.fs[:]
         self.fs.clear()
-        for t in tfms: self.add(t,items)
+        for t in tfms: self.add(t,items, train_setup)
 
-    def add(self,t, items=None):
-        t.setup(items)
+    def add(self,t, items=None, train_setup=False):
+        t.setup(items, train_setup)
         self.fs.append(t)
 
     def __call__(self, o): return compose_tfms(o, tfms=self.fs, split_idx=self.split_idx)

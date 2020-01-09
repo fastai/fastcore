@@ -3,11 +3,11 @@
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'store_attr', 'attrdict',
            'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint', 'Int', 'Float', 'Str',
            'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy', 'range_of', 'groupby',
-           'first', 'shufflish', 'IterLen', 'ReindexCollection', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
-           'mul', 'truediv', 'is_', 'is_not', 'Inf', 'true', 'stop', 'gen', 'chunked', 'num_methods', 'rnum_methods',
-           'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'Self', 'Self',
-           'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'change_attr', 'change_attrs']
+           'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add',
+           'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen', 'chunked', 'num_methods',
+           'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate',
+           'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults',
+           'num_cpus', 'add_props', 'change_attr', 'change_attrs']
 
 # Cell
 from .imports import *
@@ -208,6 +208,13 @@ class ReindexCollection(GetAttr, IterLen):
                 cache_clear="Clear LRU cache")
 
 # Cell
+def in_(x, a):
+    "`True` if `x in a`"
+    return x in a
+
+operator.in_ = in_
+
+# Cell
 def _oper(op,a,b=np.nan): return (lambda o:op(o,a)) if b!=b else op(a,b)
 
 def _mk_op(nm, mod=None):
@@ -220,7 +227,7 @@ def _mk_op(nm, mod=None):
     mod[nm] = _inner
 
 # Cell
-for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not']: _mk_op(op)
+for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
 
 # Cell
 class _InfMeta(type):

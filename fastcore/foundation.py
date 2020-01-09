@@ -366,6 +366,11 @@ class L(CollBase, metaclass=NewChkMeta):
         if negate: f = negate_func(f)
         return self._new(filter(f, self))
 
+    def argwhere(self, f, negate=False, **kwargs):
+        if kwargs: f = partial(f,**kwargs)
+        if negate: f = negate_func(f)
+        return self._new(i for i,o in enumerate(self) if f(o))
+
     def unique(self): return L(dict.fromkeys(self).keys())
     def enumerate(self): return L(enumerate(self))
     def val2idx(self): return {v:k for k,v in self.enumerate()}
@@ -412,6 +417,7 @@ add_docs(L,
          unique="Unique items, in stable order",
          val2idx="Dict from value to index",
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
+         argwhere="Like `filter`, but return indices for matching items",
          map="Create new `L` with `f` applied to all `items`, passing `args` and `kwargs` to `f`",
          map_dict="Like `map`, but creates a dict from `items` to function results",
          starmap="Like `map`, but use `itertools.starmap`",

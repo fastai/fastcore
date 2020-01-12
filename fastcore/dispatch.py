@@ -103,11 +103,9 @@ class TypeDispatch:
 
     def __getitem__(self, k):
         "Find first matching type that is a super-class of `k`"
-#         k = L(k if isinstance(k, tuple) else (k,))
         k = L(k)
         while len(k)<2: k.append(object)
         r = self.funcs.all_matches(k[0])
-#         if len(r)==0: return None
         for t in r:
             o = t[k[1]]
             if o is not None: return o

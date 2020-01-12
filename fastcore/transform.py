@@ -50,8 +50,6 @@ class Transform(metaclass=_TfmMeta):
         self.init_enc = enc or dec
         if not self.init_enc: return
 
-        # Passing enc/dec, so need to remove (base) class level enc/dec
-#         del(self.__class__.encodes,self.__class__.decodes,self.__class__.setups)
         self.encodes,self.decodes,self.setups = TypeDispatch(),TypeDispatch(),TypeDispatch()
         if enc:
             self.encodes.add(enc)

@@ -42,7 +42,7 @@ class _TypeDict:
 
     def add(self, t, f):
         "Add type `t` and function `f`"
-        if not isinstance(t,tuple): t=(t,)
+        if not isinstance(t,tuple): t=tuple(L(t))
         for t_ in t: self.d[t_] = f
         self._reset()
 
@@ -64,9 +64,9 @@ class _TypeDict:
 # Cell
 class TypeDispatch:
     "Dictionary-like object; `__getitem__` matches keys of types using `issubclass`"
-    def __init__(self, *funcs):
-        self.funcs = _TypeDict()
-        for o in funcs: self.add(o)
+    def __init__(self, funcs=(), bases=()):
+        self.funcs,self.bases = _TypeDict(),L(bases).filter(is_not(None))
+        for o in L(funcs): self.add(o)
         self.inst = None
 
     def add(self, f):
@@ -103,13 +103,17 @@ class TypeDispatch:
 
     def __getitem__(self, k):
         "Find first matching type that is a super-class of `k`"
-        k = L(k if isinstance(k, tuple) else (k,))
+#         k = L(k if isinstance(k, tuple) else (k,))
+        k = L(k)
         while len(k)<2: k.append(object)
         r = self.funcs.all_matches(k[0])
-        if len(r)==0: return None
+#         if len(r)==0: return None
         for t in r:
             o = t[k[1]]
             if o is not None: return o
+        for base in self.bases:
+            res = base[k]
+            if res is not None: return res
         return None
 
 # Cell

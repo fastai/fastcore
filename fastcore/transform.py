@@ -22,14 +22,16 @@ class _TfmDict(dict):
 class _TfmMeta(type):
     def __new__(cls, name, bases, dict):
         res = super().__new__(cls, name, bases, dict)
+        for nm in _tfm_methods:
+            base_td = [getattr(b,nm,None) for b in bases]
+            if nm in res.__dict__: getattr(res,nm).bases = base_td
+            else: setattr(res, nm, TypeDispatch(bases=base_td))
         res.__signature__ = inspect.signature(res.__init__)
         return res
 
     def __call__(cls, *args, **kwargs):
         f = args[0] if args else None
         n = getattr(f,'__name__',None)
-        for nm in _tfm_methods:
-            if not hasattr(cls,nm): setattr(cls, nm, TypeDispatch())
         if callable(f) and n in _tfm_methods:
             getattr(cls,n).add(f)
             return f
@@ -49,7 +51,7 @@ class Transform(metaclass=_TfmMeta):
         if not self.init_enc: return
 
         # Passing enc/dec, so need to remove (base) class level enc/dec
-        del(self.__class__.encodes,self.__class__.decodes,self.__class__.setups)
+#         del(self.__class__.encodes,self.__class__.decodes,self.__class__.setups)
         self.encodes,self.decodes,self.setups = TypeDispatch(),TypeDispatch(),TypeDispatch()
         if enc:
             self.encodes.add(enc)

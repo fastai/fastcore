@@ -193,15 +193,16 @@ class ReindexCollection(GetAttr, IterLen):
     def __init__(self, coll, idxs=None, cache=None, tfm=noop):
         store_attr(self, 'coll,cache,tfm')
         self.idxs = L.range(coll) if idxs is None else idxs
-        def _get(self, i): return self.tfm(self.coll[i])
-        self._get = MethodType(_get,self)
         if cache is not None: self._get = functools.lru_cache(maxsize=cache)(self._get)
 
+    def _get(self, i): return self.tfm(self.coll[i])
     def __getitem__(self, i): return self._get(self.idxs[i])
     def __len__(self): return len(self.coll)
     def reindex(self, idxs): self.idxs = idxs
     def shuffle(self): random.shuffle(self.idxs)
     def cache_clear(self): self._get.cache_clear()
+    def __getstate__(self): return {'coll': self.coll, 'idxs': self.idxs, 'cache': self.cache, 'tfm': self.tfm}
+    def __setstate__(self, s): self.coll,self.idxs,self.cache,self.tfm = s['coll'],s['idxs'],s['cache'],s['tfm']
 
     _docs = dict(reindex="Replace `self.idxs` with idxs",
                 shuffle="Randomly shuffle indices",

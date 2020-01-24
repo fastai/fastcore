@@ -41,6 +41,12 @@ class _TfmMeta(type):
     def __prepare__(cls, name, bases): return _TfmDict()
 
 # Cell
+def _get_name(o):
+    if hasattr(o,'__qualname__'): return o.__qualname__
+    if hasattr(o,'__name__'): return o.__name__
+    return o.__class__.__name__
+
+# Cell
 class Transform(metaclass=_TfmMeta):
     "Delegates (`__call__`,`decode`,`setup`) to (`encodes`,`decodes`,`setups`) if `split_idx` matches"
     split_idx,init_enc,as_item_force,as_item,order,train_setup = None,False,None,True,0,None
@@ -55,6 +61,8 @@ class Transform(metaclass=_TfmMeta):
             self.encodes.add(enc)
             self.order = getattr(enc,'order',self.order)
             if len(type_hints(enc)) > 0: self.input_types = first(type_hints(enc).values())
+            self.name = _get_name(enc)
+        else: self.name = _get_name(self)
         if dec: self.decodes.add(dec)
 
     @property

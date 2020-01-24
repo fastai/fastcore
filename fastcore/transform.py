@@ -61,15 +61,16 @@ class Transform(metaclass=_TfmMeta):
             self.encodes.add(enc)
             self.order = getattr(enc,'order',self.order)
             if len(type_hints(enc)) > 0: self.input_types = first(type_hints(enc).values())
-            self.name = _get_name(enc)
-        else: self.name = _get_name(self)
+            self._name = _get_name(enc)
         if dec: self.decodes.add(dec)
 
     @property
     def use_as_item(self): return ifnone(self.as_item_force, self.as_item)
+    @property
+    def name(self): return getattr(self, '_name', _get_name(self))
     def __call__(self, x, **kwargs): return self._call('encodes', x, **kwargs)
     def decode  (self, x, **kwargs): return self._call('decodes', x, **kwargs)
-    def __repr__(self): return f'{self.__class__.__name__}: {self.use_as_item} {self.encodes} {self.decodes}'
+    def __repr__(self): return f'{self.name}: {self.use_as_item} {self.encodes} {self.decodes}'
 
     def setup(self, items=None, train_setup=False):
         train_setup = train_setup if self.train_setup is None else self.train_setup
@@ -185,7 +186,7 @@ class Pipeline:
         self.fs.append(t)
 
     def __call__(self, o): return compose_tfms(o, tfms=self.fs, split_idx=self.split_idx)
-    def __repr__(self): return f"Pipeline: {self.fs}"
+    def __repr__(self): return f"Pipeline: {' -> '.join([f.name for f in self.fs])}"
     def __getitem__(self,i): return self.fs[i]
     def __setstate__(self,data): self.__dict__.update(data)
     def __getattr__(self,k): return gather_attrs(self, k, 'fs')

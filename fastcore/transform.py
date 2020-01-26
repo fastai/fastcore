@@ -186,7 +186,7 @@ class Pipeline:
         self.fs.append(t)
 
     def __call__(self, o): return compose_tfms(o, tfms=self.fs, split_idx=self.split_idx)
-    def __repr__(self): return f"Pipeline: {' -> '.join([f.name for f in self.fs])}"
+    def __repr__(self): return f"Pipeline: {' -> '.join([f.name for f in self.fs if f.name != 'noop'])}"
     def __getitem__(self,i): return self.fs[i]
     def __setstate__(self,data): self.__dict__.update(data)
     def __getattr__(self,k): return gather_attrs(self, k, 'fs')

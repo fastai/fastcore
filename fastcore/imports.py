@@ -1,21 +1,22 @@
 import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile,subprocess
 import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings,threading
 
-from functools import partial
+from dataclasses import dataclass
+from functools import partial,reduce
 from threading import Thread
 from time import sleep
 from copy import copy
 from contextlib import redirect_stdout,contextmanager
-from collections.abc import Iterable,Iterator,Generator
+from collections.abc import Iterable,Iterator,Generator,Collection
 from types import SimpleNamespace
 from pathlib import Path
 from collections import defaultdict,Counter
 from operator import itemgetter,attrgetter
+from uuid import uuid4
 
 # External modules
-import numpy as np,pandas as pd
+import numpy as np
 from numpy import array,ndarray
-from pandas import DataFrame
 from pdb import set_trace
 
 #Optional modules
@@ -30,7 +31,6 @@ except ImportError:
     MethodDescriptorType = type(str.join)
 from types import BuiltinFunctionType,BuiltinMethodType,MethodType,FunctionType
 
-pd.options.display.max_colwidth = 600
 NoneType = type(None)
 string_classes = (str,bytes)
 

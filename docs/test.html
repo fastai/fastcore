@@ -1,6 +1,7 @@
 ---
 
 title: Test
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -29,8 +30,8 @@ summary: "Helper functions to quickly write tests in notebooks"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span> <span class="c1">#only needed for tests</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="c1">#only needed for tests</span>
 </pre></div>
 
     </div>
@@ -46,7 +47,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can check that code raises an exception when that's expected (<a href="test.html#test_fail"><code>test_fail</code></a>). To test for equality or inequality (with different types of things) we define a simple function <a href="test.html"><code>test</code></a> that compares two object with a given <code>cmp</code> operator.</p>
+<p>We can check that code raises an exception when that's expected (<a href="/test#test_fail"><code>test_fail</code></a>). To test for equality or inequality (with different types of things) we define a simple function <a href="/test"><code>test</code></a> that compares two object with a given <code>cmp</code> operator.</p>
 
 </div>
 </div>
@@ -141,7 +142,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="all_equal" class="doc_header"><code>all_equal</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L46" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>all_equal</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
+<h4 id="all_equal" class="doc_header"><code>all_equal</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L47" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>all_equal</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
 <p>Compares whether <code>a</code> and <code>b</code> are the same length and have the same contents</p>
 
@@ -175,7 +176,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="equals" class="doc_header"><code>equals</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>equals</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
+<h4 id="equals" class="doc_header"><code>equals</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L62" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>equals</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
 <p>Compares <code>a</code> and <code>b</code> for equality; supports sublists, tensors and arrays too</p>
 
@@ -245,7 +246,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Just use <a href="test.html#test_eq"><code>test_eq</code></a>/<a href="test.html#test_ne"><code>test_ne</code></a> to test for <code>==</code>/<code>!=</code>. <a href="test.html#test_eq_type"><code>test_eq_type</code></a> check things are equals and of the same type. We define them using <a href="test.html"><code>test</code></a>:</p>
+<p>Just use <a href="/test#test_eq"><code>test_eq</code></a>/<a href="/test#test_ne"><code>test_ne</code></a> to test for <code>==</code>/<code>!=</code>. <a href="/test#test_eq_type"><code>test_eq_type</code></a> check things are equals and of the same type. We define them using <a href="/test"><code>test</code></a>:</p>
 
 </div>
 </div>
@@ -264,7 +265,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_eq" class="doc_header"><code>test_eq</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_eq</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a==b</code></p>
+<p><a href="/test"><code>test</code></a> that <code>a==b</code></p>
 
 </div>
 
@@ -327,7 +328,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_eq_type" class="doc_header"><code>test_eq_type</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_eq_type</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a==b</code> and are same type</p>
+<p><a href="/test"><code>test</code></a> that <code>a==b</code> and are same type</p>
 
 </div>
 
@@ -368,7 +369,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_ne" class="doc_header"><code>test_ne</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_ne</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a!=b</code></p>
+<p><a href="/test"><code>test</code></a> that <code>a!=b</code></p>
 
 </div>
 
@@ -437,7 +438,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_close" class="doc_header"><code>test_close</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_close</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>, <strong><code>eps</code></strong>=<em><code>1e-05</code></em>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a</code> is within <code>eps</code> of <code>b</code></p>
+<p><a href="/test"><code>test</code></a> that <code>a</code> is within <code>eps</code> of <code>b</code></p>
 
 </div>
 
@@ -478,7 +479,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_is" class="doc_header"><code>test_is</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_is</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a is b</code></p>
+<p><a href="/test"><code>test</code></a> that <code>a is b</code></p>
 
 </div>
 
@@ -517,7 +518,7 @@ summary: "Helper functions to quickly write tests in notebooks"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_shuffled" class="doc_header"><code>test_shuffled</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_shuffled</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="test.html"><code>test</code></a> that <code>a</code> and <code>b</code> are shuffled versions of the same sequence of items</p>
+<p><a href="/test"><code>test</code></a> that <code>a</code> and <code>b</code> are shuffled versions of the same sequence of items</p>
 
 </div>
 

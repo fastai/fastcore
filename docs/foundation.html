@@ -1,6 +1,7 @@
 ---
 
 title: Core
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -51,9 +52,9 @@ summary: "Basic functions used in the fastai library"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>See this <a href="https://realpython.com/python-metaclasses/">blog post</a> for more information about metaclasses.</p>
 <ul>
-<li><a href="foundation.html#PrePostInitMeta"><code>PrePostInitMeta</code></a> ensures that the classes defined with it run <code>__pre_init__</code> and <code>__post_init__</code> (without having to write <code>self.__pre_init__()</code> and <code>self.__post_init__()</code>  in the actual <code>init</code></li>
-<li><a href="foundation.html#NewChkMeta"><code>NewChkMeta</code></a> gives the <a href="foundation.html#PrePostInitMeta"><code>PrePostInitMeta</code></a> functionality and ensures classes defined with it don't re-create an object of their type whenever it's passed to the constructor</li>
-<li><a href="foundation.html#BypassNewMeta"><code>BypassNewMeta</code></a> ensures classes defined with it can easily be casted form objects they subclass.</li>
+<li><a href="/foundation#PrePostInitMeta"><code>PrePostInitMeta</code></a> ensures that the classes defined with it run <code>__pre_init__</code> and <code>__post_init__</code> (without having to write <code>self.__pre_init__()</code> and <code>self.__post_init__()</code>  in the actual <code>init</code></li>
+<li><a href="/foundation#NewChkMeta"><code>NewChkMeta</code></a> gives the <a href="/foundation#PrePostInitMeta"><code>PrePostInitMeta</code></a> functionality and ensures classes defined with it don't re-create an object of their type whenever it's passed to the constructor</li>
+<li><a href="/foundation#BypassNewMeta"><code>BypassNewMeta</code></a> ensures classes defined with it can easily be casted form objects they subclass.</li>
 </ul>
 
 </div>
@@ -95,7 +96,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h3 id="PrePostInitMeta" class="doc_header"><code>class</code> <code>PrePostInitMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L23" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>PrePostInitMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="foundation.html#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h3 id="PrePostInitMeta" class="doc_header"><code>class</code> <code>PrePostInitMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L23" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>PrePostInitMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>A metaclass that calls optional <code>__pre_init__</code> and <code>__post_init__</code> methods</p>
 
@@ -138,7 +139,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="NewChkMeta" class="doc_header"><code>class</code> <code>NewChkMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L34" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>NewChkMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="foundation.html#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h2 id="NewChkMeta" class="doc_header"><code>class</code> <code>NewChkMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L34" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>NewChkMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>Metaclass to avoid recreating object passed to constructor</p>
 
@@ -211,7 +212,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BypassNewMeta" class="doc_header"><code>class</code> <code>BypassNewMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L46" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BypassNewMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="foundation.html#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h2 id="BypassNewMeta" class="doc_header"><code>class</code> <code>BypassNewMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L46" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BypassNewMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>Metaclass: casts <code>x</code> to this class if it's of type <code>cls._bypass_type</code>, initializing with <code>_new_meta</code> if available</p>
 
@@ -771,7 +772,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L162" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
 </blockquote>
-<p>Copy values from <a href="foundation.html#docs"><code>docs</code></a> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
+<p>Copy values from <a href="/foundation#docs"><code>docs</code></a> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
 
 </div>
 
@@ -795,7 +796,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="docs" class="doc_header"><code>docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L176" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>docs</code>()</p>
 </blockquote>
-<p>Decorator version of <a href="foundation.html#add_docs"><code>add_docs</code></a>, using <code>_docs</code> dict</p>
+<p>Decorator version of <a href="/foundation#add_docs"><code>add_docs</code></a>, using <code>_docs</code> dict</p>
 
 </div>
 
@@ -859,7 +860,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_iter" class="doc_header"><code>is_iter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L36" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_iter</code>(<strong><code>o</code></strong>)</p>
+<h4 id="is_iter" class="doc_header"><code>is_iter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/imports.py#L37" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_iter</code>(<strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Test whether <code>o</code> can be used in a <code>for</code> loop</p>
 
@@ -904,7 +905,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="bind" class="doc_header"><code>class</code> <code>bind</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L196" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bind</code>(<strong><code>fn</code></strong>, <strong>*<code>pargs</code></strong>, <strong>**<code>pkwargs</code></strong>)</p>
 </blockquote>
-<p>Same as <code>partial</code>, except you can use <a href="foundation.html#arg0"><code>arg0</code></a> <a href="foundation.html#arg1"><code>arg1</code></a> etc param placeholders</p>
+<p>Same as <code>partial</code>, except you can use <a href="/foundation#arg0"><code>arg0</code></a> <a href="/foundation#arg1"><code>arg1</code></a> etc param placeholders</p>
 
 </div>
 
@@ -1054,7 +1055,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="delegate_attr" class="doc_header"><code>delegate_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L229" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegate_attr</code>(<strong><code>k</code></strong>, <strong><code>to</code></strong>)</p>
 </blockquote>
-<p>Use in <code>__getattr__</code> to delegate to attr <code>to</code> without inheriting from <a href="foundation.html#GetAttr"><code>GetAttr</code></a></p>
+<p>Use in <code>__getattr__</code> to delegate to attr <code>to</code> without inheriting from <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
 
 </div>
 
@@ -1136,7 +1137,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="mask2idxs" class="doc_header"><code>mask2idxs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L252" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask2idxs</code>(<strong><code>mask</code></strong>)</p>
 </blockquote>
-<p>Convert bool mask or index list to index <a href="foundation.html#L"><code>L</code></a></p>
+<p>Convert bool mask or index list to index <a href="/foundation#L"><code>L</code></a></p>
 
 </div>
 
@@ -1257,7 +1258,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="zip_cycle" class="doc_header"><code>zip_cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L283" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_cycle</code>(<strong><code>x</code></strong>, <strong>*<code>args</code></strong>)</p>
 </blockquote>
-<p>Like <code>itertools.zip_longest</code> but <a href="foundation.html#cycle"><code>cycle</code></a>s through elements of all but first argument</p>
+<p>Like <code>itertools.zip_longest</code> but <a href="/foundation#cycle"><code>cycle</code></a>s through elements of all but first argument</p>
 
 </div>
 
@@ -1356,7 +1357,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L299" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="foundation.html#CollBase"><code>CollBase</code></a></p>
+<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L299" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="/foundation#CollBase"><code>CollBase</code></a></p>
 </blockquote>
 <p>Behaves like a list of <code>items</code> but can also index with list of indices or masks</p>
 
@@ -1373,7 +1374,7 @@ summary: "Basic functions used in the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can create an <a href="foundation.html#L"><code>L</code></a> from an existing iterable (e.g. a list, range, etc) and access or modify it with an int list/tuple index, mask, int, or slice. All <code>list</code> methods can also be used with <a href="foundation.html#L"><code>L</code></a>.</p>
+<p>You can create an <a href="/foundation#L"><code>L</code></a> from an existing iterable (e.g. a list, range, etc) and access or modify it with an int list/tuple index, mask, int, or slice. All <code>list</code> methods can also be used with <a href="/foundation#L"><code>L</code></a>.</p>
 
 </div>
 </div>
@@ -1409,7 +1410,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(#12) [11,10,9,j,7,k,5,4,3,2...]</pre>
+<pre>(#12) [11,10,9,&#39;j&#39;,7,&#39;k&#39;,5,4,3,2...]</pre>
 </div>
 
 </div>
@@ -1450,7 +1451,7 @@ summary: "Basic functions used in the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can also modify an <a href="foundation.html#L"><code>L</code></a> with <code>append</code>, <code>+</code>, and <code>*</code>.</p>
+<p>You can also modify an <a href="/foundation#L"><code>L</code></a> with <code>append</code>, <code>+</code>, and <code>*</code>.</p>
 
 </div>
 </div>
@@ -1506,7 +1507,7 @@ summary: "Basic functions used in the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>An <a href="foundation.html#L"><code>L</code></a> can be constructed from anything iterable, although tensors and arrays will not be iterated over on construction, unless you pass <code>use_list</code> to the constructor.</p>
+<p>An <a href="/foundation#L"><code>L</code></a> can be constructed from anything iterable, although tensors and arrays will not be iterated over on construction, unless you pass <code>use_list</code> to the constructor.</p>
 
 </div>
 </div>
@@ -1561,7 +1562,7 @@ summary: "Basic functions used in the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If you create an <a href="foundation.html#L"><code>L</code></a> from an existing <a href="foundation.html#L"><code>L</code></a> then you'll get back the original object (since <a href="foundation.html#L"><code>L</code></a> uses the <a href="foundation.html#NewChkMeta"><code>NewChkMeta</code></a> metaclass).</p>
+<p>If you create an <a href="/foundation#L"><code>L</code></a> from an existing <a href="/foundation#L"><code>L</code></a> then you'll get back the original object (since <a href="/foundation#L"><code>L</code></a> uses the <a href="/foundation#NewChkMeta"><code>NewChkMeta</code></a> metaclass).</p>
 
 </div>
 </div>
@@ -1581,7 +1582,7 @@ summary: "Basic functions used in the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>An <a href="foundation.html#L"><code>L</code></a> is considred equal to a list if they have the same elements. It's never considered equal to a <code>str</code> a <code>set</code> or a <code>dict</code> even if they have the same elements/keys.</p>
+<p>An <a href="/foundation#L"><code>L</code></a> is considred equal to a list if they have the same elements. It's never considered equal to a <code>str</code> a <code>set</code> or a <code>dict</code> even if they have the same elements/keys.</p>
 
 </div>
 </div>
@@ -1693,7 +1694,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L369" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
+<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L374" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
 </blockquote>
 <p>Unique items, in stable order</p>
 
@@ -1727,7 +1728,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L371" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
+<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L376" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
 </blockquote>
 <p>Dict from value to index</p>
 
@@ -1763,7 +1764,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L364" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> filtered by predicate <code>f</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> filtered by predicate <code>f</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
 </div>
 
@@ -1825,9 +1826,43 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
+<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L369" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+</blockquote>
+<p>Like <code>filter</code>, but return indices for matching items</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="k">lambda</span> <span class="n">o</span><span class="p">:</span><span class="n">o</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L358" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> with <code>f</code> applied to all <code>items</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> with <code>f</code> applied to all <code>items</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
 </div>
 
@@ -1934,7 +1969,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L379" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>map</code>, but creates a dict from <code>items</code> to function results</p>
 
@@ -1969,9 +2004,9 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L381" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L386" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> with <code>zip(*items)</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> with <code>zip(*items)</code></p>
 
 </div>
 
@@ -2019,7 +2054,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L383" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L388" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zip</code> and <code>starmap</code></p>
 
@@ -2054,9 +2089,9 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L387" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> with <code>self</code> zip with each of <code>*rest</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> with <code>self</code> zip with each of <code>*rest</code></p>
 
 </div>
 
@@ -2090,7 +2125,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L389" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zipwith</code> and <code>starmap</code></p>
 
@@ -2124,9 +2159,9 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L372" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
+<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L377" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> with item <code>idx</code> of all <code>items</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> with item <code>idx</code> of all <code>items</code></p>
 
 </div>
 
@@ -2158,9 +2193,9 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L377" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Create new <a href="foundation.html#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
+<p>Create new <a href="/foundation#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
 
 </div>
 
@@ -2195,7 +2230,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L344" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>New <a href="foundation.html#L"><code>L</code></a> sorted by <code>key</code>. If key is str then use <code>attrgetter</code>. If key is int then use <code>itemgetter</code></p>
+<p>New <a href="/foundation#L"><code>L</code></a> sorted by <code>key</code>. If key is str then use <code>attrgetter</code>. If key is int then use <code>itemgetter</code></p>
 
 </div>
 
@@ -2229,7 +2264,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L350" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
-<p>Same as <code>str.split</code>, but returns an <a href="foundation.html#L"><code>L</code></a></p>
+<p>Same as <code>str.split</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
 </div>
 
@@ -2263,7 +2298,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L353" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Same as <code>range</code>, but returns an <a href="foundation.html#L"><code>L</code></a>. Can pass a collection for <code>a</code>, to use <code>len(a)</code></p>
+<p>Same as <code>range</code>, but returns an <a href="/foundation#L"><code>L</code></a>. Can pass a collection for <code>a</code>, to use <code>len(a)</code></p>
 
 </div>
 
@@ -2296,7 +2331,7 @@ summary: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L385" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
+<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L390" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
 </blockquote>
 <p>Concatenate all elements of list</p>
 
@@ -2332,7 +2367,7 @@ summary: "Basic functions used in the fastai library"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.copy" class="doc_header"><code>L.copy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L317" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.copy</code>()</p>
 </blockquote>
-<p>Same as <code>list.copy</code>, but returns an <a href="foundation.html#L"><code>L</code></a></p>
+<p>Same as <code>list.copy</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
 </div>
 

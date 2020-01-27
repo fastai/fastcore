@@ -132,8 +132,8 @@ def delegates(to=None, keep=False):
               if v.default != inspect.Parameter.empty and k not in sigd}
         sigd.update(s2)
         if keep: sigd['kwargs'] = k
+        else: from_f.__delwrap__ = to_f
         from_f.__signature__ = sig.replace(parameters=sigd.values())
-        from_f.__delwrap__ = to_f
         return f
     return _f
 

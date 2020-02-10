@@ -24,7 +24,7 @@ For an [editable install](https://stackoverflow.com/questions/35064426/when-woul
 ```
 git clone https://github.com/fastai/fastcore
 cd fastcore
-pip install -e .[dev]
+pip install -e ".[dev]"
 ```
 
 ## Tests

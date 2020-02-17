@@ -26,7 +26,9 @@ def maybe_attr(o, attr):
 # Cell
 def basic_repr(flds=None):
     flds = L(flds)
-    def _f(self): return '\n'.join(f'{o}: {maybe_attr(getattr(self,o), "__name__")}' for o in flds)
+    def _f(self):
+        sig = ', '.join(f'{o}={maybe_attr(getattr(self,o), "__name__")}' for o in flds)
+        return f'{self.__class__.__name__}({sig})'
     return _f
 
 # Cell

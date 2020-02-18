@@ -97,12 +97,12 @@ class InplaceTransform(Transform):
 class ItemTransform(Transform):
     "A transform that always take tuples as items"
     def __call__(self, x, **kwargs):
-        if isinstance(x, tuple): return super().__call__(list(x), **kwargs)
-        return super().__call__(x, **kwargs)
+        if not isinstance(x, tuple): return super().__call__(x, **kwargs)
+        return retain_type(super().__call__(list(x), **kwargs), x)
 
     def decode(self, x, **kwargs):
-        if isinstance(x, tuple): return super().decode(list(x), **kwargs)
-        return super().decode(x, **kwargs)
+        if not isinstance(x, tuple): return super().decode(x, **kwargs)
+        return retain_type(super().decode(list(x), **kwargs), x)
 
 # Cell
 def get_func(t, name, *args, **kwargs):
@@ -197,9 +197,13 @@ class Pipeline:
     def show(self, o, ctx=None, **kwargs):
         o = self.decode(o, full=False)
         o1 = (o,) if not isinstance(o, tuple) else o
-        for o_ in o1:
-            if hasattr(o_, 'show'): ctx = o_.show(ctx=ctx, **kwargs)
+        if hasattr(o, 'show'): ctx = o.show(ctx=ctx, **kwargs)
+        else:
+            for o_ in o1:
+                if hasattr(o_, 'show'): ctx = o_.show(ctx=ctx, **kwargs)
         return ctx
 
     def _is_showable(self, o):
-        return all(hasattr(o_, 'show') for o_ in o) if isinstance(o, tuple) else hasattr(o, 'show')
+        if hasattr(o, 'show'): return True
+        if isinstance(o, tuple): return all(hasattr(o_, 'show') for o_ in o)
+        return False

@@ -47,6 +47,9 @@ def _get_name(o):
     return o.__class__.__name__
 
 # Cell
+def _is_tuple(o): return isinstance(o, tuple) and not hasattr(o, '_fields')
+
+# Cell
 class Transform(metaclass=_TfmMeta):
     "Delegates (`__call__`,`decode`,`setup`) to (`encodes`,`decodes`,`setups`) if `split_idx` matches"
     split_idx,init_enc,order,train_setup = None,None,0,None
@@ -77,7 +80,7 @@ class Transform(metaclass=_TfmMeta):
     def _call(self, fn, x, split_idx=None, **kwargs):
         if split_idx!=self.split_idx and self.split_idx is not None: return x
         f = getattr(self, fn)
-        if not isinstance(x, tuple): return self._do_call(f, x, **kwargs)
+        if not _is_tuple(x): return self._do_call(f, x, **kwargs)
         res = tuple(self._do_call(f, x_, **kwargs) for x_ in x)
         return retain_type(res, x)
 
@@ -97,11 +100,11 @@ class InplaceTransform(Transform):
 class ItemTransform(Transform):
     "A transform that always take tuples as items"
     def __call__(self, x, **kwargs):
-        if not isinstance(x, tuple): return super().__call__(x, **kwargs)
+        if not _is_tuple(x): return super().__call__(x, **kwargs)
         return retain_type(super().__call__(list(x), **kwargs), x)
 
     def decode(self, x, **kwargs):
-        if not isinstance(x, tuple): return super().decode(x, **kwargs)
+        if not _is_tuple(x): return super().decode(x, **kwargs)
         return retain_type(super().decode(list(x), **kwargs), x)
 
 # Cell
@@ -196,7 +199,7 @@ class Pipeline:
 
     def show(self, o, ctx=None, **kwargs):
         o = self.decode(o, full=False)
-        o1 = (o,) if not isinstance(o, tuple) else o
+        o1 = (o,) if not _is_tuple(o) else o
         if hasattr(o, 'show'): ctx = o.show(ctx=ctx, **kwargs)
         else:
             for o_ in o1:
@@ -205,5 +208,5 @@ class Pipeline:
 
     def _is_showable(self, o):
         if hasattr(o, 'show'): return True
-        if isinstance(o, tuple): return all(hasattr(o_, 'show') for o_ in o)
+        if _is_tuple(o): return all(hasattr(o_, 'show') for o_ in o)
         return False

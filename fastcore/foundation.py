@@ -211,17 +211,17 @@ class bind:
 class GetAttr:
     "Inherit from this to have all attr accesses in `self._xtra` passed down to `self.default`"
     _default='default'
-    @property
-    def _xtra(self): return self._dir()
-    def _dir(self): return [o for o in dir(getattr(self,self._default)) if not o.startswith('_')]
+    def _component_attr_filter(self,k):
+        if k.startswith('__') or k in ('_xtra',self._default): return False
+        xtra = getattr(self,'_xtra',None)
+        return xtra is None or k in xtra
+    def _dir(self): return [k for k in dir(getattr(self,self._default)) if self._component_attr_filter(k)]
     def __getattr__(self,k):
-        if k.startswith('__') or k in ('_xtra',self._default): raise AttributeError(k)
-        xtra = getattr(self, '_xtra', None)
-        if xtra is None or k in xtra:
+        if self._component_attr_filter(k):
             attr = getattr(self,self._default,None)
-            if attr is not None: return getattr(attr, k)
+            if attr is not None: return getattr(attr,k)
         raise AttributeError(k)
-    def __dir__(self): return custom_dir(self, self._dir() if self._xtra is None else self._dir())
+    def __dir__(self): return custom_dir(self,self._dir())
 #     def __getstate__(self): return self.__dict__
     def __setstate__(self,data): self.__dict__.update(data)
 

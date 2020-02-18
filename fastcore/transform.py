@@ -165,16 +165,12 @@ class Pipeline:
         else:
             if isinstance(funcs, Transform): funcs = [funcs]
             self.fs = L(ifnone(funcs,[noop])).map(mk_transform).sorted(key='order')
+        self.as_item = as_item
         for f in self.fs:
             name = camel2snake(type(f).__name__)
             a = getattr(self,name,None)
             if a is not None: f = L(a)+f
             setattr(self, name, f)
-        self.set_as_item(as_item)
-
-    def set_as_item(self, as_item):
-        self.as_item = as_item
-        for f in self.fs: f.as_item = as_item
 
     def setup(self, items=None, train_setup=False):
         tfms = self.fs[:]
@@ -182,6 +178,7 @@ class Pipeline:
         for t in tfms: self.add(t,items, train_setup)
 
     def add(self,t, items=None, train_setup=False):
+        t.as_item = self.as_item
         t.setup(items, train_setup)
         self.fs.append(t)
 

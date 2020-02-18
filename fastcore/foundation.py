@@ -139,7 +139,7 @@ def delegates(to=None, keep=False):
 
 # Cell
 def funcs_kwargs(cls):
-    "Replace methods in `self._methods` with those from `kwargs`"
+    "Replace methods in `cls._methods` with those from `kwargs`"
     old_init = cls.__init__
     def _init(self, *args, **kwargs):
         for k in cls._methods:

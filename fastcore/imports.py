@@ -67,7 +67,7 @@ def equals(a,b):
     if hasattr(a, '__array_eq__'): return a.__array_eq__(b)
     if hasattr(b, '__array_eq__'): return b.__array_eq__(a)
     cmp = (np.array_equal if one_is_instance(a, b, ndarray       ) else
-           torch.equal if one_is_instance(a, b, Tensor       ) else
+           torch.equal    if one_is_instance(a, b, Tensor        ) else
            operator.eq    if one_is_instance(a, b, (str,dict,set)) else
            all_equal      if is_iter(a) or is_iter(b) else
            operator.eq)

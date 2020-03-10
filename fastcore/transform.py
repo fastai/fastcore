@@ -79,13 +79,13 @@ class Transform(metaclass=_TfmMeta):
 
     def _call(self, fn, x, split_idx=None, **kwargs):
         if split_idx!=self.split_idx and self.split_idx is not None: return x
-        f = getattr(self, fn)
-        if not _is_tuple(x): return self._do_call(f, x, **kwargs)
-        res = tuple(self._do_call(f, x_, **kwargs) for x_ in x)
-        return retain_type(res, x)
+        return self._do_call(getattr(self, fn), x, **kwargs)
 
     def _do_call(self, f, x, **kwargs):
-        return x if f is None else retain_type(f(x, **kwargs), x, f.returns_none(x))
+        if not _is_tuple(x):
+            return x if f is None else retain_type(f(x, **kwargs), x, f.returns_none(x))
+        res = tuple(self._do_call(f, x_, **kwargs) for x_ in x)
+        return retain_type(res, x)
 
 add_docs(Transform, decode="Delegate to `decodes` to undo transform", setup="Delegate to `setups` to set up transform")
 

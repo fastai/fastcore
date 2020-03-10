@@ -527,9 +527,10 @@ def num_cpus():
 defaults.cpus = num_cpus()
 
 # Cell
-def add_props(f, n=2):
+def add_props(f, g=None, n=2):
     "Create properties passing each of `range(n)` to f"
-    return (property(partial(f,i)) for i in range(n))
+    if g is None: return (property(partial(f,i)) for i in range(n))
+    return (property(partial(f,i), partial(g,i)) for i in range(n))
 
 # Cell
 def change_attr(o, name, new_val):

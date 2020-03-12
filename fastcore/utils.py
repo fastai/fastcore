@@ -6,8 +6,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add',
            'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen', 'chunked', 'num_methods',
            'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate',
-           'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults',
-           'num_cpus', 'add_props', 'change_attr', 'change_attrs']
+           'using_attr', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple',
+           'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
 
 # Cell
 from .imports import *
@@ -367,6 +367,15 @@ def mapped(f, it):
 def instantiate(t):
     "Instantiate `t` if it's a type, otherwise do nothing"
     return t() if isinstance(t, type) else t
+
+# Cell
+def _using_attr(f, attr, x):
+    return f(getattr(x,attr))
+
+# Cell
+def using_attr(f, attr):
+    "Change function `f` to operate on `attr`"
+    return partial(_using_attr, f, attr)
 
 # Cell
 class _Self:

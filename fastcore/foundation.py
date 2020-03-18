@@ -138,6 +138,12 @@ def delegates(to=None, keep=False):
     return _f
 
 # Cell
+def _rm_self(sig):
+    sigd = dict(sig.parameters)
+    sigd.pop('self')
+    return sig.replace(parameters=sigd.values())
+
+# Cell
 def funcs_kwargs(cls):
     "Replace methods in `cls._methods` with those from `kwargs`"
     old_init = cls.__init__
@@ -150,6 +156,7 @@ def funcs_kwargs(cls):
         old_init(self, *args, **kwargs)
     functools.update_wrapper(_init, old_init)
     cls.__init__ = use_kwargs(cls._methods)(_init)
+    if hasattr(cls, '__signature__'): cls.__signature__ = _rm_self(inspect.signature(cls.__init__))
     return cls
 
 # Cell

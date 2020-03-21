@@ -332,9 +332,11 @@ class L(CollBase, metaclass=NewChkMeta):
 
     def __setitem__(self, idx, o):
         "Set `idx` (can be list of indices, or mask, or int) items to `o` (which is broadcast if not iterable)"
-        idx = idx if isinstance(idx,L) else _listify(idx)
-        if not is_iter(o): o = [o]*len(idx)
-        for i,o_ in zip(idx,o): self.items[i] = o_
+        if isinstance(idx, int): self.items[idx] = o
+        else:
+            idx = idx if isinstance(idx,L) else _listify(idx)
+            if not is_iter(o): o = [o]*len(idx)
+            for i,o_ in zip(idx,o): self.items[i] = o_
 
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items

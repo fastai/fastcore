@@ -118,8 +118,9 @@ def use_kwargs(names, keep=False):
     return _f
 
 # Cell
-def delegates(to=None, keep=False):
+def delegates(to=None, keep=False, but=None):
     "Decorator: replace `**kwargs` in signature with params from `to`"
+    if but is None: but = []
     def _f(f):
         if to is None: to_f,from_f = f.__base__.__init__,f.__init__
         else:          to_f,from_f = to,f
@@ -129,7 +130,7 @@ def delegates(to=None, keep=False):
         sigd = dict(sig.parameters)
         k = sigd.pop('kwargs')
         s2 = {k:v for k,v in inspect.signature(to_f).parameters.items()
-              if v.default != inspect.Parameter.empty and k not in sigd}
+              if v.default != inspect.Parameter.empty and k not in sigd and k not in but}
         sigd.update(s2)
         if keep: sigd['kwargs'] = k
         else: from_f.__delwrap__ = to_f

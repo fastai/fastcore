@@ -12,6 +12,7 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
 # Cell
 from .imports import *
 from .foundation import *
+from functools import wraps
 
 # Cell
 def ifnone(a, b):

@@ -6,12 +6,13 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add',
            'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen', 'chunked', 'num_methods',
            'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate',
-           'using_attr', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple',
-           'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
+           'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString',
+           'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
 
 # Cell
 from .imports import *
 from .foundation import *
+from functools import wraps
 
 # Cell
 def ifnone(a, b):
@@ -376,6 +377,27 @@ def _using_attr(f, attr, x):
 def using_attr(f, attr):
     "Change function `f` to operate on `attr`"
     return partial(_using_attr, f, attr)
+
+# Cell
+def log_args(f, to_return=False, but=''):
+    "Decorator to log function args in 'to.init_args'"
+    but = but.split(',') + ['self']
+    class_name, func_name = f.__qualname__.split('.') if '.' in f.__qualname__ else (None, f.__qualname__)
+    assert not inspect.isclass(f), f'Please use @log_args on {class_name}.__init__ instead of {class_name}'
+    @wraps(f)  # maintain original signature
+    def _f(*args, **kwargs):
+        f_insp = args[0].__class__ if func_name=='__init__' else f
+        args_insp = args[1:] if func_name=='__init__' else args
+        func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
+        func_args.apply_defaults()
+        log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but}
+        return_val = f(*args, **kwargs)
+        inst = return_val if to_return else args[0]
+        init_args = getattr(inst, 'init_args', {})
+        init_args.update(log)
+        setattr(inst, 'init_args', init_args)
+        return return_val
+    return _f
 
 # Cell
 class _Self:

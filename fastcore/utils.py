@@ -379,18 +379,17 @@ def using_attr(f, attr):
     return partial(_using_attr, f, attr)
 
 # Cell
-def log_args(f, to_return=False, but=''):
+def log_args(f=None, *, to_return=False, but=''):
     "Decorator to log function args in 'to.init_args'"
-    but = but.split(',') + ['self']
-    class_name, func_name = f.__qualname__.split('.') if '.' in f.__qualname__ else (None, f.__qualname__)
+    if f is None: return partial(log_args, to_return=to_return, but=but)
+    class_name = f.__qualname__.split('.')[0] if '.' in f.__qualname__ else None
     assert not inspect.isclass(f), f'Please use @log_args on {class_name}.__init__ instead of {class_name}'
     @wraps(f)  # maintain original signature
     def _f(*args, **kwargs):
-        f_insp = args[0].__class__ if func_name=='__init__' else f
-        args_insp = args[1:] if func_name=='__init__' else args
+        f_insp,args_insp = (args[0].__class__,args[1:]) if '__init__' in f.__qualname__ else (f,args)
         func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
         func_args.apply_defaults()
-        log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but}
+        log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but.split(',')+['self']}
         return_val = f(*args, **kwargs)
         inst = return_val if to_return else args[0]
         init_args = getattr(inst, 'init_args', {})

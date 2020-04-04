@@ -101,11 +101,11 @@ class ItemTransform(Transform):
     "A transform that always take tuples as items"
     def __call__(self, x, **kwargs):
         if not _is_tuple(x): return super().__call__(x, **kwargs)
-        return retain_type(super().__call__(list(x), **kwargs), x)
+        return retain_type(tuple(super().__call__(list(x), **kwargs)), x)
 
     def decode(self, x, **kwargs):
         if not _is_tuple(x): return super().decode(x, **kwargs)
-        return retain_type(super().decode(list(x), **kwargs), x)
+        return retain_type(tuple(super().decode(list(x), **kwargs)), x)
 
 # Cell
 def get_func(t, name, *args, **kwargs):

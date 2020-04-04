@@ -382,9 +382,14 @@ def using_attr(f, attr):
 def log_args(f=None, *, to_return=False, but=''):
     "Decorator to log function args in 'to.init_args'"
     if f is None: return partial(log_args, to_return=to_return, but=but)
-    assert not inspect.isclass(f), f'Please use @log_args on {f.__qualname__}.__init__ instead of {f.__qualname__}'
+
+    if inspect.isclass(f):
+        f.__init__ = log_args(f.__init__, to_return=to_return, but=but)
+        return f
+
     @wraps(f)  # maintain original signature
     def _f(*args, **kwargs):
+        # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__) so we get the one from the class
         f_insp,args_insp = (args[0].__class__,args[1:]) if '__init__' in f.__qualname__ else (f,args)
         func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
         func_args.apply_defaults()

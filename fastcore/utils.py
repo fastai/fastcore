@@ -399,8 +399,8 @@ def log_args(f=None, *, to_return=False, but=''):
         try:
             func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
             func_args.apply_defaults()
-        except:
-            print(f'@log_args did not work on {f.__qualname__}')
+        except Exception as e:
+            print(f'@log_args did not work on {f.__qualname__} -> {e}')
             return return_val
         log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but.split(',')+['self']}
         inst = return_val if to_return else args[0]

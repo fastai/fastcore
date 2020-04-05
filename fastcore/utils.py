@@ -389,16 +389,20 @@ def log_args(f=None, *, to_return=False, but=''):
 
     @wraps(f)  # maintain original signature
     def _f(*args, **kwargs):
+        return_val = f(*args, **kwargs)
         f_insp,args_insp=f,args
         # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__) so we get the one from the class
         if '__init__' in f.__qualname__:
             # from https://stackoverflow.com/a/25959545/3474490
             cls = getattr(inspect.getmodule(f), f.__qualname__.split('.<locals>', 1)[0].rsplit('.', 1)[0]) # args[0].__class__ would not consider inheritance
             f_insp, args_insp = cls, args[1:]
-        func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
-        func_args.apply_defaults()
+        try:
+            func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
+            func_args.apply_defaults()
+        except:
+            print(f'@log_args did not work on {f.__qualname__}')
+            return return_val
         log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but.split(',')+['self']}
-        return_val = f(*args, **kwargs)
         inst = return_val if to_return else args[0]
         init_args = getattr(inst, 'init_args', {})
         init_args.update(log)

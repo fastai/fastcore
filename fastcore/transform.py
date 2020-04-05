@@ -99,13 +99,15 @@ class InplaceTransform(Transform):
 # Cell
 class ItemTransform(Transform):
     "A transform that always take tuples as items"
-    def __call__(self, x, **kwargs):
+    def __call__(self, x, split_idx=None, **kwargs):
+        if split_idx!=self.split_idx and self.split_idx is not None: return x
         if not _is_tuple(x): return super().__call__(x, **kwargs)
-        return retain_type(tuple(super().__call__(list(x), **kwargs)), x)
+        return retain_type(super().__call__(list(x), **kwargs), x)
 
-    def decode(self, x, **kwargs):
+    def decode(self, x, split_idx=None, **kwargs):
+        if split_idx!=self.split_idx and self.split_idx is not None: return x
         if not _is_tuple(x): return super().decode(x, **kwargs)
-        return retain_type(tuple(super().decode(list(x), **kwargs)), x)
+        return retain_type(super().decode(list(x), **kwargs), x)
 
 # Cell
 def get_func(t, name, *args, **kwargs):

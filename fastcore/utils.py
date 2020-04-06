@@ -406,15 +406,14 @@ def log_args(f=None, *, to_return=False, but=None, but_as=None):
         try:
             func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
         except Exception as e:
-            print(f'@log_args had an issue on {f.__qualname__} -> {e}')
             try:
                 # sometimes it happens because the signature does not reference some kwargs
                 sigp = dict(inspect.signature(f_insp).parameters)
                 key_no_sig = set(kwargs.keys())-set(sigp.keys())
                 xtra_kwargs={k:kwargs.pop(k) for k in key_no_sig}
                 func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
-            except Exception as e2:
-                print(f'ignoring extra kwargs did not solve the issue -> {e2}')
+            except:
+                print(f'@log_args had an issue on {f.__qualname__} -> {e}')
                 return return_val
         func_args.apply_defaults()
         log_dict = {**func_args.arguments, **{f'{k} (not in signature)':v for k,v in xtra_kwargs.items()}}

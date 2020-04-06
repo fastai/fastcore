@@ -379,18 +379,25 @@ def using_attr(f, attr):
     return partial(_using_attr, f, attr)
 
 # Cell
-def log_args(f=None, *, to_return=False, but=''):
+def log_args(f=None, *, to_return=False, but=None, but_as=None):
     "Decorator to log function args in 'to.init_args'"
-    if f is None: return partial(log_args, to_return=to_return, but=but)
+    if f is None: return partial(log_args, to_return=to_return, but=but, but_as=but_as)
 
     if inspect.isclass(f):
-        f.__init__ = log_args(f.__init__, to_return=to_return, but=but)
+        f.__init__ = log_args(f.__init__, to_return=to_return, but=but, but_as=but_as)
         return f
+
+    but_as_args = L(getattr(b, '_log_args_but', None) for b in L(but_as)).concat()
+    but = (L(but.split(',') if but else None) + but_as_args + L('self')).unique()
+    but_not_found = L(b for b in L(but_as) if not hasattr(b, '_log_args_but'))
+    if but_not_found: print(f'@log_args did not find args from but_as while wrapping {f.__qualname__} in {", ".join(b.__qualname__ for b in but_not_found)}')
+    setattr(f, '_log_args_but', but)
 
     @wraps(f)  # maintain original signature
     def _f(*args, **kwargs):
         return_val = f(*args, **kwargs)
-        f_insp,args_insp=f,args
+        f_insp,args_insp = f,args
+        xtra_kwargs = {}
         # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__) so we get the one from the class
         if '__init__' in f.__qualname__:
             # from https://stackoverflow.com/a/25959545/3474490
@@ -398,11 +405,19 @@ def log_args(f=None, *, to_return=False, but=''):
             f_insp, args_insp = cls, args[1:]
         try:
             func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
-            func_args.apply_defaults()
         except Exception as e:
-            print(f'@log_args did not work on {f.__qualname__} -> {e}')
-            return return_val
-        log = {f'{f.__qualname__}.{k}':v for k,v in func_args.arguments.items() if k not in but.split(',')+['self']}
+            try:
+                # sometimes it happens because the signature does not reference some kwargs
+                sigp = dict(inspect.signature(f_insp).parameters)
+                key_no_sig = set(kwargs.keys())-set(sigp.keys())
+                xtra_kwargs={k:kwargs.pop(k) for k in key_no_sig}
+                func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
+            except:
+                print(f'@log_args had an issue on {f.__qualname__} -> {e}')
+                return return_val
+        func_args.apply_defaults()
+        log_dict = {**func_args.arguments, **{f'{k} (not in signature)':v for k,v in xtra_kwargs.items()}}
+        log = {f'{f.__qualname__}.{k}':v for k,v in log_dict.items() if k not in but}
         inst = return_val if to_return else args[0]
         init_args = getattr(inst, 'init_args', {})
         init_args.update(log)

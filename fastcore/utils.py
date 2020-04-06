@@ -390,7 +390,7 @@ def log_args(f=None, *, to_return=False, but=None, but_as=None):
     but_as_args = L(getattr(b, '_log_args_but', None) for b in L(but_as)).concat()
     but = (L(but.split(',') if but else None) + but_as_args + L('self')).unique()
     but_not_found = L(b for b in L(but_as) if not hasattr(b, '_log_args_but'))
-    if but_not_found: print(f'@log_args did not find but args while wrapping {f.__qualname__} in {", ".join(b.__qualname__ for b in but_not_found)}')
+    if but_not_found: print(f'@log_args did not find args from but_as while wrapping {f.__qualname__} in {", ".join(b.__qualname__ for b in but_not_found)}')
     setattr(f, '_log_args_but', but)
 
     @wraps(f)  # maintain original signature

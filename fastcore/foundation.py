@@ -61,7 +61,7 @@ def copy_func(f):
     return fn
 
 # Cell
-def patch_to(cls, as_prop=False):
+def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"
     if not isinstance(cls, (tuple,list)): cls=(cls,)
     def _inner(f):
@@ -70,7 +70,10 @@ def patch_to(cls, as_prop=False):
             # `functools.update_wrapper` when passing patched function to `Pipeline`, so we do it manually
             for o in functools.WRAPPER_ASSIGNMENTS: setattr(nf, o, getattr(f,o))
             nf.__qualname__ = f"{c_.__name__}.{f.__name__}"
-            setattr(c_, f.__name__, property(nf) if as_prop else nf)
+            if cls_method:
+                setattr(c_, f.__name__, MethodType(nf, c_))
+            else:
+                setattr(c_, f.__name__, property(nf) if as_prop else nf)
         return f
     return _inner
 

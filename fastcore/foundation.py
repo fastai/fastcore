@@ -12,11 +12,17 @@ from .imports import *
 defaults = SimpleNamespace()
 
 # Cell
+def _rm_self(sig):
+    sigd = dict(sig.parameters)
+    sigd.pop('self')
+    return sig.replace(parameters=sigd.values())
+
+# Cell
 class FixSigMeta(type):
     "A metaclass that fixes the signature on classes that override __new__"
     def __new__(cls, name, bases, dict):
         res = super().__new__(cls, name, bases, dict)
-        if res.__init__ is not object.__init__: res.__signature__ = inspect.signature(res.__init__)
+        if res.__init__ is not object.__init__: res.__signature__ = _rm_self(inspect.signature(res.__init__))
         return res
 
 # Cell
@@ -140,12 +146,6 @@ def delegates(to=None, keep=False, but=None):
         from_f.__signature__ = sig.replace(parameters=sigd.values())
         return f
     return _f
-
-# Cell
-def _rm_self(sig):
-    sigd = dict(sig.parameters)
-    sigd.pop('self')
-    return sig.replace(parameters=sigd.values())
 
 # Cell
 def funcs_kwargs(cls):

@@ -144,7 +144,7 @@ def compose_tfms(x, tfms, is_enc=True, reverse=False, **kwargs):
 def mk_transform(f):
     "Convert function `f` to `Transform` if it isn't already one"
     f = instantiate(f)
-    return f if isinstance(f,Transform) else Transform(f)
+    return f if isinstance(f,(Transform,Pipeline)) else Transform(f)
 
 # Cell
 def gather_attrs(o, k, nm):

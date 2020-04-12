@@ -90,8 +90,10 @@ class TypeDispatch:
              for k in self.funcs.d for l,v in self.funcs[k].d.items()]
         return '\n'.join(r)
 
+    def _get_class(self, x): return x if inspect.isclass(x) else type(x)
+
     def __call__(self, *args, **kwargs):
-        ts = L(args).map(type)[:2]
+        ts = L(args).map(self._get_class)[:2]
         f = self[tuple(ts)]
         if not f: return args[0]
         if self.inst is not None: f = MethodType(f, self.inst)

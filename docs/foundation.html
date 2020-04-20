@@ -88,6 +88,13 @@ description: "Basic functions used in the fastai library"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 <div class="output_wrapper">
 <div class="output">
 
@@ -95,7 +102,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="FixSigMeta" class="doc_header"><code>class</code> <code>FixSigMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L15" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>FixSigMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <code>type</code></p>
+<h2 id="FixSigMeta" class="doc_header"><code>class</code> <code>FixSigMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L21" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>FixSigMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <code>type</code></p>
 </blockquote>
 <p>A metaclass that fixes the signature on classes that override <strong>new</strong></p>
 
@@ -127,7 +134,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h3 id="PrePostInitMeta" class="doc_header"><code>class</code> <code>PrePostInitMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L23" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>PrePostInitMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h3 id="PrePostInitMeta" class="doc_header"><code>class</code> <code>PrePostInitMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L29" class="source_link" style="float:right">[source]</a></h3><blockquote><p><code>PrePostInitMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>A metaclass that calls optional <code>__pre_init__</code> and <code>__post_init__</code> methods</p>
 
@@ -182,7 +189,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="NewChkMeta" class="doc_header"><code>class</code> <code>NewChkMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L34" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>NewChkMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h2 id="NewChkMeta" class="doc_header"><code>class</code> <code>NewChkMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L40" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>NewChkMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>Metaclass to avoid recreating object passed to constructor</p>
 
@@ -242,8 +249,7 @@ description: "Basic functions used in the fastai library"
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">foo</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">test_eq</span><span class="p">(</span><span class="n">_T</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="s2">&quot;Testing&quot;</span><span class="p">)</span>
-<span class="c1"># TODO: this shouldn&#39;t have &quot;self, &quot;</span>
-<span class="n">test_eq</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">_T</span><span class="p">)),</span> <span class="s1">&#39;(self, o=None, b=1)&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">_T</span><span class="p">)),</span> <span class="s1">&#39;(o=None, b=1)&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -271,7 +277,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BypassNewMeta" class="doc_header"><code>class</code> <code>BypassNewMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L46" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BypassNewMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
+<h2 id="BypassNewMeta" class="doc_header"><code>class</code> <code>BypassNewMeta</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L52" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BypassNewMeta</code>(<strong><code>name</code></strong>, <strong><code>bases</code></strong>, <strong><code>dict</code></strong>) :: <a href="/foundation#FixSigMeta"><code>FixSigMeta</code></a></p>
 </blockquote>
 <p>Metaclass: casts <code>x</code> to this class if it's of type <code>cls._bypass_type</code>, initializing with <code>_new_meta</code> if available</p>
 
@@ -338,7 +344,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="copy_func" class="doc_header"><code>copy_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>copy_func</code>(<strong><code>f</code></strong>)</p>
+<h4 id="copy_func" class="doc_header"><code>copy_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L62" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>copy_func</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Copy a non-builtin function (NB <code>copy.copy</code> does not work for this)</p>
 
@@ -370,7 +376,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="patch_to" class="doc_header"><code>patch_to</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_to</code>(<strong><code>as_prop</code></strong>=<em><code>False</code></em>, <strong><code>cls_method</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="patch_to" class="doc_header"><code>patch_to</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L70" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_to</code>(<strong><code>as_prop</code></strong>=<em><code>False</code></em>, <strong><code>cls_method</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Decorator: add <code>f</code> to <code>cls</code></p>
 
@@ -462,7 +468,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="patch" class="doc_header"><code>patch</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L81" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch</code>(<strong><code>f</code></strong>)</p>
+<h4 id="patch" class="doc_header"><code>patch</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Decorator: add <code>f</code> to the first parameter's class (based on f's type annotations)</p>
 
@@ -552,7 +558,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="patch_property" class="doc_header"><code>patch_property</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_property</code>(<strong><code>f</code></strong>)</p>
+<h4 id="patch_property" class="doc_header"><code>patch_property</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L93" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>patch_property</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Decorator: add <code>f</code> as a property to the first parameter's class (based on f's type annotations)</p>
 
@@ -629,7 +635,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="use_kwargs_dict" class="doc_header"><code>use_kwargs_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L96" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>use_kwargs_dict</code>(<strong><code>keep</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="use_kwargs_dict" class="doc_header"><code>use_kwargs_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L102" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>use_kwargs_dict</code>(<strong><code>keep</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Decorator: replace <code>**kwargs</code> in signature with <code>names</code> params</p>
 
@@ -680,7 +686,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="use_kwargs" class="doc_header"><code>use_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L110" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>use_kwargs</code>(<strong><code>names</code></strong>, <strong><code>keep</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="use_kwargs" class="doc_header"><code>use_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>use_kwargs</code>(<strong><code>names</code></strong>, <strong><code>keep</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Decorator: replace <code>**kwargs</code> in signature with <code>names</code> params</p>
 
@@ -735,7 +741,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="delegates" class="doc_header"><code>delegates</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegates</code>(<strong><code>to</code></strong>=<em><code>None</code></em>, <strong><code>keep</code></strong>=<em><code>False</code></em>, <strong><code>but</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="delegates" class="doc_header"><code>delegates</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L130" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegates</code>(<strong><code>to</code></strong>=<em><code>None</code></em>, <strong><code>keep</code></strong>=<em><code>False</code></em>, <strong><code>but</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Decorator: replace <code>**kwargs</code> in signature with params from <code>to</code></p>
 
@@ -799,13 +805,6 @@ description: "Basic functions used in the fastai library"
     </div>
 </div>
 </div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

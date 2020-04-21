@@ -487,7 +487,7 @@ description: "Basic single and dual parameter dispatch"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@typedispatch</span>
-<span class="k">def</span> <span class="nf">f_td_test</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">}{</span><span class="n">y</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="k">def</span> <span class="nf">f_td_test</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{x}{y}</span><span class="s1">&#39;</span>
 <span class="nd">@typedispatch</span>
 <span class="k">def</span> <span class="nf">f_td_test</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span>
 <span class="nd">@typedispatch</span>

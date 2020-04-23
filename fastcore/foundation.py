@@ -278,7 +278,7 @@ class CollBase:
     "Base class for composing a list of `items`"
     def __init__(self, items): self.items = items
     def __len__(self): return len(self.items)
-    def __getitem__(self, k): return self.items[k]
+    def __getitem__(self, k): return self.items[list(k) if isinstance(k,CollBase) else k]
     def __setitem__(self, k, v): self.items[list(k) if isinstance(k,CollBase) else k] = v
     def __delitem__(self, i): del(self.items[i])
     def __repr__(self): return self.items.__repr__()

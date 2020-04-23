@@ -69,4 +69,3 @@ def equals(a,b):
            all_equal      if is_iter(a) or is_iter(b) else
            operator.eq)
     return cmp(a,b)
-

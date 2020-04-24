@@ -6,8 +6,9 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt', 'le', 'ge',
            'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen', 'chunked',
            'num_methods', 'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file', 'sort_by_run',
-           'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr', 'change_attrs']
+           'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file', 'remove_patches_path',
+           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr',
+           'change_attrs']
 
 # Cell
 from .imports import *
@@ -534,6 +535,18 @@ def join_path_file(file, path, ext=''):
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
+
+# Cell
+_patched = ['read', 'readlines', 'write', 'save', 'load', 'ls']
+
+@contextmanager
+def remove_patches_path():
+    patches = L(getattr(Path, n) for n in _patched)
+    try:
+        for n in _patched: delattr(Path, n)
+        yield
+    finally:
+        for (n, f) in zip(_patched, patches): setattr(Path, n, f)
 
 # Cell
 def _is_instance(f, gs):

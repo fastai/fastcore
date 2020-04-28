@@ -19,30 +19,21 @@ description: "Basic functions used in the fastai library"
 -->
 
 <div class="container" id="notebook-container">
+    {% raw %}
         
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="kn">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="k">import</span> <span class="o">*</span>
 </pre></div>
 
     </div>
@@ -50,15 +41,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Metaclasses">Metaclasses<a class="anchor-link" href="#Metaclasses"> </a></h2>
@@ -77,22 +62,12 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -114,17 +89,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -146,10 +113,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -157,7 +120,7 @@ description: "Basic functions used in the fastai library"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">PrePostInitMeta</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__pre_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">0</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span>
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">2</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_T</span><span class="p">()</span>
@@ -169,17 +132,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -201,10 +156,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -212,7 +163,7 @@ description: "Basic functions used in the fastai library"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">NewChkMeta</span><span class="p">):</span>
     <span class="s2">&quot;Testing&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
 </pre></div>
@@ -222,17 +173,13 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T2</span><span class="p">():</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">foo</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -257,17 +204,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -289,10 +228,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -301,7 +236,7 @@ description: "Basic functions used in the fastai library"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">T0</span><span class="p">:</span> <span class="k">pass</span>
 <span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">BypassNewMeta</span><span class="p">):</span>
     <span class="n">_bypass_type</span><span class="o">=</span><span class="n">T0</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">T0</span><span class="p">()</span>
 <span class="n">t</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
@@ -318,23 +253,15 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Foundational-functions">Foundational functions<a class="anchor-link" href="#Foundational-functions"> </a></h2>
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -356,17 +283,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -388,10 +307,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -417,8 +332,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>cls</code> is a tuple, <code>f</code> is added to all types in the tuple.</p>
@@ -426,8 +339,6 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -448,17 +359,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -480,10 +383,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -504,8 +403,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If annotation is a tuple, the function is added to all types in the tuple.</p>
@@ -513,8 +410,6 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -538,17 +433,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -570,10 +457,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -591,17 +474,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -615,17 +490,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -647,10 +514,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -666,17 +529,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -698,10 +553,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -721,17 +572,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -753,10 +596,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -776,6 +615,18 @@ description: "Basic functions used in the fastai library"
 <span class="nd">@delegates</span><span class="p">(</span><span class="n">basefoo</span><span class="p">,</span> <span class="n">but</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">pass</span>
 <span class="n">test_sig</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s1">&#39;(a, b=1)&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">_T</span><span class="p">():</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@classmethod</span>
+    <span class="nd">@delegates</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="n">test_sig</span><span class="p">(</span><span class="n">_T</span><span class="o">.</span><span class="n">bar</span><span class="p">,</span> <span class="s1">&#39;(c=3, a=1, b=2)&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -783,21 +634,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">BaseFoo</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="k">pass</span>
 
 <span class="nd">@delegates</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="n">BaseFoo</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <span class="n">test_sig</span><span class="p">(</span><span class="n">Foo</span><span class="p">,</span> <span class="s1">&#39;(a, b=1, c=2)&#39;</span><span class="p">)</span>
 </pre></div>
@@ -807,17 +654,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -827,7 +666,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="funcs_kwargs" class="doc_header"><code>funcs_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L151" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>funcs_kwargs</code>()</p>
+<h4 id="funcs_kwargs" class="doc_header"><code>funcs_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L152" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>funcs_kwargs</code>()</p>
 </blockquote>
 <p>Replace methods in <code>cls._methods</code> with those from <code>kwargs</code></p>
 
@@ -839,17 +678,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -859,7 +690,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="method" class="doc_header"><code>method</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L167" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>method</code>(<strong><code>f</code></strong>)</p>
+<h4 id="method" class="doc_header"><code>method</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L168" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>method</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Mark <code>f</code> as a method</p>
 
@@ -871,10 +702,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -883,7 +710,7 @@ description: "Basic functions used in the fastai library"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@funcs_kwargs</span>
 <span class="k">class</span> <span class="nc">T</span><span class="p">:</span>
     <span class="n">_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
     <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span>
     <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">2</span>
     
@@ -901,7 +728,7 @@ description: "Basic functions used in the fastai library"
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">T2</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="n">a</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">T2</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -919,8 +746,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Runtime type checking is handy, so let's make it easy!</p>
@@ -928,8 +753,6 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -949,10 +772,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -966,17 +785,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -986,7 +797,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
+<h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
 </blockquote>
 <p>Copy values from <a href="/foundation#docs"><code>docs</code></a> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
 
@@ -998,17 +809,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1018,7 +821,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="docs" class="doc_header"><code>docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L187" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>docs</code>()</p>
+<h4 id="docs" class="doc_header"><code>docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>docs</code>()</p>
 </blockquote>
 <p>Decorator version of <a href="/foundation#add_docs"><code>add_docs</code></a>, using <code>_docs</code> dict</p>
 
@@ -1030,10 +833,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1055,17 +854,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1075,7 +866,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="custom_dir" class="doc_header"><code>custom_dir</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L193" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>custom_dir</code>(<strong><code>c</code></strong>, <strong><code>add</code></strong>:<code>list</code>)</p>
+<h4 id="custom_dir" class="doc_header"><code>custom_dir</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>custom_dir</code>(<strong><code>c</code></strong>, <strong><code>add</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Implement custom <code>__dir__</code>, adding <code>add</code> to <code>cls</code></p>
 
@@ -1087,10 +878,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1112,10 +899,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1132,24 +915,12 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1159,7 +930,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="bind" class="doc_header"><code>class</code> <code>bind</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L207" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bind</code>(<strong><code>fn</code></strong>, <strong>*<code>pargs</code></strong>, <strong>**<code>pkwargs</code></strong>)</p>
+<h2 id="bind" class="doc_header"><code>class</code> <code>bind</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L208" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bind</code>(<strong><code>fn</code></strong>, <strong>*<code>pargs</code></strong>, <strong>**<code>pkwargs</code></strong>)</p>
 </blockquote>
 <p>Same as <code>partial</code>, except you can use <a href="/foundation#arg0"><code>arg0</code></a> <a href="/foundation#arg1"><code>arg1</code></a> etc param placeholders</p>
 
@@ -1171,10 +942,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1193,17 +960,9 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1213,7 +972,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GetAttr" class="doc_header"><code>class</code> <code>GetAttr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L222" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GetAttr</code>()</p>
+<h2 id="GetAttr" class="doc_header"><code>class</code> <code>GetAttr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L223" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GetAttr</code>()</p>
 </blockquote>
 <p>Inherit from this to have all attr accesses in <code>self._xtra</code> passed down to <code>self.default</code></p>
 
@@ -1225,8 +984,6 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Inherit from <a href="/foundation#GetAttr"><code>GetAttr</code></a> to have attr access passed down to an instance attribute. 
@@ -1248,8 +1005,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1257,7 +1012,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="c1"># allow all attributes to get passed to `self.default` (by leaving _xtra=None)</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1272,10 +1027,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1283,7 +1034,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_xtra</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="c1"># specify which attributes get passed to `self.default`</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1299,10 +1050,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1310,7 +1057,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;_data&#39;</span> <span class="c1"># use different component name; `self._data` rather than `self.default`</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1326,10 +1073,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1337,7 +1080,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span> <span class="c1"># use a bad component name; i.e. self.data does not exist</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 <span class="c1"># TODO: should we raise an error when we create a new instance ...</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1354,17 +1097,13 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">B</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -1372,10 +1111,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1386,7 +1121,7 @@ This makes it easy to create composites that don't require callers to know about
     <span class="n">wif</span><span class="o">=</span><span class="n">after_iter</span><span class="o">=</span> <span class="n">noops</span>
     <span class="n">_methods</span> <span class="o">=</span> <span class="s1">&#39;wif after_iter&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">pass</span>
 </pre></div>
 
     </div>
@@ -1394,10 +1129,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1412,10 +1143,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1433,17 +1160,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1453,7 +1172,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="delegate_attr" class="doc_header"><code>delegate_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L240" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegate_attr</code>(<strong><code>k</code></strong>, <strong><code>to</code></strong>)</p>
+<h4 id="delegate_attr" class="doc_header"><code>delegate_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L241" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegate_attr</code>(<strong><code>k</code></strong>, <strong><code>to</code></strong>)</p>
 </blockquote>
 <p>Use in <code>__getattr__</code> to delegate to attr <code>to</code> without inheriting from <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
 
@@ -1465,10 +1184,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1476,7 +1191,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">:</span>
     <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;Hi&#39;</span>
-    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="k">return</span> <span class="n">delegate_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="k">return</span> <span class="n">delegate_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">()</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s1">&#39;hi&#39;</span><span class="p">)</span>
@@ -1487,24 +1202,12 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1514,7 +1217,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="coll_repr" class="doc_header"><code>coll_repr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L257" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coll_repr</code>(<strong><code>c</code></strong>, <strong><code>max_n</code></strong>=<em><code>10</code></em>)</p>
+<h4 id="coll_repr" class="doc_header"><code>coll_repr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coll_repr</code>(<strong><code>c</code></strong>, <strong><code>max_n</code></strong>=<em><code>10</code></em>)</p>
 </blockquote>
 <p>String repr of up to <code>max_n</code> items of (possibly lazy) collection <code>c</code></p>
 
@@ -1526,10 +1229,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1543,17 +1242,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1563,7 +1254,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mask2idxs" class="doc_header"><code>mask2idxs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L263" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask2idxs</code>(<strong><code>mask</code></strong>)</p>
+<h4 id="mask2idxs" class="doc_header"><code>mask2idxs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L264" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask2idxs</code>(<strong><code>mask</code></strong>)</p>
 </blockquote>
 <p>Convert bool mask or index list to index <a href="/foundation#L"><code>L</code></a></p>
 
@@ -1575,10 +1266,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1593,10 +1280,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1613,24 +1296,12 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1640,7 +1311,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CollBase" class="doc_header"><code>class</code> <code>CollBase</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L277" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CollBase</code>(<strong><code>items</code></strong>)</p>
+<h2 id="CollBase" class="doc_header"><code>class</code> <code>CollBase</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L278" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CollBase</code>(<strong><code>items</code></strong>)</p>
 </blockquote>
 <p>Base class for composing a list of <code>items</code></p>
 
@@ -1652,17 +1323,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1672,7 +1335,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="cycle" class="doc_header"><code>cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L288" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cycle</code>(<strong><code>o</code></strong>)</p>
+<h4 id="cycle" class="doc_header"><code>cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L289" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cycle</code>(<strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.cycle</code> except creates list of <code>None</code>s if <code>o</code> is empty</p>
 
@@ -1684,10 +1347,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1704,17 +1363,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1724,7 +1375,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="zip_cycle" class="doc_header"><code>zip_cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L294" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_cycle</code>(<strong><code>x</code></strong>, <strong>*<code>args</code></strong>)</p>
+<h4 id="zip_cycle" class="doc_header"><code>zip_cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L295" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_cycle</code>(<strong><code>x</code></strong>, <strong>*<code>args</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.zip_longest</code> but <a href="/foundation#cycle"><code>cycle</code></a>s through elements of all but first argument</p>
 
@@ -1736,10 +1387,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1753,17 +1400,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1773,7 +1412,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_indexer" class="doc_header"><code>is_indexer</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L299" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_indexer</code>(<strong><code>idx</code></strong>)</p>
+<h4 id="is_indexer" class="doc_header"><code>is_indexer</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L300" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_indexer</code>(<strong><code>idx</code></strong>)</p>
 </blockquote>
 <p>Test whether <code>idx</code> will index a single item in a list</p>
 
@@ -1785,17 +1424,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1805,7 +1436,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="negate_func" class="doc_header"><code>negate_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L304" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>negate_func</code>(<strong><code>f</code></strong>)</p>
+<h4 id="negate_func" class="doc_header"><code>negate_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L305" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>negate_func</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Create new function that negates result of <code>f</code></p>
 
@@ -1817,10 +1448,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1837,17 +1464,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1857,7 +1476,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L310" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="/foundation#CollBase"><code>CollBase</code></a></p>
+<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L311" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="/foundation#CollBase"><code>CollBase</code></a></p>
 </blockquote>
 <p>Behaves like a list of <code>items</code> but can also index with list of indices or masks</p>
 
@@ -1869,15 +1488,9 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can create an <a href="/foundation#L"><code>L</code></a> from an existing iterable (e.g. a list, range, etc) and access or modify it with an int list/tuple index, mask, int, or slice. All <code>list</code> methods can also be used with <a href="/foundation#L"><code>L</code></a>.</p>
@@ -1885,8 +1498,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1927,8 +1538,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There are optimized indexers for arrays, tensors, and DataFrames.</p>
@@ -1936,8 +1545,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1961,8 +1568,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can also modify an <a href="/foundation#L"><code>L</code></a> with <code>append</code>, <code>+</code>, and <code>*</code>.</p>
@@ -1970,8 +1575,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2004,10 +1607,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2025,8 +1624,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An <a href="/foundation#L"><code>L</code></a> can be constructed from anything iterable, although tensors and arrays will not be iterated over on construction, unless you pass <code>use_list</code> to the constructor.</p>
@@ -2034,8 +1631,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2058,8 +1653,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>match</code> is not <code>None</code> then the created list is same len as <code>match</code>, either by:</p>
@@ -2071,8 +1664,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2088,8 +1679,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you create an <a href="/foundation#L"><code>L</code></a> from an existing <a href="/foundation#L"><code>L</code></a> then you'll get back the original object (since <a href="/foundation#L"><code>L</code></a> uses the <a href="/foundation#NewChkMeta"><code>NewChkMeta</code></a> metaclass).</p>
@@ -2097,8 +1686,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2112,8 +1699,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An <a href="/foundation#L"><code>L</code></a> is considred equal to a list if they have the same elements. It's never considered equal to a <code>str</code> a <code>set</code> or a <code>dict</code> even if they have the same elements/keys.</p>
@@ -2121,8 +1706,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2139,16 +1722,12 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Methods">Methods<a class="anchor-link" href="#Methods"> </a></h3>
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2158,7 +1737,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.__getitem__" class="doc_header"><code>L.__getitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L327" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__getitem__</code>(<strong><code>idx</code></strong>)</p>
+<h4 id="L.__getitem__" class="doc_header"><code>L.__getitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L328" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__getitem__</code>(<strong><code>idx</code></strong>)</p>
 </blockquote>
 <p>Retrieve <code>idx</code> (can be list of indices, or mask, or int) items</p>
 
@@ -2170,10 +1749,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2192,10 +1767,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2205,7 +1776,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.__setitem__" class="doc_header"><code>L.__setitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L337" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__setitem__</code>(<strong><code>idx</code></strong>, <strong><code>o</code></strong>)</p>
+<h4 id="L.__setitem__" class="doc_header"><code>L.__setitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L338" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__setitem__</code>(<strong><code>idx</code></strong>, <strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Set <code>idx</code> (can be list of indices, or mask, or int) items to <code>o</code> (which is broadcast if not iterable)</p>
 
@@ -2217,10 +1788,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2237,10 +1804,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2250,7 +1813,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L387" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
+<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L388" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
 </blockquote>
 <p>Unique items, in stable order</p>
 
@@ -2262,10 +1825,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2279,10 +1838,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2292,7 +1847,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L389" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
+<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L390" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
 </blockquote>
 <p>Dict from value to index</p>
 
@@ -2304,10 +1859,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2321,10 +1872,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2334,7 +1881,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L377" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L378" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> filtered by predicate <code>f</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2346,10 +1893,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2379,10 +1922,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2397,10 +1936,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2410,7 +1945,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L383" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>filter</code>, but return indices for matching items</p>
 
@@ -2422,10 +1957,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2439,10 +1970,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2452,7 +1979,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L371" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L372" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>f</code> applied to all <code>items</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2464,10 +1991,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2481,8 +2004,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>f</code> is a string then it is treated as a format string to create the mapping:</p>
@@ -2490,8 +2011,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2505,8 +2024,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>f</code> is a dictionary (or anything supporting <code>__getitem__</code>) then it is indexed to create the mapping:</p>
@@ -2514,8 +2031,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2529,8 +2044,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If the special argument <code>_arg</code> is passed, then that is the kwarg used in the map.</p>
@@ -2538,8 +2051,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2554,10 +2065,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2572,10 +2079,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2585,7 +2088,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L397" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L398" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>map</code>, but creates a dict from <code>items</code> to function results</p>
 
@@ -2597,10 +2100,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2615,10 +2114,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2628,7 +2123,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L399" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L400" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>zip(*items)</code></p>
 
@@ -2640,10 +2135,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2658,10 +2149,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2677,10 +2164,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2690,7 +2173,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L401" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L402" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zip</code> and <code>starmap</code></p>
 
@@ -2702,10 +2185,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2720,10 +2199,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2733,7 +2208,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L400" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L401" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>self</code> zip with each of <code>*rest</code></p>
 
@@ -2745,10 +2220,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2764,10 +2235,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2777,7 +2244,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L402" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zipwith</code> and <code>starmap</code></p>
 
@@ -2789,10 +2256,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2806,10 +2269,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2819,7 +2278,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L390" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
+<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with item <code>idx</code> of all <code>items</code></p>
 
@@ -2831,10 +2290,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2848,10 +2303,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2861,7 +2312,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L395" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L396" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
 
@@ -2873,10 +2324,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2891,10 +2338,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2904,7 +2347,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L357" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L358" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>New <a href="/foundation#L"><code>L</code></a> sorted by <code>key</code>. If key is str then use <code>attrgetter</code>. If key is int then use <code>itemgetter</code></p>
 
@@ -2916,10 +2359,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2933,10 +2372,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2946,7 +2381,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L363" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L364" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 <p>Same as <code>str.split</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
@@ -2958,10 +2393,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2975,10 +2406,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2988,7 +2415,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L366" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L367" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Same as <code>range</code>, but returns an <a href="/foundation#L"><code>L</code></a>. Can pass a collection for <code>a</code>, to use <code>len(a)</code></p>
 
@@ -3000,10 +2427,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -3018,10 +2441,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -3031,7 +2450,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
+<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L404" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
 </blockquote>
 <p>Concatenate all elements of list</p>
 
@@ -3043,10 +2462,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -3060,10 +2475,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -3073,7 +2484,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.copy" class="doc_header"><code>L.copy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L328" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.copy</code>()</p>
+<h4 id="L.copy" class="doc_header"><code>L.copy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L329" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.copy</code>()</p>
 </blockquote>
 <p>Same as <code>list.copy</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
@@ -3085,10 +2496,6 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -3104,7 +2511,6 @@ This makes it easy to create composites that don't require callers to know about
 
 </div>
     {% endraw %}
-
 </div>
  
 

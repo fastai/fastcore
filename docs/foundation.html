@@ -19,21 +19,30 @@ description: "Basic functions used in the fastai library"
 -->
 
 <div class="container" id="notebook-container">
-    {% raw %}
         
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="k">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
     </div>
@@ -41,9 +50,15 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Metaclasses">Metaclasses<a class="anchor-link" href="#Metaclasses"> </a></h2>
@@ -62,12 +77,22 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -89,9 +114,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -113,6 +146,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -120,7 +157,7 @@ description: "Basic functions used in the fastai library"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">PrePostInitMeta</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__pre_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">0</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>  <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">1</span>
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">==</span><span class="mi">2</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_T</span><span class="p">()</span>
@@ -132,9 +169,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -156,6 +201,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -163,7 +212,7 @@ description: "Basic functions used in the fastai library"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">NewChkMeta</span><span class="p">):</span>
     <span class="s2">&quot;Testing&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
 </pre></div>
@@ -173,13 +222,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_T2</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">foo</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -204,9 +257,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -228,6 +289,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -236,7 +301,7 @@ description: "Basic functions used in the fastai library"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">T0</span><span class="p">:</span> <span class="k">pass</span>
 <span class="k">class</span> <span class="nc">_T</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">BypassNewMeta</span><span class="p">):</span>
     <span class="n">_bypass_type</span><span class="o">=</span><span class="n">T0</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">=</span><span class="n">x</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">T0</span><span class="p">()</span>
 <span class="n">t</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
@@ -253,15 +318,23 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Foundational-functions">Foundational functions<a class="anchor-link" href="#Foundational-functions"> </a></h2>
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -283,9 +356,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -307,6 +388,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -332,6 +417,8 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>cls</code> is a tuple, <code>f</code> is added to all types in the tuple.</p>
@@ -339,6 +426,8 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -359,9 +448,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -383,6 +480,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -403,6 +504,8 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If annotation is a tuple, the function is added to all types in the tuple.</p>
@@ -410,6 +513,8 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -433,9 +538,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -457,6 +570,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -474,9 +591,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -490,9 +615,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -514,6 +647,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -529,9 +666,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -553,6 +698,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -572,9 +721,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -596,6 +753,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -634,17 +795,21 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">BaseFoo</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span> <span class="k">pass</span>
 
 <span class="nd">@delegates</span><span class="p">()</span>
 <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="n">BaseFoo</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <span class="n">test_sig</span><span class="p">(</span><span class="n">Foo</span><span class="p">,</span> <span class="s1">&#39;(a, b=1, c=2)&#39;</span><span class="p">)</span>
 </pre></div>
@@ -654,9 +819,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -678,9 +851,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -702,6 +883,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -710,7 +895,7 @@ description: "Basic functions used in the fastai library"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@funcs_kwargs</span>
 <span class="k">class</span> <span class="nc">T</span><span class="p">:</span>
     <span class="n">_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
     <span class="k">def</span> <span class="nf">a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span>
     <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="mi">2</span>
     
@@ -728,7 +913,7 @@ description: "Basic functions used in the fastai library"
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">T2</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="n">a</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">T2</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -746,6 +931,8 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Runtime type checking is handy, so let's make it easy!</p>
@@ -753,6 +940,8 @@ description: "Basic functions used in the fastai library"
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -772,6 +961,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -785,9 +978,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -809,9 +1010,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -833,6 +1042,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -854,9 +1067,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -878,6 +1099,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -899,6 +1124,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -915,12 +1144,24 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -942,6 +1183,10 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -960,9 +1205,17 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -984,6 +1237,8 @@ description: "Basic functions used in the fastai library"
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Inherit from <a href="/foundation#GetAttr"><code>GetAttr</code></a> to have attr access passed down to an instance attribute. 
@@ -1005,6 +1260,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1012,7 +1269,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="c1"># allow all attributes to get passed to `self.default` (by leaving _xtra=None)</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1027,6 +1284,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1034,7 +1295,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_xtra</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="c1"># specify which attributes get passed to `self.default`</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1050,6 +1311,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1057,7 +1322,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;_data&#39;</span> <span class="c1"># use different component name; `self._data` rather than `self.default`</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1073,6 +1338,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1080,7 +1349,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span> <span class="c1"># use a bad component name; i.e. self.data does not exist</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">a</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="n">noop</span>
 <span class="c1"># TODO: should we raise an error when we create a new instance ...</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">(</span><span class="s1">&#39;Hi&#39;</span><span class="p">)</span>
@@ -1097,13 +1366,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">B</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -1111,6 +1384,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1121,7 +1398,7 @@ This makes it easy to create composites that don't require callers to know about
     <span class="n">wif</span><span class="o">=</span><span class="n">after_iter</span><span class="o">=</span> <span class="n">noops</span>
     <span class="n">_methods</span> <span class="o">=</span> <span class="s1">&#39;wif after_iter&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;dataset&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">pass</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">pass</span>
 </pre></div>
 
     </div>
@@ -1129,6 +1406,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1143,6 +1424,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1160,9 +1445,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1184,6 +1477,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1191,7 +1488,7 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">_C</span><span class="p">:</span>
     <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;Hi&#39;</span>
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="k">return</span> <span class="n">delegate_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span> <span class="k">return</span> <span class="n">delegate_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">_C</span><span class="p">()</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s1">&#39;hi&#39;</span><span class="p">)</span>
@@ -1202,12 +1499,24 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1229,6 +1538,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1242,9 +1555,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1266,6 +1587,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1280,6 +1605,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1296,12 +1625,24 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1323,9 +1664,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1347,6 +1696,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1363,9 +1716,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1387,6 +1748,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1400,9 +1765,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1424,9 +1797,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1448,6 +1829,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1464,9 +1849,17 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1488,9 +1881,15 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can create an <a href="/foundation#L"><code>L</code></a> from an existing iterable (e.g. a list, range, etc) and access or modify it with an int list/tuple index, mask, int, or slice. All <code>list</code> methods can also be used with <a href="/foundation#L"><code>L</code></a>.</p>
@@ -1498,6 +1897,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1538,6 +1939,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There are optimized indexers for arrays, tensors, and DataFrames.</p>
@@ -1545,6 +1948,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1568,6 +1973,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can also modify an <a href="/foundation#L"><code>L</code></a> with <code>append</code>, <code>+</code>, and <code>*</code>.</p>
@@ -1575,6 +1982,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1607,6 +2016,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1624,6 +2037,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An <a href="/foundation#L"><code>L</code></a> can be constructed from anything iterable, although tensors and arrays will not be iterated over on construction, unless you pass <code>use_list</code> to the constructor.</p>
@@ -1631,6 +2046,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1653,6 +2070,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>match</code> is not <code>None</code> then the created list is same len as <code>match</code>, either by:</p>
@@ -1664,6 +2083,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1679,6 +2100,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you create an <a href="/foundation#L"><code>L</code></a> from an existing <a href="/foundation#L"><code>L</code></a> then you'll get back the original object (since <a href="/foundation#L"><code>L</code></a> uses the <a href="/foundation#NewChkMeta"><code>NewChkMeta</code></a> metaclass).</p>
@@ -1686,6 +2109,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1699,6 +2124,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>An <a href="/foundation#L"><code>L</code></a> is considred equal to a list if they have the same elements. It's never considered equal to a <code>str</code> a <code>set</code> or a <code>dict</code> even if they have the same elements/keys.</p>
@@ -1706,6 +2133,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1722,12 +2151,16 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Methods">Methods<a class="anchor-link" href="#Methods"> </a></h3>
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1749,6 +2182,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1767,6 +2204,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1788,6 +2229,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1804,6 +2249,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1825,6 +2274,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1838,6 +2291,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1859,6 +2316,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1872,6 +2333,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1893,6 +2358,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1922,6 +2391,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1936,6 +2409,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1957,6 +2434,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1970,6 +2451,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1991,6 +2476,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2004,6 +2493,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>f</code> is a string then it is treated as a format string to create the mapping:</p>
@@ -2011,6 +2502,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2024,6 +2517,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If <code>f</code> is a dictionary (or anything supporting <code>__getitem__</code>) then it is indexed to create the mapping:</p>
@@ -2031,6 +2526,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2044,6 +2541,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If the special argument <code>_arg</code> is passed, then that is the kwarg used in the map.</p>
@@ -2051,6 +2550,8 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 </div>
 </div>
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2065,6 +2566,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2079,6 +2584,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2100,6 +2609,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2114,6 +2627,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2135,6 +2652,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2149,6 +2670,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2164,6 +2689,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2185,6 +2714,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2199,6 +2732,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2220,6 +2757,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2235,6 +2776,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2256,6 +2801,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2269,6 +2818,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2290,6 +2843,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2303,6 +2860,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2324,6 +2885,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2338,6 +2903,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2359,6 +2928,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2372,6 +2945,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2393,6 +2970,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2406,6 +2987,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2427,6 +3012,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2441,6 +3030,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2462,6 +3055,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2475,6 +3072,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -2496,6 +3097,10 @@ This makes it easy to create composites that don't require callers to know about
 </div>
 
 </div>
+    {% endraw %}
+
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -2511,6 +3116,7 @@ This makes it easy to create composites that don't require callers to know about
 
 </div>
     {% endraw %}
+
 </div>
  
 

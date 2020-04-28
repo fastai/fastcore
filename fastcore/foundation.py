@@ -134,6 +134,7 @@ def delegates(to=None, keep=False, but=None):
         if to is None: to_f,from_f = f.__base__.__init__,f.__init__
         else:          to_f,from_f = to,f
         from_f = getattr(from_f,'__func__',from_f)
+        to_f = getattr(to_f,'__func__',to_f)
         if hasattr(from_f,'__delwrap__'): return f
         sig = inspect.signature(from_f)
         sigd = dict(sig.parameters)

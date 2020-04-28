@@ -19,32 +19,23 @@ description: "Definition of `Transform` and `Pipeline`"
 -->
 
 <div class="container" id="notebook-container">
+    {% raw %}
         
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">nbdev.showdoc</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastcore.test</span> <span class="k">import</span> <span class="o">*</span>
 </pre></div>
 
     </div>
@@ -52,8 +43,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The classes here provide functionality for creating a composition of <em>partially reversible functions</em>. By "partially reversible" we mean that a transform can be <code>decode</code>d, creating a form suitable for display. This is not necessarily identical to the original form (e.g. a transform that changes a byte tensor to a float tensor does not recreate a byte tensor when decoded, since that may lose precision, and a float tensor can be displayed already).</p>
@@ -62,43 +51,21 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -120,8 +87,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A <a href="/transform#Transform"><code>Transform</code></a> is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the <a href="/transform#Transform"><code>Transform</code></a> class provides several mechanisms that make the process of building them easy and flexible.</p>
@@ -146,8 +111,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -178,8 +141,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="/transform#Transform"><code>Transform</code></a> can be used as a decorator, to turn a function into a <a href="/transform#Transform"><code>Transform</code></a>.</p>
@@ -187,8 +148,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -202,10 +161,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -220,10 +175,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -245,8 +196,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can derive from <a href="/transform#Transform"><code>Transform</code></a> and use <code>encodes</code> for your encoding function.</p>
@@ -254,8 +203,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -263,7 +210,7 @@ description: "Definition of `Transform` and `Pipeline`"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ArrayImage</span><span class="p">(</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="n">_show_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;cmap&#39;</span><span class="p">:</span><span class="s1">&#39;viridis&#39;</span><span class="p">}</span>
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">tuple</span><span class="p">):</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Unknown array init args&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">ndarray</span><span class="p">):</span> <span class="n">x</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -284,10 +231,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -333,8 +276,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Without return annotation we get an <a href="/utils#Int"><code>Int</code></a> back since that's what was passed.</p>
@@ -342,8 +283,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -366,8 +305,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Without return annotation we don't cast if we're not a subclass of the input type. If the annotation is a tuple, then any type in the tuple will match.</p>
@@ -375,8 +312,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -398,8 +333,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With return annotation <code>None</code> we get back whatever Python creates usually.</p>
@@ -407,8 +340,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -425,8 +356,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Since <code>decodes</code> has no return annotation, but <code>encodes</code> created an <a href="/utils#Int"><code>Int</code></a> and we pass that result here to <code>decode</code>, we end up with an <a href="/utils#Int"><code>Int</code></a>.</p>
@@ -434,8 +363,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -454,8 +381,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If the transform has <code>split_idx</code> then it's only applied if <code>split_idx</code> param matches.</p>
@@ -463,8 +388,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -480,8 +403,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Transform takes lists as a whole and is applied to them.</p>
@@ -489,8 +410,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -514,10 +433,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -540,8 +455,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Transforms are applied to each element of a tuple.</p>
@@ -549,8 +462,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -570,17 +481,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -602,10 +505,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -623,10 +522,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -655,10 +550,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -675,8 +566,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Non-type-constrained functions are applied to all elements of a tuple.</p>
@@ -684,8 +573,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -708,8 +595,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Type-constrained functions are applied to only matching elements of a tuple, and return annotations are only applied where matching.</p>
@@ -717,8 +602,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -741,8 +624,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The dispatching over tuples works recursively, by the way:</p>
@@ -750,8 +631,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -769,8 +648,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The same behavior also works with <code>typing</code> module type classes.</p>
@@ -778,8 +655,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -810,23 +685,15 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="ItemTransform">ItemTransform<a class="anchor-link" href="#ItemTransform"> </a></h4>
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -848,8 +715,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="/transform#ItemTransform"><code>ItemTransform</code></a> is the class to use to opt out of the default behavior of <a href="/transform#Transform"><code>Transform</code></a>.</p>
@@ -857,8 +722,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -878,8 +741,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If you pass a special tuple subclass, the usual retain type behavior of <a href="/transform#Transform"><code>Transform</code></a> will keep it:</p>
@@ -887,8 +748,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -904,17 +763,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -936,8 +787,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This works for any kind of <code>t</code> supporting <code>getattr</code>, so a class or a module.</p>
@@ -945,8 +794,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -967,8 +814,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Transforms are built with multiple-dispatch: a given function can have several methods depending on the type of the object received. This is done directly with the <a href="/dispatch#TypeDispatch"><code>TypeDispatch</code></a> module and type-annotation in <a href="/transform#Transform"><code>Transform</code></a>, but you can also use the following class.</p>
@@ -976,15 +821,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1006,8 +845,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can call the <a href="/transform#Func"><code>Func</code></a> object on any module name or type, even a list of types. It will return the corresponding function (with a default to <code>noop</code> if nothing is found) or list of functions.</p>
@@ -1015,8 +852,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1039,17 +874,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1070,8 +897,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="/transform#Sig"><code>Sig</code></a> is just sugar-syntax to create a <a href="/transform#Func"><code>Func</code></a> object more easily with the syntax <a href="/transform#Sig.name(*args, **kwargs"><code>Sig.name(*args, **kwargs)</code></a>).</p>
@@ -1079,8 +904,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1096,17 +919,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1128,10 +943,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1148,10 +959,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1170,10 +977,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1195,10 +998,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1213,17 +1012,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1245,17 +1036,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1277,17 +1060,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1309,17 +1084,9 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1341,10 +1108,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1363,8 +1126,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="/transform#Pipeline"><code>Pipeline</code></a> is a wrapper for <code>compose_tfm</code>. You can pass instances of <a href="/transform#Transform"><code>Transform</code></a> or regular functions in <code>funcs</code>, the <a href="/transform#Pipeline"><code>Pipeline</code></a> will wrap them all in <a href="/transform#Transform"><code>Transform</code></a> (and instantiate them if needed) during the initialization. It handles the transform <code>setup</code> by adding them one at a time and calling setup on each, goes through them in order in <code>__call__</code> or <code>decode</code> and can <code>show</code> an object by applying decoding the transforms up until the point it gets an object that knows how to show itself.</p>
@@ -1372,8 +1133,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1389,10 +1148,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1411,10 +1166,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1436,10 +1187,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1459,10 +1206,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1481,8 +1224,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Transforms are available as attributes named with the snake_case version of the names of their types. Attributes in transforms can be directly accessed as attributes of the pipeline.</p>
@@ -1490,8 +1231,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1511,10 +1250,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1532,10 +1267,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1557,10 +1288,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1579,10 +1306,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1598,16 +1321,12 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
 
 <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">ArrayImage</span><span class="p">):</span> <span class="k">return</span> <span class="o">-</span><span class="n">x</span>
 <span class="k">def</span> <span class="nf">f2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
@@ -1619,10 +1338,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1639,10 +1354,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1676,10 +1387,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1693,10 +1400,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1722,10 +1425,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1743,16 +1442,12 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Methods">Methods<a class="anchor-link" href="#Methods"> </a></h3>
 </div>
 </div>
 </div>
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
@@ -1766,10 +1461,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1791,10 +1482,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1815,10 +1502,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
-    {% raw %}
-    
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -1839,8 +1522,6 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 
 </div>
-    {% endraw %}
-
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>During the setup, the <a href="/transform#Pipeline"><code>Pipeline</code></a> starts with no transform and adds them one at a time, so that during its setup, each transform gets the items processed up to its point and not after.</p>
@@ -1848,6 +1529,7 @@ description: "Definition of `Transform` and `Pipeline`"
 </div>
 </div>
 </div>
+    {% endraw %}
 </div>
  
 

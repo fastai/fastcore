@@ -7,7 +7,7 @@ from threading import Thread
 from time import sleep
 from copy import copy
 from contextlib import redirect_stdout,contextmanager
-from collections.abc import Iterable,Iterator,Generator,Collection
+from collections.abc import Iterable,Iterator,Generator,Collection,Sequence
 from types import SimpleNamespace
 from pathlib import Path
 from collections import defaultdict,Counter

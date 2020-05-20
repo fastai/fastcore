@@ -345,6 +345,7 @@ class L(CollBase, metaclass=NewChkMeta):
 
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items
+    def __reversed__(self): return self._new(reversed(self.items))
     def __invert__(self): return self._new(not i for i in self)
     def __eq__(self,b): return False if isinstance(b, (str,dict,set)) else all_equal(b,self)
     def __repr__(self): return repr(self.items) if _is_array(self.items) else coll_repr(self)
@@ -449,3 +450,6 @@ add_docs(L,
          sum="Sum of the items",
          product="Product of the items",
          **_docs)
+
+# Cell
+Sequence.register(L);

@@ -80,10 +80,13 @@ class ignore_exceptions:
     def __exit__(self, *args): return True
 
 # Cell
-def store_attr(self, nms):
+def store_attr(self, nms=None):
     "Store params named in comma-separated `nms` from calling context into attrs in `self`"
     mod = inspect.currentframe().f_back.f_locals
-    for n in re.split(', *', nms): setattr(self,n,mod[n])
+    _mod={k:v for k,v in mod.items() if k not in ['self','args','kwargs']}
+    if 'kwargs' in mod: _mod.update(mod['kwargs'])
+    _nms=re.split(', *', nms) if nms else [k for k in _mod.keys() if k!='self']
+    for n in _nms: setattr(self,n,_mod[n])
 
 # Cell
 def attrdict(o, *ks):

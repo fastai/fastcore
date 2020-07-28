@@ -126,15 +126,18 @@ class DispatchReg:
 typedispatch = DispatchReg()
 
 # Cell
-def retain_meta(x, res):
+def retain_meta(x, res, copy_meta=False):
     "Call `res.set_meta(x)`, if it exists"
-    if hasattr(res,'set_meta'): res.set_meta(x)
+    if hasattr(res,'set_meta'): res.set_meta(x, copy_meta=copy_meta)
     return res
 
 # Cell
-def default_set_meta(self, x):
+def default_set_meta(self, x, copy_meta=False):
     "Copy over `_meta` from `x` to `res`, if it's missing"
-    if hasattr(x, '_meta') and not hasattr(self, '_meta'): self._meta = x._meta
+    if hasattr(x, '_meta') and not hasattr(self, '_meta'):
+        meta = x._meta
+        if copy_meta: meta = copy(meta)
+        self._meta = meta
     return self
 
 # Cell
@@ -150,7 +153,7 @@ def cast(x, typ):
     return retain_meta(x, res)
 
 # Cell
-def retain_type(new, old=None, typ=None):
+def retain_type(new, old=None, typ=None, copy_meta=False):
     "Cast `new` to type of `old` or `typ` if it's a superclass"
     # e.g. old is TensorImage, new is Tensor - if not subclass then do nothing
     if new is None: return
@@ -160,7 +163,7 @@ def retain_type(new, old=None, typ=None):
         typ = old if isinstance(old,type) else type(old)
     # Do nothing the new type is already an instance of requested type (i.e. same type)
     if typ==NoneType or isinstance(new, typ): return new
-    return retain_meta(old, cast(new, typ))
+    return retain_meta(old, cast(new, typ), copy_meta=copy_meta)
 
 # Cell
 def retain_types(new, old=None, typs=None):

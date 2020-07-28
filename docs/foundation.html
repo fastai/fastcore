@@ -970,7 +970,7 @@ description: "Basic functions used in the fastai library"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#def is_listy(x): return isinstance(x,(list,tuple,Generator))</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>
@@ -1433,8 +1433,7 @@ This makes it easy to create composites that don't require callers to know about
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Failing test. TODO Jeremy, not sure what you were testing here</span>
-<span class="c1">#a = A()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#a = A()</span>
 <span class="c1">#b = A(wif=a.wif)</span>
 <span class="c1">#tst = pickle.dumps(b)</span>
 <span class="c1">#c = pickle.loads(tst)</span>
@@ -1596,8 +1595,7 @@ This makes it easy to create composites that don't require callers to know about
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># just for tests</span>
-<span class="kn">import</span> <span class="nn">torch</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 </pre></div>
 
     </div>
@@ -1890,6 +1888,13 @@ This makes it easy to create composites that don't require callers to know about
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>You can create an <a href="/foundation#L"><code>L</code></a> from an existing iterable (e.g. a list, range, etc) and access or modify it with an int list/tuple index, mask, int, or slice. All <code>list</code> methods can also be used with <a href="/foundation#L"><code>L</code></a>.</p>
@@ -1933,6 +1938,53 @@ This makes it easy to create composites that don't require callers to know about
 <pre>(#12) [11,10,9,&#39;j&#39;,7,&#39;k&#39;,5,4,3,2...]</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Any <a href="/foundation#L"><code>L</code></a> is a <code>Sequence</code> so you can use it with methods like <code>random.sample</code>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-33-d00e60e8bc64&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">assert</span> isinstance<span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">,</span> Sequence<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">import</span> random
+<span class="ansi-green-intense-fg ansi-bold">      3</span> random<span class="ansi-blue-fg">.</span>sample<span class="ansi-blue-fg">(</span>t<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;t&#39; is not defined</pre>
+</div>
 </div>
 
 </div>
@@ -2262,7 +2314,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L388" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
+<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L389" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
 </blockquote>
 <p>Unique items, in stable order</p>
 
@@ -2304,7 +2356,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L390" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
+<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
 </blockquote>
 <p>Dict from value to index</p>
 
@@ -2346,7 +2398,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L378" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L379" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> filtered by predicate <code>f</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2422,7 +2474,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L383" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>filter</code>, but return indices for matching items</p>
 
@@ -2464,7 +2516,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L372" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L373" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>f</code> applied to all <code>items</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2557,8 +2609,7 @@ This makes it easy to create composites that don't require callers to know about
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#What is this? TODO Jeremy: fix</span>
-<span class="c1">#L.range(4).map(f, b=arg0)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#L.range(4).map(f, b=arg0)</span>
 </pre></div>
 
     </div>
@@ -2597,7 +2648,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L398" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L399" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>map</code>, but creates a dict from <code>items</code> to function results</p>
 
@@ -2640,7 +2691,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L400" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L401" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>zip(*items)</code></p>
 
@@ -2702,7 +2753,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L402" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zip</code> and <code>starmap</code></p>
 
@@ -2745,7 +2796,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L401" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L402" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>self</code> zip with each of <code>*rest</code></p>
 
@@ -2789,7 +2840,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L404" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zipwith</code> and <code>starmap</code></p>
 
@@ -2831,7 +2882,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
+<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L392" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with item <code>idx</code> of all <code>items</code></p>
 
@@ -2873,7 +2924,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L396" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L397" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
 
@@ -2916,7 +2967,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L358" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L359" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>New <a href="/foundation#L"><code>L</code></a> sorted by <code>key</code>. If key is str then use <code>attrgetter</code>. If key is int then use <code>itemgetter</code></p>
 
@@ -2958,7 +3009,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L364" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 <p>Same as <code>str.split</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
@@ -3000,7 +3051,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L367" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L368" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Same as <code>range</code>, but returns an <a href="/foundation#L"><code>L</code></a>. Can pass a collection for <code>a</code>, to use <code>len(a)</code></p>
 
@@ -3043,7 +3094,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L404" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
+<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L405" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
 </blockquote>
 <p>Concatenate all elements of list</p>
 

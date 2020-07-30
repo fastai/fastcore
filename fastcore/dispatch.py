@@ -88,6 +88,7 @@ class TypeDispatch:
     def __repr__(self):
         r = [f'({self._attname(k)},{self._attname(l)}) -> {getattr(v, "__name__", v.__class__.__name__)}'
              for k in self.funcs.d for l,v in self.funcs[k].d.items()]
+        r = r + [o.__repr__() for o in self.bases]
         return '\n'.join(r)
 
     def __call__(self, *args, **kwargs):

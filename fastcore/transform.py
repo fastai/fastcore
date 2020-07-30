@@ -71,7 +71,7 @@ class Transform(metaclass=_TfmMeta):
     def name(self): return getattr(self, '_name', _get_name(self))
     def __call__(self, x, **kwargs): return self._call('encodes', x, **kwargs)
     def decode  (self, x, **kwargs): return self._call('decodes', x, **kwargs)
-    def __repr__(self): return f'{self.name}: {self.encodes} {self.decodes}'
+    def __repr__(self): return f'{self.name}:\n{self.encodes} {self.decodes}'
 
     def setup(self, items=None, train_setup=False):
         train_setup = train_setup if self.train_setup is None else self.train_setup

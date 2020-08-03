@@ -279,12 +279,15 @@ def gen(func, seq, cond=true):
     return itertools.takewhile(cond, map(func,seq))
 
 # Cell
-def chunked(it, cs, drop_last=False):
+def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
+    "Return batches from iterator `it` of size `chunk_sz` (or return `n_chunks` total)"
+    assert bool(chunk_sz) ^ bool(n_chunks)
+    if n_chunks: chunk_sz = math.ceil(len(it)/n_chunks)
     if not isinstance(it, Iterator): it = iter(it)
     while True:
-        res = list(itertools.islice(it, cs))
-        if res and (len(res)==cs or not drop_last): yield res
-        if len(res)<cs: return
+        res = list(itertools.islice(it, chunk_sz))
+        if res and (len(res)==chunk_sz or not drop_last): yield res
+        if len(res)<chunk_sz: return
 
 # Cell
 num_methods = """

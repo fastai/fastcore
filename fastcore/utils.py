@@ -245,6 +245,9 @@ def _mk_op(nm, mod=None):
     mod[nm] = _inner
 
 # Cell
+#nbdev_comment _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
+
+# Cell
 for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
 
 # Cell
@@ -473,6 +476,9 @@ class _SelfCls:
     def __getitem__(self,i): return self.__getattr__('__getitem__')(i)
 
 Self = _SelfCls()
+
+# Cell
+#nbdev_comment _all_ = ['Self']
 
 # Cell
 @patch

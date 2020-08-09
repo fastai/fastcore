@@ -127,6 +127,9 @@ class DispatchReg:
 typedispatch = DispatchReg()
 
 # Cell
+#nbdev_comment _all_=['cast']
+
+# Cell
 def retain_meta(x, res, copy_meta=False):
     "Call `res.set_meta(x)`, if it exists"
     if hasattr(res,'set_meta'): res.set_meta(x, copy_meta=copy_meta)

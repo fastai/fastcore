@@ -839,9 +839,9 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="funcs_kwargs" class="doc_header"><code>funcs_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L152" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>funcs_kwargs</code>()</p>
+<h4 id="method" class="doc_header"><code>method</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L152" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>method</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
-<p>Replace methods in <code>cls._methods</code> with those from <code>kwargs</code></p>
+<p>Mark <code>f</code> as a method</p>
 
 </div>
 
@@ -849,6 +849,13 @@ description: "Basic functions used in the fastai library"
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}
@@ -871,9 +878,9 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="method" class="doc_header"><code>method</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L168" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>method</code>(<strong><code>f</code></strong>)</p>
+<h4 id="funcs_kwargs" class="doc_header"><code>funcs_kwargs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>funcs_kwargs</code>(<strong><code>as_method</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Mark <code>f</code> as a method</p>
+<p>Replace methods in <code>cls._methods</code> with those from <code>kwargs</code></p>
 
 </div>
 
@@ -907,14 +914,16 @@ description: "Basic functions used in the fastai library"
 <span class="n">test_sig</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;(f=1, *, b=None)&#39;</span><span class="p">)</span>
 <span class="n">test_fail</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="mi">3</span><span class="p">))</span>
 
-<span class="nd">@method</span>
 <span class="k">def</span> <span class="nf">_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="nd">@funcs_kwargs</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">T</span><span class="p">:</span> <span class="n">_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="n">_f</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">T2</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">=</span><span class="n">a</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">T2</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">b</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)</span>
@@ -998,7 +1007,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
+<h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L180" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
 </blockquote>
 <p>Copy values from <a href="/foundation#docs"><code>docs</code></a> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
 
@@ -1030,7 +1039,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="docs" class="doc_header"><code>docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>docs</code>()</p>
+<h4 id="docs" class="doc_header"><code>docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>docs</code>()</p>
 </blockquote>
 <p>Decorator version of <a href="/foundation#add_docs"><code>add_docs</code></a>, using <code>_docs</code> dict</p>
 
@@ -1087,7 +1096,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="custom_dir" class="doc_header"><code>custom_dir</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>custom_dir</code>(<strong><code>c</code></strong>, <strong><code>add</code></strong>:<code>list</code>)</p>
+<h4 id="custom_dir" class="doc_header"><code>custom_dir</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>custom_dir</code>(<strong><code>c</code></strong>, <strong><code>add</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Implement custom <code>__dir__</code>, adding <code>add</code> to <code>cls</code></p>
 
@@ -1171,7 +1180,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="bind" class="doc_header"><code>class</code> <code>bind</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L208" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bind</code>(<strong><code>fn</code></strong>, <strong>*<code>pargs</code></strong>, <strong>**<code>pkwargs</code></strong>)</p>
+<h2 id="bind" class="doc_header"><code>class</code> <code>bind</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L214" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>bind</code>(<strong><code>fn</code></strong>, <strong>*<code>pargs</code></strong>, <strong>**<code>pkwargs</code></strong>)</p>
 </blockquote>
 <p>Same as <code>partial</code>, except you can use <a href="/foundation#arg0"><code>arg0</code></a> <a href="/foundation#arg1"><code>arg1</code></a> etc param placeholders</p>
 
@@ -1225,7 +1234,7 @@ description: "Basic functions used in the fastai library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GetAttr" class="doc_header"><code>class</code> <code>GetAttr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L223" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GetAttr</code>()</p>
+<h2 id="GetAttr" class="doc_header"><code>class</code> <code>GetAttr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L229" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GetAttr</code>()</p>
 </blockquote>
 <p>Inherit from this to have all attr accesses in <code>self._xtra</code> passed down to <code>self.default</code></p>
 
@@ -1464,7 +1473,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="delegate_attr" class="doc_header"><code>delegate_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L241" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegate_attr</code>(<strong><code>k</code></strong>, <strong><code>to</code></strong>)</p>
+<h4 id="delegate_attr" class="doc_header"><code>delegate_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L247" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>delegate_attr</code>(<strong><code>k</code></strong>, <strong><code>to</code></strong>)</p>
 </blockquote>
 <p>Use in <code>__getattr__</code> to delegate to attr <code>to</code> without inheriting from <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
 
@@ -1525,7 +1534,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="coll_repr" class="doc_header"><code>coll_repr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coll_repr</code>(<strong><code>c</code></strong>, <strong><code>max_n</code></strong>=<em><code>10</code></em>)</p>
+<h4 id="coll_repr" class="doc_header"><code>coll_repr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L264" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coll_repr</code>(<strong><code>c</code></strong>, <strong><code>max_n</code></strong>=<em><code>10</code></em>)</p>
 </blockquote>
 <p>String repr of up to <code>max_n</code> items of (possibly lazy) collection <code>c</code></p>
 
@@ -1574,7 +1583,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mask2idxs" class="doc_header"><code>mask2idxs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L264" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask2idxs</code>(<strong><code>mask</code></strong>)</p>
+<h4 id="mask2idxs" class="doc_header"><code>mask2idxs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L270" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask2idxs</code>(<strong><code>mask</code></strong>)</p>
 </blockquote>
 <p>Convert bool mask or index list to index <a href="/foundation#L"><code>L</code></a></p>
 
@@ -1650,7 +1659,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CollBase" class="doc_header"><code>class</code> <code>CollBase</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L278" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CollBase</code>(<strong><code>items</code></strong>)</p>
+<h2 id="CollBase" class="doc_header"><code>class</code> <code>CollBase</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L284" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CollBase</code>(<strong><code>items</code></strong>)</p>
 </blockquote>
 <p>Base class for composing a list of <code>items</code></p>
 
@@ -1682,7 +1691,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="cycle" class="doc_header"><code>cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L289" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cycle</code>(<strong><code>o</code></strong>)</p>
+<h4 id="cycle" class="doc_header"><code>cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L295" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cycle</code>(<strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.cycle</code> except creates list of <code>None</code>s if <code>o</code> is empty</p>
 
@@ -1734,7 +1743,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="zip_cycle" class="doc_header"><code>zip_cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L295" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_cycle</code>(<strong><code>x</code></strong>, <strong>*<code>args</code></strong>)</p>
+<h4 id="zip_cycle" class="doc_header"><code>zip_cycle</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L301" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>zip_cycle</code>(<strong><code>x</code></strong>, <strong>*<code>args</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.zip_longest</code> but <a href="/foundation#cycle"><code>cycle</code></a>s through elements of all but first argument</p>
 
@@ -1783,7 +1792,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_indexer" class="doc_header"><code>is_indexer</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L300" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_indexer</code>(<strong><code>idx</code></strong>)</p>
+<h4 id="is_indexer" class="doc_header"><code>is_indexer</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L306" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_indexer</code>(<strong><code>idx</code></strong>)</p>
 </blockquote>
 <p>Test whether <code>idx</code> will index a single item in a list</p>
 
@@ -1815,7 +1824,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="negate_func" class="doc_header"><code>negate_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L305" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>negate_func</code>(<strong><code>f</code></strong>)</p>
+<h4 id="negate_func" class="doc_header"><code>negate_func</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L311" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>negate_func</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Create new function that negates result of <code>f</code></p>
 
@@ -1867,7 +1876,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L311" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="/foundation#CollBase"><code>CollBase</code></a></p>
+<h2 id="L" class="doc_header"><code>class</code> <code>L</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L317" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>L</code>(<strong><code>items</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>) :: <a href="/foundation#CollBase"><code>CollBase</code></a></p>
 </blockquote>
 <p>Behaves like a list of <code>items</code> but can also index with list of indices or masks</p>
 
@@ -2222,7 +2231,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.__getitem__" class="doc_header"><code>L.__getitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L328" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__getitem__</code>(<strong><code>idx</code></strong>)</p>
+<h4 id="L.__getitem__" class="doc_header"><code>L.__getitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L334" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__getitem__</code>(<strong><code>idx</code></strong>)</p>
 </blockquote>
 <p>Retrieve <code>idx</code> (can be list of indices, or mask, or int) items</p>
 
@@ -2269,7 +2278,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.__setitem__" class="doc_header"><code>L.__setitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L338" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__setitem__</code>(<strong><code>idx</code></strong>, <strong><code>o</code></strong>)</p>
+<h4 id="L.__setitem__" class="doc_header"><code>L.__setitem__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L344" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.__setitem__</code>(<strong><code>idx</code></strong>, <strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Set <code>idx</code> (can be list of indices, or mask, or int) items to <code>o</code> (which is broadcast if not iterable)</p>
 
@@ -2314,7 +2323,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L389" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
+<h4 id="L.unique" class="doc_header"><code>L.unique</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L395" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.unique</code>()</p>
 </blockquote>
 <p>Unique items, in stable order</p>
 
@@ -2356,7 +2365,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
+<h4 id="L.val2idx" class="doc_header"><code>L.val2idx</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L397" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.val2idx</code>()</p>
 </blockquote>
 <p>Dict from value to index</p>
 
@@ -2398,7 +2407,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L379" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.filter" class="doc_header"><code>L.filter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L385" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.filter</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> filtered by predicate <code>f</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2474,7 +2483,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.argwhere" class="doc_header"><code>L.argwhere</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L390" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.argwhere</code>(<strong><code>f</code></strong>, <strong><code>negate</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>filter</code>, but return indices for matching items</p>
 
@@ -2516,7 +2525,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L373" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map" class="doc_header"><code>L.map</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L379" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>f</code> applied to all <code>items</code>, passing <code>args</code> and <code>kwargs</code> to <code>f</code></p>
 
@@ -2648,7 +2657,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L399" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_dict" class="doc_header"><code>L.map_dict</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L405" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_dict</code>(<strong><code>f</code></strong>=<em><code>'noop'</code></em>, <strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>map</code>, but creates a dict from <code>items</code> to function results</p>
 
@@ -2691,7 +2700,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L401" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zip" class="doc_header"><code>L.zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L407" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zip</code>(<strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>zip(*items)</code></p>
 
@@ -2753,7 +2762,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zip" class="doc_header"><code>L.map_zip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L409" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zip</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zip</code> and <code>starmap</code></p>
 
@@ -2796,7 +2805,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L402" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.zipwith" class="doc_header"><code>L.zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L408" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.zipwith</code>(<strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with <code>self</code> zip with each of <code>*rest</code></p>
 
@@ -2840,7 +2849,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L404" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="L.map_zipwith" class="doc_header"><code>L.map_zipwith</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L410" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.map_zipwith</code>(<strong><code>f</code></strong>, <strong>*<code>rest</code></strong>, <strong><code>cycled</code></strong>=<em><code>False</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Combine <code>zipwith</code> and <code>starmap</code></p>
 
@@ -2882,7 +2891,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L392" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
+<h4 id="L.itemgot" class="doc_header"><code>L.itemgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L398" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.itemgot</code>(<strong>*<code>idxs</code></strong>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with item <code>idx</code> of all <code>items</code></p>
 
@@ -2924,7 +2933,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L397" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Create new <a href="/foundation#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
 
@@ -2967,7 +2976,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L359" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="L.sorted" class="doc_header"><code>L.sorted</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.sorted</code>(<strong><code>key</code></strong>=<em><code>None</code></em>, <strong><code>reverse</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>New <a href="/foundation#L"><code>L</code></a> sorted by <code>key</code>. If key is str then use <code>attrgetter</code>. If key is int then use <code>itemgetter</code></p>
 
@@ -3009,7 +3018,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
+<h4 id="L.split" class="doc_header"><code>L.split</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L371" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.split</code>(<strong><code>s</code></strong>, <strong><code>sep</code></strong>=<em><code>None</code></em>, <strong><code>maxsplit</code></strong>=<em><code>-1</code></em>)</p>
 </blockquote>
 <p>Same as <code>str.split</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 
@@ -3051,7 +3060,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L368" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="L.range" class="doc_header"><code>L.range</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L374" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.range</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>None</code></em>, <strong><code>step</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Same as <code>range</code>, but returns an <a href="/foundation#L"><code>L</code></a>. Can pass a collection for <code>a</code>, to use <code>len(a)</code></p>
 
@@ -3094,7 +3103,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L405" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
+<h4 id="L.concat" class="doc_header"><code>L.concat</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L411" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.concat</code>()</p>
 </blockquote>
 <p>Concatenate all elements of list</p>
 
@@ -3136,7 +3145,7 @@ This makes it easy to create composites that don't require callers to know about
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="L.copy" class="doc_header"><code>L.copy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L329" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.copy</code>()</p>
+<h4 id="L.copy" class="doc_header"><code>L.copy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L335" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.copy</code>()</p>
 </blockquote>
 <p>Same as <code>list.copy</code>, but returns an <a href="/foundation#L"><code>L</code></a></p>
 

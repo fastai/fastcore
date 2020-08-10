@@ -653,31 +653,45 @@ def change_attrs(o, names, new_vals, do=None):
 from multiprocessing import Process, Queue
 import concurrent.futures
 import time
+from multiprocessing import Manager
 
 # Cell
 def set_num_threads(nt):
     "Get numpy (and others) to use `nt` threads"
     try: import mkl; mkl.set_num_threads(nt)
     except: pass
-    torch.set_num_threads(nt)
+    try: import torch; torch.set_num_threads(nt)
+    except: pass
     os.environ['IPC_ENABLE']='1'
     for o in ['OPENBLAS_NUM_THREADS','NUMEXPR_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS']:
         os.environ[o] = str(nt)
 
 # Cell
+def _call(lock, pause, g, item):
+    l = False
+    if pause:
+        try:
+            l = lock.acquire(timeout=pause*10)
+            time.sleep(pause)
+        finally:
+            if l: lock.release()
+    return g(item)
+
+# Cell
 @delegates(concurrent.futures.ProcessPoolExecutor)
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
-    def __init__(self, max_workers=None, on_exc=print, **kwargs):
+    def __init__(self, max_workers=None, on_exc=print, pause=0, **kwargs):
         self.not_parallel = max_workers==0
-        self.on_exc = on_exc
+        self.on_exc,self.pause = on_exc,pause
         if self.not_parallel: max_workers=1
         super().__init__(max_workers, **kwargs)
 
     def map(self, f, items, *args, **kwargs):
+        self.lock = Manager().Lock()
         g = partial(f, *args, **kwargs)
         if self.not_parallel: return map(g, items)
-        try: return super().map(g, items)
+        try: return super().map(partial(_call, self.lock, self.pause, g), items)
         except Exception as e: self.on_exc(e)
 
 # Cell
@@ -685,10 +699,10 @@ try: from fastprogress import progress_bar
 except: progress_bar = None
 
 # Cell
-def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, **kwargs):
+def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
     if progress is None: progress = progress_bar is not None
-    with ProcessPoolExecutor(n_workers) as ex:
+    with ProcessPoolExecutor(n_workers, pause=pause) as ex:
         r = ex.map(f,items, *args, **kwargs)
         if progress:
             if total is None: total = len(items)

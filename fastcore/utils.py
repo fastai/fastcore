@@ -2,13 +2,15 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint',
-           'Int', 'Float', 'Str', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
-           'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt', 'le', 'ge',
-           'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen', 'chunked',
-           'num_methods', 'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file', 'remove_patches_path',
-           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'change_attr',
-           'change_attrs']
+           'Int', 'Float', 'Str', 'last_index', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
+           'is_listy', 'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt',
+           'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen',
+           'chunked', 'num_methods', 'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler',
+           'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
+           'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
+           'add_props', 'change_attr', 'change_attrs', 'set_num_threads', 'ProcessPoolExecutor', 'parallel',
+           'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook', 'IN_NOTEBOOK',
+           'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -135,6 +137,12 @@ class Int(int,ShowPrint): pass
 class Float(float,ShowPrint): pass
 class Str(str,ShowPrint): pass
 add_docs(Int, "An extensible `int`"); add_docs(Str, "An extensible `str`"); add_docs(Float, "An extensible `float`")
+
+# Cell
+def last_index(x, o):
+    "Finds the last index of occurence of `x` in `o` (returns -1 if no occurence)"
+    try: return next(i for i in reversed(range(len(o))) if o[i] == x)
+    except StopIteration: return -1
 
 # Cell
 def tuplify(o, use_list=False, match=None):
@@ -640,3 +648,113 @@ def change_attrs(o, names, new_vals, do=None):
             o,old,h = change_attr(o, n, v)
             olds.append(old); has.append(h)
     return o,olds,has
+
+# Cell
+from multiprocessing import Process, Queue
+import concurrent.futures
+import time
+
+# Cell
+def set_num_threads(nt):
+    "Get numpy (and others) to use `nt` threads"
+    try: import mkl; mkl.set_num_threads(nt)
+    except: pass
+    torch.set_num_threads(nt)
+    os.environ['IPC_ENABLE']='1'
+    for o in ['OPENBLAS_NUM_THREADS','NUMEXPR_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS']:
+        os.environ[o] = str(nt)
+
+# Cell
+@delegates(concurrent.futures.ProcessPoolExecutor)
+class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
+    "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
+    def __init__(self, max_workers=None, on_exc=print, **kwargs):
+        self.not_parallel = max_workers==0
+        self.on_exc = on_exc
+        if self.not_parallel: max_workers=1
+        super().__init__(max_workers, **kwargs)
+
+    def map(self, f, items, *args, **kwargs):
+        g = partial(f, *args, **kwargs)
+        if self.not_parallel: return map(g, items)
+        try: return super().map(g, items)
+        except Exception as e: self.on_exc(e)
+
+# Cell
+try: from fastprogress import progress_bar
+except: progress_bar = None
+
+# Cell
+def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, **kwargs):
+    "Applies `func` in parallel to `items`, using `n_workers`"
+    if progress is None: progress = progress_bar is not None
+    with ProcessPoolExecutor(n_workers) as ex:
+        r = ex.map(f,items, *args, **kwargs)
+        if progress:
+            if total is None: total = len(items)
+            r = progress_bar(r, total=total, leave=False)
+        return L(r)
+
+# Cell
+@delegates(parallel)
+def parallel_chunks(f, items, n_workers=0, **kwargs):
+    "Calls `parallel` after first creating `n_workers` batches from `items`"
+    nc = 1 if n_workers==0 else n_workers
+    chunks = list(chunked(items, n_chunks=nc))
+    res = parallel(f, chunks, n_workers= n_workers, **kwargs)
+    return res.sum()
+
+# Cell
+def run_procs(f, f_done, args):
+    "Call `f` for each item in `args` in parallel, yielding `f_done`"
+    processes = L(args).map(Process, args=arg0, target=f)
+    for o in processes: o.start()
+    yield from f_done()
+    processes.map(Self.join())
+
+# Cell
+def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
+    "Instantiate `cls` in `n_workers` procs & call each on a subset of `items` in parallel."
+    if n_workers==0:
+        yield from enumerate(list(cls(**kwargs)(items)))
+        return
+    batches = np.array_split(items, n_workers)
+    idx = np.cumsum(0 + L(batches).map(len))
+    queue = Queue()
+    def f(batch, start_idx):
+        obj = cls(**kwargs)
+        res = obj(batch)
+        for i,b in enumerate(res): queue.put((start_idx+i,b))
+    def done(): return (queue.get() for _ in progress_bar(items, leave=False))
+    yield from run_procs(f, done, L(batches,idx).zip())
+
+# Cell
+def in_ipython():
+    "Check if the code is running in the ipython environment (jupyter including)"
+    try: get_ipython(); return True
+    except: return False
+
+# Cell
+def in_colab():
+    "Check if the code is running in Google Colaboratory"
+    try:
+        from google import colab
+        return True
+    except: return False
+
+# Cell
+def in_notebook():
+    "Check if the code is running in a jupyter notebook"
+    if in_colab(): return True
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == 'ZMQInteractiveShell': return True   # Jupyter notebook, Spyder or qtconsole
+        elif shell == 'TerminalInteractiveShell': return False  # Terminal running IPython
+        else: return False  # Other type (?)
+    except NameError: return False      # Probably standard Python interpreter
+
+# Cell
+IN_IPYTHON,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_colab(),in_notebook()
+
+# Cell
+#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_COLAB', 'IN_IPYTHON']

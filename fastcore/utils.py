@@ -667,11 +667,11 @@ def set_num_threads(nt):
         os.environ[o] = str(nt)
 
 # Cell
-def _call(lock, pause, g, item):
+def _call(lock, pause, n, g, item):
     l = False
     if pause:
         try:
-            l = lock.acquire(timeout=pause*10)
+            l = lock.acquire(timeout=pause*(n+2))
             time.sleep(pause)
         finally:
             if l: lock.release()
@@ -683,7 +683,7 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
     def __init__(self, max_workers=None, on_exc=print, pause=0, **kwargs):
         self.not_parallel = max_workers==0
-        self.on_exc,self.pause = on_exc,pause
+        store_attr(self, 'on_exc,pause,max_workers')
         if self.not_parallel: max_workers=1
         super().__init__(max_workers, **kwargs)
 
@@ -691,7 +691,7 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
         self.lock = Manager().Lock()
         g = partial(f, *args, **kwargs)
         if self.not_parallel: return map(g, items)
-        try: return super().map(partial(_call, self.lock, self.pause, g), items)
+        try: return super().map(partial(_call, self.lock, self.pause, self.max_workers, g), items)
         except Exception as e: self.on_exc(e)
 
 # Cell

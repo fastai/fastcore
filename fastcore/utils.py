@@ -756,7 +756,9 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
         obj = cls(**kwargs)
         res = obj(batch)
         for i,b in enumerate(res): queue.put((start_idx+i,b))
-    def done(): return (queue.get() for _ in progress_bar(items, leave=False))
+    def done():
+        its = items if progress_bar is None else progress_bar(items, leave=False)
+        return (queue.get() for _ in its)
     yield from run_procs(f, done, L(batches,idx).zip())
 
 # Cell

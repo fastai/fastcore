@@ -9,13 +9,13 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
            'add_props', 'change_attr', 'change_attrs', 'set_num_threads', 'ProcessPoolExecutor', 'parallel',
-           'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook', 'IN_NOTEBOOK',
-           'IN_COLAB', 'IN_IPYTHON']
+           'parallel_chunks', 'run_procs', 'f_pg', 'done_pg', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook',
+           'IN_NOTEBOOK', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
 from .foundation import *
-from functools import wraps
+from functools import wraps, partial
 
 # Cell
 def ifnone(a, b):
@@ -727,6 +727,14 @@ def run_procs(f, f_done, args):
     processes.map(Self.join())
 
 # Cell
+def f_pg(clse, queue, batch, start_idx):
+        for i,b in enumerate(clse(batch)): queue.put((start_idx+i,b))
+
+# Cell
+def done_pg(queue, items):
+    return (queue.get() for _ in progress_bar(items, leave=False))
+
+# Cell
 def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     "Instantiate `cls` in `n_workers` procs & call each on a subset of `items` in parallel."
     if n_workers==0:
@@ -735,11 +743,8 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     batches = np.array_split(items, n_workers)
     idx = np.cumsum(0 + L(batches).map(len))
     queue = Queue()
-    def f(batch, start_idx):
-        obj = cls(**kwargs)
-        res = obj(batch)
-        for i,b in enumerate(res): queue.put((start_idx+i,b))
-    def done(): return (queue.get() for _ in progress_bar(items, leave=False))
+    f=partial(f_pg, cls(**kwargs), queue)
+    done=partial(done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())
 
 # Cell

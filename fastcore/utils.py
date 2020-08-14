@@ -8,9 +8,9 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'chunked', 'num_methods', 'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler',
            'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'change_attr', 'change_attrs', 'set_num_threads', 'ProcessPoolExecutor', 'parallel',
-           'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook', 'IN_NOTEBOOK',
-           'IN_COLAB', 'IN_IPYTHON']
+           'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
+           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook',
+           'IN_NOTEBOOK', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -650,6 +650,22 @@ def change_attrs(o, names, new_vals, do=None):
     return o,olds,has
 
 # Cell
+class _ConstantFunc():
+    "Returns a function that returns `o`"
+    def __init__(self, o): self.o = o
+    def __call__(self, *args, **kwargs): return self.o
+
+# Cell
+from contextlib import ExitStack
+
+# Cell
+class ContextManagers(GetAttr):
+    "Wrapper for `ExitStack` which enters a collection of context managers"
+    def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
+    def __enter__(self): self.default.map(self.stack.enter_context)
+    def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
+
+# Cell
 from multiprocessing import Process, Queue
 import concurrent.futures
 import time
@@ -681,7 +697,8 @@ def _call(lock, pause, n, g, item):
 @delegates(concurrent.futures.ProcessPoolExecutor)
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
-    def __init__(self, max_workers=None, on_exc=print, pause=0, **kwargs):
+    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
+        if max_workers is None: max_workers=defaults.cpus
         self.not_parallel = max_workers==0
         store_attr(self, 'on_exc,pause,max_workers')
         if self.not_parallel: max_workers=1

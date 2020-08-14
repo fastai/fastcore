@@ -650,12 +650,6 @@ def change_attrs(o, names, new_vals, do=None):
     return o,olds,has
 
 # Cell
-class _ConstantFunc():
-    "Returns a function that returns `o`"
-    def __init__(self, o): self.o = o
-    def __call__(self, *args, **kwargs): return self.o
-
-# Cell
 from contextlib import ExitStack
 
 # Cell

@@ -738,6 +738,12 @@ def run_procs(f, f_done, args):
     processes.map(Self.join())
 
 # Cell
+def _f_pg(obj, queue, batch, start_idx):
+    for i,b in enumerate(obj(batch)): queue.put((start_idx+i,b))
+
+def _done_pg(queue, items): return (queue.get() for _ in progress_bar(items, leave=False))
+
+# Cell
 def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     "Instantiate `cls` in `n_workers` procs & call each on a subset of `items` in parallel."
     if n_workers==0:
@@ -746,13 +752,8 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     batches = np.array_split(items, n_workers)
     idx = np.cumsum(0 + L(batches).map(len))
     queue = Queue()
-    def f(batch, start_idx):
-        obj = cls(**kwargs)
-        res = obj(batch)
-        for i,b in enumerate(res): queue.put((start_idx+i,b))
-    def done():
-        its = items if progress_bar is None else progress_bar(items, leave=False)
-        return (queue.get() for _ in its)
+    f=partial(_f_pg, cls(**kwargs), queue)
+    done=partial(_done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())
 
 # Cell

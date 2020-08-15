@@ -180,6 +180,7 @@ class Pipeline:
     "A pipeline of composed (for encode/decode) transforms, setup with types"
     def __init__(self, funcs=None, split_idx=None):
         self.split_idx,self.default = split_idx,None
+        if funcs is None: funcs = []
         if isinstance(funcs, Pipeline): self.fs = funcs.fs
         else:
             if isinstance(funcs, Transform): funcs = [funcs]

@@ -741,7 +741,7 @@ def run_procs(f, f_done, args):
 def _f_pg(obj, queue, batch, start_idx):
     for i,b in enumerate(obj(batch)): queue.put((start_idx+i,b))
 
-def _done_pg(queue, items): return (queue.get() for _ in progress_bar(items, leave=False))
+def _done_pg(queue, items): return (queue.get() for _ in items)
 
 # Cell
 def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
@@ -752,6 +752,7 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     batches = np.array_split(items, n_workers)
     idx = np.cumsum(0 + L(batches).map(len))
     queue = Queue()
+    if progress_bar: items = progress_bar(items, leave=False)
     f=partial(_f_pg, cls(**kwargs), queue)
     done=partial(_done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())

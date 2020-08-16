@@ -9,8 +9,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
            'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook',
-           'IN_NOTEBOOK', 'IN_COLAB', 'IN_IPYTHON']
+           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_jupyter',
+           'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -759,31 +759,27 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
 
 # Cell
 def in_ipython():
-    "Check if the code is running in the ipython environment (jupyter including)"
-    try: get_ipython(); return True
-    except: return False
+    "Check if the code is running in the ipython environment (including jupyter)"
+    return 'IPython.core' in sys.modules
 
 # Cell
 def in_colab():
     "Check if the code is running in Google Colaboratory"
-    try:
-        from google import colab
-        return True
-    except: return False
+    return 'google.colab' in sys.modules
+
+# Cell
+def in_jupyter():
+    "Check if the code is running in a jupyter notebook"
+    if not in_ipython(): return False
+    return get_ipython().__class__.__name__ == 'ZMQInteractiveShell'
 
 # Cell
 def in_notebook():
     "Check if the code is running in a jupyter notebook"
-    if in_colab(): return True
-    try:
-        shell = get_ipython().__class__.__name__
-        if shell == 'ZMQInteractiveShell': return True   # Jupyter notebook, Spyder or qtconsole
-        elif shell == 'TerminalInteractiveShell': return False  # Terminal running IPython
-        else: return False  # Other type (?)
-    except NameError: return False      # Probably standard Python interpreter
+    return in_colab() or in_jupyter()
 
 # Cell
-IN_IPYTHON,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_colab(),in_notebook()
+IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(),in_notebook()
 
 # Cell
-#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_COLAB', 'IN_IPYTHON']
+#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']

@@ -5,8 +5,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'Int', 'Float', 'Str', 'last_index', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
            'is_listy', 'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt',
            'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen',
-           'chunked', 'num_methods', 'rnum_methods', 'inum_methods', 'Tuple', 'trace', 'compose', 'maps', 'partialler',
-           'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
+           'chunked', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps',
+           'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
            'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
            'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_notebook',
@@ -315,7 +315,7 @@ inum_methods = """
 """.split()
 
 # Cell
-class Tuple(tuple):
+class fastuple(tuple):
     "A `tuple` with elementwise ops and more friendly __init__ behavior"
     def __new__(cls, x=None, *rest):
         if x is None: x = ()
@@ -327,16 +327,16 @@ class Tuple(tuple):
         return super().__new__(cls, x+rest if rest else x)
 
     def _op(self,op,*args):
-        if not isinstance(self,Tuple): self = Tuple(self)
+        if not isinstance(self,fastuple): self = fastuple(self)
         return type(self)(map(op,self,*map(cycle, args)))
 
     def mul(self,*args):
         "`*` is already defined in `tuple` for replicating, so use `mul` instead"
-        return Tuple._op(self, operator.mul,*args)
+        return fastuple._op(self, operator.mul,*args)
 
     def add(self,*args):
         "`+` is already defined in `tuple` for concat, so use `add` instead"
-        return Tuple._op(self, operator.add,*args)
+        return fastuple._op(self, operator.add,*args)
 
 def _get_op(op):
     if isinstance(op,str): op = getattr(operator,op)
@@ -344,12 +344,12 @@ def _get_op(op):
     return _f
 
 for n in num_methods:
-    if not hasattr(Tuple, n) and hasattr(operator,n): setattr(Tuple,n,_get_op(n))
+    if not hasattr(fastuple, n) and hasattr(operator,n): setattr(fastuple,n,_get_op(n))
 
-for n in 'eq ne lt le gt ge'.split(): setattr(Tuple,n,_get_op(n))
-setattr(Tuple,'__invert__',_get_op('__not__'))
-setattr(Tuple,'max',_get_op(max))
-setattr(Tuple,'min',_get_op(min))
+for n in 'eq ne lt le gt ge'.split(): setattr(fastuple,n,_get_op(n))
+setattr(fastuple,'__invert__',_get_op('__not__'))
+setattr(fastuple,'max',_get_op(max))
+setattr(fastuple,'min',_get_op(min))
 
 # Cell
 def trace(f):

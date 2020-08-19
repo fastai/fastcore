@@ -9,8 +9,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
            'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'in_ipython', 'in_colab', 'in_jupyter',
-           'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab',
+           'in_jupyter', 'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -255,7 +255,7 @@ def _mk_op(nm, mod=None):
     mod[nm] = _inner
 
 # Cell
-#nbdev_comment _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
+_all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
 
 # Cell
 for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
@@ -488,7 +488,7 @@ class _SelfCls:
 Self = _SelfCls()
 
 # Cell
-#nbdev_comment _all_ = ['Self']
+_all_ = ['Self']
 
 # Cell
 @patch
@@ -760,9 +760,15 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     yield from run_procs(f, done, L(batches,idx).zip())
 
 # Cell
+def ipython_shell():
+    "Same as `get_ipython` but returns `False` if not in IPython"
+    try: return get_ipython()
+    except NameError: return False
+
+# Cell
 def in_ipython():
-    "Check if the code is running in the ipython environment (including jupyter)"
-    return 'IPython.core' in sys.modules
+    "Check if code is running in some kind of IPython environment"
+    return bool(ipython_shell())
 
 # Cell
 def in_colab():
@@ -773,7 +779,7 @@ def in_colab():
 def in_jupyter():
     "Check if the code is running in a jupyter notebook"
     if not in_ipython(): return False
-    return get_ipython().__class__.__name__ == 'ZMQInteractiveShell'
+    return ipython_shell().__class__.__name__ == 'ZMQInteractiveShell'
 
 # Cell
 def in_notebook():
@@ -784,4 +790,4 @@ def in_notebook():
 IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(),in_notebook()
 
 # Cell
-#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+_all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']

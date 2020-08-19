@@ -127,7 +127,7 @@ class DispatchReg:
 typedispatch = DispatchReg()
 
 # Cell
-#nbdev_comment _all_=['cast']
+_all_=['cast']
 
 # Cell
 def retain_meta(x, res, copy_meta=False):

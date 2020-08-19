@@ -1,3 +1,4 @@
+import numpy as np
 import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile,subprocess
 import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings,threading
 
@@ -15,7 +16,6 @@ from operator import itemgetter,attrgetter
 from uuid import uuid4
 
 # External modules
-import numpy as np
 from numpy import array,ndarray
 from pdb import set_trace
 

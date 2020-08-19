@@ -150,6 +150,13 @@ nb_path: "nbs/02_utils.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the attribute <code>attr</code> for object <code>o</code>.  If the attribute doesn't exist, then return the object <code>o</code> instead.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -175,6 +182,45 @@ nb_path: "nbs/02_utils.ipynb"
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Lookup a user-supplied list of attributes (<code>flds</code>) of an object and generate a string with the name of each attribute and its corresponding value. The format of this string is <code>key=value</code>, where <code>key</code> is the name of the attribute, and <code>value</code> is the value of the attribute.  For each value, attempt to use the <code>__name__</code> attribute, otherwise fall back to using the value's <code>__repr__</code> when constructing the string.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">SomeClass</span><span class="p">:</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">b</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span>
+    <span class="fm">__repr__</span><span class="o">=</span><span class="n">basic_repr</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span>
+    <span class="vm">__name__</span><span class="o">=</span><span class="s1">&#39;some-class&#39;</span>
+    
+<span class="k">class</span> <span class="nc">AnotherClass</span><span class="p">:</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">SomeClass</span><span class="p">()</span>
+    <span class="n">d</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span>
+    <span class="fm">__repr__</span><span class="o">=</span><span class="n">basic_repr</span><span class="p">([</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">])</span>
+    
+<span class="n">sc</span> <span class="o">=</span> <span class="n">SomeClass</span><span class="p">()</span>    
+<span class="n">ac</span> <span class="o">=</span> <span class="n">AnotherClass</span><span class="p">()</span>
+
+<span class="n">test_eq</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">sc</span><span class="p">),</span> <span class="s1">&#39;SomeClass(a=1, b=foo)&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">ac</span><span class="p">),</span> <span class="s1">&#39;AnotherClass(c=some-class, d=bar)&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -344,7 +390,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__._t at 0x7fb7962e3510&gt;</pre>
+<pre>&lt;__main__._t at 0x7fb3eeb9b4d0&gt;</pre>
 </div>
 
 </div>
@@ -448,44 +494,12 @@ nb_path: "nbs/02_utils.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">ignore_exceptions</span><span class="p">():</span> <span class="n">unknown_func</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">ignore_exceptions</span><span class="p">():</span> 
+    <span class="c1"># Exception will be ignored</span>
+    <span class="k">raise</span> <span class="ne">Exception</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.utils</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">IN_NOTEBOOK</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>True</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -813,6 +827,7 @@ nb_path: "nbs/02_utils.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="n">camel2snake</span><span class="p">(</span><span class="s1">&#39;ClassAreCamel&#39;</span><span class="p">),</span> <span class="s1">&#39;class_are_camel&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">camel2snake</span><span class="p">(</span><span class="s1">&#39;Already_Snake&#39;</span><span class="p">),</span> <span class="s1">&#39;already__snake&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -891,11 +906,42 @@ nb_path: "nbs/02_utils.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="class2attr" class="doc_header"><code>class2attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L123" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>class2attr</code>(<strong><code>cls_name</code></strong>)</p>
 </blockquote>
+<p>Return the snake-cased name of the class.  Additionally, remove the substring <code>cls_name</code> only if it is a substring at the <strong>end</strong> of the string.</p>
 
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Parent</span><span class="p">:</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="n">class2attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Parent&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ChildOfParent</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span> <span class="k">pass</span>
+<span class="k">class</span> <span class="nc">ParentChildOf</span><span class="p">(</span><span class="n">Parent</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Parent</span><span class="p">()</span>
+<span class="n">cp</span> <span class="o">=</span> <span class="n">ChildOfParent</span><span class="p">()</span>
+<span class="n">cp2</span> <span class="o">=</span> <span class="n">ParentChildOf</span><span class="p">()</span>
+
+<span class="n">test_eq</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;parent&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;child_of&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">cp2</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;parent_child_of&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -920,7 +966,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="hasattrs" class="doc_header"><code>hasattrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L127" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>hasattrs</code>(<strong><code>o</code></strong>, <strong><code>attrs</code></strong>)</p>
+<h4 id="hasattrs" class="doc_header"><code>hasattrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L129" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>hasattrs</code>(<strong><code>o</code></strong>, <strong><code>attrs</code></strong>)</p>
 </blockquote>
 <p>Test whether <code>o</code> contains all <code>attrs</code></p>
 
@@ -970,7 +1016,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ShowPrint" class="doc_header"><code>class</code> <code>ShowPrint</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L132" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ShowPrint</code>()</p>
+<h2 id="ShowPrint" class="doc_header"><code>class</code> <code>ShowPrint</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L134" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ShowPrint</code>()</p>
 </blockquote>
 <p>Base class that prints for <code>show</code></p>
 
@@ -995,7 +1041,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Int" class="doc_header"><code>class</code> <code>Int</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L136" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Int</code>() :: <code>int</code></p>
+<h2 id="Int" class="doc_header"><code>class</code> <code>Int</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L138" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Int</code>() :: <code>int</code></p>
 </blockquote>
 <p>An extensible <code>int</code></p>
 
@@ -1020,7 +1066,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Float" class="doc_header"><code>class</code> <code>Float</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L137" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Float</code>(<strong><code>x</code></strong>=<em><code>0</code></em>) :: <code>float</code></p>
+<h2 id="Float" class="doc_header"><code>class</code> <code>Float</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L139" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Float</code>(<strong><code>x</code></strong>=<em><code>0</code></em>) :: <code>float</code></p>
 </blockquote>
 <p>An extensible <code>float</code></p>
 
@@ -1045,7 +1091,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Str" class="doc_header"><code>class</code> <code>Str</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L138" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Str</code>() :: <code>str</code></p>
+<h2 id="Str" class="doc_header"><code>class</code> <code>Str</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L140" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Str</code>() :: <code>str</code></p>
 </blockquote>
 <p>An extensible <code>str</code></p>
 
@@ -1077,7 +1123,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="last_index" class="doc_header"><code>last_index</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L142" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>last_index</code>(<strong><code>x</code></strong>, <strong><code>o</code></strong>)</p>
+<h4 id="last_index" class="doc_header"><code>last_index</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L144" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>last_index</code>(<strong><code>x</code></strong>, <strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Finds the last index of occurence of <code>x</code> in <code>o</code> (returns -1 if no occurence)</p>
 
@@ -1085,6 +1131,24 @@ nb_path: "nbs/02_utils.ipynb"
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="n">last_index</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">last_index</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -1115,7 +1179,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="tuplify" class="doc_header"><code>tuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L148" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>tuplify</code>(<strong><code>o</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="tuplify" class="doc_header"><code>tuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L150" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>tuplify</code>(<strong><code>o</code></strong>, <strong><code>use_list</code></strong>=<em><code>False</code></em>, <strong><code>match</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Make <code>o</code> a tuple</p>
 
@@ -1166,7 +1230,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="detuplify" class="doc_header"><code>detuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L153" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detuplify</code>(<strong><code>x</code></strong>)</p>
+<h4 id="detuplify" class="doc_header"><code>detuplify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L155" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detuplify</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>If <code>x</code> is a tuple with one thing, extract it</p>
 
@@ -1218,7 +1282,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="replicate" class="doc_header"><code>replicate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L158" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>replicate</code>(<strong><code>item</code></strong>, <strong><code>match</code></strong>)</p>
+<h4 id="replicate" class="doc_header"><code>replicate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L160" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>replicate</code>(<strong><code>item</code></strong>, <strong><code>match</code></strong>)</p>
 </blockquote>
 <p>Create tuple of <code>item</code> copied <code>len(match)</code> times</p>
 
@@ -1269,9 +1333,9 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="uniqueify" class="doc_header"><code>uniqueify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L163" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>uniqueify</code>(<strong><code>x</code></strong>, <strong><code>sort</code></strong>=<em><code>False</code></em>, <strong><code>bidir</code></strong>=<em><code>False</code></em>, <strong><code>start</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="uniqueify" class="doc_header"><code>uniqueify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L165" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>uniqueify</code>(<strong><code>x</code></strong>, <strong><code>sort</code></strong>=<em><code>False</code></em>, <strong><code>bidir</code></strong>=<em><code>False</code></em>, <strong><code>start</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Return the unique elements in <code>x</code>, optionally <code>sort</code>-ed, optionally return the reverse correspondence.</p>
+<p>Return the unique elements in <code>x</code>, optionally <code>sort</code>-ed, optionally return the reverse correspondence, optionally prepended with a list or tuple of elements.</p>
 
 </div>
 
@@ -1292,6 +1356,7 @@ nb_path: "nbs/02_utils.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">uniqueify</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])),{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">})</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">uniqueify</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">uniqueify</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">]),</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">v</span><span class="p">,</span><span class="n">o</span> <span class="o">=</span> <span class="n">uniqueify</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">bidir</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">v</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">o</span><span class="p">,{</span><span class="mi">1</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
@@ -1325,7 +1390,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="setify" class="doc_header"><code>setify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L172" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>setify</code>(<strong><code>o</code></strong>)</p>
+<h4 id="setify" class="doc_header"><code>setify</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L174" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>setify</code>(<strong><code>o</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -1377,7 +1442,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="merge" class="doc_header"><code>merge</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L175" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge</code>(<strong>*<code>ds</code></strong>)</p>
+<h4 id="merge" class="doc_header"><code>merge</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L177" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>merge</code>(<strong>*<code>ds</code></strong>)</p>
 </blockquote>
 <p>Merge all dictionaries in <code>ds</code></p>
 
@@ -1428,7 +1493,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_listy" class="doc_header"><code>is_listy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L180" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_listy</code>(<strong><code>x</code></strong>)</p>
+<h4 id="is_listy" class="doc_header"><code>is_listy</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L182" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_listy</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p><code>isinstance(x, (tuple,list,L))</code></p>
 
@@ -1449,7 +1514,8 @@ nb_path: "nbs/02_utils.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">is_listy</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">is_listy</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
+<span class="k">assert</span> <span class="n">is_listy</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
 <span class="k">assert</span> <span class="n">is_listy</span><span class="p">(</span><span class="n">L</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span>
 <span class="k">assert</span> <span class="n">is_listy</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 <span class="k">assert</span> <span class="ow">not</span> <span class="n">is_listy</span><span class="p">(</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span>
@@ -1480,7 +1546,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="range_of" class="doc_header"><code>range_of</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L185" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>range_of</code>(<strong><code>x</code></strong>)</p>
+<h4 id="range_of" class="doc_header"><code>range_of</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L187" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>range_of</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>All indices of collection <code>x</code> (i.e. <code>list(range(len(x)))</code>)</p>
 
@@ -1529,7 +1595,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="groupby" class="doc_header"><code>groupby</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L190" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>groupby</code>(<strong><code>x</code></strong>, <strong><code>key</code></strong>)</p>
+<h4 id="groupby" class="doc_header"><code>groupby</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L192" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>groupby</code>(<strong><code>x</code></strong>, <strong><code>key</code></strong>)</p>
 </blockquote>
 <p>Like <code>itertools.groupby</code> but doesn't need to be sorted, and isn't lazy</p>
 
@@ -1578,7 +1644,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="first" class="doc_header"><code>first</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L197" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>first</code>(<strong><code>x</code></strong>)</p>
+<h4 id="first" class="doc_header"><code>first</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L199" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>first</code>(<strong><code>x</code></strong>)</p>
 </blockquote>
 <p>First element of <code>x</code>, or None if missing</p>
 
@@ -1586,6 +1652,24 @@ nb_path: "nbs/02_utils.ipynb"
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="n">first</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">]),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">first</span><span class="p">([]),</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -1610,7 +1694,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="shufflish" class="doc_header"><code>shufflish</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L203" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>shufflish</code>(<strong><code>x</code></strong>, <strong><code>pct</code></strong>=<em><code>0.04</code></em>)</p>
+<h4 id="shufflish" class="doc_header"><code>shufflish</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L205" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>shufflish</code>(<strong><code>x</code></strong>, <strong><code>pct</code></strong>=<em><code>0.04</code></em>)</p>
 </blockquote>
 <p>Randomly relocate items of <code>x</code> up to <code>pct</code> of <code>len(x)</code> from their starting location</p>
 
@@ -1663,7 +1747,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="IterLen" class="doc_header"><code>class</code> <code>IterLen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L209" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IterLen</code>()</p>
+<h2 id="IterLen" class="doc_header"><code>class</code> <code>IterLen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L211" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>IterLen</code>()</p>
 </blockquote>
 <p>Base class to add iteration to anything supporting <code>len</code> and <code>__getitem__</code></p>
 
@@ -1695,7 +1779,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ReindexCollection" class="doc_header"><code>class</code> <code>ReindexCollection</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L215" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReindexCollection</code>(<strong><code>coll</code></strong>, <strong><code>idxs</code></strong>=<em><code>None</code></em>, <strong><code>cache</code></strong>=<em><code>None</code></em>, <strong><code>tfm</code></strong>=<em><code>'noop'</code></em>) :: <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
+<h2 id="ReindexCollection" class="doc_header"><code>class</code> <code>ReindexCollection</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L217" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReindexCollection</code>(<strong><code>coll</code></strong>, <strong><code>idxs</code></strong>=<em><code>None</code></em>, <strong><code>cache</code></strong>=<em><code>None</code></em>, <strong><code>tfm</code></strong>=<em><code>noop</code></em>) :: <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
 </blockquote>
 <p>Reindexes collection <code>coll</code> with indices <code>idxs</code> and optional LRU cache of size <code>cache</code></p>
 
@@ -1755,7 +1839,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="in_" class="doc_header"><code>in_</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L250" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>nan</code></em>)</p>
+<h4 id="in_" class="doc_header"><code>in_</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L252" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>=<em><code>nan</code></em>)</p>
 </blockquote>
 <p>Same as <a href="/utils#operator.in_"><code>operator.in_</code></a>, or returns partial if 1 arg</p>
 
@@ -1895,7 +1979,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Inf" class="doc_header"><code>class</code> <code>Inf</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L273" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Inf</code>()</p>
+<h2 id="Inf" class="doc_header"><code>class</code> <code>Inf</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L275" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Inf</code>()</p>
 </blockquote>
 <p>Infinite lists</p>
 
@@ -1961,7 +2045,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="true" class="doc_header"><code>true</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L278" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>true</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="true" class="doc_header"><code>true</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L280" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>true</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Predicate: always <code>True</code></p>
 
@@ -1993,7 +2077,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="stop" class="doc_header"><code>stop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L283" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stop</code>(<strong><code>e</code></strong>=<em><code>'StopIteration'</code></em>)</p>
+<h4 id="stop" class="doc_header"><code>stop</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L285" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>stop</code>(<strong><code>e</code></strong>=<em><code>StopIteration</code></em>)</p>
 </blockquote>
 <p>Raises exception <code>e</code> (by default <code>StopException</code>) even if in an expression</p>
 
@@ -2025,7 +2109,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="gen" class="doc_header"><code>gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L288" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gen</code>(<strong><code>func</code></strong>, <strong><code>seq</code></strong>, <strong><code>cond</code></strong>=<em><code>'true'</code></em>)</p>
+<h4 id="gen" class="doc_header"><code>gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L290" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>gen</code>(<strong><code>func</code></strong>, <strong><code>seq</code></strong>, <strong><code>cond</code></strong>=<em><code>true</code></em>)</p>
 </blockquote>
 <p>Like <code>(func(o) for o in seq if cond(func(o)))</code> but handles <code>StopIteration</code></p>
 
@@ -2101,7 +2185,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="chunked" class="doc_header"><code>chunked</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L293" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>chunked</code>(<strong><code>it</code></strong>, <strong><code>chunk_sz</code></strong>=<em><code>None</code></em>, <strong><code>drop_last</code></strong>=<em><code>False</code></em>, <strong><code>n_chunks</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="chunked" class="doc_header"><code>chunked</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L295" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>chunked</code>(<strong><code>it</code></strong>, <strong><code>chunk_sz</code></strong>=<em><code>None</code></em>, <strong><code>drop_last</code></strong>=<em><code>False</code></em>, <strong><code>n_chunks</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Return batches from iterator <code>it</code> of size <code>chunk_sz</code> (or return <code>n_chunks</code> total)</p>
 
@@ -2175,7 +2259,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="fastuple" class="doc_header"><code>class</code> <code>fastuple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L318" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>fastuple</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <code>tuple</code></p>
+<h2 id="fastuple" class="doc_header"><code>class</code> <code>fastuple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L320" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>fastuple</code>(<strong><code>x</code></strong>=<em><code>None</code></em>, <strong>*<code>rest</code></strong>) :: <code>tuple</code></p>
 </blockquote>
 <p>A <code>tuple</code> with elementwise ops and more friendly <strong>init</strong> behavior</p>
 
@@ -2247,7 +2331,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="trace" class="doc_header"><code>trace</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L355" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>trace</code>(<strong><code>f</code></strong>)</p>
+<h4 id="trace" class="doc_header"><code>trace</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L357" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>trace</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
 <p>Add <code>set_trace</code> to an existing function <code>f</code></p>
 
@@ -2279,7 +2363,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="compose" class="doc_header"><code>compose</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L363" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>compose</code>(<strong>*<code>funcs</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="compose" class="doc_header"><code>compose</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L365" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>compose</code>(<strong>*<code>funcs</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Create a function that composes all functions in <code>funcs</code>, passing along remaining <code>*args</code> and <code>**kwargs</code> to all</p>
 
@@ -2335,7 +2419,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="maps" class="doc_header"><code>maps</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L375" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>maps</code>(<strong>*<code>args</code></strong>, <strong><code>retain</code></strong>=<em><code>'noop'</code></em>)</p>
+<h4 id="maps" class="doc_header"><code>maps</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L377" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>maps</code>(<strong>*<code>args</code></strong>, <strong><code>retain</code></strong>=<em><code>noop</code></em>)</p>
 </blockquote>
 <p>Like <code>map</code>, except funcs are composed first</p>
 
@@ -2386,7 +2470,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="partialler" class="doc_header"><code>partialler</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L382" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>partialler</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="partialler" class="doc_header"><code>partialler</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L384" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>partialler</code>(<strong><code>f</code></strong>, <strong>*<code>args</code></strong>, <strong><code>order</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Like <code>functools.partial</code> but also copies over docstring</p>
 
@@ -2445,7 +2529,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mapped" class="doc_header"><code>mapped</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mapped</code>(<strong><code>f</code></strong>, <strong><code>it</code></strong>)</p>
+<h4 id="mapped" class="doc_header"><code>mapped</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L393" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mapped</code>(<strong><code>f</code></strong>, <strong><code>it</code></strong>)</p>
 </blockquote>
 <p>map <code>f</code> over <code>it</code>, unless it's not listy, in which case return <code>f(it)</code></p>
 
@@ -2496,7 +2580,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="instantiate" class="doc_header"><code>instantiate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L396" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>instantiate</code>(<strong><code>t</code></strong>)</p>
+<h4 id="instantiate" class="doc_header"><code>instantiate</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L398" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>instantiate</code>(<strong><code>t</code></strong>)</p>
 </blockquote>
 <p>Instantiate <code>t</code> if it's a type, otherwise do nothing</p>
 
@@ -2553,7 +2637,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="using_attr" class="doc_header"><code>using_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L405" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>using_attr</code>(<strong><code>f</code></strong>, <strong><code>attr</code></strong>)</p>
+<h4 id="using_attr" class="doc_header"><code>using_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L407" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>using_attr</code>(<strong><code>f</code></strong>, <strong><code>attr</code></strong>)</p>
 </blockquote>
 <p>Change function <code>f</code> to operate on <code>attr</code></p>
 
@@ -2633,7 +2717,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="log_args" class="doc_header"><code>log_args</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L410" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>log_args</code>(<strong><code>f</code></strong>=<em><code>None</code></em>, <strong><code>to_return</code></strong>=<em><code>False</code></em>, <strong><code>but</code></strong>=<em><code>None</code></em>, <strong><code>but_as</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="log_args" class="doc_header"><code>log_args</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L412" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>log_args</code>(<strong><code>f</code></strong>=<em><code>None</code></em>, <strong><code>to_return</code></strong>=<em><code>False</code></em>, <strong><code>but</code></strong>=<em><code>None</code></em>, <strong><code>but_as</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Decorator to log function args in 'to.init_args'</p>
 
@@ -2869,7 +2953,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.readlines" class="doc_header"><code>Path.readlines</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L492" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.readlines</code>(<strong><code>hint</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.readlines" class="doc_header"><code>Path.readlines</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L494" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.readlines</code>(<strong><code>hint</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Read the content of <code>fname</code></p>
 
@@ -2901,7 +2985,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.read" class="doc_header"><code>Path.read</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L498" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.read</code>(<strong><code>size</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.read" class="doc_header"><code>Path.read</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L500" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.read</code>(<strong><code>size</code></strong>=<em><code>-1</code></em>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Read the content of <code>fname</code></p>
 
@@ -2933,7 +3017,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.write" class="doc_header"><code>Path.write</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L504" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.write</code>(<strong><code>txt</code></strong>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
+<h4 id="Path.write" class="doc_header"><code>Path.write</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L506" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.write</code>(<strong><code>txt</code></strong>, <strong><code>encoding</code></strong>=<em><code>'utf8'</code></em>)</p>
 </blockquote>
 <p>Write <code>txt</code> to <code>self</code>, creating directories as needed</p>
 
@@ -2988,7 +3072,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.save" class="doc_header"><code>Path.save</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L511" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.save</code>(<strong><code>fn</code></strong>:<code>Path</code>, <strong><code>o</code></strong>)</p>
+<h4 id="Path.save" class="doc_header"><code>Path.save</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L513" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.save</code>(<strong><code>fn</code></strong>:<code>Path</code>, <strong><code>o</code></strong>)</p>
 </blockquote>
 <p>Save a pickle file, to a file name or opened file</p>
 
@@ -3020,7 +3104,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.load" class="doc_header"><code>Path.load</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L519" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.load</code>(<strong><code>fn</code></strong>:<code>Path</code>)</p>
+<h4 id="Path.load" class="doc_header"><code>Path.load</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L521" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.load</code>(<strong><code>fn</code></strong>:<code>Path</code>)</p>
 </blockquote>
 <p>Load a pickle file from a file name or opened file</p>
 
@@ -3073,7 +3157,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.ls" class="doc_header"><code>Path.ls</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L527" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.ls</code>(<strong><code>n_max</code></strong>=<em><code>None</code></em>, <strong><code>file_type</code></strong>=<em><code>None</code></em>, <strong><code>file_exts</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="Path.ls" class="doc_header"><code>Path.ls</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L529" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.ls</code>(<strong><code>n_max</code></strong>=<em><code>None</code></em>, <strong><code>file_type</code></strong>=<em><code>None</code></em>, <strong><code>file_exts</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Contents of path as a list</p>
 
@@ -3123,7 +3207,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Path(&#39;.ipynb_checkpoints&#39;)</pre>
+<pre>Path(&#39;02_utils.ipynb&#39;)</pre>
 </div>
 
 </div>
@@ -3168,7 +3252,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(Path(&#39;../fastcore/utils.py&#39;), Path(&#39;04_transform.ipynb&#39;))</pre>
+<pre>(Path(&#39;../fastcore/_nbdev.py&#39;), Path(&#39;02_utils.ipynb&#39;))</pre>
 </div>
 
 </div>
@@ -3197,7 +3281,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Path.__repr__" class="doc_header"><code>Path.__repr__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L538" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.__repr__</code>()</p>
+<h4 id="Path.__repr__" class="doc_header"><code>Path.__repr__</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L540" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Path.__repr__</code>()</p>
 </blockquote>
 <p>Return repr(self).</p>
 
@@ -3257,7 +3341,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bunzip" class="doc_header"><code>bunzip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L547" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bunzip</code>(<strong><code>fn</code></strong>)</p>
+<h4 id="bunzip" class="doc_header"><code>bunzip</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L549" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bunzip</code>(<strong><code>fn</code></strong>)</p>
 </blockquote>
 <p>bunzip <code>fn</code>, raising exception if output already exists</p>
 
@@ -3312,7 +3396,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="join_path_file" class="doc_header"><code>join_path_file</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L557" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>join_path_file</code>(<strong><code>file</code></strong>, <strong><code>path</code></strong>, <strong><code>ext</code></strong>=<em><code>''</code></em>)</p>
+<h4 id="join_path_file" class="doc_header"><code>join_path_file</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L559" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>join_path_file</code>(<strong><code>file</code></strong>, <strong><code>path</code></strong>, <strong><code>ext</code></strong>=<em><code>''</code></em>)</p>
 </blockquote>
 <p>Return <code>path/file</code> if file is a string or a <code>Path</code>, file otherwise</p>
 
@@ -3366,7 +3450,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="remove_patches_path" class="doc_header"><code>remove_patches_path</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L566" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_patches_path</code>()</p>
+<h4 id="remove_patches_path" class="doc_header"><code>remove_patches_path</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L568" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>remove_patches_path</code>()</p>
 </blockquote>
 
 </div>
@@ -3429,7 +3513,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="sort_by_run" class="doc_header"><code>sort_by_run</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L589" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sort_by_run</code>(<strong><code>fs</code></strong>)</p>
+<h4 id="sort_by_run" class="doc_header"><code>sort_by_run</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L591" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sort_by_run</code>(<strong><code>fs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -3506,7 +3590,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrettyString" class="doc_header"><code>class</code> <code>PrettyString</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L601" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrettyString</code>() :: <code>str</code></p>
+<h2 id="PrettyString" class="doc_header"><code>class</code> <code>PrettyString</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L603" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrettyString</code>() :: <code>str</code></p>
 </blockquote>
 <p>Little hack to get strings to show properly in Jupyter.</p>
 
@@ -3538,7 +3622,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="round_multiple" class="doc_header"><code>round_multiple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L606" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>round_multiple</code>(<strong><code>x</code></strong>, <strong><code>mult</code></strong>, <strong><code>round_down</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="round_multiple" class="doc_header"><code>round_multiple</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L608" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>round_multiple</code>(<strong><code>x</code></strong>, <strong><code>mult</code></strong>, <strong><code>round_down</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 <p>Round <code>x</code> to nearest multiple of <code>mult</code></p>
 
@@ -3592,7 +3676,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="even_mults" class="doc_header"><code>even_mults</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L613" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>even_mults</code>(<strong><code>start</code></strong>, <strong><code>stop</code></strong>, <strong><code>n</code></strong>)</p>
+<h4 id="even_mults" class="doc_header"><code>even_mults</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L615" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>even_mults</code>(<strong><code>start</code></strong>, <strong><code>stop</code></strong>, <strong><code>n</code></strong>)</p>
 </blockquote>
 <p>Build log-stepped array from <code>start</code> to <a href="/utils#stop"><code>stop</code></a> in <code>n</code> steps.</p>
 
@@ -3643,7 +3727,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="num_cpus" class="doc_header"><code>num_cpus</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L621" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>num_cpus</code>()</p>
+<h4 id="num_cpus" class="doc_header"><code>num_cpus</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L623" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>num_cpus</code>()</p>
 </blockquote>
 <p>Get number of cpus</p>
 
@@ -3675,7 +3759,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="add_props" class="doc_header"><code>add_props</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L629" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_props</code>(<strong><code>f</code></strong>, <strong><code>g</code></strong>=<em><code>None</code></em>, <strong><code>n</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="add_props" class="doc_header"><code>add_props</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L631" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_props</code>(<strong><code>f</code></strong>, <strong><code>g</code></strong>=<em><code>None</code></em>, <strong><code>n</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Create properties passing each of <code>range(n)</code> to f</p>
 
@@ -3756,7 +3840,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="change_attr" class="doc_header"><code>change_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L635" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attr</code>(<strong><code>o</code></strong>, <strong><code>name</code></strong>, <strong><code>new_val</code></strong>)</p>
+<h4 id="change_attr" class="doc_header"><code>change_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L637" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attr</code>(<strong><code>o</code></strong>, <strong><code>name</code></strong>, <strong><code>new_val</code></strong>)</p>
 </blockquote>
 <p>Change the attr <code>name</code> in <code>o</code> with <code>new_val</code> if it exists and return the old value</p>
 
@@ -3788,7 +3872,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="change_attrs" class="doc_header"><code>change_attrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L642" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attrs</code>(<strong><code>o</code></strong>, <strong><code>names</code></strong>, <strong><code>new_vals</code></strong>, <strong><code>do</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="change_attrs" class="doc_header"><code>change_attrs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L644" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>change_attrs</code>(<strong><code>o</code></strong>, <strong><code>names</code></strong>, <strong><code>new_vals</code></strong>, <strong><code>do</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Change the attr <code>names</code> in <code>o</code> with <code>new_vals</code> if it exists and return the old values</p>
 
@@ -3827,7 +3911,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ContextManagers" class="doc_header"><code>class</code> <code>ContextManagers</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L656" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ContextManagers</code>(<strong><code>mgrs</code></strong>) :: <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
+<h2 id="ContextManagers" class="doc_header"><code>class</code> <code>ContextManagers</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L658" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ContextManagers</code>(<strong><code>mgrs</code></strong>) :: <a href="/foundation#GetAttr"><code>GetAttr</code></a></p>
 </blockquote>
 <p>Wrapper for <code>ExitStack</code> which enters a collection of context managers</p>
 
@@ -3872,7 +3956,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="set_num_threads" class="doc_header"><code>set_num_threads</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L669" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_num_threads</code>(<strong><code>nt</code></strong>)</p>
+<h4 id="set_num_threads" class="doc_header"><code>set_num_threads</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L671" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>set_num_threads</code>(<strong><code>nt</code></strong>)</p>
 </blockquote>
 <p>Get numpy (and others) to use <code>nt</code> threads</p>
 
@@ -3880,33 +3964,6 @@ nb_path: "nbs/02_utils.ipynb"
 
 </div>
 
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">C</span><span class="p">():</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">min_time</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span><span class="o">.</span><span class="n">Lock</span><span class="p">(),</span><span class="n">min_time</span>
-
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_time</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_time</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-            <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -3938,7 +3995,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ProcessPoolExecutor" class="doc_header"><code>class</code> <code>ProcessPoolExecutor</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L692" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ProcessPoolExecutor</code>(<strong><code>max_workers</code></strong>=<em><code>64</code></em>, <strong><code>on_exc</code></strong>=<em><code>'print'</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>, <strong><code>mp_context</code></strong>=<em><code>None</code></em>, <strong><code>initializer</code></strong>=<em><code>None</code></em>, <strong><code>initargs</code></strong>=<em><code>()</code></em>) :: <a href="/utils#ProcessPoolExecutor"><code>ProcessPoolExecutor</code></a></p>
+<h2 id="ProcessPoolExecutor" class="doc_header"><code>class</code> <code>ProcessPoolExecutor</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L694" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ProcessPoolExecutor</code>(<strong><code>max_workers</code></strong>=<em><code>64</code></em>, <strong><code>on_exc</code></strong>=<em><code>print</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>, <strong><code>mp_context</code></strong>=<em><code>None</code></em>, <strong><code>initializer</code></strong>=<em><code>None</code></em>, <strong><code>initargs</code></strong>=<em><code>()</code></em>) :: <a href="/utils#ProcessPoolExecutor"><code>ProcessPoolExecutor</code></a></p>
 </blockquote>
 <p>Same as Python's ProcessPoolExecutor, except can pass <code>max_workers==0</code> for serial execution</p>
 
@@ -3977,7 +4034,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="parallel" class="doc_header"><code>parallel</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L713" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel</code>(<strong><code>f</code></strong>, <strong><code>items</code></strong>, <strong>*<code>args</code></strong>, <strong><code>n_workers</code></strong>=<em><code>64</code></em>, <strong><code>total</code></strong>=<em><code>None</code></em>, <strong><code>progress</code></strong>=<em><code>None</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="parallel" class="doc_header"><code>parallel</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L715" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel</code>(<strong><code>f</code></strong>, <strong><code>items</code></strong>, <strong>*<code>args</code></strong>, <strong><code>n_workers</code></strong>=<em><code>64</code></em>, <strong><code>total</code></strong>=<em><code>None</code></em>, <strong><code>progress</code></strong>=<em><code>None</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Applies <code>func</code> in parallel to <code>items</code>, using <code>n_workers</code></p>
 
@@ -4100,11 +4157,11 @@ nb_path: "nbs/02_utils.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0 2020-08-16 10:55:16.612035
-1 2020-08-16 10:55:16.869892
-2 2020-08-16 10:55:17.112821
-3 2020-08-16 10:55:17.364723
-4 2020-08-16 10:55:17.610586
+<pre>0 2020-08-19 16:28:44.482953
+1 2020-08-19 16:28:44.725464
+2 2020-08-19 16:28:44.974763
+3 2020-08-19 16:28:45.225195
+4 2020-08-19 16:28:45.474466
 </pre>
 </div>
 </div>
@@ -4133,7 +4190,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="parallel_chunks" class="doc_header"><code>parallel_chunks</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L724" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel_chunks</code>(<strong><code>f</code></strong>, <strong><code>items</code></strong>, <strong><code>n_workers</code></strong>=<em><code>0</code></em>, <strong><code>total</code></strong>=<em><code>None</code></em>, <strong><code>progress</code></strong>=<em><code>None</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>)</p>
+<h4 id="parallel_chunks" class="doc_header"><code>parallel_chunks</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L726" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel_chunks</code>(<strong><code>f</code></strong>, <strong><code>items</code></strong>, <strong><code>n_workers</code></strong>=<em><code>0</code></em>, <strong><code>total</code></strong>=<em><code>None</code></em>, <strong><code>progress</code></strong>=<em><code>None</code></em>, <strong><code>pause</code></strong>=<em><code>0</code></em>)</p>
 </blockquote>
 <p>Calls <a href="/utils#parallel"><code>parallel</code></a> after first creating <code>n_workers</code> batches from <code>items</code></p>
 
@@ -4239,7 +4296,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="run_procs" class="doc_header"><code>run_procs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L733" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>run_procs</code>(<strong><code>f</code></strong>, <strong><code>f_done</code></strong>, <strong><code>args</code></strong>)</p>
+<h4 id="run_procs" class="doc_header"><code>run_procs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L735" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>run_procs</code>(<strong><code>f</code></strong>, <strong><code>f_done</code></strong>, <strong><code>args</code></strong>)</p>
 </blockquote>
 <p>Call <code>f</code> for each item in <code>args</code> in parallel, yielding <code>f_done</code></p>
 
@@ -4278,7 +4335,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="parallel_gen" class="doc_header"><code>parallel_gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L747" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel_gen</code>(<strong><code>items</code></strong>, <strong><code>n_workers</code></strong>=<em><code>64</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="parallel_gen" class="doc_header"><code>parallel_gen</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L749" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>parallel_gen</code>(<strong><code>items</code></strong>, <strong><code>n_workers</code></strong>=<em><code>64</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 <p>Instantiate <code>cls</code> in <code>n_workers</code> procs &amp; call each on a subset of <code>items</code> in parallel.</p>
 
@@ -4407,9 +4464,9 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="in_ipython" class="doc_header"><code>in_ipython</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L761" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_ipython</code>()</p>
+<h4 id="ipython_shell" class="doc_header"><code>ipython_shell</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L763" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ipython_shell</code>()</p>
 </blockquote>
-<p>Check if the code is running in the ipython environment (including jupyter)</p>
+<p>Same as <code>get_ipython</code> but returns <code>False</code> if not in IPython</p>
 
 </div>
 
@@ -4439,7 +4496,39 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="in_colab" class="doc_header"><code>in_colab</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L766" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_colab</code>()</p>
+<h4 id="in_ipython" class="doc_header"><code>in_ipython</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L769" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_ipython</code>()</p>
+</blockquote>
+<p>Check if code is running in some kind of IPython environment</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="in_colab" class="doc_header"><code>in_colab</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L774" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_colab</code>()</p>
 </blockquote>
 <p>Check if the code is running in Google Colaboratory</p>
 
@@ -4471,7 +4560,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="in_jupyter" class="doc_header"><code>in_jupyter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L771" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_jupyter</code>()</p>
+<h4 id="in_jupyter" class="doc_header"><code>in_jupyter</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L779" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_jupyter</code>()</p>
 </blockquote>
 <p>Check if the code is running in a jupyter notebook</p>
 
@@ -4503,7 +4592,7 @@ nb_path: "nbs/02_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="in_notebook" class="doc_header"><code>in_notebook</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L777" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_notebook</code>()</p>
+<h4 id="in_notebook" class="doc_header"><code>in_notebook</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/utils.py#L785" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>in_notebook</code>()</p>
 </blockquote>
 <p>Check if the code is running in a jupyter notebook</p>
 
@@ -4527,6 +4616,47 @@ nb_path: "nbs/02_utils.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>These variables are availabe as a booleans in <code>fastcore.utils</code> as <code>IN_IPYTHON</code>, <code>IN_JUPYTER</code>, <code>IN_COLAB</code> and <code>IN_NOTEBOOK</code>.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastcore.utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">IN_IPYTHON</span><span class="p">,</span> <span class="n">IN_JUPYTER</span><span class="p">,</span> <span class="n">IN_COLAB</span><span class="p">,</span> <span class="n">IN_NOTEBOOK</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(True, True, False, True)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
     {% endraw %}

@@ -5,8 +5,9 @@ title: Welcome to fastcore
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Python supercharged for the fastai library"
-description: "Python supercharged for the fastai library"
+summary: "The Python goodies used in every fast.ai project"
+description: "The Python goodies used in every fast.ai project"
+nb_path: "nbs/index.ipynb"
 ---
 <!--
 
@@ -19,11 +20,14 @@ description: "Python supercharged for the fastai library"
 -->
 
 <div class="container" id="notebook-container">
-    {% raw %}
         
+    {% raw %}
+    
 <div class="cell border-box-sizing code_cell rendered">
 
 </div>
+    {% endraw %}
+
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Installing">Installing<a class="anchor-link" href="#Installing"> </a></h2>
@@ -32,32 +36,86 @@ description: "Python supercharged for the fastai library"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>fastcore is on PyPI so you can just run:</p>
-
-<pre><code>pip install fastcore</code></pre>
-<p>For an <a href="https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install">editable install</a>, use the following:</p>
-
-<pre><code>git clone https://github.com/fastai/fastcore
-cd fastcore
-pip install -e ".[dev]"</code></pre>
+<p>To install fastcore run: <code>conda install fastcore</code> (if you use Anaconda, which we strongly recommend) or <code>pip install fastcore</code>. For an <a href="https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install">editable install</a>, clone this repo and run: <code>pip install -e ".[dev]"</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Tests">Tests<a class="anchor-link" href="#Tests"> </a></h2>
+<h2 id="A-tour">A tour<a class="anchor-link" href="#A-tour"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To run the tests in parallel, launch:</p>
-<div class="highlight"><pre><span></span>nbdev_test_nbs
+<p>fastcore contains many features. See the <a href="https://fastcore.fast.ai">docs</a> for all the details; here's a (somewhat) quick tour of a few higlights.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Documentation">Documentation<a class="anchor-link" href="#Documentation"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All fast.ai projects, including this one, are built with <a href="https://nbdev.fast.ai">nbdev</a>, which is a full literate programming environment built on Jupyter Notebooks. That means that every piece of documentation, including the page you're reading now, can be accessed as interactive Jupyter notebooks. In fact, you can even grab a link directly to a notebook running interactively on Google Colab - if you want to follow along with this tour, click the link below:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">colab_link</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
 </pre></div>
-<p>or</p>
-<div class="highlight"><pre><span></span>make <span class="nb">test</span>
-</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<p><a href="https://colab.research.google.com/github/fastai/fastcore/blob/master/nbs/index.ipynb">Open <code>index</code> in Colab</a></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>(tour currently under construction)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Testing">Testing<a class="anchor-link" href="#Testing"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>fastcore's testing module is designed to work well with <a href="https://nbdev.fast.ai">nbdev</a>, which is a full literate programming environment built on Jupyter Notebooks. fastcore and nbdev's approach to testing starts with the premise that all your tests should pass. If one fails, no more tests in a notebook are run.</p>
 
 </div>
 </div>
@@ -71,6 +129,7 @@ pip install -e ".[dev]"</code></pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After you clone this repository, please run <code>nbdev_install_git_hooks</code> in your terminal. This sets up git hooks, which clean up the notebooks to remove the extraneous stuff stored in the notebooks (e.g. which cells you ran) which causes unnecessary merge conflicts.</p>
+<p>To run the tests in parallel, launch <code>nbdev_test_nbs</code> or <code>make test</code>.</p>
 <p>Before submitting a PR, check that the local library and notebooks match. The script <code>nbdev_diff_nbs</code> can let you know if there is a difference between the local library and the notebooks.</p>
 <ul>
 <li>If you made a change to the notebooks in one of the exported cells, you can export it to the library with <code>nbdev_build_lib</code> or <code>make fastcore</code>.</li>
@@ -80,14 +139,6 @@ pip install -e ".[dev]"</code></pre>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>TODO: Write this page</p>
-
-</div>
-</div>
-</div>
-    {% endraw %}
 </div>
  
 

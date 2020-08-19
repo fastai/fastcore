@@ -7,7 +7,7 @@ fastcore: $(SRC)
 	touch fastcore
 
 docs_serve: docs
-	cd docs && bundle exec jekyll serve
+	cd docs && bundle exec jekyll serve --baseurl ""
 
 docs: $(SRC)
 	nbdev_build_docs

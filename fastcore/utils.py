@@ -121,7 +121,9 @@ def snake2camel(s):
 
 # Cell
 def class2attr(self, cls_name):
+    "Return the snake-cased name of the class.  Additionally, remove the substring `cls_name` only if it is a substring at the **end** of the string."
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
+
 
 # Cell
 def hasattrs(o,attrs):
@@ -161,7 +163,7 @@ def replicate(item,match):
 
 # Cell
 def uniqueify(x, sort=False, bidir=False, start=None):
-    "Return the unique elements in `x`, optionally `sort`-ed, optionally return the reverse correspondence."
+    "Return the unique elements in `x`, optionally `sort`-ed, optionally return the reverse correspondence, optionally prepended with a list or tuple of elements."
     res = L(x).unique()
     if start is not None: res = start+res
     if sort: res.sort()

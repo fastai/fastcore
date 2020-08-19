@@ -163,7 +163,7 @@ def replicate(item,match):
 
 # Cell
 def uniqueify(x, sort=False, bidir=False, start=None):
-    "Return the unique elements in `x`, optionally `sort`-ed, optionally return the reverse correspondence."
+    "Return the unique elements in `x`, optionally `sort`-ed, optionally return the reverse correspondence, optionally prepended with a list or tuple of elements."
     res = L(x).unique()
     if start is not None: res = start+res
     if sort: res.sort()

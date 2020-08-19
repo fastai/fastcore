@@ -121,7 +121,9 @@ def snake2camel(s):
 
 # Cell
 def class2attr(self, cls_name):
+    "Return the snake-cased name of the class.  Additionally, remove the substring `cls_name` only if it is a substring at the **end** of the string."
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
+
 
 # Cell
 def hasattrs(o,attrs):

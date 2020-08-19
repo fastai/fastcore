@@ -2,10 +2,10 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint',
-           'Int', 'Float', 'Str', 'last_index', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
-           'is_listy', 'range_of', 'groupby', 'first', 'shufflish', 'IterLen', 'ReindexCollection', 'in_', 'lt', 'gt',
-           'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'Inf', 'true', 'stop', 'gen',
-           'chunked', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps',
+           'Int', 'Float', 'Str', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
+           'range_of', 'groupby', 'first', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
+           'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
+           'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
            'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
            'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
            'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
@@ -141,12 +141,6 @@ class Str(str,ShowPrint): pass
 add_docs(Int, "An extensible `int`"); add_docs(Str, "An extensible `str`"); add_docs(Float, "An extensible `float`")
 
 # Cell
-def last_index(x, o):
-    "Finds the last index of occurence of `x` in `o` (returns -1 if no occurence)"
-    try: return next(i for i in reversed(range(len(o))) if o[i] == x)
-    except StopIteration: return -1
-
-# Cell
 def tuplify(o, use_list=False, match=None):
     "Make `o` a tuple"
     return tuple(L(o, use_list=use_list, match=match))
@@ -202,6 +196,12 @@ def first(x):
     except StopIteration: return None
 
 # Cell
+def last_index(x, o):
+    "Finds the last index of occurence of `x` in `o` (returns -1 if no occurence)"
+    try: return next(i for i in reversed(range(len(o))) if o[i] == x)
+    except StopIteration: return -1
+
+# Cell
 def shufflish(x, pct=0.04):
     "Randomly relocate items of `x` up to `pct` of `len(x)` from their starting location"
     n = len(x)
@@ -234,73 +234,6 @@ class ReindexCollection(GetAttr, IterLen):
     _docs = dict(reindex="Replace `self.idxs` with idxs",
                 shuffle="Randomly shuffle indices",
                 cache_clear="Clear LRU cache")
-
-# Cell
-def in_(x, a):
-    "`True` if `x in a`"
-    return x in a
-
-operator.in_ = in_
-
-# Cell
-def _oper(op,a,b=np.nan): return (lambda o:op(o,a)) if b!=b else op(a,b)
-
-def _mk_op(nm, mod=None):
-    "Create an operator using `oper` and add to the caller's module"
-    if mod is None: mod = inspect.currentframe().f_back.f_locals
-    op = getattr(operator,nm)
-    def _inner(a,b=np.nan): return _oper(op, a,b)
-    _inner.__name__ = _inner.__qualname__ = nm
-    _inner.__doc__ = f'Same as `operator.{nm}`, or returns partial if 1 arg'
-    mod[nm] = _inner
-
-# Cell
-_all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
-
-# Cell
-for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
-
-# Cell
-class _InfMeta(type):
-    @property
-    def count(self): return itertools.count()
-    @property
-    def zeros(self): return itertools.cycle([0])
-    @property
-    def ones(self):  return itertools.cycle([1])
-    @property
-    def nones(self): return itertools.cycle([None])
-
-# Cell
-class Inf(metaclass=_InfMeta):
-    "Infinite lists"
-    pass
-
-# Cell
-def true(*args, **kwargs):
-    "Predicate: always `True`"
-    return True
-
-# Cell
-def stop(e=StopIteration):
-    "Raises exception `e` (by default `StopException`) even if in an expression"
-    raise e
-
-# Cell
-def gen(func, seq, cond=true):
-    "Like `(func(o) for o in seq if cond(func(o)))` but handles `StopIteration`"
-    return itertools.takewhile(cond, map(func,seq))
-
-# Cell
-def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
-    "Return batches from iterator `it` of size `chunk_sz` (or return `n_chunks` total)"
-    assert bool(chunk_sz) ^ bool(n_chunks)
-    if n_chunks: chunk_sz = math.ceil(len(it)/n_chunks)
-    if not isinstance(it, Iterator): it = iter(it)
-    while True:
-        res = list(itertools.islice(it, chunk_sz))
-        if res and (len(res)==chunk_sz or not drop_last): yield res
-        if len(res)<chunk_sz: return
 
 # Cell
 num_methods = """
@@ -352,6 +285,73 @@ for n in 'eq ne lt le gt ge'.split(): setattr(fastuple,n,_get_op(n))
 setattr(fastuple,'__invert__',_get_op('__not__'))
 setattr(fastuple,'max',_get_op(max))
 setattr(fastuple,'min',_get_op(min))
+
+# Cell
+class _InfMeta(type):
+    @property
+    def count(self): return itertools.count()
+    @property
+    def zeros(self): return itertools.cycle([0])
+    @property
+    def ones(self):  return itertools.cycle([1])
+    @property
+    def nones(self): return itertools.cycle([None])
+
+# Cell
+class Inf(metaclass=_InfMeta):
+    "Infinite lists"
+    pass
+
+# Cell
+def in_(x, a):
+    "`True` if `x in a`"
+    return x in a
+
+operator.in_ = in_
+
+# Cell
+def _oper(op,a,b=np.nan): return (lambda o:op(o,a)) if b!=b else op(a,b)
+
+def _mk_op(nm, mod=None):
+    "Create an operator using `oper` and add to the caller's module"
+    if mod is None: mod = inspect.currentframe().f_back.f_locals
+    op = getattr(operator,nm)
+    def _inner(a,b=np.nan): return _oper(op, a,b)
+    _inner.__name__ = _inner.__qualname__ = nm
+    _inner.__doc__ = f'Same as `operator.{nm}`, or returns partial if 1 arg'
+    mod[nm] = _inner
+
+# Cell
+#nbdev_comment _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
+
+# Cell
+for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
+
+# Cell
+def true(*args, **kwargs):
+    "Predicate: always `True`"
+    return True
+
+# Cell
+def stop(e=StopIteration):
+    "Raises exception `e` (by default `StopException`) even if in an expression"
+    raise e
+
+# Cell
+def gen(func, seq, cond=true):
+    "Like `(func(o) for o in seq if cond(func(o)))` but handles `StopIteration`"
+    return itertools.takewhile(cond, map(func,seq))
+
+# Cell
+def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
+    "Return batches from iterator `it` of size `chunk_sz` (or return `n_chunks` total)"
+    assert bool(chunk_sz) ^ bool(n_chunks)
+    if n_chunks: chunk_sz = math.ceil(len(it)/n_chunks)
+    if not isinstance(it, Iterator): it = iter(it)
+    while True:
+        res = list(itertools.islice(it, chunk_sz))
+        if res and (len(res)==chunk_sz or not drop_last): yield res
+        if len(res)<chunk_sz: return
 
 # Cell
 def trace(f):
@@ -488,7 +488,7 @@ class _SelfCls:
 Self = _SelfCls()
 
 # Cell
-_all_ = ['Self']
+#nbdev_comment _all_ = ['Self']
 
 # Cell
 @patch
@@ -790,4 +790,4 @@ def in_notebook():
 IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(),in_notebook()
 
 # Cell
-_all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']

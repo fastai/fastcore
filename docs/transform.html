@@ -58,7 +58,7 @@ nb_path: "nbs/04_transform.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The classes here provide functionality for creating a composition of <em>partially reversible functions</em>. By "partially reversible" we mean that a transform can be <code>decode</code>d, creating a form suitable for display. This is not necessarily identical to the original form (e.g. a transform that changes a byte tensor to a float tensor does not recreate a byte tensor when decoded, since that may lose precision, and a float tensor can be displayed already).</p>
-<p>Classes are also provided and for composing transforms, and mapping them over collections. <a href="/transform#Pipeline"><code>Pipeline</code></a> is a transform which composes several <a href="/transform#Transform"><code>Transform</code></a>, knowing how to decode them or show an encoded item.</p>
+<p>Classes are also provided and for composing transforms, and mapping them over collections. <a href="/transform.html#Pipeline"><code>Pipeline</code></a> is a transform which composes several <a href="/transform.html#Transform"><code>Transform</code></a>, knowing how to decode them or show an encoded item.</p>
 
 </div>
 </div>
@@ -125,23 +125,23 @@ nb_path: "nbs/04_transform.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A <a href="/transform#Transform"><code>Transform</code></a> is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the <a href="/transform#Transform"><code>Transform</code></a> class provides several mechanisms that make the process of building them easy and flexible.</p>
-<h3 id="The-main-Transform-features:">The main <a href="/transform#Transform"><code>Transform</code></a> features:<a class="anchor-link" href="#The-main-Transform-features:"> </a></h3><ul>
+<p>A <a href="/transform.html#Transform"><code>Transform</code></a> is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the <a href="/transform.html#Transform"><code>Transform</code></a> class provides several mechanisms that make the process of building them easy and flexible.</p>
+<h3 id="The-main-Transform-features:">The main <a href="/transform.html#Transform"><code>Transform</code></a> features:<a class="anchor-link" href="#The-main-Transform-features:"> </a></h3><ul>
 <li><strong>Type dispatch</strong> - Type annotations are used to determine if a transform should be applied to the given argument. It also gives an option to provide several implementations and it choses the one to run based on the type. This is useful for example when running both independent and dependent variables through the pipeline where some transforms only make sense for one and not the other. Another usecase is designing a transform that handles different data formats. Note that if a transform takes multiple arguments only the type of the first one is used for dispatch. </li>
-<li><strong>Handling of tuples</strong> - When a tuple (or a subclass of tuple) of data is passed to a transform it will get applied to each element separately. You can opt out of this behavior by passing a list or an <a href="/foundation#L"><code>L</code></a>, as only tuples gets this specific behavior. An alternative is to use <a href="/transform#ItemTransform"><code>ItemTransform</code></a> defined below, which will always take the input as a whole.</li>
+<li><strong>Handling of tuples</strong> - When a tuple (or a subclass of tuple) of data is passed to a transform it will get applied to each element separately. You can opt out of this behavior by passing a list or an <a href="/foundation.html#L"><code>L</code></a>, as only tuples gets this specific behavior. An alternative is to use <a href="/transform.html#ItemTransform"><code>ItemTransform</code></a> defined below, which will always take the input as a whole.</li>
 <li><strong>Reversability</strong> - A transform can be made reversible by implementing the <code>decodes</code> method. This is mainly used to turn something like a category which is encoded as a number back into a label understandable by humans for showing purposes. Like the regular call method, the <code>decode</code> method that is used to decode will be applied over each element of a tuple separately.</li>
 <li><strong>Type propagation</strong> - Whenever possible a transform tries to return data of the same type it received. Mainly used to maintain semantics of things like <code>ArrayImage</code> which is a thin wrapper of pytorches <code>Tensor</code>. You can opt out of this behavior by adding <code>-&gt;None</code> return type annotation.</li>
 <li><strong>Preprocessing</strong> - The <code>setup</code> method can be used to perform any one-time calculations to be later used by the transform, for example generating a vocabulary to encode categorical data.</li>
 <li><strong>Filtering based on the dataset type</strong> - By setting the <code>split_idx</code> flag you can make the transform be used only in a specific <code>DataSource</code> subset like in training, but not validation.</li>
-<li><strong>Ordering</strong> - You can set the <code>order</code> attribute which the <a href="/transform#Pipeline"><code>Pipeline</code></a> uses when it needs to merge two lists of transforms.</li>
-<li><strong>Appending new behavior with decorators</strong> - You can easily extend an existing <a href="/transform#Transform"><code>Transform</code></a> by creating <code>encodes</code> or <code>decodes</code> methods for new data types. You can put those new methods outside the original transform definition and decorate them with the class you wish them patched into. This can be used by the fastai library users to add their own behavior, or multiple modules contributing to the same transform.</li>
+<li><strong>Ordering</strong> - You can set the <code>order</code> attribute which the <a href="/transform.html#Pipeline"><code>Pipeline</code></a> uses when it needs to merge two lists of transforms.</li>
+<li><strong>Appending new behavior with decorators</strong> - You can easily extend an existing <a href="/transform.html#Transform"><code>Transform</code></a> by creating <code>encodes</code> or <code>decodes</code> methods for new data types. You can put those new methods outside the original transform definition and decorate them with the class you wish them patched into. This can be used by the fastai library users to add their own behavior, or multiple modules contributing to the same transform.</li>
 </ul>
-<h3 id="Defining-a-Transform">Defining a <a href="/transform#Transform"><code>Transform</code></a><a class="anchor-link" href="#Defining-a-Transform"> </a></h3><p>There are a few ways to create a transform with different ratios of simplicity to flexibility.</p>
+<h3 id="Defining-a-Transform">Defining a <a href="/transform.html#Transform"><code>Transform</code></a><a class="anchor-link" href="#Defining-a-Transform"> </a></h3><p>There are a few ways to create a transform with different ratios of simplicity to flexibility.</p>
 <ul>
-<li><strong>Extending the <a href="/transform#Transform"><code>Transform</code></a> class</strong> - Use inheritence to implement the methods you want.</li>
-<li><strong>Passing methods to the constructor</strong> - Instantiate the <a href="/transform#Transform"><code>Transform</code></a> class and pass your functions as <code>enc</code> and <code>dec</code> arguments.</li>
-<li><strong>@Transform decorator</strong> - Turn any function into a <a href="/transform#Transform"><code>Transform</code></a> by just adding a decorator - very straightforward if all you need is a single <code>encodes</code> implementation.</li>
-<li><strong>Passing a function to fastai APIs</strong> - Same as above, but when passing a function to other transform aware classes like <a href="/transform#Pipeline"><code>Pipeline</code></a> or <code>TfmdDS</code> you don't even need a decorator. Your function will get converted to a <a href="/transform#Transform"><code>Transform</code></a> automatically.</li>
+<li><strong>Extending the <a href="/transform.html#Transform"><code>Transform</code></a> class</strong> - Use inheritence to implement the methods you want.</li>
+<li><strong>Passing methods to the constructor</strong> - Instantiate the <a href="/transform.html#Transform"><code>Transform</code></a> class and pass your functions as <code>enc</code> and <code>dec</code> arguments.</li>
+<li><strong>@Transform decorator</strong> - Turn any function into a <a href="/transform.html#Transform"><code>Transform</code></a> by just adding a decorator - very straightforward if all you need is a single <code>encodes</code> implementation.</li>
+<li><strong>Passing a function to fastai APIs</strong> - Same as above, but when passing a function to other transform aware classes like <a href="/transform.html#Pipeline"><code>Pipeline</code></a> or <code>TfmdDS</code> you don't even need a decorator. Your function will get converted to a <a href="/transform.html#Transform"><code>Transform</code></a> automatically.</li>
 </ul>
 
 </div>
@@ -183,7 +183,7 @@ nb_path: "nbs/04_transform.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/transform#Transform"><code>Transform</code></a> can be used as a decorator, to turn a function into a <a href="/transform#Transform"><code>Transform</code></a>.</p>
+<p><a href="/transform.html#Transform"><code>Transform</code></a> can be used as a decorator, to turn a function into a <a href="/transform.html#Transform"><code>Transform</code></a>.</p>
 
 </div>
 </div>
@@ -250,7 +250,7 @@ nb_path: "nbs/04_transform.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can derive from <a href="/transform#Transform"><code>Transform</code></a> and use <code>encodes</code> for your encoding function.</p>
+<p>You can derive from <a href="/transform.html#Transform"><code>Transform</code></a> and use <code>encodes</code> for your encoding function.</p>
 
 </div>
 </div>
@@ -340,7 +340,7 @@ decodes: (ArrayImage,object) -&gt; decodes</pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Without return annotation we get an <a href="/utils#Int"><code>Int</code></a> back since that's what was passed.</p>
+<p>Without return annotation we get an <a href="/utils.html#Int"><code>Int</code></a> back since that's what was passed.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ decodes: (ArrayImage,object) -&gt; decodes</pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since <code>decodes</code> has no return annotation, but <code>encodes</code> created an <a href="/utils#Int"><code>Int</code></a> and we pass that result here to <code>decode</code>, we end up with an <a href="/utils#Int"><code>Int</code></a>.</p>
+<p>Since <code>decodes</code> has no return annotation, but <code>encodes</code> created an <a href="/utils.html#Int"><code>Int</code></a> and we pass that result here to <code>decode</code>, we end up with an <a href="/utils.html#Int"><code>Int</code></a>.</p>
 
 </div>
 </div>
@@ -593,9 +593,9 @@ decodes: (ArrayImage,object) -&gt; decodes</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InplaceTransform" class="doc_header"><code>class</code> <code>InplaceTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L95" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InplaceTransform</code>(<strong><code>enc</code></strong>=<em><code>None</code></em>, <strong><code>dec</code></strong>=<em><code>None</code></em>, <strong><code>split_idx</code></strong>=<em><code>None</code></em>, <strong><code>order</code></strong>=<em><code>None</code></em>) :: <a href="/transform#Transform"><code>Transform</code></a></p>
+<h2 id="InplaceTransform" class="doc_header"><code>class</code> <code>InplaceTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L95" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InplaceTransform</code>(<strong><code>enc</code></strong>=<em><code>None</code></em>, <strong><code>dec</code></strong>=<em><code>None</code></em>, <strong><code>split_idx</code></strong>=<em><code>None</code></em>, <strong><code>order</code></strong>=<em><code>None</code></em>) :: <a href="/transform.html#Transform"><code>Transform</code></a></p>
 </blockquote>
-<p>A <a href="/transform#Transform"><code>Transform</code></a> that modifies in-place and just returns whatever it's passed</p>
+<p>A <a href="/transform.html#Transform"><code>Transform</code></a> that modifies in-place and just returns whatever it's passed</p>
 
 </div>
 
@@ -833,7 +833,7 @@ decodes: (ArrayImage,object) -&gt; decodes</pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DisplayedTransform" class="doc_header"><code>class</code> <code>DisplayedTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L102" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DisplayedTransform</code>(<strong>**<code>kwargs</code></strong>) :: <a href="/transform#Transform"><code>Transform</code></a></p>
+<h2 id="DisplayedTransform" class="doc_header"><code>class</code> <code>DisplayedTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L102" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DisplayedTransform</code>(<strong>**<code>kwargs</code></strong>) :: <a href="/transform.html#Transform"><code>Transform</code></a></p>
 </blockquote>
 <p>A transform with a <code>__repr__</code> that shows its attrs</p>
 
@@ -893,7 +893,7 @@ decodes: (object,object) -&gt; noop</pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>A <a href="/transform#DisplayedTransform"><code>DisplayedTransform</code></a> will in addition show the contents of all attributes listed in the comma-delimited string <code>self.store_attrs</code>:</p>
+<p>A <a href="/transform.html#DisplayedTransform"><code>DisplayedTransform</code></a> will in addition show the contents of all attributes listed in the comma-delimited string <code>self.store_attrs</code>:</p>
 
 </div>
 </div>
@@ -956,7 +956,7 @@ decodes: </pre>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ItemTransform" class="doc_header"><code>class</code> <code>ItemTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L115" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ItemTransform</code>(<strong><code>enc</code></strong>=<em><code>None</code></em>, <strong><code>dec</code></strong>=<em><code>None</code></em>, <strong><code>split_idx</code></strong>=<em><code>None</code></em>, <strong><code>order</code></strong>=<em><code>None</code></em>) :: <a href="/transform#Transform"><code>Transform</code></a></p>
+<h2 id="ItemTransform" class="doc_header"><code>class</code> <code>ItemTransform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L115" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ItemTransform</code>(<strong><code>enc</code></strong>=<em><code>None</code></em>, <strong><code>dec</code></strong>=<em><code>None</code></em>, <strong><code>split_idx</code></strong>=<em><code>None</code></em>, <strong><code>order</code></strong>=<em><code>None</code></em>) :: <a href="/transform.html#Transform"><code>Transform</code></a></p>
 </blockquote>
 <p>A transform that always take tuples as items</p>
 
@@ -972,7 +972,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/transform#ItemTransform"><code>ItemTransform</code></a> is the class to use to opt out of the default behavior of <a href="/transform#Transform"><code>Transform</code></a>.</p>
+<p><a href="/transform.html#ItemTransform"><code>ItemTransform</code></a> is the class to use to opt out of the default behavior of <a href="/transform.html#Transform"><code>Transform</code></a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1002,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If you pass a special tuple subclass, the usual retain type behavior of <a href="/transform#Transform"><code>Transform</code></a> will keep it:</p>
+<p>If you pass a special tuple subclass, the usual retain type behavior of <a href="/transform.html#Transform"><code>Transform</code></a> will keep it:</p>
 
 </div>
 </div>
@@ -1091,7 +1091,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Transforms are built with multiple-dispatch: a given function can have several methods depending on the type of the object received. This is done directly with the <a href="/dispatch#TypeDispatch"><code>TypeDispatch</code></a> module and type-annotation in <a href="/transform#Transform"><code>Transform</code></a>, but you can also use the following class.</p>
+<p>Transforms are built with multiple-dispatch: a given function can have several methods depending on the type of the object received. This is done directly with the <a href="/dispatch.html#TypeDispatch"><code>TypeDispatch</code></a> module and type-annotation in <a href="/transform.html#Transform"><code>Transform</code></a>, but you can also use the following class.</p>
 
 </div>
 </div>
@@ -1130,7 +1130,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can call the <a href="/transform#Func"><code>Func</code></a> object on any module name or type, even a list of types. It will return the corresponding function (with a default to <code>noop</code> if nothing is found) or list of functions.</p>
+<p>You can call the <a href="/transform.html#Func"><code>Func</code></a> object on any module name or type, even a list of types. It will return the corresponding function (with a default to <code>noop</code> if nothing is found) or list of functions.</p>
 
 </div>
 </div>
@@ -1194,7 +1194,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/transform#Sig"><code>Sig</code></a> is just sugar-syntax to create a <a href="/transform#Func"><code>Func</code></a> object more easily with the syntax <a href="/transform#Sig.name(*args, **kwargs"><code>Sig.name(*args, **kwargs)</code></a>).</p>
+<p><a href="/transform.html#Sig"><code>Sig</code></a> is just sugar-syntax to create a <a href="/transform.html#Func"><code>Func</code></a> object more easily with the syntax <a href="/transform.html#Sig.name(*args, **kwargs"><code>Sig.name(*args, **kwargs)</code></a>).</p>
 
 </div>
 </div>
@@ -1355,7 +1355,7 @@ decodes: </pre>
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="mk_transform" class="doc_header"><code>mk_transform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L159" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mk_transform</code>(<strong><code>f</code></strong>)</p>
 </blockquote>
-<p>Convert function <code>f</code> to <a href="/transform#Transform"><code>Transform</code></a> if it isn't already one</p>
+<p>Convert function <code>f</code> to <a href="/transform.html#Transform"><code>Transform</code></a> if it isn't already one</p>
 
 </div>
 
@@ -1487,7 +1487,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/transform#Pipeline"><code>Pipeline</code></a> is a wrapper for <code>compose_tfm</code>. You can pass instances of <a href="/transform#Transform"><code>Transform</code></a> or regular functions in <code>funcs</code>, the <a href="/transform#Pipeline"><code>Pipeline</code></a> will wrap them all in <a href="/transform#Transform"><code>Transform</code></a> (and instantiate them if needed) during the initialization. It handles the transform <code>setup</code> by adding them one at a time and calling setup on each, goes through them in order in <code>__call__</code> or <code>decode</code> and can <code>show</code> an object by applying decoding the transforms up until the point it gets an object that knows how to show itself.</p>
+<p><a href="/transform.html#Pipeline"><code>Pipeline</code></a> is a wrapper for <code>compose_tfm</code>. You can pass instances of <a href="/transform.html#Transform"><code>Transform</code></a> or regular functions in <code>funcs</code>, the <a href="/transform.html#Pipeline"><code>Pipeline</code></a> will wrap them all in <a href="/transform.html#Transform"><code>Transform</code></a> (and instantiate them if needed) during the initialization. It handles the transform <code>setup</code> by adding them one at a time and calling setup on each, goes through them in order in <code>__call__</code> or <code>decode</code> and can <code>show</code> an object by applying decoding the transforms up until the point it gets an object that knows how to show itself.</p>
 
 </div>
 </div>
@@ -1982,7 +1982,7 @@ decodes: </pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>During the setup, the <a href="/transform#Pipeline"><code>Pipeline</code></a> starts with no transform and adds them one at a time, so that during its setup, each transform gets the items processed up to its point and not after.</p>
+<p>During the setup, the <a href="/transform.html#Pipeline"><code>Pipeline</code></a> starts with no transform and adds them one at a time, so that during its setup, each transform gets the items processed up to its point and not after.</p>
 
 </div>
 </div>

@@ -1,10 +1,10 @@
 {
   "fastcore": {
-    "Overview": "",
-    "Test": "test",
-    "Core": "foundation",
-    "Utility functions": "utils",
-    "Type dispatch": "dispatch",
-    "Transforms": "transform"
+    "Overview": "/",
+    "Test": "test.html",
+    "Core": "foundation.html",
+    "Utility functions": "utils.html",
+    "Type dispatch": "dispatch.html",
+    "Transforms": "transform.html"
   }
 }

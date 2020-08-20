@@ -61,7 +61,7 @@ nb_path: "nbs/00_test.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can check that code raises an exception when that's expected (<a href="/test#test_fail"><code>test_fail</code></a>). To test for equality or inequality (with different types of things) we define a simple function <a href="/test"><code>test</code></a> that compares two object with a given <code>cmp</code> operator.</p>
+<p>We can check that code raises an exception when that's expected (<a href="/test.html#test_fail"><code>test_fail</code></a>). To test for equality or inequality (with different types of things) we define a simple function <a href="/test.html"><code>test</code></a> that compares two object with a given <code>cmp</code> operator.</p>
 
 </div>
 </div>
@@ -312,7 +312,7 @@ nb_path: "nbs/00_test.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Just use <a href="/test#test_eq"><code>test_eq</code></a>/<a href="/test#test_ne"><code>test_ne</code></a> to test for <code>==</code>/<code>!=</code>. <a href="/test#test_eq_type"><code>test_eq_type</code></a> check things are equals and of the same type. We define them using <a href="/test"><code>test</code></a>:</p>
+<p>Just use <a href="/test.html#test_eq"><code>test_eq</code></a>/<a href="/test.html#test_ne"><code>test_ne</code></a> to test for <code>==</code>/<code>!=</code>. <a href="/test.html#test_eq_type"><code>test_eq_type</code></a> check things are equals and of the same type. We define them using <a href="/test.html"><code>test</code></a>:</p>
 
 </div>
 </div>
@@ -337,7 +337,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_eq" class="doc_header"><code>test_eq</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_eq</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a==b</code></p>
+<p><a href="/test.html"><code>test</code></a> that <code>a==b</code></p>
 
 </div>
 
@@ -416,7 +416,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_eq_type" class="doc_header"><code>test_eq_type</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_eq_type</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a==b</code> and are same type</p>
+<p><a href="/test.html"><code>test</code></a> that <code>a==b</code> and are same type</p>
 
 </div>
 
@@ -469,7 +469,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_ne" class="doc_header"><code>test_ne</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_ne</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a!=b</code></p>
+<p><a href="/test.html"><code>test</code></a> that <code>a!=b</code></p>
 
 </div>
 
@@ -558,7 +558,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_close" class="doc_header"><code>test_close</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_close</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>, <strong><code>eps</code></strong>=<em><code>1e-05</code></em>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a</code> is within <code>eps</code> of <code>b</code></p>
+<p><a href="/test.html"><code>test</code></a> that <code>a</code> is within <code>eps</code> of <code>b</code></p>
 
 </div>
 
@@ -611,7 +611,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_is" class="doc_header"><code>test_is</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_is</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a is b</code></p>
+<p><a href="/test.html"><code>test</code></a> that <code>a is b</code></p>
 
 </div>
 
@@ -662,7 +662,7 @@ nb_path: "nbs/00_test.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="test_shuffled" class="doc_header"><code>test_shuffled</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/test.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>test_shuffled</code>(<strong><code>a</code></strong>, <strong><code>b</code></strong>)</p>
 </blockquote>
-<p><a href="/test"><code>test</code></a> that <code>a</code> and <code>b</code> are shuffled versions of the same sequence of items</p>
+<p><a href="/test.html"><code>test</code></a> that <code>a</code> and <code>b</code> are shuffled versions of the same sequence of items</p>
 
 </div>
 

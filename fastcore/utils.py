@@ -132,11 +132,13 @@ def hasattrs(o,attrs):
     return all(hasattr(o,attr) for attr in attrs)
 
 # Cell
+#hide
 class ShowPrint:
     "Base class that prints for `show`"
     def show(self, *args, **kwargs): print(str(self))
 
 # Cell
+#hide
 class Int(int,ShowPrint): pass
 
 # Cell

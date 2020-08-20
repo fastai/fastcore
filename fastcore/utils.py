@@ -2,7 +2,7 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint',
-           'Int', 'Float', 'Str', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
+           'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
            'range_of', 'groupby', 'first', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
@@ -136,10 +136,16 @@ class ShowPrint:
     "Base class that prints for `show`"
     def show(self, *args, **kwargs): print(str(self))
 
+# Cell
 class Int(int,ShowPrint): pass
-class Float(float,ShowPrint): pass
+
+# Cell
+#hide
 class Str(str,ShowPrint): pass
-add_docs(Int, "An extensible `int`"); add_docs(Str, "An extensible `str`"); add_docs(Float, "An extensible `float`")
+class Float(float,ShowPrint): pass
+add_docs(Str, "An extensible `str`");
+add_docs(Int, "An extensible `int`");
+add_docs(Float, "An extensible `float`")
 
 # Cell
 def tuplify(o, use_list=False, match=None):
@@ -166,7 +172,9 @@ def uniqueify(x, sort=False, bidir=False, start=None):
     return res
 
 # Cell
-def setify(o): return o if isinstance(o,set) else set(L(o))
+def setify(o):
+    "Turn any list like-object into a set."
+    return o if isinstance(o,set) else set(L(o))
 
 # Cell
 def merge(*ds):
@@ -175,7 +183,7 @@ def merge(*ds):
 
 # Cell
 def is_listy(x):
-    "`isinstance(x, (tuple,list,L))`"
+    "`isinstance(x, (tuple,list,L,slice,Generator))`"
     return isinstance(x, (tuple,list,L,slice,Generator))
 
 # Cell

@@ -62,7 +62,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>All fast.ai projects, including this one, are built with <a href="https://nbdev.fast.ai">nbdev</a>, which is a full literate programming environment built on Jupyter Notebooks. That means that every piece of documentation, including the page you're reading now, can be accessed as interactive Jupyter notebooks. In fact, you can even grab a link directly to a notebook running interactively on Google Colab - if you want to follow along with this tour, click the link below:</p>
+<p>All fast.ai projects, including this one, are built with <a href="https://nbdev.fast.ai">nbdev</a>, which is a full literate programming environment built on Jupyter Notebooks. That means that every piece of documentation, including the page you're reading now, can be accessed as interactive Jupyter notebooks. In fact, you can even grab a link directly to a notebook running interactively on Google Colab - if you want to follow along with this tour, click the link below, or click the badge at the top of the page:</p>
 
 </div>
 </div>
@@ -102,7 +102,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>(tour currently under construction)</p>
+<p>The full docs are available at <a href="https://fastcore.fast.ai">fastcore.fast.ai</a>. As you'll see, the examples for each function and method are shown as tests, rather than example outputs, so let's start by explaining that.</p>
 
 </div>
 </div>
@@ -116,6 +116,407 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>fastcore's testing module is designed to work well with <a href="https://nbdev.fast.ai">nbdev</a>, which is a full literate programming environment built on Jupyter Notebooks. fastcore and nbdev's approach to testing starts with the premise that all your tests should pass. If one fails, no more tests in a notebook are run.</p>
+<p>Tests look like this:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">(</span><span class="n">coll_repr</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="mi">5</span><span class="p">),</span> <span class="s1">&#39;(#1000) [0,1,2,3,4...]&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's an example from the docs for <a href="/foundation.html#coll_repr"><code>coll_repr</code></a>. As you see, it's not showing you the output directly. Here's what that would look like:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coll_repr</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;(#1000) [0,1,2,3,4...]&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, the test is actually showing you what the output looks like, because if the function call didn't return <code>'(#1000) [0,1,2,3,4...]'</code>, then the test would have failed.</p>
+<p>So every test shown in the docs is also showing you the behavior of the library --- and visa versa!</p>
+<p>Test functions always start with <code>test_</code>, and then follow with the operation being tested. So <a href="/test.html#test_eq"><code>test_eq</code></a> tests for equality (as you saw in the example above). This includes tests for equality of arrays and tensors, lists and generators, and many more:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_eq</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you want to check that objects are the same type, rather than the just contain the same collection, use <a href="/test.html#test_eq_type"><code>test_eq_type</code></a>.</p>
+<p>You can test with any comparison function using <a href="/test.html"><code>test</code></a>, e.g test whether an object is less than:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">lt</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can even test that exceptions are raised:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">divide_zero</span><span class="p">():</span> <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+<span class="n">test_fail</span><span class="p">(</span><span class="n">divide_zero</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>...and test that things are printed to stdout:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_stdout</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">),</span> <span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Foundations">Foundations<a class="anchor-link" href="#Foundations"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>fast.ai is unusual in that we often use <a href="https://en.wikipedia.org/wiki/Mixin">mixins</a> in our code. Mixins are widely used in many programming languages, such as Ruby, but not so much in Python. We use mixins to attach new behavior to existing libraries, or to allow modules to add new behavior to our own classes, such as in extension modules. One useful example of a mixin we define is <a href="/utils.html#Path.ls"><code>Path.ls</code></a>, which lists a directory and returns an <a href="/foundation.html#L"><code>L</code></a> (an extended list class which we'll discuss shortly):</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#2) [Path(&#39;images/puppy.jpg&#39;),Path(&#39;images/mnist3.png&#39;)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can easily add you own mixins with the <a href="/foundation.html#patch"><code>patch</code></a> <a href="https://realpython.com/primer-on-python-decorators/">decorator</a>, which takes advantage of Python 3 <a href="https://www.python.org/dev/peps/pep-3107/#parameters">function annotations</a> to say what class to patch:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@patch</span>
+<span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Path</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Why hello there&#39;</span><span class="p">)</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">say_hello</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Why hello there
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We also use <code>**kwargs</code> frequently. In python <code>**kwargs</code> in a parameter like means “put any additional keyword arguments into a dict called <code>kwargs</code>. Normally, using <code>kwargs</code> makes an API quite difficult to work with, because because it breaks things like tab-completion and popup lists of signatures. <code>fastcore.utils</code> provides <a href="/foundation.html#use_kwargs"><code>use_kwargs</code></a> and <a href="/foundation.html#delegates"><code>delegates</code></a> to avoid this problem. See our <a href="https://www.fast.ai/2019/08/06/delegation/">detailed article on delegation</a> on this topic.</p>
+<p><a href="/foundation.html#GetAttr"><code>GetAttr</code></a> solves a similar problem (and is also discussed in the article linked above): it's allows you to use Python's exceptionally useful <code>__getattr__</code> magic method, but avoids the problem that normally in Python tab-completion and docs break when using this. For instance, you can see here that Python's <code>dir</code> function, which is used to find the attributes of a python object, finds everything inside the <code>self.default</code> attribute here:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">Author</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+<span class="k">class</span> <span class="nc">ProductPage</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
+    <span class="n">_default</span> <span class="o">=</span> <span class="s1">&#39;author&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">author</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">cost</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">price</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">author</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">cost</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">ProductPage</span><span class="p">(</span><span class="n">Author</span><span class="p">(</span><span class="s2">&quot;Jeremy&quot;</span><span class="p">),</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+<span class="p">[</span><span class="n">o</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">o</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;author&#39;, &#39;cost&#39;, &#39;name&#39;, &#39;price&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looking at that <code>ProductPage</code> example, it's rather verbose and duplicates a lot of attribute names, which can lead to bugs later if you change them only in one place. <code>fastcore</code> provides <a href="/utils.html#store_attr"><code>store_attr</code></a> to simplify this common pattern. It also provides <a href="/utils.html#basic_repr"><code>basic_repr</code></a> to give simple objects a useful <code>repr</code>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ProductPage</span><span class="p">:</span>
+    <span class="n">store_attrs</span> <span class="o">=</span> <span class="s1">&#39;author,price,cost&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">author</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">cost</span><span class="p">):</span> <span class="n">store_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">basic_repr</span><span class="p">(</span><span class="n">store_attrs</span><span class="p">)</span>
+
+<span class="n">ProductPage</span><span class="p">(</span><span class="s2">&quot;Jeremy&quot;</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>ProductPage(author=Jeremy, price=1.5, cost=0.5)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One of the most interesting <code>fastcore</code> functions is the <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> decorator. This allows class behavior to be modified without sub-classing. This can allow folks that aren't familiar with object-oriented progressing to customize your class more easily. Here's an example of a class that uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@funcs_kwargs</span>
+<span class="k">class</span> <span class="nc">T</span><span class="p">:</span>
+    <span class="n">_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;some_method&#39;</span><span class="p">]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Passed unknown args: </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s1">&#39;</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">some_method</span> <span class="o">=</span> <span class="nb">print</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">some_method</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>hello
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <code>assert not kwargs</code> there is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <code>DataLoader</code> by passing your own methods.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>TODO</p>
+<ul>
+<li><a href="/foundation.html#L"><code>L</code></a></li>
+</ul>
 
 </div>
 </div>

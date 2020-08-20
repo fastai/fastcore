@@ -29,6 +29,7 @@ def maybe_attr(o, attr):
 
 # Cell
 def basic_repr(flds=None):
+    if isinstance(flds, str): flds = re.split(', *', flds)
     flds = L(flds)
     def _f(self):
         sig = ', '.join(f'{o}={maybe_attr(getattr(self,o), "__name__")}' for o in flds)

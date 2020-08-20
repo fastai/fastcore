@@ -102,7 +102,57 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The full docs are available at <a href="https://fastcore.fast.ai">fastcore.fast.ai</a>. As you'll see, the examples for each function and method are shown as tests, rather than example outputs, so let's start by explaining that.</p>
+<p>The full docs are available at <a href="https://fastcore.fast.ai">fastcore.fast.ai</a>. The code in the examples and in all fast.ai libraries follow the <a href="https://docs.fast.ai/dev/style.html">fast.ai style guide</a>. In order to support interactive programming, all fast.ai libraries are designed to allow for <code>import *</code> to be used safely, particular by ensuring that <code>__all__</code> is defined in all packages. In order to see where a function is from, just type it:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">coll_repr</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;function fastcore.foundation.coll_repr(c, max_n=10)&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For more details, including a link to the full documentation and source code, use <code>doc</code>, which pops up a window with this information:</p>
+<div class="highlight"><pre><span></span><span class="n">doc</span><span class="p">(</span><span class="n">coll_repr</span><span class="p">)</span>
+</pre></div>
+<p>{% include image.html max-width="499" file="/images/att_00000.png" %}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The documentation also contains links to any related functions or classes, which appear like this: <a href="/foundation.html#coll_repr"><code>coll_repr</code></a> (in the notebook itself you will just see a word with back-ticks around it; the links are auto-generated in the documentation site). The documentation will generally show one or more examples of use, along with any background context necessary to understand them. As you'll see, the examples for each function and method are shown as tests, rather than example outputs, so let's start by explaining that.</p>
 
 </div>
 </div>
@@ -370,7 +420,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We also use <code>**kwargs</code> frequently. In python <code>**kwargs</code> in a parameter like means “put any additional keyword arguments into a dict called <code>kwargs</code>. Normally, using <code>kwargs</code> makes an API quite difficult to work with, because because it breaks things like tab-completion and popup lists of signatures. <code>fastcore.utils</code> provides <a href="/foundation.html#use_kwargs"><code>use_kwargs</code></a> and <a href="/foundation.html#delegates"><code>delegates</code></a> to avoid this problem. See our <a href="https://www.fast.ai/2019/08/06/delegation/">detailed article on delegation</a> on this topic.</p>
+<p>We also use <code>**kwargs</code> frequently. In python <code>**kwargs</code> in a parameter like means "<em>put any additional keyword arguments into a dict called <code>kwargs</code></em>". Normally, using <code>kwargs</code> makes an API quite difficult to work with, because it breaks things like tab-completion and popup lists of signatures. <code>fastcore.utils</code> provides <a href="/foundation.html#use_kwargs"><code>use_kwargs</code></a> and <a href="/foundation.html#delegates"><code>delegates</code></a> to avoid this problem. See our <a href="https://www.fast.ai/2019/08/06/delegation/">detailed article on delegation</a> on this topic.</p>
 <p><a href="/foundation.html#GetAttr"><code>GetAttr</code></a> solves a similar problem (and is also discussed in the article linked above): it's allows you to use Python's exceptionally useful <code>__getattr__</code> magic method, but avoids the problem that normally in Python tab-completion and docs break when using this. For instance, you can see here that Python's <code>dir</code> function, which is used to find the attributes of a python object, finds everything inside the <code>self.default</code> attribute here:</p>
 
 </div>
@@ -508,18 +558,14 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>assert not kwargs</code> there is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <code>DataLoader</code> by passing your own methods.</p>
+<p>The <code>assert not kwargs</code> above is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <code>DataLoader</code> by passing your own methods.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>TODO</p>
-<ul>
-<li><a href="/foundation.html#L"><code>L</code></a></li>
-</ul>
-
+<h2 id="L">L<a class="anchor-link" href="#L"> </a></h2>
 </div>
 </div>
 </div>

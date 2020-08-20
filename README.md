@@ -320,7 +320,7 @@ This approach to dispatch is particularly useful for adding implementations of f
 - Ordering
 - Appending new behavior with decorators
 
-`Transform` looks for three special methods, `encodes`, `decodes`, and `setups`, which provide the implementation for [`__call__`](https://www.python-course.eu/python3_magic_methods.php), `decode`, and `setup` respectively. For instance:
+`Transform` looks for three special methods, <code>encodes</code>, <code>decodes</code>, and <code>setups</code>, which provide the implementation for [`__call__`](https://www.python-course.eu/python3_magic_methods.php), `decode`, and `setup` respectively. For instance:
 
 ```python
 class A(Transform):

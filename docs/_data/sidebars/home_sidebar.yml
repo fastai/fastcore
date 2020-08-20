@@ -8,22 +8,22 @@ entries:
   - folderitems:
     - output: web,pdf
       title: Overview
-      url: /
+      url: ''
     - output: web,pdf
       title: Test
-      url: /test
+      url: test
     - output: web,pdf
       title: Core
-      url: /foundation
+      url: foundation
     - output: web,pdf
       title: Utility functions
-      url: /utils
+      url: utils
     - output: web,pdf
       title: Type dispatch
-      url: /dispatch
+      url: dispatch
     - output: web,pdf
       title: Transforms
-      url: /transform
+      url: transform
     output: web
     title: fastcore
   output: web

@@ -14,7 +14,7 @@ fastcore contains many features. See the [docs](https://fastcore.fast.ai) for al
 
 All fast.ai projects, including this one, are built with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. That means that every piece of documentation, including the page you're reading now, can be accessed as interactive Jupyter notebooks. In fact, you can even grab a link directly to a notebook running interactively on Google Colab - if you want to follow along with this tour, click the link below:
 
-```python
+```
 colab_link('index')
 ```
 

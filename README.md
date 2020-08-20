@@ -1,6 +1,8 @@
 # Welcome to fastcore
-> The Python goodies used in every fast.ai project
+> Python goodies to make your coding faster, easier, and more maintainable
 
+
+Python is a powerful, dynamic language. Rather than bake everything into the language, it lets the programmer customize it to make it work for them. `fastcore` uses this flexibility to add to Python features inspired by other languages we've loved, like multiple dispatch from Julia, mixins from Ruby, and currying, binding, and more from Haskell. It also adds some "missing features" and clean up some rough edges in the Python standard library, such as simplifying parallel processing, and bringing ideas from NumPy over to Python's `list` type.
 
 ## Installing
 
@@ -8,7 +10,15 @@ To install fastcore run: `conda install fastcore` (if you use Anaconda, which we
 
 ## A tour
 
-fastcore contains many features. See the [docs](https://fastcore.fast.ai) for all the details; here's a (somewhat) quick tour of a few higlights.
+`fastcore` contains many features. See the [docs](https://fastcore.fast.ai) for all the details, which cover the modules provided:
+
+- `test`: Simple testing functions
+- `foundation`: Mixins, delegation, composition, and more
+- `utils`: Utility functions to help with functional-style programming, parallel processing, and more
+- `dispatch`: Multiple dispatch methods
+- `transform`: Pipelines of composed partially reversible transformations
+
+Here's a (somewhat) quick tour of a few higlights, showing examples from each of these modules.
 
 ### Documentation
 
@@ -47,7 +57,7 @@ The documentation also contains links to any related functions or classes, which
 
 ### Testing
 
-fastcore's testing module is designed to work well with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. fastcore and nbdev's approach to testing starts with the premise that all your tests should pass. If one fails, no more tests in a notebook are run.
+fastcore's testing module is designed to work well with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. That means that your tests, docs, and code all live together in the same notebook. fastcore and nbdev's approach to testing starts with the premise that your all your tests should pass. If one fails, no more tests in a notebook are run.
 
 Tests look like this:
 
@@ -76,6 +86,19 @@ Test functions always start with `test_`, and then follow with the operation bei
 
 ```python
 test_eq([0,1,2,3], np.arange(4))
+```
+
+When a test fails, it prints out information about what was expected:
+
+```python
+test_eq([0,1,2,3], np.arange(3))
+```
+
+```
+----
+  AssertionError: ==:
+  [0, 1, 2, 3]
+  [0 1 2]
 ```
 
 If you want to check that objects are the same type, rather than the just contain the same collection, use `test_eq_type`.
@@ -131,7 +154,7 @@ p.num_items()
 
 
 
-We also use `**kwargs` frequently. In python `**kwargs` in a parameter like means "*put any additional keyword arguments into a dict called `kwargs`*". Normally, using `kwargs` makes an API quite difficult to work with, because it breaks things like tab-completion and popup lists of signatures. `fastcore.utils` provides `use_kwargs` and `delegates` to avoid this problem. See our [detailed article on delegation](https://www.fast.ai/2019/08/06/delegation/) on this topic.
+We also use `**kwargs` frequently. In python `**kwargs` in a parameter like means "*put any additional keyword arguments into a dict called `kwargs`*". Normally, using `kwargs` makes an API quite difficult to work with, because it breaks things like tab-completion and popup lists of signatures. `utils` provides `use_kwargs` and `delegates` to avoid this problem. See our [detailed article on delegation](https://www.fast.ai/2019/08/06/delegation/) on this topic.
 
 `GetAttr` solves a similar problem (and is also discussed in the article linked above): it's allows you to use Python's exceptionally useful `__getattr__` magic method, but avoids the problem that normally in Python tab-completion and docs break when using this. For instance, you can see here that Python's `dir` function, which is used to find the attributes of a python object, finds everything inside the `self.default` attribute here:
 
@@ -191,9 +214,11 @@ The `assert not kwargs` above is used to ensure that the user doesn't pass an un
 
 `fastcore` also provides many utility functions that make a Python programmer's life easier, in `fastcore.utils`. We won't look at many here, since you can easily look at the docs yourself. To get you started, have a look at the docs for `chunked` (remember, if you're in a notebook, type `doc(chunked)`), which is a handy function for creating lazily generated batches from a collection.
 
+Python's `ProcessPoolExecutor` is extended to allow `max_workers` to be set to `0`, to easily turn off parallel processing. This makes it easy to debug your code in serial, then run it in parallel. It also allows you to pass arguments to your parallel function, and to ensure there's a pause between calls, in case the process you are running has race conditions. `parallel` makes parallel processing even easier to use, and even adds an optional progress bar.
+
 ### L
 
-List most languages, Python allows for very concise syntax for some very common types, such as `list`, which can be constructed with `[1,2,3]`. Perl's designer Larry Wall explained the reasoning for this kind of syntax:
+Like most languages, Python allows for very concise syntax for some very common types, such as `list`, which can be constructed with `[1,2,3]`. Perl's designer Larry Wall explained the reasoning for this kind of syntax:
 > In metaphorical honor of Huffman’s compression code that assigns smaller numbers of bits to more common bytes. In terms of syntax, it simply means that commonly used things should be shorter, but you shouldn’t waste short sequences on less common constructs.
 
 On this basis, `fastcore` has just one type that has a single letter name:`L`. The reason for this is that it is designed to be a replacement for `list`, so we want it to be just as easy to use as `[1,2,3]`. Here's how to create that as an `L`:

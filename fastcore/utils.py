@@ -401,8 +401,7 @@ def instantiate(t):
     return t() if isinstance(t, type) else t
 
 # Cell
-def _using_attr(f, attr, x):
-    return f(getattr(x,attr))
+def _using_attr(f, attr, x): return f(getattr(x,attr))
 
 # Cell
 def using_attr(f, attr):

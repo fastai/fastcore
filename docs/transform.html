@@ -126,7 +126,19 @@ nb_path: "nbs/04_transform.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A <a href="/transform.html#Transform"><code>Transform</code></a> is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the <a href="/transform.html#Transform"><code>Transform</code></a> class provides several mechanisms that make the process of building them easy and flexible.</p>
-<h3 id="The-main-Transform-features:">The main <a href="/transform.html#Transform"><code>Transform</code></a> features:<a class="anchor-link" href="#The-main-Transform-features:"> </a></h3><ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-main-Transform-features:">The main <a href="/transform.html#Transform"><code>Transform</code></a> features:<a class="anchor-link" href="#The-main-Transform-features:"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li><strong>Type dispatch</strong> - Type annotations are used to determine if a transform should be applied to the given argument. It also gives an option to provide several implementations and it choses the one to run based on the type. This is useful for example when running both independent and dependent variables through the pipeline where some transforms only make sense for one and not the other. Another usecase is designing a transform that handles different data formats. Note that if a transform takes multiple arguments only the type of the first one is used for dispatch. </li>
 <li><strong>Handling of tuples</strong> - When a tuple (or a subclass of tuple) of data is passed to a transform it will get applied to each element separately. You can opt out of this behavior by passing a list or an <a href="/foundation.html#L"><code>L</code></a>, as only tuples gets this specific behavior. An alternative is to use <a href="/transform.html#ItemTransform"><code>ItemTransform</code></a> defined below, which will always take the input as a whole.</li>
 <li><strong>Reversability</strong> - A transform can be made reversible by implementing the <code>decodes</code> method. This is mainly used to turn something like a category which is encoded as a number back into a label understandable by humans for showing purposes. Like the regular call method, the <code>decode</code> method that is used to decode will be applied over each element of a tuple separately.</li>
@@ -136,7 +148,19 @@ nb_path: "nbs/04_transform.ipynb"
 <li><strong>Ordering</strong> - You can set the <code>order</code> attribute which the <a href="/transform.html#Pipeline"><code>Pipeline</code></a> uses when it needs to merge two lists of transforms.</li>
 <li><strong>Appending new behavior with decorators</strong> - You can easily extend an existing <a href="/transform.html#Transform"><code>Transform</code></a> by creating <code>encodes</code> or <code>decodes</code> methods for new data types. You can put those new methods outside the original transform definition and decorate them with the class you wish them patched into. This can be used by the fastai library users to add their own behavior, or multiple modules contributing to the same transform.</li>
 </ul>
-<h3 id="Defining-a-Transform">Defining a <a href="/transform.html#Transform"><code>Transform</code></a><a class="anchor-link" href="#Defining-a-Transform"> </a></h3><p>There are a few ways to create a transform with different ratios of simplicity to flexibility.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Defining-a-Transform">Defining a <a href="/transform.html#Transform"><code>Transform</code></a><a class="anchor-link" href="#Defining-a-Transform"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are a few ways to create a transform with different ratios of simplicity to flexibility.</p>
 <ul>
 <li><strong>Extending the <a href="/transform.html#Transform"><code>Transform</code></a> class</strong> - Use inheritence to implement the methods you want.</li>
 <li><strong>Passing methods to the constructor</strong> - Instantiate the <a href="/transform.html#Transform"><code>Transform</code></a> class and pass your functions as <code>enc</code> and <code>dec</code> arguments.</li>
@@ -1492,24 +1516,6 @@ decodes: </pre>
 </div>
 </div>
 </div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">()</span>
-<span class="n">test_eq</span><span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">

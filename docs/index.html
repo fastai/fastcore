@@ -145,7 +145,7 @@ nb_path: "nbs/index.ipynb"
 <p>For more details, including a link to the full documentation and source code, use <code>doc</code>, which pops up a window with this information:</p>
 <div class="highlight"><pre><span></span><span class="n">doc</span><span class="p">(</span><span class="n">coll_repr</span><span class="p">)</span>
 </pre></div>
-<p>{% include image.html max-width="499" file="/images/att_00000.png" %}</p>
+<p>{% include image.html align="left" max-width="499" file="/images/att_00000.png" %}</p>
 
 </div>
 </div>
@@ -364,7 +364,7 @@ nb_path: "nbs/index.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>(#2) [Path(&#39;images/puppy.jpg&#39;),Path(&#39;images/mnist3.png&#39;)]</pre>
+<pre>(#3) [Path(&#39;images/att_00000.png&#39;),Path(&#39;images/puppy.jpg&#39;),Path(&#39;images/mnist3.png&#39;)]</pre>
 </div>
 
 </div>
@@ -407,7 +407,7 @@ nb_path: "nbs/index.ipynb"
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>2</pre>
+<pre>3</pre>
 </div>
 
 </div>
@@ -559,6 +559,7 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The <code>assert not kwargs</code> above is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <code>DataLoader</code> by passing your own methods.</p>
+<p><code>fastcore</code> also provides many utility functions that make a Python programmer's life easier, in <code>fastcore.utils</code>. We won't look at many here, since you can easily look at the docs yourself. To get you started, have a look at the docs for <a href="/utils.html#chunked"><code>chunked</code></a> (remember, if you're in a notebook, type <code>doc(chunked)</code>), which is a handy function for creating lazily generated batches from a collection.</p>
 
 </div>
 </div>
@@ -566,6 +567,410 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="L">L<a class="anchor-link" href="#L"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>List most languages, Python allows for very concise syntax for some very common types, such as <code>list</code>, which can be constructed with <code>[1,2,3]</code>. Perl's designer Larry Wall explained the reasoning for this kind of syntax:</p>
+<blockquote><p>In metaphorical honor of Huffman’s compression code that assigns smaller numbers of bits to more common bytes. In terms of syntax, it simply means that commonly used things should be shorter, but you shouldn’t waste short sequences on less common constructs.</p>
+</blockquote>
+<p>On this basis, <code>fastcore</code> has just one type that has a single letter name:<a href="/foundation.html#L"><code>L</code></a>. The reason for this is that it is designed to be a replacement for <code>list</code>, so we want it to be just as easy to use as <code>[1,2,3]</code>. Here's how to create that as an <a href="/foundation.html#L"><code>L</code></a>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">L</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#3) [1,2,3]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first thing to notice is that an <a href="/foundation.html#L"><code>L</code></a> object includes in its representation its number of elements; that's the <code>(#3)</code> in the output above. If there's more than 10 elements, it will automatically truncate the list:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+<span class="n">p</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#20) [3,7,14,16,1,17,19,0,4,8...]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/foundation.html#L"><code>L</code></a> contains many of the same indexing ideas that NumPy's <code>array</code> does, including indexing with a list of indexes, or a boolean mask list:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#3) [14,1,19]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It also contains other methods used in <code>array</code>, such as <a href="/foundation.html#L.argwhere"><code>L.argwhere</code></a>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">ge</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#5) [3,5,6,12,16]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see from this example, <code>fastcore</code> also includes a number of features that make a functional style of programming easier, such as a full range of boolean functions (e.g <code>ge</code>, <code>gt</code>, etc) which give the same answer as the functions from Python's <code>operator</code> module if given two parameters, but return a <a href="https://en.wikipedia.org/wiki/Currying">curried function</a> if given one parameter.</p>
+<p>There's too much functionality to show it all here, so be sure to check the docs. Many little things are added that we thought should have been in <code>list</code> in the first place, such as making this do what you'd expect (which is an error with <code>list</code>, but works fine with <a href="/foundation.html#L"><code>L</code></a>):</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="n">L</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(#4) [1,2,3,4]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Function-dispatch-and-Transforms">Function dispatch and Transforms<a class="anchor-link" href="#Function-dispatch-and-Transforms"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Most Python programmers use object oriented methods and inheritance to allow different objects to behave in different ways even when called with the same method name. Some languages use a very different approach, such as Julia, which uses <a href="https://docs.julialang.org/en/v1/manual/methods/">multiple dispatch generic functions</a>. Python provides <a href="https://www.python.org/dev/peps/pep-0443/">single dispatch generic functions</a> as part of the standard library. <code>fastcore</code> provides multiple dispatch, with the <a href="/dispatch.html#typedispatch"><code>typedispatch</code></a> decorator (which is actually an instance of <a href="/dispatch.html#DispatchReg"><code>DispatchReg</code></a>):</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@typedispatch</span>
+<span class="k">def</span> <span class="nf">f_td_test</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">numbers</span><span class="o">.</span><span class="n">Integral</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span>
+<span class="nd">@typedispatch</span>
+<span class="k">def</span> <span class="nf">f_td_test</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span><span class="nb">float</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+
+<span class="n">f_td_test</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">f_td_test</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(5.0, 4)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This approach to dispatch is particularly useful for adding implementations of functionality in extension modules or user code. It is heavily used in the <a href="/transform.html#Transform"><code>Transform</code></a> class. A <a href="/transform.html#Transform"><code>Transform</code></a> is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the <a href="/transform.html#Transform"><code>Transform</code></a> class provides several mechanisms that make the process of building them easy and flexible (see the docs for information about each of these):</p>
+<ul>
+<li>Type dispatch</li>
+<li>Dispatch over tuples</li>
+<li>Reversability</li>
+<li>Type propagation</li>
+<li>Preprocessing</li>
+<li>Filtering based on the dataset type</li>
+<li>Ordering</li>
+<li>Appending new behavior with decorators</li>
+</ul>
+<p><a href="/transform.html#Transform"><code>Transform</code></a> looks for three special methods, <code>encodes</code>, <code>decodes</code>, and <code>setups</code>, which provide the implementation for <code>__call__</code>, <code>decode</code>, and <code>setup</code> respectively. For instance:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">encodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">A</span><span class="p">()(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For simple transforms like this, you can also use <a href="/transform.html#Transform"><code>Transform</code></a> as a decorator:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@Transform</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Transforms can be composed into a <a href="/transform.html#Pipeline"><code>Pipeline</code></a>:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nd">@Transform</span>
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">2</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span><span class="n">f</span><span class="p">,</span><span class="n">g</span><span class="p">])</span>
+<span class="n">pipe</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>2.0</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The power of <a href="/transform.html#Transform"><code>Transform</code></a> and <a href="/transform.html#Pipeline"><code>Pipeline</code></a> is best understood by seeing how they're used to create a complete data processing pipeline. This is explained in <a href="https://github.com/fastai/fastbook/blob/master/11_midlevel_data.ipynb">chapter 11</a> of the <a href="https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527">fastai book</a>, which is <a href="https://github.com/fastai/fastbook">available for free</a> in Jupyter Notebook format.</p>
+
 </div>
 </div>
 </div>

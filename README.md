@@ -41,7 +41,7 @@ For more details, including a link to the full documentation and source code, us
 doc(coll_repr)
 ```
 
-<img width="499" src="nbs/images/att_00000.png">
+<img width="499" src="nbs/images/att_00000.png" align="left">
 
 The documentation also contains links to any related functions or classes, which appear like this: `coll_repr` (in the notebook itself you will just see a word with back-ticks around it; the links are auto-generated in the documentation site). The documentation will generally show one or more examples of use, along with any background context necessary to understand them. As you'll see, the examples for each function and method are shown as tests, rather than example outputs, so let's start by explaining that. 
 
@@ -111,7 +111,7 @@ p.ls()
 
 
 
-    (#2) [Path('images/puppy.jpg'),Path('images/mnist3.png')]
+    (#3) [Path('images/att_00000.png'),Path('images/puppy.jpg'),Path('images/mnist3.png')]
 
 
 
@@ -127,7 +127,7 @@ p.num_items()
 
 
 
-    2
+    3
 
 
 
@@ -189,7 +189,162 @@ p.some_method("hello")
 
 The `assert not kwargs` above is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in `_methods`). `fastai` uses `funcs_kwargs` in many places, for instance, you can customize any part of a `DataLoader` by passing your own methods.
 
+`fastcore` also provides many utility functions that make a Python programmer's life easier, in `fastcore.utils`. We won't look at many here, since you can easily look at the docs yourself. To get you started, have a look at the docs for `chunked` (remember, if you're in a notebook, type `doc(chunked)`), which is a handy function for creating lazily generated batches from a collection.
+
 ## L
+
+List most languages, Python allows for very concise syntax for some very common types, such as `list`, which can be constructed with `[1,2,3]`. Perl's designer Larry Wall explained the reasoning for this kind of syntax:
+> In metaphorical honor of Huffman’s compression code that assigns smaller numbers of bits to more common bytes. In terms of syntax, it simply means that commonly used things should be shorter, but you shouldn’t waste short sequences on less common constructs.
+
+On this basis, `fastcore` has just one type that has a single letter name:`L`. The reason for this is that it is designed to be a replacement for `list`, so we want it to be just as easy to use as `[1,2,3]`. Here's how to create that as an `L`:
+
+```python
+L(1,2,3)
+```
+
+
+
+
+    (#3) [1,2,3]
+
+
+
+The first thing to notice is that an `L` object includes in its representation its number of elements; that's the `(#3)` in the output above. If there's more than 10 elements, it will automatically truncate the list:
+
+```python
+p = L.range(20).shuffle()
+p
+```
+
+
+
+
+    (#20) [3,7,14,16,1,17,19,0,4,8...]
+
+
+
+`L` contains many of the same indexing ideas that NumPy's `array` does, including indexing with a list of indexes, or a boolean mask list:
+
+```python
+p[2,4,6]
+```
+
+
+
+
+    (#3) [14,1,19]
+
+
+
+It also contains other methods used in `array`, such as `L.argwhere`:
+
+```python
+p.argwhere(ge(15))
+```
+
+
+
+
+    (#5) [3,5,6,12,16]
+
+
+
+As you can see from this example, `fastcore` also includes a number of features that make a functional style of programming easier, such as a full range of boolean functions (e.g `ge`, `gt`, etc) which give the same answer as the functions from Python's `operator` module if given two parameters, but return a [curried function](https://en.wikipedia.org/wiki/Currying) if given one parameter.
+
+There's too much functionality to show it all here, so be sure to check the docs. Many little things are added that we thought should have been in `list` in the first place, such as making this do what you'd expect (which is an error with `list`, but works fine with `L`):
+
+```python
+1 + L(2,3,4)
+```
+
+
+
+
+    (#4) [1,2,3,4]
+
+
+
+## Function dispatch and Transforms
+
+Most Python programmers use object oriented methods and inheritance to allow different objects to behave in different ways even when called with the same method name. Some languages use a very different approach, such as Julia, which uses [multiple dispatch generic functions](https://docs.julialang.org/en/v1/manual/methods/). Python provides [single dispatch generic functions](https://www.python.org/dev/peps/pep-0443/) as part of the standard library. `fastcore` provides multiple dispatch, with the `typedispatch` decorator (which is actually an instance of `DispatchReg`):
+
+```python
+@typedispatch
+def f_td_test(x:numbers.Integral, y): return x+1
+@typedispatch
+def f_td_test(x:int, y:float): return x+y
+
+f_td_test(3,2.0), f_td_test(3,2)
+```
+
+
+
+
+    (5.0, 4)
+
+
+
+This approach to dispatch is particularly useful for adding implementations of functionality in extension modules or user code. It is heavily used in the `Transform` class. A `Transform` is the main building block of the fastai data pipelines. In the most general terms a transform can be any function you want to apply to your data, however the `Transform` class provides several mechanisms that make the process of building them easy and flexible (see the docs for information about each of these):
+
+- Type dispatch
+- Dispatch over tuples
+- Reversability
+- Type propagation
+- Preprocessing
+- Filtering based on the dataset type
+- Ordering
+- Appending new behavior with decorators
+
+`Transform` looks for three special methods, `encodes`, `decodes`, and `setups`, which provide the implementation for [`__call__`](https://www.python-course.eu/python3_magic_methods.php), `decode`, and `setup` respectively. For instance:
+
+```python
+class A(Transform):
+    def encodes(self, x): return x+1
+
+A()(1)
+```
+
+
+
+
+    2
+
+
+
+For simple transforms like this, you can also use `Transform` as a decorator:
+
+```python
+@Transform
+def f(x): return x+1
+
+f(1)
+```
+
+
+
+
+    2
+
+
+
+Transforms can be composed into a `Pipeline`:
+
+```python
+@Transform
+def g(x): return x/2
+
+pipe = Pipeline([f,g])
+pipe(3)
+```
+
+
+
+
+    2.0
+
+
+
+The power of `Transform` and `Pipeline` is best understood by seeing how they're used to create a complete data processing pipeline. This is explained in [chapter 11](https://github.com/fastai/fastbook/blob/master/11_midlevel_data.ipynb) of the [fastai book](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527), which is [available for free](https://github.com/fastai/fastbook) in Jupyter Notebook format.
 
 ## Contributing
 

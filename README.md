@@ -99,7 +99,7 @@ test_fail(divide_zero)
 test_stdout(lambda: print('hi'), 'hi')
 ```
 
-## Foundations
+### Foundations
 
 fast.ai is unusual in that we often use [mixins](https://en.wikipedia.org/wiki/Mixin) in our code. Mixins are widely used in many programming languages, such as Ruby, but not so much in Python. We use mixins to attach new behavior to existing libraries, or to allow modules to add new behavior to our own classes, such as in extension modules. One useful example of a mixin we define is `Path.ls`, which lists a directory and returns an `L` (an extended list class which we'll discuss shortly):
 
@@ -191,7 +191,7 @@ The `assert not kwargs` above is used to ensure that the user doesn't pass an un
 
 `fastcore` also provides many utility functions that make a Python programmer's life easier, in `fastcore.utils`. We won't look at many here, since you can easily look at the docs yourself. To get you started, have a look at the docs for `chunked` (remember, if you're in a notebook, type `doc(chunked)`), which is a handy function for creating lazily generated batches from a collection.
 
-## L
+### L
 
 List most languages, Python allows for very concise syntax for some very common types, such as `list`, which can be constructed with `[1,2,3]`. Perl's designer Larry Wall explained the reasoning for this kind of syntax:
 > In metaphorical honor of Huffman’s compression code that assigns smaller numbers of bits to more common bytes. In terms of syntax, it simply means that commonly used things should be shorter, but you shouldn’t waste short sequences on less common constructs.
@@ -264,7 +264,7 @@ There's too much functionality to show it all here, so be sure to check the docs
 
 
 
-## Function dispatch and Transforms
+### Function dispatch and Transforms
 
 Most Python programmers use object oriented methods and inheritance to allow different objects to behave in different ways even when called with the same method name. Some languages use a very different approach, such as Julia, which uses [multiple dispatch generic functions](https://docs.julialang.org/en/v1/manual/methods/). Python provides [single dispatch generic functions](https://www.python.org/dev/peps/pep-0443/) as part of the standard library. `fastcore` provides multiple dispatch, with the `typedispatch` decorator (which is actually an instance of `DispatchReg`):
 

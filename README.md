@@ -98,12 +98,16 @@ You can easily add you own mixins with the `patch` [decorator](https://realpytho
 
 ```python
 @patch
-def say_hello(x:Path): print('Why hello there')
+def num_items(self:Path): return len(self.ls())
 
-p.say_hello()
+p.num_items()
 ```
 
-    Why hello there
+
+
+
+    2
+
 
 
 We also use `**kwargs` frequently. In python `**kwargs` in a parameter like means “put any additional keyword arguments into a dict called `kwargs`. Normally, using `kwargs` makes an API quite difficult to work with, because because it breaks things like tab-completion and popup lists of signatures. `fastcore.utils` provides `use_kwargs` and `delegates` to avoid this problem. See our [detailed article on delegation](https://www.fast.ai/2019/08/06/delegation/) on this topic.

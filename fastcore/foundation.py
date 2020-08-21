@@ -400,7 +400,7 @@ class L(CollBase, metaclass=NewChkMeta):
         for idx in idxs: x = x.map(itemgetter(idx))
         return x
 
-    def attrgot(self, k, default=None): return self.map(lambda o:getattr(o,k,default))
+    def attrgot(self, k, default=None): return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else getattr(o,k,default))
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def starmap(self, f, *args, **kwargs): return self._new(itertools.starmap(partial(f,*args,**kwargs), self))
@@ -443,7 +443,7 @@ add_docs(L,
          map_dict="Like `map`, but creates a dict from `items` to function results",
          starmap="Like `map`, but use `itertools.starmap`",
          itemgot="Create new `L` with item `idx` of all `items`",
-         attrgot="Create new `L` with attr `k` of all `items`",
+         attrgot="Create new `L` with attr `k` of all `items`, if `items` contains dicts, then `L` will contain corresponding values for key `k` for each dict.",
          cycle="Same as `itertools.cycle`",
          enumerate="Same as `enumerate`",
          zip="Create new `L` with `zip(*items)`",

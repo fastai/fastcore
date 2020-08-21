@@ -2,15 +2,15 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint',
-           'Int', 'Float', 'Str', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
+           'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
            'range_of', 'groupby', 'first', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
-           'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'bunzip', 'join_path_file',
-           'remove_patches_path', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'change_attr', 'change_attrs', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab',
-           'in_jupyter', 'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+           'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'remove_patches_path',
+           'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
+           'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'parallel', 'parallel_chunks',
+           'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab', 'in_jupyter', 'in_notebook',
+           'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -132,14 +132,22 @@ def hasattrs(o,attrs):
     return all(hasattr(o,attr) for attr in attrs)
 
 # Cell
+#hide
 class ShowPrint:
     "Base class that prints for `show`"
     def show(self, *args, **kwargs): print(str(self))
 
+# Cell
+#hide
 class Int(int,ShowPrint): pass
-class Float(float,ShowPrint): pass
+
+# Cell
+#hide
 class Str(str,ShowPrint): pass
-add_docs(Int, "An extensible `int`"); add_docs(Str, "An extensible `str`"); add_docs(Float, "An extensible `float`")
+class Float(float,ShowPrint): pass
+add_docs(Str, "An extensible `str`");
+add_docs(Int, "An extensible `int`");
+add_docs(Float, "An extensible `float`")
 
 # Cell
 def tuplify(o, use_list=False, match=None):
@@ -166,7 +174,9 @@ def uniqueify(x, sort=False, bidir=False, start=None):
     return res
 
 # Cell
-def setify(o): return o if isinstance(o,set) else set(L(o))
+def setify(o):
+    "Turn any list like-object into a set."
+    return o if isinstance(o,set) else set(L(o))
 
 # Cell
 def merge(*ds):
@@ -175,7 +185,7 @@ def merge(*ds):
 
 # Cell
 def is_listy(x):
-    "`isinstance(x, (tuple,list,L))`"
+    "`isinstance(x, (tuple,list,L,slice,Generator))`"
     return isinstance(x, (tuple,list,L,slice,Generator))
 
 # Cell
@@ -209,8 +219,9 @@ def shufflish(x, pct=0.04):
     return L(x[i] for i in sorted(range_of(x), key=lambda o: o+n*(1+random.random()*pct)))
 
 # Cell
+#hide
 class IterLen:
-    "Base class to add iteration to anything supporting `len` and `__getitem__`"
+    "Base class to add iteration to anything supporting `__len__` and `__getitem__`"
     def __iter__(self): return (self[i] for i in range_of(self))
 
 # Cell
@@ -288,6 +299,7 @@ setattr(fastuple,'max',_get_op(max))
 setattr(fastuple,'min',_get_op(min))
 
 # Cell
+#hide
 class _InfMeta(type):
     @property
     def count(self): return itertools.count()
@@ -304,13 +316,6 @@ class Inf(metaclass=_InfMeta):
     pass
 
 # Cell
-def in_(x, a):
-    "`True` if `x in a`"
-    return x in a
-
-operator.in_ = in_
-
-# Cell
 def _oper(op,a,b=np.nan): return (lambda o:op(o,a)) if b!=b else op(a,b)
 
 def _mk_op(nm, mod=None):
@@ -321,6 +326,13 @@ def _mk_op(nm, mod=None):
     _inner.__name__ = _inner.__qualname__ = nm
     _inner.__doc__ = f'Same as `operator.{nm}`, or returns partial if 1 arg'
     mod[nm] = _inner
+
+# Cell
+def in_(x, a):
+    "`True` if `x in a`"
+    return x in a
+
+operator.in_ = in_
 
 # Cell
 #nbdev_comment _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
@@ -546,6 +558,19 @@ def __repr__(self:Path):
     return f"Path({self.as_posix()!r})"
 
 # Cell
+_patched = ['read', 'readlines', 'write', 'save', 'load', 'ls']
+
+@contextmanager
+def remove_patches_path():
+    "A context manager for disabling Path extensions."
+    patches = L(getattr(Path, n) for n in _patched)
+    try:
+        for n in _patched: delattr(Path, n)
+        yield
+    finally:
+        for (n, f) in zip(_patched, patches): setattr(Path, n, f)
+
+# Cell
 def bunzip(fn):
     "bunzip `fn`, raising exception if output already exists"
     fn = Path(fn)
@@ -561,18 +586,6 @@ def join_path_file(file, path, ext=''):
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
-
-# Cell
-_patched = ['read', 'readlines', 'write', 'save', 'load', 'ls']
-
-@contextmanager
-def remove_patches_path():
-    patches = L(getattr(Path, n) for n in _patched)
-    try:
-        for n in _patched: delattr(Path, n)
-        yield
-    finally:
-        for (n, f) in zip(_patched, patches): setattr(Path, n, f)
 
 # Cell
 def _is_instance(f, gs):
@@ -634,29 +647,11 @@ def add_props(f, g=None, n=2):
     return (property(partial(f,i), partial(g,i)) for i in range(n))
 
 # Cell
-def change_attr(o, name, new_val):
-    "Change the attr `name` in `o` with `new_val` if it exists and return the old value"
-    old = getattr(o, name, None)
-    if hasattr(o, 'name'): setattr(o, name, new_val)
-    return o,old,hasattr(o, 'name')
-
-# Cell
-def change_attrs(o, names, new_vals, do=None):
-    "Change the attr `names` in `o` with `new_vals` if it exists and return the old values"
-    olds,has = L(),L()
-    if do is None: do = L(True) * len(names)
-    for n,v,d in zip(names, new_vals, do):
-        if d:
-            o,old,h = change_attr(o, n, v)
-            olds.append(old); has.append(h)
-    return o,olds,has
-
-# Cell
 from contextlib import ExitStack
 
 # Cell
 class ContextManagers(GetAttr):
-    "Wrapper for `ExitStack` which enters a collection of context managers"
+    "Wrapper for `contextlib.ExitStack` which enters a collection of context managers"
     def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
     def __enter__(self): self.default.map(self.stack.enter_context)
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)

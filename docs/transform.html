@@ -2,6 +2,7 @@
 
 title: Transforms
 
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -111,7 +112,7 @@ nb_path: "nbs/04_transform.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="Transform" class="doc_header"><code>class</code> <code>Transform</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/transform.py#L53" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Transform</code>(<strong><code>enc</code></strong>=<em><code>None</code></em>, <strong><code>dec</code></strong>=<em><code>None</code></em>, <strong><code>split_idx</code></strong>=<em><code>None</code></em>, <strong><code>order</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Delegates (<code>__call__</code>,<code>decode</code>,<code>setup</code>) to (<a href="https://dev.fast.ai/tabular.core#encodes"><code>encodes</code></a>,<a href="https://dev.fast.ai/tabular.core#decodes"><code>decodes</code></a>,<a href="https://dev.fast.ai/tabular.core#setups"><code>setups</code></a>) if <code>split_idx</code> matches</p>
+<p>Delegates (<code>__call__</code>,<code>decode</code>,<code>setup</code>) to (<code>encodes</code>,<code>decodes</code>,<code>setups</code>) if <code>split_idx</code> matches</p>
 
 </div>
 
@@ -141,12 +142,12 @@ nb_path: "nbs/04_transform.ipynb"
 <ul>
 <li><strong>Type dispatch</strong> - Type annotations are used to determine if a transform should be applied to the given argument. It also gives an option to provide several implementations and it choses the one to run based on the type. This is useful for example when running both independent and dependent variables through the pipeline where some transforms only make sense for one and not the other. Another usecase is designing a transform that handles different data formats. Note that if a transform takes multiple arguments only the type of the first one is used for dispatch. </li>
 <li><strong>Handling of tuples</strong> - When a tuple (or a subclass of tuple) of data is passed to a transform it will get applied to each element separately. You can opt out of this behavior by passing a list or an <a href="/foundation.html#L"><code>L</code></a>, as only tuples gets this specific behavior. An alternative is to use <a href="/transform.html#ItemTransform"><code>ItemTransform</code></a> defined below, which will always take the input as a whole.</li>
-<li><strong>Reversability</strong> - A transform can be made reversible by implementing the <a href="https://dev.fast.ai/tabular.core#decodes"><code>decodes</code></a> method. This is mainly used to turn something like a category which is encoded as a number back into a label understandable by humans for showing purposes. Like the regular call method, the <code>decode</code> method that is used to decode will be applied over each element of a tuple separately.</li>
-<li><strong>Type propagation</strong> - Whenever possible a transform tries to return data of the same type it received. Mainly used to maintain semantics of things like <a href="https://dev.fast.ai/torch_core#ArrayImage"><code>ArrayImage</code></a> which is a thin wrapper of pytorches <code>Tensor</code>. You can opt out of this behavior by adding <code>-&gt;None</code> return type annotation.</li>
+<li><strong>Reversability</strong> - A transform can be made reversible by implementing the <code>decodes</code> method. This is mainly used to turn something like a category which is encoded as a number back into a label understandable by humans for showing purposes. Like the regular call method, the <code>decode</code> method that is used to decode will be applied over each element of a tuple separately.</li>
+<li><strong>Type propagation</strong> - Whenever possible a transform tries to return data of the same type it received. Mainly used to maintain semantics of things like <a href="https://docs.fast.ai/torch_core#ArrayImage"><code>ArrayImage</code></a> which is a thin wrapper of pytorches <code>Tensor</code>. You can opt out of this behavior by adding <code>-&gt;None</code> return type annotation.</li>
 <li><strong>Preprocessing</strong> - The <code>setup</code> method can be used to perform any one-time calculations to be later used by the transform, for example generating a vocabulary to encode categorical data.</li>
 <li><strong>Filtering based on the dataset type</strong> - By setting the <code>split_idx</code> flag you can make the transform be used only in a specific <code>DataSource</code> subset like in training, but not validation.</li>
 <li><strong>Ordering</strong> - You can set the <code>order</code> attribute which the <a href="/transform.html#Pipeline"><code>Pipeline</code></a> uses when it needs to merge two lists of transforms.</li>
-<li><strong>Appending new behavior with decorators</strong> - You can easily extend an existing <a href="/transform.html#Transform"><code>Transform</code></a> by creating <a href="https://dev.fast.ai/tabular.core#encodes"><code>encodes</code></a> or <a href="https://dev.fast.ai/tabular.core#decodes"><code>decodes</code></a> methods for new data types. You can put those new methods outside the original transform definition and decorate them with the class you wish them patched into. This can be used by the fastai library users to add their own behavior, or multiple modules contributing to the same transform.</li>
+<li><strong>Appending new behavior with decorators</strong> - You can easily extend an existing <a href="/transform.html#Transform"><code>Transform</code></a> by creating <code>encodes</code> or <code>decodes</code> methods for new data types. You can put those new methods outside the original transform definition and decorate them with the class you wish them patched into. This can be used by the fastai library users to add their own behavior, or multiple modules contributing to the same transform.</li>
 </ul>
 
 </div>
@@ -164,7 +165,7 @@ nb_path: "nbs/04_transform.ipynb"
 <ul>
 <li><strong>Extending the <a href="/transform.html#Transform"><code>Transform</code></a> class</strong> - Use inheritence to implement the methods you want.</li>
 <li><strong>Passing methods to the constructor</strong> - Instantiate the <a href="/transform.html#Transform"><code>Transform</code></a> class and pass your functions as <code>enc</code> and <code>dec</code> arguments.</li>
-<li><strong>@Transform decorator</strong> - Turn any function into a <a href="/transform.html#Transform"><code>Transform</code></a> by just adding a decorator - very straightforward if all you need is a single <a href="https://dev.fast.ai/tabular.core#encodes"><code>encodes</code></a> implementation.</li>
+<li><strong>@Transform decorator</strong> - Turn any function into a <a href="/transform.html#Transform"><code>Transform</code></a> by just adding a decorator - very straightforward if all you need is a single <code>encodes</code> implementation.</li>
 <li><strong>Passing a function to fastai APIs</strong> - Same as above, but when passing a function to other transform aware classes like <a href="/transform.html#Pipeline"><code>Pipeline</code></a> or <code>TfmdDS</code> you don't even need a decorator. Your function will get converted to a <a href="/transform.html#Transform"><code>Transform</code></a> automatically.</li>
 </ul>
 
@@ -274,7 +275,7 @@ nb_path: "nbs/04_transform.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can derive from <a href="/transform.html#Transform"><code>Transform</code></a> and use <a href="https://dev.fast.ai/tabular.core#encodes"><code>encodes</code></a> for your encoding function.</p>
+<p>You can derive from <a href="/transform.html#Transform"><code>Transform</code></a> and use <code>encodes</code> for your encoding function.</p>
 
 </div>
 </div>
@@ -456,7 +457,7 @@ decodes: (ArrayImage,object) -&gt; decodes</pre>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since <a href="https://dev.fast.ai/tabular.core#decodes"><code>decodes</code></a> has no return annotation, but <a href="https://dev.fast.ai/tabular.core#encodes"><code>encodes</code></a> created an <a href="/utils.html#Int"><code>Int</code></a> and we pass that result here to <code>decode</code>, we end up with an <a href="/utils.html#Int"><code>Int</code></a>.</p>
+<p>Since <code>decodes</code> has no return annotation, but <code>encodes</code> created an <a href="/utils.html#Int"><code>Int</code></a> and we pass that result here to <code>decode</code>, we end up with an <a href="/utils.html#Int"><code>Int</code></a>.</p>
 
 </div>
 </div>

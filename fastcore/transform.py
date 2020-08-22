@@ -51,7 +51,7 @@ def _is_tuple(o): return isinstance(o, tuple) and not hasattr(o, '_fields')
 
 # Cell
 class Transform(metaclass=_TfmMeta):
-    "Delegates (`__call__`,`decode`,`setup`) to (`encodes`,`decodes`,`setups`) if `split_idx` matches"
+    "Delegates (`__call__`,`decode`,`setup`) to (<code>encodes</code>,<code>decodes</code>,<code>setups</code>) if `split_idx` matches"
     split_idx,init_enc,order,train_setup = None,None,0,None
     def __init__(self, enc=None, dec=None, split_idx=None, order=None):
         self.split_idx = ifnone(split_idx, self.split_idx)
@@ -89,7 +89,7 @@ class Transform(metaclass=_TfmMeta):
         res = tuple(self._do_call(f, x_, **kwargs) for x_ in x)
         return retain_type(res, x)
 
-add_docs(Transform, decode="Delegate to `decodes` to undo transform", setup="Delegate to `setups` to set up transform")
+add_docs(Transform, decode="Delegate to <code>decodes</code> to undo transform", setup="Delegate to <code>setups</code> to set up transform")
 
 # Cell
 class InplaceTransform(Transform):

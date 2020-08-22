@@ -2,6 +2,7 @@
 
 title: Core
 
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -993,7 +994,7 @@ nb_path: "nbs/01_foundation.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="add_docs" class="doc_header"><code>add_docs</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L180" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_docs</code>(<strong><code>cls_doc</code></strong>=<em><code>None</code></em>, <strong>**<code>docs</code></strong>)</p>
 </blockquote>
-<p>Copy values from <a href="/docs.html"><code>docs</code></a> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
+<p>Copy values from <code>docs</code> to <code>cls</code> docstrings, and confirm all public methods are documented</p>
 
 </div>
 
@@ -2919,7 +2920,7 @@ This makes it easy to create composites that don't require callers to know about
 <div class="output_markdown rendered_html output_subarea ">
 <h4 id="L.attrgot" class="doc_header"><code>L.attrgot</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/foundation.py#L403" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>L.attrgot</code>(<strong><code>k</code></strong>, <strong><code>default</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Create new <a href="/foundation.html#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code></p>
+<p>Create new <a href="/foundation.html#L"><code>L</code></a> with attr <code>k</code> of all <code>items</code>, if <code>items</code> contains dicts, then <a href="/foundation.html#L"><code>L</code></a> will contain corresponding values for key <code>k</code> for each dict.</p>
 
 </div>
 
@@ -2940,6 +2941,10 @@ This makes it easy to create composites that don't require callers to know about
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">SimpleNamespace</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span><span class="n">SimpleNamespace</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)]</span>
 <span class="n">test_eq</span><span class="p">(</span><span class="n">L</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">attrgot</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="c1">#Example of when items are a dict</span>
+<span class="n">b</span> <span class="o">=</span><span class="p">[{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;nbdev&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;fastcore&#39;</span><span class="p">}]</span>
+<span class="n">test_eq</span><span class="p">(</span><span class="n">L</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">attrgot</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">])</span>
 </pre></div>
 
     </div>

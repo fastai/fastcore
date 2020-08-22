@@ -2,6 +2,7 @@
 
 title: Welcome to fastcore
 
+
 keywords: fastai
 sidebar: home_sidebar
 
@@ -157,7 +158,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>For more details, including a link to the full documentation and source code, use <a href="https://dev.fast.ai/torch_core#doc"><code>doc</code></a>, which pops up a window with this information:</p>
+<p>For more details, including a link to the full documentation and source code, use <a href="https://docs.fast.ai/torch_core#doc"><code>doc</code></a>, which pops up a window with this information:</p>
 <div class="highlight"><pre><span></span><span class="n">doc</span><span class="p">(</span><span class="n">coll_repr</span><span class="p">)</span>
 </pre></div>
 <p>{% include image.html align="left" max-width="499" file="/images/att_00000.png" %}</p>
@@ -581,7 +582,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>assert not kwargs</code> above is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <a href="https://dev.fast.ai/data.load#DataLoader"><code>DataLoader</code></a> by passing your own methods.</p>
+<p>The <code>assert not kwargs</code> above is used to ensure that the user doesn't pass an unknown parameter (i.e one that's not in <code>_methods</code>). <code>fastai</code> uses <a href="/foundation.html#funcs_kwargs"><code>funcs_kwargs</code></a> in many places, for instance, you can customize any part of a <a href="https://docs.fast.ai/data.load#DataLoader"><code>DataLoader</code></a> by passing your own methods.</p>
 <p><code>fastcore</code> also provides many utility functions that make a Python programmer's life easier, in <code>fastcore.utils</code>. We won't look at many here, since you can easily look at the docs yourself. To get you started, have a look at the docs for <a href="/utils.html#chunked"><code>chunked</code></a> (remember, if you're in a notebook, type <code>doc(chunked)</code>), which is a handy function for creating lazily generated batches from a collection.</p>
 <p>Python's <a href="/utils.html#ProcessPoolExecutor"><code>ProcessPoolExecutor</code></a> is extended to allow <code>max_workers</code> to be set to <code>0</code>, to easily turn off parallel processing. This makes it easy to debug your code in serial, then run it in parallel. It also allows you to pass arguments to your parallel function, and to ensure there's a pause between calls, in case the process you are running has race conditions. <a href="/utils.html#parallel"><code>parallel</code></a> makes parallel processing even easier to use, and even adds an optional progress bar.</p>
 

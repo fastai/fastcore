@@ -11,9 +11,7 @@ jobs:
     env:
       download: "true"
       caching: "true"
-    strategy:
-      matrix:
-        nb: ['[0-2]','[3-5]','[6-9]']
+
     steps:
     - uses: actions/checkout@v2
     - name: Install the library
@@ -63,8 +61,8 @@ jobs:
         mkdir -p $HOME/.fastai/data
         find $HOME/.fastai/archive/ -name "*.tgz" -exec tar -xzvf {} -C $HOME/.fastai/data \;
           
-    - name: Test fastai notebooks - batch ${{matrix.nb}}
+    - name: Test fastai notebooks
       run: |
-        nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"
+        nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/*.ipynb"
 
         

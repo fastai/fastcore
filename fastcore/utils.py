@@ -454,7 +454,7 @@ def log_args(f=None, *, to_return=False, but=None, but_as=None):
                 xtra_kwargs={k:kwargs.pop(k) for k in key_no_sig}
                 func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
             except:
-                print(f'@log_args had an issue on {f.__qualname__} -> {e}')
+                #print(f'@log_args had an issue on {f.__qualname__} -> {e}')
                 return f(*args, **kwargs)
         func_args.apply_defaults()
         log_dict = {**func_args.arguments, **{f'{k} (not in signature)':v for k,v in xtra_kwargs.items()}}

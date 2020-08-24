@@ -57,7 +57,7 @@ jobs:
       id: cache
       with:
         path: ~/.fastai/data
-        key: 'fastai-test-data-v1'
+        key: 'fastai-test-data-v2'
 
     - name: download data
       if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'

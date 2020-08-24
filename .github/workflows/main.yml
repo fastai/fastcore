@@ -41,6 +41,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         repo: 'fastai/fastai'
+ 
+    - name: check dir
+      run: |
+        pwd
+        ls
     
     - name: Install fastai
       run: |
@@ -53,11 +58,6 @@ jobs:
       with:
         path: ~/.fastai/data
         key: 'fastai-test-data-v1'
-    
-    - name: check dir
-      run: |
-        pwd
-        ls
 
     - name: download data
       if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'

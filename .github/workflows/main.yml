@@ -59,6 +59,11 @@ jobs:
         repository: 'fastai/fastai'
         path: fastai
 
+    - name: see directories
+      run: |
+        pwd
+        ls
+        
     - name: Install libraries
       run: |
         pip install -U nbdev

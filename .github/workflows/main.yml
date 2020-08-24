@@ -67,9 +67,10 @@ jobs:
     - name: Install libraries
       run: |
         pip install -U nbdev
-         pip install -Ue fastai/
-        pip install -Ue .[dev] fastcore/     
-   
+        cd fastai && pip install -Ue .
+        cd fastcore && pip install -Ue .[dev]
+        cd ~     
+    
     - name: check for cache hit
       uses: actions/cache@v2
       if: env.caching == 'true'

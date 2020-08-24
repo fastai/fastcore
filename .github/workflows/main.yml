@@ -1,19 +1,21 @@
 name: CI
 on: [push, pull_request]
 jobs:
-  build:
+  fastcore:
     runs-on: ubuntu-latest
+    container: fastdotai/fastai #this is defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
+    env:
+      download: "true"
+      caching: "true"
+    strategy:
+      matrix:
+        nb: ['[0-2]','[3-5]','[6-9]']
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.6'
-        architecture: 'x64'
+    - uses: actions/checkout@v2
     - name: Install the library
       run: |
-        pip install wheel
-        pip install nbdev jupyter
-        pip install -e .[dev]
+        pip install -U nbdev
+        pip install -Ue .[dev]
     - name: Read all notebooks
       run: |
         nbdev_read_nbs
@@ -29,6 +31,36 @@ jobs:
     - name: Check if there is no diff library/notebooks
       run: |
         if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
-    - name: Run tests
+    - name: Run fastcore tests
       run: |
         nbdev_test_nbs
+        
+    - name: clone fastai
+      uses: actions/checkout@v2
+      with:
+        repo: 'fastai/fastai'
+    
+    - name: Install fastai
+      run: |
+        pip install -Ue .
+        
+    - name: check for cache hit
+      uses: actions/cache@v2
+      if: env.caching == 'true'
+      id: cache
+      with:
+        path: ~/.fastai/data
+        key: 'fastai-test-data-v1'
+
+    - name: download data
+      if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'
+      run: |
+        ipython /workspace/download_testdata.py
+        mkdir -p $HOME/.fastai/data
+        find $HOME/.fastai/archive/ -name "*.tgz" -exec tar -xzvf {} -C $HOME/.fastai/data \;
+          
+    - name: Test fastai notebooks - batch ${{matrix.nb}}
+      run: |
+        nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"
+
+        

@@ -36,21 +36,35 @@ jobs:
     - name: Run fastcore tests
       run: |
         nbdev_test_nbs
+
+  test-fastai-notebooks:
+    needs: fastcore
+    container: fastdotai/fastai
+    runs-on: ubuntu-latest
+    env:
+      download: "true"
+      caching: "true"
+    strategy:
+      matrix:
+        nb: ['[0-2]','[3-5]','[6-9]']
+    steps:
+    - name: clone this branch [fastcore]
+      uses: actions/checkout@v2
+      with:
+        path: fastcore/
         
     - name: clone fastai
       uses: actions/checkout@v2
       with:
         repository: 'fastai/fastai'
- 
-    - name: check dir
+        path: fastai
+
+    - name: Install libraries
       run: |
-        pwd
-        ls
-    
-    - name: Install fastai
-      run: |
-        pip install -Ue .
-        
+        pip install -U nbdev
+         pip install -Ue fastai/
+        pip install -Ue .[dev] fastcore/     
+   
     - name: check for cache hit
       uses: actions/cache@v2
       if: env.caching == 'true'
@@ -68,6 +82,7 @@ jobs:
           
     - name: Test fastai notebooks
       run: |
+        cd fastai
         nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/*.ipynb"
 
         

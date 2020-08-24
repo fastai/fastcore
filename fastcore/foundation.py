@@ -50,7 +50,7 @@ class NewChkMeta(FixSigMeta):
 
 # Cell
 class BypassNewMeta(FixSigMeta):
-    "Metaclass: casts `x` to this class if it's of type `cls._bypass_type`, initializing with `_new_meta` if available"
+    "Metaclass: casts `x` to this class if it's of type `cls._bypass_type`"
     def __call__(cls, x=None, *args, **kwargs):
         if hasattr(cls, '_new_meta'): x = cls._new_meta(x, *args, **kwargs)
         elif not isinstance(x,getattr(cls,'_bypass_type',object)) or len(args) or len(kwargs):

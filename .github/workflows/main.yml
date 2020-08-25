@@ -27,24 +27,8 @@ jobs:
       run: |
         pip install -U nbdev
         pip install -Ue .[dev]
-    - name: Read all notebooks
-      run: |
-        nbdev_read_nbs
-    - name: Check if all notebooks are cleaned
-      run: |
-        echo "Check we are starting with clean git checkout"
-        if [ -n "$(git status -uno -s)" ]; then echo "git status is not clean"; false; fi
-        echo "Trying to strip out notebooks"
-        nbdev_clean_nbs
-        echo "Check that strip out was unnecessary"
-        git status -s # display the status to see which nbs need cleaning up
-        if [ -n "$(git status -uno -s)" ]; then echo -e "!!! Detected unstripped out notebooks\n!!!Remember to run nbdev_install_git_hooks"; false; fi
-    - name: Check if there is no diff library/notebooks
-      run: |
-        if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
-    - name: Run fastcore tests
-      run: |
-        nbdev_test_nbs
+    - name: Check if notebooks are synced and cleaned
+      uses: fastai/workflows/nb@master
 
   fastai-integration-test:
     needs: filter
@@ -67,11 +51,6 @@ jobs:
       with:
         repository: 'fastai/fastai'
         path: fastai
-
-    - name: see directories
-      run: |
-        pwd
-        ls
         
     - name: Install libraries
       run: |

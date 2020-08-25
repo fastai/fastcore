@@ -451,7 +451,7 @@ def log_args(f=None, *, to_return=False, but=None, but_as=None):
                 # sometimes it happens because the signature does not reference some kwargs
                 sigp = dict(inspect.signature(f_insp).parameters)
                 key_no_sig = set(kwargs.keys())-set(sigp.keys())
-                if key_no_sig: print(f'Warning: @log_args found unexpected args in {f.__qualname__}: {key_no_sig}')
+                #if key_no_sig: print(f'Warning: @log_args found unexpected args in {f.__qualname__}: {key_no_sig}')
                 xtra_kwargs={k:kwargs.pop(k) for k in key_no_sig}
                 func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
             except:

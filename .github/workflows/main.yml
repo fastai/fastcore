@@ -5,7 +5,16 @@ on:
     branches: 
       - master
 jobs:
+  filter:
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' && github.event.head_commit.author.username == 'jph00') || github.event_name != 'push'
+    steps:
+      - run: |
+          echo "passed filter"
+          echo "event_name: ${{ github.event_name }}"
+          echo "head_commit.author.username: ${{ github.event.head_commit.author.username }}"
   fastcore:
+    needs: filter
     runs-on: ubuntu-latest
     container: fastdotai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
     env:
@@ -38,6 +47,7 @@ jobs:
         nbdev_test_nbs
 
   fastai-integration-test:
+    needs: filter
     container: fastdotai/fastai
     runs-on: ubuntu-latest
     env:

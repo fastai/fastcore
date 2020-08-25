@@ -89,6 +89,6 @@ jobs:
     - name: Test fastai notebooks
       run: |
         cd fastai
-        nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/*.ipynb"
+        nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"
 
         

@@ -18,8 +18,6 @@ jobs:
     needs: filter
     runs-on: ubuntu-latest
     container: fastdotai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
-    env:
-      download: "true"
 
     steps:
     - uses: actions/checkout@v2

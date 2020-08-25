@@ -7,7 +7,7 @@ on:
 jobs:
   fastcore:
     runs-on: ubuntu-latest
-    container: fastdotai/fastai #this is defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
+    container: fastdotai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
     env:
       download: "true"
       caching: "true"

@@ -1,0 +1,49 @@
+name: docs
+on: 
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    branches: [main]
+    types: 
+      - completed
+      - requested
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: fastdotai/fastai
+    steps:
+    - name: Install libraries
+      run: pip install -Uqqq nbdev
+
+    - name: checkout contents of PR
+      uses: actions/checkout@v2
+
+    - name: Create docs
+      id: docs
+      run: |
+        cp -r docs_src docs
+        nbdev_build_docs
+
+    - name: setup directories for Jekyll build
+      run: |
+        rm -rf docs/_site
+        chmod -R 777 docs
+
+    - name: Jekyll build
+      uses: docker://fastdotai/nbdev-docs
+      with:
+        args: bash -c "cd docs && gem install bundler && chmod -R u+rwx . && jekyll build -V --strict_front_matter --trace"
+      env:
+        JEKYLL_ENV: 'production'
+    
+    - name: rsync to dreamhost
+      uses: fastai/workflows/rsync@master
+      with:
+        hostname: ps625762.dreamhostps.com
+        ssh_key: ${{ secrets.DH_KEY }}
+        dest_path: "fastcore.fast.ai/"
+        username: jeremyphoward

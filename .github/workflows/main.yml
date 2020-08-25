@@ -37,8 +37,7 @@ jobs:
       run: |
         nbdev_test_nbs
 
-  test-fastai-notebooks:
-    needs: fastcore
+  fastai-integration-test:
     container: fastdotai/fastai
     runs-on: ubuntu-latest
     env:

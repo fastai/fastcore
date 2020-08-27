@@ -10,6 +10,7 @@ docs_serve: docs
 	cd docs && bundle exec jekyll serve
 
 docs: $(SRC)
+	rsync -a docs_src/ docs
 	nbdev_build_docs
 	touch docs
 

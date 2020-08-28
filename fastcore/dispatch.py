@@ -121,6 +121,7 @@ class DispatchReg:
     def __init__(self): self.d = defaultdict(TypeDispatch)
     def __call__(self, f):
         nm = f'{f.__qualname__}'
+        if nm not in self.d and nm in globals(): self.d[nm].add(globals()[nm])
         self.d[nm].add(f)
         return self.d[nm]
 

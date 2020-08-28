@@ -2,8 +2,8 @@
 
 __all__ = ['defaults', 'FixSigMeta', 'PrePostInitMeta', 'NewChkMeta', 'BypassNewMeta', 'copy_func', 'patch_to', 'patch',
            'patch_property', 'use_kwargs_dict', 'use_kwargs', 'delegates', 'method', 'funcs_kwargs', 'add_docs', 'docs',
-           'custom_dir', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'GetAttr', 'delegate_attr', 'coll_repr',
-           'mask2idxs', 'listable_types', 'CollBase', 'cycle', 'zip_cycle', 'is_indexer', 'negate_func', 'L']
+           'custom_dir', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'mask2idxs', 'cycle', 'zip_cycle',
+           'is_indexer', 'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'CollBase', 'L']
 
 # Cell
 from .imports import *
@@ -19,7 +19,7 @@ def _rm_self(sig):
 
 # Cell
 class FixSigMeta(type):
-    "A metaclass that fixes the signature on classes that override __new__"
+    "A metaclass that fixes the signature on classes that override `__new__`"
     def __new__(cls, name, bases, dict):
         res = super().__new__(cls, name, bases, dict)
         if res.__init__ is not object.__init__: res.__signature__ = _rm_self(inspect.signature(res.__init__))
@@ -211,19 +211,53 @@ arg3 = _Arg(3)
 arg4 = _Arg(4)
 
 # Cell
-class bind:
-    "Same as `partial`, except you can use `arg0` `arg1` etc param placeholders"
-    def __init__(self, fn, *pargs, **pkwargs):
-        self.fn,self.pargs,self.pkwargs = fn,pargs,pkwargs
-        self.maxi = max((x.i for x in pargs if isinstance(x, _Arg)), default=-1)
+def coll_repr(c, max_n=10):
+    "String repr of up to `max_n` items of (possibly lazy) collection `c`"
+    return f'(#{len(c)}) [' + ','.join(itertools.islice(map(repr,c), max_n)) + (
+        '...' if len(c)>10 else '') + ']'
 
-    def __call__(self, *args, **kwargs):
-        args = list(args)
-        kwargs = {**self.pkwargs,**kwargs}
-        for k,v in kwargs.items():
-            if isinstance(v,_Arg): kwargs[k] = args.pop(v.i)
-        fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
-        return self.fn(*fargs, **kwargs)
+# Cell
+def mask2idxs(mask):
+    "Convert bool mask or index list to index `L`"
+    if isinstance(mask,slice): return mask
+    mask = list(mask)
+    if len(mask)==0: return []
+    it = mask[0]
+    if hasattr(it,'item'): it = it.item()
+    if isinstance(it,(bool,NoneType,np.bool_)): return [i for i,m in enumerate(mask) if m]
+    return [int(i) for i in mask]
+
+# Cell
+def _is_array(x): return hasattr(x,'__array__') or hasattr(x,'iloc')
+
+def _listify(o):
+    if o is None: return []
+    if isinstance(o, list): return o
+    if isinstance(o, str) or _is_array(o): return [o]
+    if is_iter(o): return list(o)
+    return [o]
+
+# Cell
+def cycle(o):
+    "Like `itertools.cycle` except creates list of `None`s if `o` is empty"
+    o = _listify(o)
+    return itertools.cycle(o) if o is not None and len(o) > 0 else itertools.cycle([None])
+
+# Cell
+def zip_cycle(x, *args):
+    "Like `itertools.zip_longest` but `cycle`s through elements of all but first argument"
+    return zip(x, *map(cycle,args))
+
+# Cell
+def is_indexer(idx):
+    "Test whether `idx` will index a single item in a list"
+    return isinstance(idx,int) or not getattr(idx,'ndim',1)
+
+# Cell
+def negate_func(f):
+    "Create new function that negates result of `f`"
+    def _f(*args, **kwargs): return not f(*args, **kwargs)
+    return _f
 
 # Cell
 class GetAttr:
@@ -251,31 +285,19 @@ def delegate_attr(self, k, to):
     except AttributeError: raise AttributeError(k) from None
 
 # Cell
-def _is_array(x): return hasattr(x,'__array__') or hasattr(x,'iloc')
+class bind:
+    "Same as `partial`, except you can use `arg0` `arg1` etc param placeholders"
+    def __init__(self, fn, *pargs, **pkwargs):
+        self.fn,self.pargs,self.pkwargs = fn,pargs,pkwargs
+        self.maxi = max((x.i for x in pargs if isinstance(x, _Arg)), default=-1)
 
-def _listify(o):
-    if o is None: return []
-    if isinstance(o, list): return o
-    if isinstance(o, str) or _is_array(o): return [o]
-    if is_iter(o): return list(o)
-    return [o]
-
-# Cell
-def coll_repr(c, max_n=10):
-    "String repr of up to `max_n` items of (possibly lazy) collection `c`"
-    return f'(#{len(c)}) [' + ','.join(itertools.islice(map(repr,c), max_n)) + (
-        '...' if len(c)>10 else '') + ']'
-
-# Cell
-def mask2idxs(mask):
-    "Convert bool mask or index list to index `L`"
-    if isinstance(mask,slice): return mask
-    mask = list(mask)
-    if len(mask)==0: return []
-    it = mask[0]
-    if hasattr(it,'item'): it = it.item()
-    if isinstance(it,(bool,NoneType,np.bool_)): return [i for i,m in enumerate(mask) if m]
-    return [int(i) for i in mask]
+    def __call__(self, *args, **kwargs):
+        args = list(args)
+        kwargs = {**self.pkwargs,**kwargs}
+        for k,v in kwargs.items():
+            if isinstance(v,_Arg): kwargs[k] = args.pop(v.i)
+        fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
+        return self.fn(*fargs, **kwargs)
 
 # Cell
 listable_types = typing.Collection,Generator,map,filter,zip
@@ -290,28 +312,6 @@ class CollBase:
     def __delitem__(self, i): del(self.items[i])
     def __repr__(self): return self.items.__repr__()
     def __iter__(self): return self.items.__iter__()
-
-# Cell
-def cycle(o):
-    "Like `itertools.cycle` except creates list of `None`s if `o` is empty"
-    o = _listify(o)
-    return itertools.cycle(o) if o is not None and len(o) > 0 else itertools.cycle([None])
-
-# Cell
-def zip_cycle(x, *args):
-    "Like `itertools.zip_longest` but `cycle`s through elements of all but first argument"
-    return zip(x, *map(cycle,args))
-
-# Cell
-def is_indexer(idx):
-    "Test whether `idx` will index a single item in a list"
-    return isinstance(idx,int) or not getattr(idx,'ndim',1)
-
-# Cell
-def negate_func(f):
-    "Create new function that negates result of `f`"
-    def _f(*args, **kwargs): return not f(*args, **kwargs)
-    return _f
 
 # Cell
 class L(CollBase, metaclass=NewChkMeta):
@@ -431,8 +431,8 @@ _docs = {o:"Passthru to `list` method" for o in
          'append count remove reverse sort pop clear index'.split()}
 add_docs(L,
          __getitem__="Retrieve `idx` (can be list of indices, or mask, or int) items",
-         range="Same as `range`, but returns an `L`. Can pass a collection for `a`, to use `len(a)`",
-         split="Same as `str.split`, but returns an `L`",
+         range="Class Method: Same as `range`, but returns an `L`. Can pass a collection for `a`, to use `len(a)`",
+         split="Class Method: Same as `str.split`, but returns an `L`",
          copy="Same as `list.copy`, but returns an `L`",
          sorted="New `L` sorted by `key`. If key is str then use `attrgetter`. If key is int then use `itemgetter`",
          unique="Unique items, in stable order",

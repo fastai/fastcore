@@ -7,12 +7,12 @@ jobs:
     container: fastai/nbdev
     steps:
     - uses: actions/checkout@v2
-    - name: test-docs
+    - name: test-bundle
       env:
         HOME: /root
-      run: |
-        . ~/.condainit
-        conda activate
-        conda --help
-        which nbdev_build_docs
-        nbdev_detach
+      run: bundle exec jekyll
+      
+    - name: test-jekyll
+      env:
+        HOME: /root
+      run: jekyll

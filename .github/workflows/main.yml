@@ -17,8 +17,7 @@ jobs:
   fastcore:
     needs: filter
     runs-on: ubuntu-latest
-    container: fastai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
-
+    container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
     - name: Install the library

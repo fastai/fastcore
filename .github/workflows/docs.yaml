@@ -25,24 +25,20 @@ jobs:
 
     - name: Create docs
       id: docs
-      #env:
-      #  HOME: /root
+      env:
+        HOME: /root
+        JEKYLL_ENV: 'production'
       run: |
         . ~/.condainit
-        conda activate
+        #conda activate
         pip install torchvision
         cp -r docs_src docs
         nbdev_build_docs
-
-    - name: setup directories for Jekyll build
-      run: |
         rm -rf docs/_site
         chmod -R 777 docs
         cd docs 
         #chmod -R u+rwx 
         jekyll build -V --strict_front_matter --trace
-      env:
-        JEKYLL_ENV: 'production'
 
     - name: rsync to dreamhost
       uses: fastai/workflows/rsync@master

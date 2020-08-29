@@ -22,8 +22,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install the library
       run: |
-        pip install -U nbdev
-        pip install -Ue .[dev]
+        pip3 install -U nbdev
+        pip3 install -Ue .[dev]
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
@@ -52,7 +52,7 @@ jobs:
         
     - name: Install libraries
       run: |
-        pip install -U nbdev
+        pip3 install -U nbdev
         cd fastai && pip install -Ue .
         cd fastcore && pip install -Ue .[dev]
         cd ~     

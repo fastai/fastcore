@@ -8,7 +8,9 @@ jobs:
     steps:
 
     - name: test-docs
-      run: conda --help
-      
-    - name: test-docs
-      run: which nbdev_build_docs
+      run: |
+        . ~/.condainit
+        conda activate
+        conda --help
+        which nbdev_build_docs
+        nbdev_detach

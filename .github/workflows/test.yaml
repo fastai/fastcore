@@ -11,8 +11,8 @@ jobs:
 #        shell: /bin/bash --login -eo pipefail -c {0}
     steps:
     - uses: actions/checkout@v2
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v2
+    #- name: Setup tmate session
+    #  uses: mxschmitt/action-tmate@v2
     - name: test-bundle
       env:
         HOME: /root
@@ -20,7 +20,7 @@ jobs:
         . ./.bashrc
         bundle exec jekyll
       
-    #- name: test-jekyll
-    #  env:
-    #    HOME: /root
-    #  run: jekyll
+    - name: test-jekyll
+      env:
+        HOME: /root
+      run: jekyll

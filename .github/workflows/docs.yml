@@ -13,14 +13,15 @@ on:
 
 jobs:
   build:
-    runs-on: fastai/nbdev
+    runs-on: ubuntu-20.04
+    container: fastai/nbdev
     steps:
     - name: checkout contents of PR
       uses: actions/checkout@v2
 
     - name: Create docs
       id: docs
-      run: cp -r docs_src docs && nbdev_build_docs
+      run: conda activate && cp -r docs_src docs && nbdev_build_docs
 
     - name: setup directories for Jekyll build
       run: |

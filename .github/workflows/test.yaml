@@ -8,6 +8,8 @@ jobs:
     steps:
 
     - name: test-docs
+      env:
+        HOME: /root
       run: |
         . ~/.condainit
         conda activate

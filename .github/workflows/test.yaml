@@ -7,15 +7,19 @@ jobs:
     container: fastai/nbdev
     defaults:
       run:
-        shell: /bin/bash --login -eo pipefail -c {0}
+        shell: /bin/bash --login -c {0}
+#        shell: /bin/bash --login -eo pipefail -c {0}
     steps:
     - uses: actions/checkout@v2
     - name: test-bundle
       env:
         HOME: /root
-      run: bundle exec jekyll
+      run: |
+        echo $HOME
+        whoami
+        bundle exec jekyll
       
-    - name: test-jekyll
-      env:
-        HOME: /root
-      run: jekyll
+    #- name: test-jekyll
+    #  env:
+    #    HOME: /root
+    #  run: jekyll

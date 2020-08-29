@@ -14,10 +14,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: fastdotai/fastai
+    container: fastai/nbdev #fastdotai/fastai
     steps:
-    - name: Install libraries
-      run: pip install -Uqqq nbdev
+#     - name: Install libraries
+#       run: pip install -Uqqq nbdev
 
     - name: checkout contents of PR
       uses: actions/checkout@v2
@@ -34,11 +34,21 @@ jobs:
         chmod -R 777 docs
 
     - name: Jekyll build
-      uses: docker://fastdotai/nbdev-docs
-      with:
-        args: bash -c "cd docs && gem install bundler && chmod -R u+rwx . && jekyll build -V --strict_front_matter --trace"
+      run: |
+        cd docs 
+        gem install bundler
+        chmod -R u+rwx 
+        jekyll build -V --strict_front_matter --trace
       env:
         JEKYLL_ENV: 'production'
+
+
+#     - name: Jekyll build
+#       uses: docker://fastdotai/nbdev-docs
+#       with:
+#         args: bash -c "cd docs && gem install bundler && chmod -R u+rwx . && jekyll build -V --strict_front_matter --trace"
+#       env:
+#         JEKYLL_ENV: 'production'
     
     - name: rsync to dreamhost
       uses: fastai/workflows/rsync@master

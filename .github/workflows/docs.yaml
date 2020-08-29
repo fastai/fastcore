@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    container: fastai/nbdev
+    container: fastai/fastai
     defaults:
       run:
         shell: bash
@@ -30,7 +30,6 @@ jobs:
         SSH_KEY: ${{ secrets.DH_KEY }}
       run: |
         . ~/.bashrc
-        pip install torchvision
         cp -r docs_src docs
         nbdev_build_docs
         cd docs 

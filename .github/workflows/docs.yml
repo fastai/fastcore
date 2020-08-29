@@ -21,8 +21,10 @@ jobs:
 
     - name: Create docs
       id: docs
+      env:
+        HOME: /root
       run: |
-        source ~/.condainit
+        . ~/.condainit
         conda activate
         cp -r docs_src docs
         nbdev_build_docs

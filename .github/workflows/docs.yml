@@ -33,8 +33,7 @@ jobs:
         cp -r docs_src docs
         nbdev_build_docs
         cd docs 
-        jekyll build -V --strict_front_matter
+        jekyll build --strict_front_matter
         echo "$SSH_KEY" > ~/.ssh/id_rsa
         chmod 400 ~/.ssh/id_rsa
         rsync -az _site/ jeremyphoward@ps625762.dreamhostps.com:fastcore.fast.ai/
-

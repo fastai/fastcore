@@ -21,7 +21,11 @@ jobs:
 
     - name: Create docs
       id: docs
-      run: conda activate && cp -r docs_src docs && nbdev_build_docs
+      run: |
+        source ~/.condainit
+        conda activate
+        cp -r docs_src docs
+        nbdev_build_docs
 
     - name: setup directories for Jekyll build
       run: |

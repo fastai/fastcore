@@ -17,7 +17,7 @@ jobs:
   fastcore:
     needs: filter
     runs-on: ubuntu-latest
-    container: fastdotai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
+    container: fastai/fastai #defined here: https://github.com/fastai/docker-containers/blob/master/fastai-build/Dockerfile
 
     steps:
     - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
         
   fastai-integration-test:
     needs: filter
-    container: fastdotai/fastai
+    container: fastai/fastai
     runs-on: ubuntu-latest
     env:
       download: "true"

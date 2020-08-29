@@ -5,6 +5,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container: fastai/nbdev
+    defaults:
+      run:
+        shell: /bin/bash --login
     steps:
     - uses: actions/checkout@v2
     - name: test-bundle

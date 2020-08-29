@@ -7,7 +7,7 @@ jobs:
     container: fastai/nbdev
     defaults:
       run:
-        shell: /bin/bash --login
+        shell: /bin/bash --login -eo pipefail -c {0}
     steps:
     - uses: actions/checkout@v2
     - name: test-bundle

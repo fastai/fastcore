@@ -35,7 +35,7 @@ jobs:
         rm -rf docs/_site
         chmod -R 777 docs
         cd docs 
-        chmod -R u+rwx 
+        #chmod -R u+rwx 
         jekyll build -V --strict_front_matter --trace
       env:
         JEKYLL_ENV: 'production'

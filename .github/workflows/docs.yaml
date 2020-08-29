@@ -28,13 +28,12 @@ jobs:
         HOME: /root
         JEKYLL_ENV: 'production'
       run: |
-        . ~/.condainit
-        #conda activate
+        . ~/.bashrc
         pip install torchvision
         cp -r docs_src docs
         nbdev_build_docs
-        rm -rf docs/_site
-        chmod -R 777 docs
+        #rm -rf docs/_site
+        #chmod -R 777 docs
         cd docs 
         #chmod -R u+rwx 
         jekyll build -V --strict_front_matter --trace

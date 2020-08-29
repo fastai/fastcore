@@ -1,0 +1,16 @@
+name: test
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: fastai/nbdev
+    steps:
+
+    - name: test-docs
+      id: docs
+      run: conda --help
+      
+    - name: test-docs
+      id: docs
+      run: which nbdev_build_docs

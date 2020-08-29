@@ -18,7 +18,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: /root
     steps:
     - name: checkout contents of PR
       uses: actions/checkout@v2

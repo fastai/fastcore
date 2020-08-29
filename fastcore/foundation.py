@@ -197,7 +197,6 @@ def docs(cls):
     return cls
 
 # Cell
-#hide
 def custom_dir(c, add:list):
     "Implement custom `__dir__`, adding `add` to `cls`"
     return dir(type(c)) + list(c.__dict__.keys()) + add
@@ -304,7 +303,6 @@ class bind:
 listable_types = typing.Collection,Generator,map,filter,zip
 
 # Cell
-#hide
 class CollBase:
     "Base class for composing a list of `items`"
     def __init__(self, items): self.items = items

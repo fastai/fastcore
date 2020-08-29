@@ -8,9 +8,7 @@ jobs:
     steps:
 
     - name: test-docs
-      id: docs
       run: conda --help
       
     - name: test-docs
-      id: docs
       run: which nbdev_build_docs

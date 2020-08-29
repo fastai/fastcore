@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     container: fastai/nbdev
     steps:
-
+    - uses: actions/checkout@v2
     - name: test-docs
       env:
         HOME: /root

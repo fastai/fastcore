@@ -26,6 +26,7 @@ jobs:
       run: |
         . ~/.condainit
         conda activate
+        pip install torchvision
         cp -r docs_src docs
         nbdev_build_docs
 

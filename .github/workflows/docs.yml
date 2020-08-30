@@ -16,7 +16,7 @@ jobs:
     container: fastai/fastai
     defaults:
       run:
-        shell: HOME=/root bash -lc {0}
+        shell: env HOME=/root bash -l {0}
     steps:
     - name: checkout contents of PR
       uses: actions/checkout@v2

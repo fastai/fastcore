@@ -20,10 +20,6 @@ jobs:
     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
-    - name: Install the library
-      run: |
-        pip3 install -U nbdev
-        pip3 install -Ue .[dev]
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests

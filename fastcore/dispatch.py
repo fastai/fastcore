@@ -7,6 +7,7 @@ __all__ = ['type_hints', 'anno_ret', 'cmp_instance', 'TypeDispatch', 'DispatchRe
 from .imports import *
 from .foundation import *
 from .utils import *
+from warnings import warn
 
 # Cell
 def type_hints(f):
@@ -71,6 +72,7 @@ class TypeDispatch:
 
     def add(self, f):
         "Add type `t` and function `f`"
+        if f and getattr(f,'__defaults__',None): warn(f"Function {f.__name__} has defaults parameters. These will be ignored.")
         a0,a1 = _p2_anno(f)
         t = self.funcs.d.get(a0)
         if t is None:
@@ -121,7 +123,6 @@ class DispatchReg:
     def __init__(self): self.d = defaultdict(TypeDispatch)
     def __call__(self, f):
         nm = f'{f.__qualname__}'
-        if nm not in self.d and nm in globals(): self.d[nm].add(globals()[nm])
         self.d[nm].add(f)
         return self.d[nm]
 

@@ -56,7 +56,7 @@ jobs:
         
     - name: Install libraries
       run: |
-        cd fastai && pip install -Ue .
+        cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]
 
     - name: check for cache hit

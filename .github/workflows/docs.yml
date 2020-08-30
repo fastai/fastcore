@@ -27,7 +27,6 @@ jobs:
         JEKYLL_ENV: 'production'
         SSH_KEY: ${{ secrets.DH_KEY }}
       run: |
-        . ~/.bashrc
         cp -r docs_src docs
         nbdev_build_docs
         cd docs 

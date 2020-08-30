@@ -5,6 +5,12 @@ on:
   push:
     branches: 
       - master
+env:
+  HOME: /root
+defaults:
+  run:
+    shell: bash
+
 jobs:
   filter:
     runs-on: ubuntu-latest
@@ -20,6 +26,7 @@ jobs:
     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
+    - uses: fastai/workflows/conda-env@master
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
@@ -35,6 +42,7 @@ jobs:
       matrix:
         nb: ['[0-2]','[3-5]','[6-9]']
     steps:
+    - uses: fastai/workflows/conda-env@master
     - name: clone this branch [fastcore]
       uses: actions/checkout@v2
       with:
@@ -48,11 +56,9 @@ jobs:
         
     - name: Install libraries
       run: |
-        pip3 install -U nbdev
         cd fastai && pip install -Ue .
-        cd fastcore && pip install -Ue .[dev]
-        cd ~     
-    
+        cd ../fastcore && pip install -Ue .[dev]
+
     - name: check for cache hit
       uses: actions/cache@v2
       id: cache
@@ -71,5 +77,3 @@ jobs:
       run: |
         cd fastai
         nbdev_test_nbs --flags '' --n_workers 3 --pause 0.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"
-
-        

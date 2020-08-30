@@ -16,7 +16,7 @@ jobs:
     container: fastai/fastai
     defaults:
       run:
-        shell: bash -c {0}
+        shell: HOME=/root bash -lc {0}
     steps:
     - name: checkout contents of PR
       uses: actions/checkout@v2
@@ -24,7 +24,6 @@ jobs:
     - name: Create docs
       id: docs
       env:
-        HOME: /root
         JEKYLL_ENV: 'production'
         SSH_KEY: ${{ secrets.DH_KEY }}
       run: |

@@ -80,7 +80,7 @@ coll_repr(range(1000), 5)
 
 So, the test is actually showing you what the output looks like, because if the function call didn't return `'(#1000) [0,1,2,3,4...]'`, then the test would have failed.
 
-So every test shown in the docs is also showing you the behavior of the library --- and visa versa!
+So every test shown in the docs is also showing you the behavior of the library --- and vice versa!
 
 Test functions always start with `test_`, and then follow with the operation being tested. So `test_eq` tests for equality (as you saw in the example above). This includes tests for equality of arrays and tensors, lists and generators, and many more:
 

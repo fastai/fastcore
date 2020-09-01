@@ -34,5 +34,6 @@ jobs:
         jekyll build --strict_front_matter
         echo "$SSH_KEY" > ~/.ssh/id_rsa
         chmod 400 ~/.ssh/id_rsa
-        ls _site
+        echo $PATH
+        which ssh
         rsync -az _site/ jeremyphoward@ps625762.dreamhostps.com:fastcore.fast.ai/

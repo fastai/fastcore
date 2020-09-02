@@ -1,7 +1,7 @@
 repository: fastai/fastcore
 output: web
-topnav_title: fastai
-site_title: fastai
+topnav_title: fastcore
+site_title: fastcore
 company_name: fast.ai
 github_editme_path: 
 use_math: true
@@ -55,10 +55,10 @@ defaults:
 sidebars:
 - home_sidebar
 
-description: "Documentation for the fastai library"
+description: "Documentation for the fastcore library"
 # theme: jekyll-theme-cayman
 
 baseurl: /
-url: https://docs.fast.ai
+url: https://fastcore.fast.ai
 twitter_username: jeremyphoward
 

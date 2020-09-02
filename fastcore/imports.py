@@ -61,6 +61,7 @@ def one_is_instance(a, b, t): return isinstance(a,t) or isinstance(b,t)
 
 def equals(a,b):
     "Compares `a` and `b` for equality; supports sublists, tensors and arrays too"
+    if (a is None) ^ (b is None): return False
     if one_is_instance(a,b,type): return a==b
     if hasattr(a, '__array_eq__'): return a.__array_eq__(b)
     if hasattr(b, '__array_eq__'): return b.__array_eq__(a)

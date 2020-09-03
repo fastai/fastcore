@@ -101,15 +101,9 @@ class InplaceTransform(Transform):
 # Cell
 class DisplayedTransform(Transform):
     "A transform with a `__repr__` that shows its attrs"
-    store_attrs=''
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        store_attr()
 
     @property
-    def name(self):
-        s = f" -- {attrdict(self, *self.store_attrs.split(','))}" if self.store_attrs else ''
-        return super().name + s
+    def name(self): return f"{super().name} -- {getattr(self,'__stored_args__',{})}"
 
 # Cell
 class ItemTransform(Transform):

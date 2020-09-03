@@ -83,26 +83,22 @@ class ignore_exceptions:
     def __exit__(self, *args): return True
 
 # Cell
-def store_attr(nms=None, self=None, but=None):
-    "Store params named in comma-separated `nms` from calling context into attrs in `self`"
+def _store_attr(self, **attrs):
+    for n,v in attrs.items():
+        setattr(self, n, v)
+        self.__stored_args__[n] = v
+
+# Cell
+def store_attr(names=None, self=None, but=None, **attrs):
+    "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = inspect.currentframe().f_back
     args,varargs,keyw,locs = inspect.getargvalues(fr)
     if self is None: self = locs[args[0]]
-    if nms is None: nms = getattr(self, 'store_attrs', None)
-    if nms: ns = re.split(', *', nms)
-    else:   ns = args[1:]
-    if but: ns = [o for o in ns if o not in L(but)]
+    if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
+    if attrs: return _store_attr(self, **attrs)
 
-    while fr and ns:
-        args,varargs,keyw,locs = inspect.getargvalues(fr)
-        found = []
-        for n in ns:
-            if n in locs:
-                setattr(self, n, locs[n])
-                found.append(n)
-        for n in found: ns.remove(n)
-        fr = fr.f_back
-    assert not ns, f'Failed to find {ns}'
+    ns = re.split(', *', names) if names else args[1:]
+    _store_attr(self, **{n:fr.f_locals[n] for n in ns if n not in L(but)})
 
 # Cell
 def attrdict(o, *ks):
@@ -448,13 +444,13 @@ def log_args(f=None, *, to_return=False, but=None, but_as=None):
     def _f(*args, **kwargs):
         f_insp,args_insp = f,args
         xtra_kwargs = {}
-        # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__) so we get the one from the class
+        # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__)
         if '__init__' in f.__qualname__:
             # from https://stackoverflow.com/a/25959545/3474490
-            cls = getattr(inspect.getmodule(f), f.__qualname__.split('.<locals>', 1)[0].rsplit('.', 1)[0]) # args[0].__class__ would not consider inheritance
+            # args[0].__class__ would not consider inheritance
+            cls = getattr(inspect.getmodule(f), f.__qualname__.split('.<locals>', 1)[0].rsplit('.', 1)[0])
             f_insp, args_insp = cls, args[1:]
-        try:
-            func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
+        try: func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
         except Exception as e:
             try:
                 # sometimes it happens because the signature does not reference some kwargs
@@ -503,6 +499,7 @@ class _Self:
         self.ready = False
         return self
 
+# Cell
 class _SelfCls:
     def __getattr__(self,k): return getattr(_Self(),k)
     def __getitem__(self,i): return self.__getattr__('__getitem__')(i)

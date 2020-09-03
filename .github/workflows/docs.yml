@@ -11,19 +11,18 @@ on:
   push:
     branches: 
       - master
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
     runs-on: ubuntu-20.04
     container: fastai/fastai
-    defaults:
-      run:
-        shell: bash
     steps:
     - uses: actions/checkout@v2
     - uses: fastai/workflows/conda-env@master
     - name: Create docs
-      #id: docs
       env:
         JEKYLL_ENV: 'production'
         SSH_KEY: ${{ secrets.DH_KEY }}

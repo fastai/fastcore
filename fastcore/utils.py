@@ -83,17 +83,26 @@ class ignore_exceptions:
     def __exit__(self, *args): return True
 
 # Cell
-def _find_in_stack(fr, nm):
-    if fr is None: raise Exception(f"Failed to find {nm}")
-    try: return fr.f_locals[nm]
-    except KeyError: return _find_in_stack(fr.f_back, nm)
-
-# Cell
-def store_attr(self, nms=None):
+def store_attr(nms=None, self=None, but=None):
     "Store params named in comma-separated `nms` from calling context into attrs in `self`"
-    if nms is None: nms = self.store_attrs
     fr = inspect.currentframe().f_back
-    for n in re.split(', *', nms): setattr(self,n,_find_in_stack(fr, n))
+    args,varargs,keyw,locs = inspect.getargvalues(fr)
+    if self is None: self = locs[args[0]]
+    if nms is None: nms = getattr(self, 'store_attrs', None)
+    if nms: ns = re.split(', *', nms)
+    else:   ns = args[1:]
+    if but: ns = [o for o in ns if o not in L(but)]
+
+    while fr and ns:
+        args,varargs,keyw,locs = inspect.getargvalues(fr)
+        found = []
+        for n in ns:
+            if n in locs:
+                setattr(self, n, locs[n])
+                found.append(n)
+        for n in found: ns.remove(n)
+        fr = fr.f_back
+    assert not ns, f'Failed to find {ns}'
 
 # Cell
 def attrdict(o, *ks):
@@ -230,8 +239,8 @@ class ReindexCollection(GetAttr, IterLen):
     "Reindexes collection `coll` with indices `idxs` and optional LRU cache of size `cache`"
     _default='coll'
     def __init__(self, coll, idxs=None, cache=None, tfm=noop):
-        store_attr(self, 'coll,cache,tfm')
-        self.idxs = L.range(coll) if idxs is None else idxs
+        if idxs is None: idxs = L.range(coll)
+        store_attr()
         if cache is not None: self._get = functools.lru_cache(maxsize=cache)(self._get)
 
     def _get(self, i): return self.tfm(self.coll[i])
@@ -691,8 +700,8 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
     def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
         if max_workers is None: max_workers=defaults.cpus
+        store_attr()
         self.not_parallel = max_workers==0
-        store_attr(self, 'on_exc,pause,max_workers')
         if self.not_parallel: max_workers=1
         super().__init__(max_workers, **kwargs)
 

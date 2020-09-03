@@ -104,7 +104,7 @@ class DisplayedTransform(Transform):
     store_attrs=''
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        store_attr(self)
+        store_attr()
 
     @property
     def name(self):

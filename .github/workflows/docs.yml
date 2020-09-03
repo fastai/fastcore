@@ -27,3 +27,4 @@ jobs:
         username: jeremyphoward
         hostname: ps625762.dreamhostps.com
         dest_path: fastcore.fast.ai
+        ssh_key: ${{ secrets.DH_KEY }}

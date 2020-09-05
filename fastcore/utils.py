@@ -89,7 +89,7 @@ def _store_attr(self, **attrs):
         self.__stored_args__[n] = v
 
 # Cell
-def store_attr(names=None, self=None, but=None, **attrs):
+def store_attr(self=None, names=None, but=None, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = inspect.currentframe().f_back
     args,varargs,keyw,locs = inspect.getargvalues(fr)

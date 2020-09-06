@@ -18,6 +18,8 @@ test:
 	nbdev_test_nbs
 
 release: pypi
+	git tag "$(python setup.py version)"
+	git push --tags
 	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
 	nbdev_bump_version
 

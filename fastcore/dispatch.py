@@ -72,6 +72,7 @@ class TypeDispatch:
 
     def add(self, f):
         "Add type `t` and function `f`"
+        if f and getattr(f,'__defaults__',None): warn(f"{f.__name__} has default params. These will be ignored.")
         a0,a1 = _p2_anno(f)
         t = self.funcs.d.get(a0)
         if t is None:

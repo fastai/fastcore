@@ -7,10 +7,10 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
            'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'remove_patches_path',
-           'bunzip', 'join_path_file', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'parallel', 'parallel_chunks',
-           'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab', 'in_jupyter', 'in_notebook',
-           'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+           'bunzip', 'join_path_file', 'urlread', 'urljson', 'sort_by_run', 'PrettyString', 'round_multiple',
+           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
+           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab',
+           'in_jupyter', 'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
 
 # Cell
 from .imports import *
@@ -593,6 +593,16 @@ def join_path_file(file, path, ext=''):
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
+
+# Cell
+def urlread(url):
+    "Retrieve `url`"
+    return urllib.request.urlopen(url).read()
+
+# Cell
+def urljson(url):
+    "Retrieve `url` and decode json"
+    return json.loads(urlread(url))
 
 # Cell
 def _is_instance(f, gs):

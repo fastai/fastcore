@@ -1,7 +1,9 @@
 import numpy as np
 import io,operator,sys,os,re,mimetypes,itertools,shutil,pickle,tempfile,subprocess
 import itertools,random,inspect,functools,math,bz2,typing,numbers,warnings,threading
+import json,urllib.request
 
+from warnings import warn
 from dataclasses import dataclass
 from functools import partial,reduce
 from threading import Thread
@@ -14,6 +16,7 @@ from pathlib import Path
 from collections import defaultdict,Counter
 from operator import itemgetter,attrgetter
 from uuid import uuid4
+from urllib.request import HTTPError
 
 # External modules
 from numpy import array,ndarray
@@ -70,3 +73,4 @@ def equals(a,b):
            all_equal      if is_iter(a) or is_iter(b) else
            operator.eq)
     return cmp(a,b)
+

@@ -1,6 +1,8 @@
+import setuptools,sys
 from pkg_resources import parse_version
 from configparser import ConfigParser
-import setuptools
+from distutils.cmd import Command
+
 assert parse_version(setuptools.__version__)>=parse_version('36.2')
 
 # note: all settings are in settings.ini; edit there, not here
@@ -28,6 +30,10 @@ dev_requirements = cfg.get('dev_requirements','').split()
 lic = licenses[cfg['license']]
 min_python = cfg['min_python']
 
+if len(sys.argv)>1 and sys.argv[1]=='version':
+    print(setup_cfg['version'])
+    exit()
+
 setuptools.setup(
     name = cfg['lib_name'],
     license = lic[0],
@@ -41,9 +47,7 @@ setuptools.setup(
     packages = setuptools.find_packages(),
     include_package_data = True,
     install_requires = requirements,
-    extras_require = {
-        'dev': dev_requirements
-    },
+    extras_require = { 'dev': dev_requirements },
     python_requires  = '>=' + cfg['min_python'],
     long_description = open('README.md').read(),
     long_description_content_type = 'text/markdown',

@@ -1,3 +1,7 @@
+.ONESHELL:
+SHELL := /bin/bash
+SHELLFLAGS := -e
+
 SRC = $(wildcard nbs/*.ipynb)
 
 all: fastcore docs
@@ -17,11 +21,19 @@ docs: $(SRC)
 test:
 	nbdev_test_nbs
 
-release: pypi
-	git tag "$(python setup.py version)"
-	git push --tags
-	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
+release: pypi tag conda_release
 	nbdev_bump_version
+
+conda_release:
+	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
+
+tag:
+	export TAG="$$(python setup.py version)"
+	echo "$$(python setup.py version)"
+	echo "$${TAG}"
+	git tag "$${TAG}"
+	git push --tags
+	gh api repos/:owner/:repo/releases -F tag_name="$${TAG}" -F name="$${TAG}"
 
 pypi: dist
 	twine upload --repository pypi dist/*

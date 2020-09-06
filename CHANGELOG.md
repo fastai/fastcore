@@ -1,6 +1,12 @@
 # Release notes
 
 <!-- do not remove -->
+## 1.0.2
+
+### Bugs Squashed
+
+- "has default params. These will be ignored" shown when not appropriate ([#74](https://api.github.com/repos/fastai/fastcore/issues/74))
+
 ## 1.0.1
 
 ### Breaking Changes

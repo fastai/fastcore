@@ -25,9 +25,9 @@ def anno_ret(func):
 cmp_instance = functools.cmp_to_key(lambda a,b: 0 if a==b else 1 if issubclass(a,b) else -1)
 
 # Cell
-def _chk_defaults(f):
+def _chk_defaults(f, ann):
     try: # Some callables don't have signatures, so ignore those errors
-        params = list(inspect.signature(f).parameters.values())[:2]
+        params = list(inspect.signature(f).parameters.values())[:min(len(ann),2)]
         if any(p.default!=inspect.Parameter.empty for p in params):
             warn(f"{f.__name__} has default params. These will be ignored.")
     except ValueError: pass
@@ -37,7 +37,7 @@ def _p2_anno(f):
     "Get the 1st 2 annotations of `f`, defaulting to `object`"
     hints = type_hints(f)
     ann = [o for n,o in hints.items() if n!='return']
-    if callable(f): _chk_defaults(f)
+    if callable(f): _chk_defaults(f, ann)
     while len(ann)<2: ann.append(object)
     return ann[:2]
 

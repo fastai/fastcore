@@ -21,7 +21,9 @@ docs: $(SRC)
 test:
 	nbdev_test_nbs
 
-release: pypi tag conda_release
+release: pypi tag
+	sleep 10
+	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
 	nbdev_bump_version
 
 conda_release:

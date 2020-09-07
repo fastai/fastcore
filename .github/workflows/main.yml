@@ -40,7 +40,7 @@ jobs:
       download: "true"
     strategy:
       matrix:
-        nb: ['[0-2]','[3-5]','[6-9]']
+        nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
     - uses: fastai/workflows/conda-env@master
     - name: clone this branch [fastcore]
@@ -65,7 +65,7 @@ jobs:
       id: cache
       with:
         path: ~/.fastai/data
-        key: 'fastai-test-data-v3'
+        key: 'fastai-test-data-v4'
 
     - name: download data
       if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'

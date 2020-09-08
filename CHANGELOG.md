@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.0.4
+
+### New Features
+
+- Remove numpy prerequisite ([#75](https://api.github.com/repos/fastai/fastcore/issues/75))
+  - NB: fastcore's `L` and other collection features still work with numpy
+    arrays, but they do so internally using instance methods, so numpy is no longer a
+    prerequisite, and numpy is not loaded if not used
+
 ## 1.0.2
 
 ### Bugs Squashed

@@ -30,7 +30,9 @@ jobs:
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
-      run: nbdev_test_nbs
+      run: |
+        pip install -Uqq nbdev fastcore
+        nbdev_test_nbs
         
   fastai-integration-test:
     needs: filter
@@ -56,6 +58,7 @@ jobs:
         
     - name: Install libraries
       run: |
+        pip install -Uqq nbdev
         cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]
         pip install "sentencepiece<0.1.90" wandb tensorboard albumentations pydicom opencv-python scikit-image pyarrow kornia catalyst captum neptune-cli

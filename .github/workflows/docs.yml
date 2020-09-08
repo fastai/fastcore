@@ -21,6 +21,7 @@ jobs:
     container: fastai/jekyll
     steps:
     - uses: actions/checkout@v2
+    - run: pip install .[dev]
     - uses: fastai/workflows/build-docs@master
       with:
         username: jeremyphoward

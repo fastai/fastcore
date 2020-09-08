@@ -57,7 +57,7 @@ The documentation also contains links to any related functions or classes, which
 
 ### Testing
 
-fastcore's testing module is designed to work well with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. That means that your tests, docs, and code all live together in the same notebook. fastcore and nbdev's approach to testing starts with the premise that your all your tests should pass. If one fails, no more tests in a notebook are run.
+fastcore's testing module is designed to work well with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. That means that your tests, docs, and code all live together in the same notebook. fastcore and nbdev's approach to testing starts with the premise that all your tests should pass. If one fails, no more tests in a notebook are run.
 
 Tests look like this:
 
@@ -181,9 +181,8 @@ Looking at that `ProductPage` example, it's rather verbose and duplicates a lot 
 
 ```python
 class ProductPage:
-    store_attrs = 'author,price,cost'
     def __init__(self,author,price,cost): store_attr()
-    __repr__ = basic_repr(store_attrs)
+    __repr__ = basic_repr('author,price,cost')
 
 ProductPage("Jeremy", 1.50, 0.50)
 ```
@@ -244,7 +243,7 @@ p
 
 
 
-    (#20) [10,7,9,17,18,4,16,15,19,14...]
+    (#20) [17,10,7,18,12,13,5,16,15,19...]
 
 
 
@@ -257,7 +256,7 @@ p[2,4,6]
 
 
 
-    (#3) [9,18,16]
+    (#3) [7,12,5]
 
 
 
@@ -270,7 +269,7 @@ p.argwhere(ge(15))
 
 
 
-    (#5) [3,4,6,7,8]
+    (#5) [0,3,7,8,9]
 
 
 
@@ -295,11 +294,11 @@ Most Python programmers use object oriented methods and inheritance to allow dif
 
 ```python
 @typedispatch
-def f_td_test(x:numbers.Integral, y): return x+1
+def _f(x:numbers.Integral, y): return x+1
 @typedispatch
-def f_td_test(x:int, y:float): return x+y
+def _f(x:int, y:float): return x+y
 
-f_td_test(3,2.0), f_td_test(3,2)
+_f(3,2.0), _f(3,2)
 ```
 
 

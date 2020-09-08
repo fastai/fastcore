@@ -5,6 +5,8 @@ __all__ = ['test_fail', 'test', 'nequals', 'test_eq', 'test_eq_type', 'test_ne',
 
 # Cell
 from .imports import *
+from collections import Counter
+from contextlib import redirect_stdout
 
 # Cell
 def test_fail(f, msg='', contains=''):
@@ -49,7 +51,7 @@ def is_close(a,b,eps=1e-5):
     if hasattr(a, '__array__') or hasattr(b,'__array__'):
         return (abs(a-b)<eps).all()
     if isinstance(a, (Iterable,Generator)) or isinstance(b, (Iterable,Generator)):
-        return is_close(np.array(a), np.array(b), eps=eps)
+        return all(abs(a_-b_)<eps for a_,b_ in zip(a,b))
     return abs(a-b)<eps
 
 # Cell
@@ -93,7 +95,7 @@ TEST_IMAGE_BW = 'images/mnist3.png'
 # Cell
 def test_fig_exists(ax):
     "Test there is a figure displayed in `ax`"
-    assert ax and len(np.frombuffer(ax.figure.canvas.tostring_argb(), dtype=np.uint8))
+    assert ax and len(ax.figure.canvas.tostring_argb())
 
 # Cell
 def test_sig(f, b):

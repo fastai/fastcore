@@ -1,6 +1,7 @@
 # Release notes
 
 <!-- do not remove -->
+
 ## 1.0.2
 
 ### Bugs Squashed

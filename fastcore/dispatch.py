@@ -7,6 +7,7 @@ __all__ = ['type_hints', 'anno_ret', 'cmp_instance', 'TypeDispatch', 'DispatchRe
 from .imports import *
 from .foundation import *
 from .utils import *
+from collections import defaultdict
 
 # Cell
 def type_hints(f):
@@ -163,7 +164,7 @@ def default_set_meta(self, x, copy_meta=False):
 def cast(x, typ):
     "cast `x` to type `typ` (may also change `x` inplace)"
     res = typ._before_cast(x) if hasattr(typ, '_before_cast') else x
-    if isinstance(res, ndarray): res = res.view(typ)
+    if isinstance_str(res, 'ndarray'): res = res.view(typ)
     elif hasattr(res, 'as_subclass'): res = res.as_subclass(typ)
     else:
         try: res.__class__ = typ

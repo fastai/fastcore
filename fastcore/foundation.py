@@ -2,11 +2,15 @@
 
 __all__ = ['defaults', 'FixSigMeta', 'PrePostInitMeta', 'NewChkMeta', 'BypassNewMeta', 'copy_func', 'patch_to', 'patch',
            'patch_property', 'use_kwargs_dict', 'use_kwargs', 'delegates', 'method', 'funcs_kwargs', 'add_docs', 'docs',
-           'custom_dir', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'mask2idxs', 'cycle', 'zip_cycle',
-           'is_indexer', 'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'CollBase', 'L']
+           'custom_dir', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle',
+           'zip_cycle', 'is_indexer', 'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'CollBase',
+           'L']
 
 # Cell
 from .imports import *
+from contextlib import contextmanager
+from copy import copy
+import random
 
 # Cell
 defaults = SimpleNamespace()
@@ -217,6 +221,11 @@ def coll_repr(c, max_n=10):
         '...' if len(c)>10 else '') + ']'
 
 # Cell
+def is_bool(x):
+    "Check whether `x` is a bool or None"
+    return isinstance(x,(bool,NoneType)) or isinstance_str(x, 'bool_')
+
+# Cell
 def mask2idxs(mask):
     "Convert bool mask or index list to index `L`"
     if isinstance(mask,slice): return mask
@@ -224,7 +233,7 @@ def mask2idxs(mask):
     if len(mask)==0: return []
     it = mask[0]
     if hasattr(it,'item'): it = it.item()
-    if isinstance(it,(bool,NoneType,np.bool_)): return [i for i,m in enumerate(mask) if m]
+    if is_bool(it): return [i for i,m in enumerate(mask) if m]
     return [int(i) for i in mask]
 
 # Cell
@@ -349,11 +358,15 @@ class L(CollBase, metaclass=NewChkMeta):
             if not is_iter(o): o = [o]*len(idx)
             for i,o_ in zip(idx,o): self.items[i] = o_
 
+    def __eq__(self,b):
+        if isinstance_str(b, 'ndarray'): return array_equal(b, self)
+        if isinstance(b, (str,dict)): return False
+        return all_equal(b,self)
+
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items
     def __reversed__(self): return self._new(reversed(self.items))
     def __invert__(self): return self._new(not i for i in self)
-    def __eq__(self,b): return False if isinstance(b, (str,dict,set)) else all_equal(b,self)
     def __repr__(self): return repr(self.items) if _is_array(self.items) else coll_repr(self)
     def __mul__ (a,b): return a._new(a.items*b)
     def __add__ (a,b): return a._new(a.items+_listify(b))
@@ -443,7 +456,7 @@ add_docs(L,
          map_dict="Like `map`, but creates a dict from `items` to function results",
          starmap="Like `map`, but use `itertools.starmap`",
          itemgot="Create new `L` with item `idx` of all `items`",
-         attrgot="Create new `L` with attr `k` of all `items`, if `items` contains dicts, then `L` will contain corresponding values for key `k` for each dict.",
+         attrgot="Create new `L` with attr `k` (or value `k` for dicts) of all `items`.",
          cycle="Same as `itertools.cycle`",
          enumerate="Same as `enumerate`",
          zip="Create new `L` with `zip(*items)`",

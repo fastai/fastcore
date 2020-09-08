@@ -15,7 +15,7 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
 from .imports import *
 from .foundation import *
 from functools import wraps
-import mimetypes,bz2,pickle,random
+import mimetypes,bz2,pickle,random,json,urllib
 from contextlib import contextmanager
 
 # Cell

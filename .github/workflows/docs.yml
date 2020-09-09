@@ -1,6 +1,6 @@
 name: docs
-env:
-  HOME: /root
+# env:
+#   HOME: /root
 on: 
   workflow_dispatch:
   workflow_run:

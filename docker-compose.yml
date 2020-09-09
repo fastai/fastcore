@@ -1,12 +1,12 @@
 version: "3"
 services:
-  fastcore: &fastcore
+  fastai: &fastai
     restart: unless-stopped
     working_dir: /data
-    build:
-        dockerfile: Dockerfile
-        context: .
-    image: fastcore-dev
+    # build:
+    #     dockerfile: Dockerfile
+    #     context: .
+    image: fastai/codespaces
     logging:
       driver: json-file
       options:
@@ -17,18 +17,18 @@ services:
       - .:/data/
 
   notebook:
-    <<: *fastcore
+    <<: *fastai
     command: jupyter notebook --allow-root --no-browser --ip=0.0.0.0 --port=8080 --NotebookApp.token='' --NotebookApp.password=''
     ports:
       - "8080:8080"
 
   watcher:
-    <<: *fastcore
+    <<: *fastai
     command: watchmedo shell-command --command nbdev_build_docs --pattern *.ipynb --recursive --drop
     network_mode: host # for GitHub Codespaces https://github.com/features/codespaces/
 
   jekyll:
-    <<: *fastcore
+    <<: *fastai
     ports:
      - "4000:4000"
     command: >

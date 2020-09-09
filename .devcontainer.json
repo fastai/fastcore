@@ -7,5 +7,6 @@
     "appPort": [4000, 8080],
     "extensions": ["ms-python.python",
                    "ms-azuretools.vscode-docker"],
-    "runServices": ["notebook", "jekyll", "watcher"]
+    "runServices": ["notebook", "jekyll", "watcher"],
+    "postStartCommand": "pip install -e ."
 }

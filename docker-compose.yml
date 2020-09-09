@@ -3,9 +3,6 @@ services:
   fastai: &fastai
     restart: unless-stopped
     working_dir: /data
-    # build:
-    #     dockerfile: Dockerfile
-    #     context: .
     image: fastai/codespaces
     logging:
       driver: json-file

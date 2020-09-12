@@ -98,7 +98,7 @@ def store_attr(names=None, self=None, but=None, **attrs):
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
     if attrs: return _store_attr(self, **attrs)
 
-    ns = re.split(', *', names) if names else args[1:]
+    ns = re.split(', *', names) if names else args[1:] if args[0] == 'self' else args
     _store_attr(self, **{n:fr.f_locals[n] for n in ns if n not in L(but)})
 
 # Cell

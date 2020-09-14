@@ -6,7 +6,7 @@ Python is a powerful, dynamic language. Rather than bake everything into the lan
 
 ## Installing
 
-To install fastcore run: `conda install fastcore` (if you use Anaconda, which we strongly recommend) or `pip install fastcore`. For an [editable install](https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install), clone this repo and run: `pip install -e ".[dev]"`.
+To install fastcore run: `conda install -c fastai fastcore` (if you use Anaconda, which we strongly recommend) or `pip install fastcore`. For an [editable install](https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install), clone this repo and run: `pip install -e ".[dev]"`.
 
 ## A tour
 

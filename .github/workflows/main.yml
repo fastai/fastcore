@@ -5,8 +5,8 @@ on:
   push:
     branches: 
       - master
-env:
-  HOME: /root
+# env:
+#   HOME: /root
 defaults:
   run:
     shell: bash
@@ -26,11 +26,13 @@ jobs:
     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
-    - uses: fastai/workflows/conda-env@master
+#     - uses: fastai/workflows/conda-env@master
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
-      run: nbdev_test_nbs
+      run: |
+        pip install -Uqq nbdev fastcore
+        nbdev_test_nbs
         
   fastai-integration-test:
     needs: filter
@@ -40,9 +42,9 @@ jobs:
       download: "true"
     strategy:
       matrix:
-        nb: ['[0-2]','[3-5]','[6-9]']
+        nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
-    - uses: fastai/workflows/conda-env@master
+#     - uses: fastai/workflows/conda-env@master
     - name: clone this branch [fastcore]
       uses: actions/checkout@v2
       with:
@@ -56,6 +58,7 @@ jobs:
         
     - name: Install libraries
       run: |
+        pip install -Uqq nbdev
         cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]
         pip install "sentencepiece<0.1.90" wandb tensorboard albumentations pydicom opencv-python scikit-image pyarrow kornia catalyst captum neptune-cli
@@ -65,7 +68,7 @@ jobs:
       id: cache
       with:
         path: ~/.fastai/data
-        key: 'fastai-test-data-v3'
+        key: 'fastai-test-data-v4'
 
     - name: download data
       if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'

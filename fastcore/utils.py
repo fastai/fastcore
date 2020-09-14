@@ -9,13 +9,14 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'remove_patches_path',
            'bunzip', 'join_path_file', 'urlread', 'urljson', 'sort_by_run', 'PrettyString', 'round_multiple',
            'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen', 'ipython_shell', 'in_ipython', 'in_colab',
-           'in_jupyter', 'in_notebook', 'IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']
+           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
 from .foundation import *
 from functools import wraps
+import mimetypes,bz2,pickle,random,json,urllib
+from contextlib import contextmanager
 
 # Cell
 def ifnone(a, b):
@@ -321,13 +322,13 @@ class Inf(metaclass=_InfMeta):
     pass
 
 # Cell
-def _oper(op,a,b=np.nan): return (lambda o:op(o,a)) if b!=b else op(a,b)
+def _oper(op,a,b=float('nan')): return (lambda o:op(o,a)) if b!=b else op(a,b)
 
 def _mk_op(nm, mod=None):
     "Create an operator using `oper` and add to the caller's module"
     if mod is None: mod = inspect.currentframe().f_back.f_locals
     op = getattr(operator,nm)
-    def _inner(a,b=np.nan): return _oper(op, a,b)
+    def _inner(a,b=float('nan')): return _oper(op, a,b)
     _inner.__name__ = _inner.__qualname__ = nm
     _inner.__doc__ = f'Same as `operator.{nm}`, or returns partial if 1 arg'
     mod[nm] = _inner
@@ -647,7 +648,7 @@ def even_mults(start, stop, n):
     if n==1: return stop
     mult = stop/start
     step = mult**(1/(n-1))
-    return np.array([start*(step**i) for i in range(n)])
+    return [start*(step**i) for i in range(n)]
 
 # Cell
 def num_cpus():
@@ -763,43 +764,10 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     if n_workers==0:
         yield from enumerate(list(cls(**kwargs)(items)))
         return
-    batches = np.array_split(items, n_workers)
-    idx = np.cumsum(0 + L(batches).map(len))
+    batches = L(chunked(items, n_chunks=n_workers))
+    idx = L(itertools.accumulate(0 + batches.map(len)))
     queue = Queue()
     if progress_bar: items = progress_bar(items, leave=False)
     f=partial(_f_pg, cls(**kwargs), queue)
     done=partial(_done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())
-
-# Cell
-def ipython_shell():
-    "Same as `get_ipython` but returns `False` if not in IPython"
-    try: return get_ipython()
-    except NameError: return False
-
-# Cell
-def in_ipython():
-    "Check if code is running in some kind of IPython environment"
-    return bool(ipython_shell())
-
-# Cell
-def in_colab():
-    "Check if the code is running in Google Colaboratory"
-    return 'google.colab' in sys.modules
-
-# Cell
-def in_jupyter():
-    "Check if the code is running in a jupyter notebook"
-    if not in_ipython(): return False
-    return ipython_shell().__class__.__name__ == 'ZMQInteractiveShell'
-
-# Cell
-def in_notebook():
-    "Check if the code is running in a jupyter notebook"
-    return in_colab() or in_jupyter()
-
-# Cell
-IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(),in_notebook()
-
-# Cell
-#nbdev_comment _all_ = ['IN_NOTEBOOK', 'IN_JUPYTER', 'IN_COLAB', 'IN_IPYTHON']

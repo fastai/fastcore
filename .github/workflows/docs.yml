@@ -18,10 +18,9 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    container: fastai/fastai
+    container: fastai/jekyll
     steps:
     - uses: actions/checkout@v2
-    - uses: fastai/workflows/conda-env@master
     - uses: fastai/workflows/build-docs@master
       with:
         username: jeremyphoward

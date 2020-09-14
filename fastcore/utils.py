@@ -7,16 +7,20 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
            'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip',
-           'join_path_file', 'urlread', 'urljson', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults',
-           'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'parallel',
-           'run_procs', 'parallel_gen']
+           'join_path_file', 'urlread', 'urljson', 'run_proc', 'do_request', 'sort_by_run', 'PrettyString',
+           'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads',
+           'ProcessPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
 from .foundation import *
 from functools import wraps
+
 import mimetypes,bz2,pickle,random,json,urllib
 from contextlib import contextmanager
+from urllib.request import Request,urlopen
+from urllib.error import HTTPError
+from urllib.parse import urlencode
 
 # Cell
 def ifnone(a, b):
@@ -550,12 +554,29 @@ def join_path_file(file, path, ext=''):
 # Cell
 def urlread(url):
     "Retrieve `url`"
-    return urllib.request.urlopen(url).read()
+    with urlopen(url) as res: return res.read()
 
 # Cell
 def urljson(url):
     "Retrieve `url` and decode json"
     return json.loads(urlread(url))
+
+# Cell
+def run_proc(*args):
+    "Pass `args` to `subprocess.run`, returning `stdout`, or raise `IOError` on failure"
+    res = subprocess.run(args, capture_output=True)
+    if res.returncode: raise IOError("{} ;; {}".format(res.stdout, res.stderr))
+    return res.stdout
+
+# Cell
+def do_request(url, post=False, headers=None, **data):
+    "Call GET or json-encoded POST on `url`, depending on `post`"
+    if data:
+        if post: data = json.dumps(data).encode('ascii')
+        else:
+            url += "?" + urlencode(data)
+            data = None
+    return urljson(Request(url, headers=headers, data=data or None))
 
 # Cell
 def _is_instance(f, gs):

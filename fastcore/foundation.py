@@ -184,7 +184,7 @@ listable_types = typing.Collection,Generator,map,filter,zip
 # Cell
 class CollBase:
     "Base class for composing a list of `items`"
-    def __init__(self, items, **kwargs): self.items = items
+    def __init__(self, items): self.items = items
     def __len__(self): return len(self.items)
     def __getitem__(self, k): return self.items[list(k) if isinstance(k,CollBase) else k]
     def __setitem__(self, k, v): self.items[list(k) if isinstance(k,CollBase) else k] = v

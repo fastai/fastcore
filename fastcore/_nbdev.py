@@ -155,7 +155,12 @@ index = {"test_fail": "00_test.ipynb",
          "use_kwargs": "06_meta.ipynb",
          "delegates": "06_meta.ipynb",
          "method": "06_meta.ipynb",
-         "funcs_kwargs": "06_meta.ipynb"}
+         "funcs_kwargs": "06_meta.ipynb",
+         "Param": "07_script.ipynb",
+         "bool_arg": "07_script.ipynb",
+         "anno_parser": "07_script.ipynb",
+         "args_from_prog": "07_script.ipynb",
+         "call_parse": "07_script.ipynb"}
 
 modules = ["test.py",
            "foundation.py",
@@ -163,7 +168,8 @@ modules = ["test.py",
            "dispatch.py",
            "transform.py",
            "logargs.py",
-           "meta.py"]
+           "meta.py",
+           "script.py"]
 
 doc_url = "https://fastcore.fast.ai/"
 

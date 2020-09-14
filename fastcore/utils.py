@@ -6,10 +6,10 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'range_of', 'groupby', 'first', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
-           'partialler', 'mapped', 'instantiate', 'using_attr', 'log_args', 'Self', 'Self', 'remove_patches_path',
-           'bunzip', 'join_path_file', 'urlread', 'urljson', 'sort_by_run', 'PrettyString', 'round_multiple',
-           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'parallel', 'parallel_chunks', 'run_procs', 'parallel_gen']
+           'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip',
+           'join_path_file', 'urlread', 'urljson', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults',
+           'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'parallel',
+           'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -65,7 +65,7 @@ def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, **flds):
 # Cell
 def mk_class(nm, *fld_names, sup=None, doc=None, funcs=None, mod=None, **flds):
     "Create a class using `get_class` and add to the caller's module"
-    if mod is None: mod = inspect.currentframe().f_back.f_locals
+    if mod is None: mod = sys._getframe(1).f_locals
     res = get_class(nm, *fld_names, sup=sup, doc=doc, funcs=funcs, **flds)
     mod[nm] = res
 
@@ -92,9 +92,9 @@ def _store_attr(self, **attrs):
 # Cell
 def store_attr(names=None, self=None, but=None, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
-    fr = inspect.currentframe().f_back
-    args,varargs,keyw,locs = inspect.getargvalues(fr)
-    if self is None: self = locs[args[0]]
+    fr = sys._getframe(1)
+    args = fr.f_code.co_varnames[:fr.f_code.co_argcount]
+    if self is None: self = fr.f_locals[args[0]]
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
     if attrs: return _store_attr(self, **attrs)
 
@@ -324,9 +324,8 @@ class Inf(metaclass=_InfMeta):
 # Cell
 def _oper(op,a,b=float('nan')): return (lambda o:op(o,a)) if b!=b else op(a,b)
 
-def _mk_op(nm, mod=None):
+def _mk_op(nm, mod):
     "Create an operator using `oper` and add to the caller's module"
-    if mod is None: mod = inspect.currentframe().f_back.f_locals
     op = getattr(operator,nm)
     def _inner(a,b=float('nan')): return _oper(op, a,b)
     _inner.__name__ = _inner.__qualname__ = nm
@@ -344,7 +343,7 @@ operator.in_ = in_
 #nbdev_comment _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
 
 # Cell
-for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op)
+for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op, globals())
 
 # Cell
 def true(*args, **kwargs):
@@ -425,53 +424,6 @@ def _using_attr(f, attr, x): return f(getattr(x,attr))
 def using_attr(f, attr):
     "Change function `f` to operate on `attr`"
     return partial(_using_attr, f, attr)
-
-# Cell
-def log_args(f=None, *, to_return=False, but=None, but_as=None):
-    "Decorator to log function args in 'to.init_args'"
-    if f is None: return partial(log_args, to_return=to_return, but=but, but_as=but_as)
-
-    if inspect.isclass(f):
-        f.__init__ = log_args(f.__init__, to_return=to_return, but=but, but_as=but_as)
-        return f
-
-    but_as_args = L(getattr(b, '_log_args_but', None) for b in L(but_as)).concat()
-    but = (L(but.split(',') if but else None) + but_as_args + L('self')).unique()
-    but_not_found = L(b for b in L(but_as) if not hasattr(b, '_log_args_but'))
-    if but_not_found: print(f'@log_args did not find args from but_as while wrapping {f.__qualname__} in {", ".join(b.__qualname__ for b in but_not_found)}')
-    setattr(f, '_log_args_but', but)
-
-    @wraps(f)  # maintain original signature
-    def _f(*args, **kwargs):
-        f_insp,args_insp = f,args
-        xtra_kwargs = {}
-        # some functions don't have correct signature (e.g. functions with @delegates such as Datasets.__init__)
-        if '__init__' in f.__qualname__:
-            # from https://stackoverflow.com/a/25959545/3474490
-            # args[0].__class__ would not consider inheritance
-            cls = getattr(inspect.getmodule(f), f.__qualname__.split('.<locals>', 1)[0].rsplit('.', 1)[0])
-            f_insp, args_insp = cls, args[1:]
-        try: func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
-        except Exception as e:
-            try:
-                # sometimes it happens because the signature does not reference some kwargs
-                sigp = dict(inspect.signature(f_insp).parameters)
-                key_no_sig = set(kwargs.keys())-set(sigp.keys())
-                #if key_no_sig: print(f'Warning: @log_args found unexpected args in {f.__qualname__}: {key_no_sig}')
-                xtra_kwargs={k:kwargs.pop(k) for k in key_no_sig}
-                func_args = inspect.signature(f_insp).bind(*args_insp, **kwargs)
-            except:
-                #print(f'@log_args had an issue on {f.__qualname__} -> {e}')
-                return f(*args, **kwargs)
-        func_args.apply_defaults()
-        log_dict = {**func_args.arguments, **{f'{k} (not in signature)':v for k,v in xtra_kwargs.items()}}
-        log = {f'{f.__qualname__}.{k}':v for k,v in log_dict.items() if k not in but}
-        inst = f(*args, **kwargs) if to_return else args[0]
-        init_args = getattr(inst, 'init_args', {})
-        init_args.update(log)
-        setattr(inst, 'init_args', init_args)
-        return inst if to_return else f(*args, **kwargs)
-    return _f
 
 # Cell
 class _Self:
@@ -703,21 +655,22 @@ def _call(lock, pause, n, g, item):
     return g(item)
 
 # Cell
-@delegates(concurrent.futures.ProcessPoolExecutor)
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
-    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
+    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0,
+                 mp_context=None, initializer=None, initargs=(),):
         if max_workers is None: max_workers=defaults.cpus
         store_attr()
         self.not_parallel = max_workers==0
         if self.not_parallel: max_workers=1
-        super().__init__(max_workers, **kwargs)
+        super().__init__(max_workers, mp_context=mp_context, initializer=initializer, initargs=initargs)
 
-    def map(self, f, items, *args, **kwargs):
+    def map(self, f, items, timeout=None, chunksize=1, *args, **kwargs):
         self.lock = Manager().Lock()
         g = partial(f, *args, **kwargs)
         if self.not_parallel: return map(g, items)
-        try: return super().map(partial(_call, self.lock, self.pause, self.max_workers, g), items)
+        _g = partial(_call, self.lock, self.pause, self.max_workers, g)
+        try: return super().map(_g, items, timeout=timeout, chunksize=chunksize)
         except Exception as e: self.on_exc(e)
 
 # Cell
@@ -725,24 +678,16 @@ try: from fastprogress import progress_bar
 except: progress_bar = None
 
 # Cell
-def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0, **kwargs):
+def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0,
+             timeout=None, chunksize=1, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
     if progress is None: progress = progress_bar is not None
     with ProcessPoolExecutor(n_workers, pause=pause) as ex:
-        r = ex.map(f,items, *args, **kwargs)
+        r = ex.map(f,items, *args, timeout=timeout, chunksize=chunksize, **kwargs)
         if progress:
             if total is None: total = len(items)
             r = progress_bar(r, total=total, leave=False)
         return L(r)
-
-# Cell
-@delegates(parallel)
-def parallel_chunks(f, items, n_workers=0, **kwargs):
-    "Calls `parallel` after first creating `n_workers` batches from `items`"
-    nc = 1 if n_workers==0 else n_workers
-    chunks = list(chunked(items, n_chunks=nc))
-    res = parallel(f, chunks, n_workers= n_workers, **kwargs)
-    return res.sum()
 
 # Cell
 def run_procs(f, f_done, args):

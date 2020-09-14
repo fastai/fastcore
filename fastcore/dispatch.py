@@ -27,11 +27,13 @@ cmp_instance = functools.cmp_to_key(lambda a,b: 0 if a==b else 1 if issubclass(a
 
 # Cell
 def _chk_defaults(f, ann):
-    try: # Some callables don't have signatures, so ignore those errors
-        params = list(inspect.signature(f).parameters.values())[:min(len(ann),2)]
-        if any(p.default!=inspect.Parameter.empty for p in params):
-            warn(f"{f.__name__} has default params. These will be ignored.")
-    except ValueError: pass
+    pass
+# Implementation removed until we can figure out how to do this without `inspect` module
+#     try: # Some callables don't have signatures, so ignore those errors
+#         params = list(inspect.signature(f).parameters.values())[:min(len(ann),2)]
+#         if any(p.default!=inspect.Parameter.empty for p in params):
+#             warn(f"{f.__name__} has default params. These will be ignored.")
+#     except ValueError: pass
 
 # Cell
 def _p2_anno(f):

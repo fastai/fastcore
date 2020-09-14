@@ -8,6 +8,7 @@ from .imports import *
 from .foundation import *
 from .utils import *
 from .dispatch import *
+import inspect
 
 # Cell
 _tfm_methods = 'encodes','decodes','setups'

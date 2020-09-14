@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import numbers,tempfile,pickle,random
+import numbers,tempfile,pickle,random,inspect
 
 from PIL import Image
 from numpy import array,ndarray

@@ -2,6 +2,19 @@
 
 <!-- do not remove -->
 
+## 1.0.10
+
+### Breaking Changes
+
+- remove `parallel_chunked`, use `chunksize` arg to `parallel` instead ([#81](https://api.github.com/repos/fastai/fastcore/issues/81))
+
+### New Features
+
+- move fastscript to fastcore.script ([#84](https://api.github.com/repos/fastai/fastcore/issues/84))
+- add `run_proc` and `do_request` ([#83](https://api.github.com/repos/fastai/fastcore/issues/83))
+- added `chunksize` to `parallel`, which passes to `ProcessPoolExecutor.map` ([#82](https://api.github.com/repos/fastai/fastcore/issues/82))
+- move metaclasses and delegates et al to new `meta` module ([#80](https://api.github.com/repos/fastai/fastcore/issues/80))
+
 ## 1.0.4
 
 ### New Features

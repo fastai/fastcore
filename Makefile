@@ -23,11 +23,12 @@ test:
 
 release: pypi
 	sleep 5
-	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
+	fastrelease_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
+	fastrelease_release
 	nbdev_bump_version
 
 conda_release:
-	nbdev_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
+	fastrelease_conda_package --upload_user fastai --build_args '-c pytorch -c fastai'
 
 pypi: dist
 	twine upload --repository pypi dist/*

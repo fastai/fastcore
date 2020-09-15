@@ -16,7 +16,7 @@ from .imports import *
 from .foundation import *
 from functools import wraps
 
-import mimetypes,bz2,pickle,random,json,urllib
+import mimetypes,bz2,pickle,random,json,urllib,subprocess
 from contextlib import contextmanager
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError

@@ -678,13 +678,12 @@ def _call(lock, pause, n, g, item):
 # Cell
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
-    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0,
-                 mp_context=None, initializer=None, initargs=(),):
+    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
         if max_workers is None: max_workers=defaults.cpus
         store_attr()
         self.not_parallel = max_workers==0
         if self.not_parallel: max_workers=1
-        super().__init__(max_workers, mp_context=mp_context, initializer=initializer, initargs=initargs)
+        super().__init__(max_workers, **kwargs)
 
     def map(self, f, items, timeout=None, chunksize=1, *args, **kwargs):
         self.lock = Manager().Lock()

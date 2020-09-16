@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.0.12
+
+### New Features
+
+- add function support to `store_attr` ([#85](https://github.com/fastai/fastcore/issues/85))
+
+### Bugs Squashed
+
+- 'mp_context' keyword for initialising concurrent.futures.ProcessPoolExecutor only supported in python 3.7+ ([#86](https://github.com/fastai/fastcore/issues/86))
+
 ## 1.0.10
 
 ### Breaking Changes

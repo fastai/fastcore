@@ -2,6 +2,12 @@
 
 <!-- do not remove -->
 
+## 1.0.13
+
+### New Features
+
+- `dict2obj`: Convert (possibly nested) dicts (or lists of dicts) to `SimpleNamespace` ([#90](https://github.com/fastai/fastcore/issues/90))
+
 ## 1.0.12
 
 ### New Features
@@ -10,7 +16,7 @@
 
 ### Bugs Squashed
 
-- 'mp_context' keyword for initialising concurrent.futures.ProcessPoolExecutor only supported in python 3.7+ ([#86](https://github.com/fastai/fastcore/issues/86))
+- `mp_context` keyword for initialising concurrent.futures.ProcessPoolExecutor only supported in python 3.7+ ([#86](https://github.com/fastai/fastcore/issues/86))
 
 ## 1.0.10
 

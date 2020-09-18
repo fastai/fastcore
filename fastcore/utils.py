@@ -89,6 +89,7 @@ class ignore_exceptions:
 
 # Cell
 def dict2obj(d):
+    "Convert (possibly nested) dicts (or lists of dicts) to `SimpleNamespace`"
     if isinstance(d, (L,list)): return L(d).map(dict2obj)
     if not isinstance(d, dict): return d
     return SimpleNamespace(**{k:dict2obj(v) for k,v in d.items()})

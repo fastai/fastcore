@@ -81,6 +81,7 @@ class TypeDispatch:
         self.funcs,self.bases = _TypeDict(),L(bases).filter(is_not(None))
         for o in L(funcs): self.add(o)
         self.inst = None
+        self.owner = None
 
     def add(self, f):
         "Add type `t` and function `f`"
@@ -109,10 +110,12 @@ class TypeDispatch:
         f = self[tuple(ts)]
         if not f: return args[0]
         if self.inst is not None: f = MethodType(f, self.inst)
+        elif self.owner is not None: f = MethodType(f, self.owner)
         return f(*args, **kwargs)
 
     def __get__(self, inst, owner):
         self.inst = inst
+        self.owner = owner
         return self
 
     def __getitem__(self, k):

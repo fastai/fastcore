@@ -5,8 +5,6 @@ on:
   push:
     branches: 
       - master
-# env:
-#   HOME: /root
 defaults:
   run:
     shell: bash
@@ -26,7 +24,6 @@ jobs:
     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
-#     - uses: fastai/workflows/conda-env@master
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
@@ -44,7 +41,6 @@ jobs:
       matrix:
         nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
-#     - uses: fastai/workflows/conda-env@master
     - name: clone this branch [fastcore]
       uses: actions/checkout@v2
       with:

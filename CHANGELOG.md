@@ -2,6 +2,12 @@
 
 <!-- do not remove -->
 
+## 1.0.14
+
+### Bugs Squashed
+
+- Reapply fix for #86 which was unintentionally reverted by the next commit ([#91](https://github.com/fastai/fastcore/issues/91))
+
 ## 1.0.13
 
 ### New Features

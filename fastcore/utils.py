@@ -3,7 +3,7 @@
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'dict2obj',
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'ShowPrint',
            'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
-           'range_of', 'groupby', 'first', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
+           'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
            'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
            'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip',
@@ -216,12 +216,6 @@ def groupby(x, key):
     res = {}
     for o in x: res.setdefault(key(o), []).append(o)
     return res
-
-# Cell
-def first(x):
-    "First element of `x`, or None if missing"
-    try: return next(iter(x))
-    except StopIteration: return None
 
 # Cell
 def last_index(x, o):

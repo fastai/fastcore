@@ -2,7 +2,7 @@
 
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
-           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'CollBase', 'L']
+           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'CollBase', 'L']
 
 # Cell
 from .imports import *
@@ -182,6 +182,12 @@ class bind:
 listable_types = typing.Collection,Generator,map,filter,zip
 
 # Cell
+def first(x):
+    "First element of `x`, or None if missing"
+    try: return next(iter(x))
+    except StopIteration: return None
+
+# Cell
 class CollBase:
     "Base class for composing a list of `items`"
     def __init__(self, items): self.items = items
@@ -265,16 +271,20 @@ class L(CollBase, metaclass=_L_Meta):
         if is_coll(a): a = len(a)
         return cls(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
 
-    def map(self, f, *args, **kwargs):
+    def map(self, f, *args, gen=False, **kwargs):
         g = (bind(f,*args,**kwargs) if callable(f)
              else f.format if isinstance(f,str)
              else f.__getitem__)
-        return self._new(map(g, self))
+        res = map(g, self)
+        if gen: return res
+        return self._new(res)
 
-    def filter(self, f, negate=False, **kwargs):
+    def filter(self, f=noop, negate=False, gen=False, **kwargs):
         if kwargs: f = partial(f,**kwargs)
         if negate: f = negate_func(f)
-        return self._new(filter(f, self))
+        res = filter(f, self)
+        if gen: return res
+        return self._new(res)
 
     def argwhere(self, f, negate=False, **kwargs):
         if kwargs: f = partial(f,**kwargs)
@@ -291,7 +301,13 @@ class L(CollBase, metaclass=_L_Meta):
 
     def attrgot(self, k, default=None): return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else getattr(o,k,default))
     def cycle(self): return cycle(self)
-    def map_dict(self, f=noop, *args, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
+    def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
+    def map_filter(self, f=noop, g=noop, *args, gen=False, **kwargs):
+        res = filter(g, self.map(f, *args, gen=gen, **kwargs))
+        if gen: return res
+        return self._new(res)
+    def map_first(self, f=noop, g=noop, *args, **kwargs): return first(self.map_filter(f, g, *args, gen=False, **kwargs))
+
     def starmap(self, f, *args, **kwargs): return self._new(itertools.starmap(partial(f,*args,**kwargs), self))
     def zip(self, cycled=False): return self._new((zip_cycle if cycled else zip)(*self))
     def zipwith(self, *rest, cycled=False): return self._new([self, *rest]).zip(cycled=cycled)
@@ -329,6 +345,8 @@ add_docs(L,
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
          argwhere="Like `filter`, but return indices for matching items",
          map="Create new `L` with `f` applied to all `items`, passing `args` and `kwargs` to `f`",
+         map_filter="Same as `map` with `f` followed by `filter` with `g`",
+         map_first="First element of `map_filter`",
          map_dict="Like `map`, but creates a dict from `items` to function results",
          starmap="Like `map`, but use `itertools.starmap`",
          itemgot="Create new `L` with item `idx` of all `items`",

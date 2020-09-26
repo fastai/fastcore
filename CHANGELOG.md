@@ -2,6 +2,24 @@
 
 <!-- do not remove -->
 
+## 1.0.15
+
+### New Features
+
+- add `L.map_filter` and `L.map_first` ([#97](https://github.com/fastai/fastcore/issues/97))
+  - These support some nice refactorings, like changing from this:
+    ```python
+    d = []
+    for c in cs:
+      m = f(c)
+      if not m:
+        continue
+      d.append(m.group(1))
+    ```
+    to this:
+    ```python
+    d = cs.map_filter(f).map(Self.group(1))
+    ```
 
 ## 1.0.14
 

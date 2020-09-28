@@ -23,11 +23,17 @@ def anno_ret(func):
     return ann.get('return')
 
 # Cell
+def _lenient_issubclass(cls, types):
+    "If possible return whether `cls` is a subclass of `types`, otherwise return False."
+    try: return isinstance(cls, types) or issubclass(cls, types)
+    except: return False
+
+# Cell
 def sorted_topologically(iterable, *, cmp=operator.lt, reverse=False):
     "Return a new list containing all items from the iterable sorted topologically"
     l,res = L(list(iterable)),[]
     for _ in range(len(l)):
-        t = l.reduce(lambda x,y: y if cmp(x,y) else x)
+        t = l.reduce(lambda x,y: y if cmp(y,x) else x)
         res.append(t), l.remove(t)
     return res[::-1] if reverse else res
 
@@ -55,7 +61,7 @@ class _TypeDict:
     def __init__(self): self.d,self.cache = {},{}
 
     def _reset(self):
-        self.d = {k:self.d[k] for k in sorted_topologically(self.d, cmp=issubclass, reverse=True)}
+        self.d = {k:self.d[k] for k in sorted_topologically(self.d, cmp=_lenient_issubclass)}
         self.cache = {}
 
     def add(self, t, f):

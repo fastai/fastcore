@@ -2,6 +2,12 @@
 
 <!-- do not remove -->
 
+## 1.0.16
+
+### New Features
+
+- add `threadpool=False` param to `parallel` to use threads instead of processes ([#102](https://github.com/fastai/fastcore/issues/102))
+
 ## 1.0.15
 
 ### New Features

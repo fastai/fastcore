@@ -9,7 +9,7 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip',
            'join_path_file', 'urlread', 'urljson', 'run_proc', 'do_request', 'sort_by_run', 'PrettyString',
            'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads',
-           'ProcessPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
+           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -695,15 +695,34 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
         except Exception as e: self.on_exc(e)
 
 # Cell
+class ThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
+    "Same as Python's ThreadPoolExecutor, except can pass `max_workers==0` for serial execution"
+    def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
+        if max_workers is None: max_workers=defaults.cpus
+        store_attr()
+        self.not_parallel = max_workers==0
+        if self.not_parallel: max_workers=1
+        super().__init__(max_workers, **kwargs)
+
+    def map(self, f, items, timeout=None, chunksize=1, *args, **kwargs):
+        self.lock = Manager().Lock()
+        g = partial(f, *args, **kwargs)
+        if self.not_parallel: return map(g, items)
+        _g = partial(_call, self.lock, self.pause, self.max_workers, g)
+        try: return super().map(_g, items, timeout=timeout, chunksize=chunksize)
+        except Exception as e: self.on_exc(e)
+
+# Cell
 try: from fastprogress import progress_bar
 except: progress_bar = None
 
 # Cell
 def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0,
-             timeout=None, chunksize=1, **kwargs):
+             threadpool=False, timeout=None, chunksize=1, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
     if progress is None: progress = progress_bar is not None
-    with ProcessPoolExecutor(n_workers, pause=pause) as ex:
+    pool = ThreadPoolExecutor if threadpool else ProcessPoolExecutor
+    with pool(n_workers, pause=pause) as ex:
         r = ex.map(f,items, *args, timeout=timeout, chunksize=chunksize, **kwargs)
         if progress:
             if total is None: total = len(items)

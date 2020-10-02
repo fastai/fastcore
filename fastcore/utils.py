@@ -4,12 +4,11 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs',
            'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
            'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub',
-           'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace', 'compose', 'maps',
-           'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip',
-           'join_path_file', 'urlread', 'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple',
-           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor',
-           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
+           'rnum_methods', 'inum_methods', 'fastuple', 'Inf', 'in_', 'true', 'stop', 'gen', 'chunked', 'trace',
+           'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'remove_patches_path',
+           'bunzip', 'join_path_file', 'urlread', 'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString',
+           'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'set_num_threads',
+           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -141,7 +140,6 @@ def snake2camel(s):
 def class2attr(self, cls_name):
     "Return the snake-cased name of the class.  Additionally, remove the substring `cls_name` only if it is a substring at the **end** of the string."
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
-
 
 # Cell
 def hasattrs(o,attrs):
@@ -569,13 +567,16 @@ def urljson(url):
     return json.loads(urlread(url))
 
 # Cell
-def run(cmd, *rest):
+def run(cmd, *rest, ignore_ex=False, as_bytes=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`, returning `stdout`, or raise `IOError` on failure"
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, capture_output=True)
+    stdout = res.stdout
+    if not as_bytes: stdout = stdout.decode()
+    if ignore_ex: return (res.returncode, stdout)
     if res.returncode: raise IOError("{} ;; {}".format(res.stdout, res.stderr))
-    return res.stdout
+    return stdout
 
 # Cell
 def do_request(url, post=False, headers=None, **data):

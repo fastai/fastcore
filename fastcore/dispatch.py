@@ -85,8 +85,7 @@ class TypeDispatch:
 
     def add(self, f):
         "Add type `t` and function `f`"
-        if isinstance(f, staticmethod): a0,a1 = _p2_anno(f.__func__)
-        else: a0,a1 = _p2_anno(f)
+        a0,a1 = _p2_anno(f)
         t = self.funcs.d.get(a0)
         if t is None:
             t = _TypeDict()
@@ -110,8 +109,7 @@ class TypeDispatch:
         ts = L(args).map(type)[:2]
         f = self[tuple(ts)]
         if not f: return args[0]
-        if isinstance(f, staticmethod): f = f.__func__
-        elif self.inst is not None: f = MethodType(f, self.inst)
+        if self.inst is not None: f = MethodType(f, self.inst)
         elif self.owner is not None: f = MethodType(f, self.owner)
         return f(*args, **kwargs)
 
@@ -142,9 +140,7 @@ class DispatchReg:
     "A global registry for `TypeDispatch` objects keyed by function name"
     def __init__(self): self.d = defaultdict(TypeDispatch)
     def __call__(self, f):
-        if isinstance(f, (classmethod, staticmethod)): nm = f'{f.__func__.__qualname__}'
-        else: nm = f'{f.__qualname__}'
-        if isinstance(f, classmethod): f=f.__func__
+        nm = f'{f.__qualname__}'
         self.d[nm].add(f)
         return self.d[nm]
 

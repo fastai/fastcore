@@ -569,13 +569,16 @@ def urljson(url):
     return json.loads(urlread(url))
 
 # Cell
-def run(cmd, *rest):
+def run(cmd, *rest, ignore_ex=False, as_bytes=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`, returning `stdout`, or raise `IOError` on failure"
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, capture_output=True)
+    stdout = res.stdout
+    if not as_bytes: stdout = stdout.decode()
+    if ignore_ex: return (res.returncode, stdout)
     if res.returncode: raise IOError("{} ;; {}".format(res.stdout, res.stderr))
-    return res.stdout
+    return stdout
 
 # Cell
 def do_request(url, post=False, headers=None, **data):

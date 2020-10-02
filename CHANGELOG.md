@@ -2,11 +2,19 @@
 
 <!-- do not remove -->
 
+## 1.0.19
+
+### New Features
+
+- `run`: flexibly run an external process and raise exception if it fails ([#105](https://github.com/fastai/fastcore/issues/105))
+
+
 ## 1.0.16
 
 ### New Features
 
 - add `threadpool=False` param to `parallel` to use threads instead of processes ([#102](https://github.com/fastai/fastcore/issues/102))
+
 
 ## 1.0.15
 
@@ -26,6 +34,7 @@
     ```python
     d = cs.map_filter(f).map(Self.group(1))
     ```
+
 
 ## 1.0.14
 

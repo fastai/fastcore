@@ -93,14 +93,11 @@ def stop(e=StopIteration):
     raise e
 
 # Cell
-class AttrDict(GetAttr, dict):
+class AttrDict(dict):
     "`dict` subclass that also provides access to keys as attrs"
-    def _dir(self): return list(self.keys())
     def __getattr__(self,k): return self[k] if k in self else stop(AttributeError(k))
-    def __setattr__(self, k, v):
-        if k.startswith('_'): super().__setattr__(k,v)
-        self[k] = v
-    def __dir__(self): return custom_dir(self,self._dir())
+    def __setattr__(self, k, v): (self.__setitem__,super().__setattr__)[k[0]=='_'](k,v)
+    def __dir__(self): return custom_dir(self, list(self.keys()))
 
 # Cell
 def dict2obj(d):

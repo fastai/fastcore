@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.0.20
+
+### New Features
+
+- add `ignore_ex=False` and `as_bytes=False` params to `run` ([#108](https://github.com/fastai/fastcore/issues/108))
+- `AttrDict`: a `dict` subclass that also provides access to keys as attrs; and change `dict2obj` to create `AttrDict`s instead of `SimpleNamespace`s ([#107](https://github.com/fastai/fastcore/issues/107))
+
+
 ## 1.0.19
 
 ### New Features

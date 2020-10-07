@@ -39,10 +39,11 @@ def patch_to(cls, as_prop=False, cls_method=False):
     return _inner
 
 # Cell
-def patch(f):
+def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
+    if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
     cls = next(iter(f.__annotations__.values()))
-    return patch_to(cls)(f)
+    return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell
 def patch_property(f):

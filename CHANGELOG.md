@@ -4,6 +4,10 @@
 
 ## 1.0.21
 
+### Deprecations (will be removed in future release)
+
+- `patch_property`: use `patch(as_prop=True)` instead
+
 ### New Features
 
 - New param `cast` for `store_attr` and new decorator `with_cast` ([#114](https://github.com/fastai/fastcore/issues/114))

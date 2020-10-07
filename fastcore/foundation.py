@@ -325,6 +325,7 @@ class L(CollBase, metaclass=_L_Meta):
     def reverse(self ): return self.items.reverse()
     def pop(self,o=-1): return self.items.pop(o)
     def clear(self   ): return self.items.clear()
+    def insert(self,idx,o): return self.items.insert(idx,o)
     def index(self, value, start=0, stop=sys.maxsize): return self.items.index(value, start, stop)
     def sort(self, key=None, reverse=False): return self.items.sort(key=key, reverse=reverse)
     def reduce(self, f, initial=None): return reduce(f, self) if initial is None else reduce(f, self, initial)
@@ -333,7 +334,7 @@ class L(CollBase, metaclass=_L_Meta):
 
 # Cell
 _docs = {o:"Passthru to `list` method" for o in
-         'append count remove reverse sort pop clear index'.split()}
+         'append count remove reverse sort pop clear insert index'.split()}
 add_docs(L,
          __getitem__="Retrieve `idx` (can be list of indices, or mask, or int) items",
          range="Class Method: Same as `range`, but returns an `L`. Can pass a collection for `a`, to use `len(a)`",

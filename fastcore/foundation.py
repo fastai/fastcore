@@ -2,7 +2,7 @@
 
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
-           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'CollBase', 'L']
+           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'CollBase', 'L']
 
 # Cell
 from .imports import *
@@ -190,6 +190,12 @@ def first(x):
     except StopIteration: return None
 
 # Cell
+def nested_attr(o, attr, default=None):
+    "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
+    for a in attr.split("."): o = getattr(o, a, default)
+    return o
+
+# Cell
 class CollBase:
     "Base class for composing a list of `items`"
     def __init__(self, items): self.items = items
@@ -301,7 +307,8 @@ class L(CollBase, metaclass=_L_Meta):
         for idx in idxs: x = x.map(itemgetter(idx))
         return x
 
-    def attrgot(self, k, default=None): return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else getattr(o,k,default))
+    def attrgot(self, k, default=None):
+        return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else nested_attr(o,k,default))
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_filter(self, f=noop, g=noop, *args, gen=False, **kwargs):

@@ -47,7 +47,8 @@ def patch(f=None, *, as_prop=False, cls_method=False):
 
 # Cell
 def patch_property(f):
-    "Decorator: add `f` as a property to the first parameter's class (based on f's type annotations)"
+    "Deprecated; use `patch(as_prop=True)` instead"
+    warnings.warn("`patch_property` is deprecated and will be removed; use `patch(as_prop=True)` instead")
     cls = next(iter(f.__annotations__.values()))
     return patch_to(cls, as_prop=True)(f)
 

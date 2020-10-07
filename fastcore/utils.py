@@ -113,12 +113,13 @@ class Inf(metaclass=_InfMeta):
     pass
 
 # Cell
-def _oper(op,a,b=float('nan')): return (lambda o:op(o,a)) if b!=b else op(a,b)
+_dumobj = object()
+def _oper(op,a,b=_dumobj): return (lambda o:op(o,a)) if b is _dumobj else op(a,b)
 
 def _mk_op(nm, mod):
     "Create an operator using `oper` and add to the caller's module"
     op = getattr(operator,nm)
-    def _inner(a,b=float('nan')): return _oper(op, a,b)
+    def _inner(a, b=_dumobj): return _oper(op, a,b)
     _inner.__name__ = _inner.__qualname__ = nm
     _inner.__doc__ = f'Same as `operator.{nm}`, or returns partial if 1 arg'
     mod[nm] = _inner

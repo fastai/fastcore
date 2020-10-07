@@ -2,6 +2,21 @@
 
 <!-- do not remove -->
 
+## 1.0.21
+
+### New Features
+
+- New param `cast` for `store_attr` and new decorator `with_cast` ([#114](https://github.com/fastai/fastcore/issues/114))
+- add `L.insert` and `exec_local` ([#113](https://github.com/fastai/fastcore/issues/113))
+- Patch decorator with optional argument ([#110](https://github.com/fastai/fastcore/pull/110)), thanks to [@Salehbigdeli](https://github.com/Salehbigdeli)
+- Make typedispatch decorator more general ([#106](https://github.com/fastai/fastcore/pull/106)), thanks to [@Salehbigdeli](https://github.com/Salehbigdeli)
+
+### Bugs Squashed
+
+- Fix default in oper ([#112](https://github.com/fastai/fastcore/pull/112)), thanks to [@Salehbigdeli](https://github.com/Salehbigdeli)
+- Inconsistency with `cmp_instance` and `typedispatch` because of binary sort algorithm ([#100](https://github.com/fastai/fastcore/issues/100))
+
+
 ## 1.0.20
 
 ### New Features

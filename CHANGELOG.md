@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.0.22
+
+### New Features
+
+- add `L.setattrs`, inspired by Saul Pwanson ([#117](https://github.com/fastai/fastcore/issues/117))
+- move `Config` from `nbdev` ([#116](https://github.com/fastai/fastcore/issues/116))
+- add `nested_attr` and use it in `L.attrgot` ([#115](https://github.com/fastai/fastcore/issues/115))
+
+
 ## 1.0.21
 
 ### Deprecations (will be removed in future release)

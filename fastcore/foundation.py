@@ -2,12 +2,15 @@
 
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
-           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'CollBase', 'L']
+           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'CollBase', 'L',
+           'save_config_file', 'read_config_file', 'Config']
 
 # Cell
 from .imports import *
+from functools import lru_cache
 from contextlib import contextmanager
 from copy import copy
+from configparser import ConfigParser
 import random,pickle
 
 # Cell
@@ -192,7 +195,9 @@ def first(x):
 # Cell
 def nested_attr(o, attr, default=None):
     "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
-    for a in attr.split("."): o = getattr(o, a, default)
+    try:
+        for a in attr.split("."): o = getattr(o, a)
+    except AttributeError: return default
     return o
 
 # Cell
@@ -380,3 +385,45 @@ L.__signature__ = pickle.loads(b'\x80\x03cinspect\nSignature\nq\x00(cinspect\nPa
 
 # Cell
 Sequence.register(L);
+
+# Cell
+def save_config_file(file, d):
+    "Write settings dict to a new config file, or overwrite the existing one."
+    config = ConfigParser()
+    config['DEFAULT'] = d
+    config.write(open(file, 'w'))
+
+# Cell
+def read_config_file(file):
+    config = ConfigParser()
+    config.read(file)
+    return config
+
+# Cell
+def _add_new_defaults(cfg, file, **kwargs):
+    for k,v in kwargs.items():
+        if cfg.get(k, None) is None:
+            cfg[k] = v
+            save_config_file(file, cfg)
+
+# Cell
+@lru_cache(maxsize=None)
+class Config:
+    "Reading and writing `settings.ini`"
+    def __init__(self, cfg_name='settings.ini'):
+        cfg_path = Path.cwd()
+        while cfg_path != cfg_path.parent and not (cfg_path/cfg_name).exists(): cfg_path = cfg_path.parent
+        self.config_file = cfg_path/cfg_name
+        assert self.config_file.exists(), f"Could not find {cfg_name}"
+        self.d = read_config_file(self.config_file)['DEFAULT']
+        _add_new_defaults(self.d, self.config_file,
+                         host="github", doc_host="https://%(user)s.github.io", doc_baseurl="/%(lib_name)s/")
+
+    def __getattr__(self,k):
+        if k=='d' or k not in self.d: raise AttributeError(k)
+        return self.config_file.parent/self.d[k] if k.endswith('_path') else self.get(k)
+
+    def get(self,k,default=None): return self.d.get(k, default)
+    def __setitem__(self,k,v): self.d[k] = str(v)
+    def __contains__(self,k):  return k in self.d
+    def save(self): save_config_file(self.config_file,self.d)

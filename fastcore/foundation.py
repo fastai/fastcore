@@ -218,7 +218,7 @@ class _L_Meta(type):
         return super().__call__(x, *args, **kwargs)
 
 # Cell
-class L(CollBase, metaclass=_L_Meta):
+class L(GetAttr, CollBase, metaclass=_L_Meta):
     "Behaves like a list of `items` but can also index with list of indices or masks"
     _default='items'
     def __init__(self, items=None, *rest, use_list=False, match=None):
@@ -320,41 +320,33 @@ class L(CollBase, metaclass=_L_Meta):
         res = filter(g, self.map(f, *args, gen=gen, **kwargs))
         if gen: return res
         return self._new(res)
-    def map_first(self, f=noop, g=noop, *args, **kwargs): return first(self.map_filter(f, g, *args, gen=False, **kwargs))
+    def map_first(self, f=noop, g=noop, *args, **kwargs):
+        return first(self.map_filter(f, g, *args, gen=False, **kwargs))
 
     def starmap(self, f, *args, **kwargs): return self._new(itertools.starmap(partial(f,*args,**kwargs), self))
     def zip(self, cycled=False): return self._new((zip_cycle if cycled else zip)(*self))
     def zipwith(self, *rest, cycled=False): return self._new([self, *rest]).zip(cycled=cycled)
     def map_zip(self, f, *args, cycled=False, **kwargs): return self.zip(cycled=cycled).starmap(f, *args, **kwargs)
-    def map_zipwith(self, f, *rest, cycled=False, **kwargs): return self.zipwith(*rest, cycled=cycled).starmap(f, **kwargs)
-    def concat(self): return self._new(itertools.chain.from_iterable(self.map(L)))
+    def map_zipwith(self, f, *rest, cycled=False, **kwargs):
+        return self.zipwith(*rest, cycled=cycled).starmap(f, **kwargs)
     def shuffle(self):
         it = copy(self.items)
         random.shuffle(it)
         return self._new(it)
 
-    def append(self,o): return self.items.append(o)
-    def remove(self,o): return self.items.remove(o)
-    def count (self,o): return self.items.count(o)
-    def reverse(self ): return self.items.reverse()
-    def pop(self,o=-1): return self.items.pop(o)
-    def clear(self   ): return self.items.clear()
-    def insert(self,idx,o): return self.items.insert(idx,o)
-    def index(self, value, start=0, stop=sys.maxsize): return self.items.index(value, start, stop)
-    def sort(self, key=None, reverse=False): return self.items.sort(key=key, reverse=reverse)
+    def concat(self): return self._new(itertools.chain.from_iterable(self.map(L)))
     def reduce(self, f, initial=None): return reduce(f, self) if initial is None else reduce(f, self, initial)
     def sum(self): return self.reduce(operator.add)
     def product(self): return self.reduce(operator.mul)
+    def setattrs(self, attr, val): [setattr(o,attr,val) for o in self]
 
 # Cell
-_docs = {o:"Passthru to `list` method" for o in
-         'append count remove reverse sort pop clear insert index'.split()}
 add_docs(L,
          __getitem__="Retrieve `idx` (can be list of indices, or mask, or int) items",
-         range="Class Method: Same as `range`, but returns an `L`. Can pass a collection for `a`, to use `len(a)`",
+         range="Class Method: Same as `range`, but returns `L`. Can pass collection for `a`, to use `len(a)`",
          split="Class Method: Same as `str.split`, but returns an `L`",
          copy="Same as `list.copy`, but returns an `L`",
-         sorted="New `L` sorted by `key`. If key is str then use `attrgetter`. If key is int then use `itemgetter`",
+         sorted="New `L` sorted by `key`. If key is str use `attrgetter`; if int use `itemgetter`",
          unique="Unique items, in stable order",
          val2idx="Dict from value to index",
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
@@ -377,7 +369,8 @@ add_docs(L,
          reduce="Wrapper for `functools.reduce`",
          sum="Sum of the items",
          product="Product of the items",
-         **_docs)
+         setattrs="Call `setattr` on all items"
+        )
 
 # Cell
 #hide
@@ -419,11 +412,11 @@ class Config:
         _add_new_defaults(self.d, self.config_file,
                          host="github", doc_host="https://%(user)s.github.io", doc_baseurl="/%(lib_name)s/")
 
-    def __getattr__(self,k):
-        if k=='d' or k not in self.d: raise AttributeError(k)
-        return self.config_file.parent/self.d[k] if k.endswith('_path') else self.get(k)
-
-    def get(self,k,default=None): return self.d.get(k, default)
     def __setitem__(self,k,v): self.d[k] = str(v)
     def __contains__(self,k):  return k in self.d
-    def save(self): save_config_file(self.config_file,self.d)
+    def save(self):            save_config_file(self.config_file,self.d)
+    def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
+
+    def get(self,k,default=None):
+        v = self.d.get(k)
+        return self.config_file.parent/v if k.endswith('_path') else v

@@ -435,5 +435,6 @@ class Config:
     def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
 
     def get(self,k,default=None):
-        v = self.d.get(k)
+        v = self.d.get(k, default)
+        if v is None: return v
         return self.config_file.parent/v if k.endswith('_path') else v

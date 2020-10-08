@@ -2,15 +2,14 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'exec_local', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_',
-           'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'AttrDict', 'dict2obj', 'with_cast', 'store_attr',
-           'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs', 'ShowPrint',
-           'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy',
-           'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'using_attr', 'Self', 'Self', 'remove_patches_path', 'bunzip', 'join_path_file', 'urlread',
-           'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
-           'run_procs', 'parallel_gen']
+           'is_not', 'in_', 'true', 'gen', 'chunked', 'AttrDict', 'dict2obj', 'with_cast', 'store_attr', 'attrdict',
+           'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs', 'ShowPrint', 'Int', 'Str',
+           'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy', 'range_of',
+           'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods',
+           'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
+           'Self', 'Self', 'remove_patches_path', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run', 'do_request',
+           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers',
+           'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -141,11 +140,6 @@ for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_n
 def true(*args, **kwargs):
     "Predicate: always `True`"
     return True
-
-# Cell
-def stop(e=StopIteration):
-    "Raises exception `e` (by default `StopException`)"
-    raise e
 
 # Cell
 def gen(func, seq, cond=true):

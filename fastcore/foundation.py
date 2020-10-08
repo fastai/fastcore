@@ -2,8 +2,8 @@
 
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
-           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'CollBase', 'L',
-           'save_config_file', 'read_config_file', 'Config']
+           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'stop', 'tst',
+           'tst2', 'CollBase', 'L', 'save_config_file', 'read_config_file', 'Config']
 
 # Cell
 from .imports import *
@@ -199,6 +199,23 @@ def nested_attr(o, attr, default=None):
         for a in attr.split("."): o = getattr(o, a)
     except AttributeError: return default
     return o
+
+# Cell
+def stop(e=StopIteration):
+    "Raises exception `e` (by default `StopException`)"
+    raise e
+
+def tst():
+    try:
+        stop()
+    except StopIteration:
+        return True
+
+def tst2():
+    try:
+        stop(e=ValueError)
+    except ValueError:
+        return True
 
 # Cell
 class CollBase:

@@ -18,6 +18,7 @@ from functools import wraps
 
 import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex
 from contextlib import contextmanager
+from pdb import set_trace
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from urllib.parse import urlencode
@@ -411,9 +412,11 @@ setattr(fastuple,'min',_get_op(min))
 # Cell
 def trace(f):
     "Add `set_trace` to an existing function `f`"
+    if getattr(f, '_traced', False): return f
     def _inner(*args,**kwargs):
         set_trace()
         return f(*args,**kwargs)
+    _inner._traced = True
     return _inner
 
 # Cell

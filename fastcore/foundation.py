@@ -321,7 +321,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         if isinstance(b, (str,dict)): return False
         return all_equal(b,self)
 
-    def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self.items, key=key, reverse=reverse))
+    def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self, key=key, reverse=reverse))
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items
     def __reversed__(self): return self._new(reversed(self.items))
@@ -339,10 +339,10 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     @classmethod
     def range(cls, a, b=None, step=None): return cls(range_of(a, b=b, step=step))
 
-    def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self.items, f, *args, gen=gen, **kwargs))
-    def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self.items, f, negate, **kwargs))
+    def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self, f, *args, gen=gen, **kwargs))
+    def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self, f, negate, **kwargs))
     def filter(self, f=noop, negate=False, gen=False, **kwargs):
-        return self._new(filter_ex(self.items, f=f, negate=negate, gen=gen, **kwargs))
+        return self._new(filter_ex(self, f=f, negate=negate, gen=gen, **kwargs))
 
     def unique(self): return L(dict.fromkeys(self).keys())
     def enumerate(self): return L(enumerate(self))

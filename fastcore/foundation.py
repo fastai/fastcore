@@ -2,8 +2,9 @@
 
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
-           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'listable_types', 'first', 'nested_attr', 'stop', 'tst',
-           'tst2', 'CollBase', 'L', 'save_config_file', 'read_config_file', 'Config']
+           'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'argwhere', 'map_ex', 'filter_ex', 'range_of',
+           'listable_types', 'renumerate', 'first', 'nested_attr', 'stop', 'tst', 'tst2', 'CollBase', 'L',
+           'save_config_file', 'read_config_file', 'Config']
 
 # Cell
 from .imports import *
@@ -184,7 +185,44 @@ class bind:
         return self.fn(*fargs, **kwargs)
 
 # Cell
+def argwhere(iterable, f, negate=False, **kwargs):
+    "Like `filter_ex`, but return indices for matching items"
+    if kwargs: f = partial(f,**kwargs)
+    if negate: f = negate_func(f)
+    return [i for i,o in enumerate(iterable) if f(o)]
+
+# Cell
+def map_ex(iterable, f, *args, gen=False, **kwargs):
+    "Like `map`, but use `bind`, and supports `str` and indexing"
+    g = (bind(f,*args,**kwargs) if callable(f)
+         else f.format if isinstance(f,str)
+         else f.__getitem__)
+    res = map(g, iterable)
+    if gen: return res
+    return list(res)
+
+# Cell
+def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
+    "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
+    if kwargs: f = partial(f,**kwargs)
+    if negate: f = negate_func(f)
+    res = filter(f, iterable)
+    if gen: return res
+    return list(res)
+
+# Cell
+def range_of(a, b=None, step=None):
+    "All indices of collection `a`, if `a` is a collection, otherwise `range`"
+    if is_coll(a): a = len(a)
+    return list(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
+
+# Cell
 listable_types = typing.Collection,Generator,map,filter,zip
+
+# Cell
+def renumerate(iterable, start=0):
+    "Same as `enumerate`, but returns index as 2nd element instead of 1st"
+    return ((o,i) for i,o in enumerate(iterable, start=start))
 
 # Cell
 def first(x):
@@ -275,6 +313,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         if isinstance(b, (str,dict)): return False
         return all_equal(b,self)
 
+    def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self.items, key=key, reverse=reverse))
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items
     def __reversed__(self): return self._new(reversed(self.items))
@@ -287,42 +326,19 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         a.items += list(b)
         return a
 
-    def sorted(self, key=None, reverse=False):
-        if isinstance(key,str):   k=lambda o:getattr(o,key,0)
-        elif isinstance(key,int): k=itemgetter(key)
-        else: k=key
-        return self._new(sorted(self.items, key=k, reverse=reverse))
-
     @classmethod
     def split(cls, s, sep=None, maxsplit=-1): return cls(s.split(sep,maxsplit))
-
     @classmethod
-    def range(cls, a, b=None, step=None):
-        if is_coll(a): a = len(a)
-        return cls(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
+    def range(cls, a, b=None, step=None): return cls(range_of(a, b=b, step=step))
 
-    def map(self, f, *args, gen=False, **kwargs):
-        g = (bind(f,*args,**kwargs) if callable(f)
-             else f.format if isinstance(f,str)
-             else f.__getitem__)
-        res = map(g, self)
-        if gen: return res
-        return self._new(res)
-
+    def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self.items, f, *args, gen=gen, **kwargs))
+    def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self.items, f, negate, **kwargs))
     def filter(self, f=noop, negate=False, gen=False, **kwargs):
-        if kwargs: f = partial(f,**kwargs)
-        if negate: f = negate_func(f)
-        res = filter(f, self)
-        if gen: return res
-        return self._new(res)
-
-    def argwhere(self, f, negate=False, **kwargs):
-        if kwargs: f = partial(f,**kwargs)
-        if negate: f = negate_func(f)
-        return self._new(i for i,o in enumerate(self) if f(o))
+        return self._new(filter_ex(self.items, f=f, negate=negate, gen=gen, **kwargs))
 
     def unique(self): return L(dict.fromkeys(self).keys())
     def enumerate(self): return L(enumerate(self))
+    def renumerate(self): return L(renumerate(self))
     def val2idx(self): return {v:k for k,v in self.enumerate()}
     def itemgot(self, *idxs):
         x = self
@@ -377,6 +393,7 @@ add_docs(L,
          attrgot="Create new `L` with attr `k` (or value `k` for dicts) of all `items`.",
          cycle="Same as `itertools.cycle`",
          enumerate="Same as `enumerate`",
+         renumerate="Same as `renumerate`",
          zip="Create new `L` with `zip(*items)`",
          zipwith="Create new `L` with `self` zip with each of `*rest`",
          map_zip="Combine `zip` and `starmap`",

@@ -3,7 +3,7 @@
 __all__ = ['defaults', 'copy_func', 'patch_to', 'patch', 'patch_property', 'add_docs', 'docs', 'custom_dir', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
            'negate_func', 'GetAttr', 'delegate_attr', 'bind', 'argwhere', 'map_ex', 'filter_ex', 'range_of',
-           'listable_types', 'renumerate', 'first', 'nested_attr', 'stop', 'tst', 'tst2', 'CollBase', 'L',
+           'sorted_ex', 'listable_types', 'renumerate', 'first', 'nested_attr', 'stop', 'tst', 'tst2', 'CollBase', 'L',
            'save_config_file', 'read_config_file', 'Config']
 
 # Cell
@@ -215,6 +215,14 @@ def range_of(a, b=None, step=None):
     "All indices of collection `a`, if `a` is a collection, otherwise `range`"
     if is_coll(a): a = len(a)
     return list(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
+
+# Cell
+def sorted_ex(iterable, key=None, reverse=False):
+    "Like `sorted`, but if key is str use `attrgetter`; if int use `itemgetter`"
+    if isinstance(key,str):   k=lambda o:getattr(o,key,0)
+    elif isinstance(key,int): k=itemgetter(key)
+    else: k=key
+    return sorted(iterable, key=k, reverse=reverse)
 
 # Cell
 listable_types = typing.Collection,Generator,map,filter,zip

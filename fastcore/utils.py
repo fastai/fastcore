@@ -7,10 +7,10 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy', 'range_of',
            'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods',
            'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
-           'Self', 'Self', 'save_pickle', 'load_pickle', 'remove_patches_path', 'bunzip', 'join_path_file', 'urlread',
-           'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
-           'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
-           'run_procs', 'parallel_gen']
+           'Self', 'Self', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run',
+           'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
+           'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
+           'parallel_gen']
 
 # Cell
 from .imports import *
@@ -544,19 +544,6 @@ def __repr__(self:Path):
         try: self = self.relative_to(b)
         except: pass
     return f"Path({self.as_posix()!r})"
-
-# Cell
-_patched = ['read', 'readlines', 'write', 'save', 'load', 'ls']
-
-@contextmanager
-def remove_patches_path():
-    "A context manager for disabling Path extensions."
-    patches = L(getattr(Path, n) for n in _patched)
-    try:
-        for n in _patched: delattr(Path, n)
-        yield
-    finally:
-        for (n, f) in zip(_patched, patches): setattr(Path, n, f)
 
 # Cell
 def bunzip(fn):

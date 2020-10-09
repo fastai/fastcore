@@ -6,7 +6,7 @@
 
 ### Breaking Changes
 
-- Remove `Path.{read,write}` and change `Path.{load,save}` to functions `load_pickle` and `save_pickle` ([#121](https://github.com/fastai/fastcore/issues/121))
+- Remove `Path.{read,write}` (use `Path.{read_text,write_text}` instead) and change `Path.{load,save}` to functions `load_pickle` and `save_pickle` ([#121](https://github.com/fastai/fastcore/issues/121))
 
 ## 1.0.22
 

@@ -7,9 +7,10 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy', 'range_of',
            'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods',
            'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
-           'Self', 'Self', 'remove_patches_path', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run', 'do_request',
-           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers',
-           'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
+           'Self', 'Self', 'save_pickle', 'load_pickle', 'remove_patches_path', 'bunzip', 'join_path_file', 'urlread',
+           'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus',
+           'add_props', 'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
+           'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -509,30 +510,17 @@ def readlines(self:Path, hint=-1, encoding='utf8'):
     with self.open(encoding=encoding) as f: return f.readlines(hint)
 
 # Cell
-@patch
-def read(self:Path, size=-1, encoding='utf8'):
-    "Read the content of `fname`"
-    with self.open(encoding=encoding) as f: return f.read(size)
-
-# Cell
-@patch
-def write(self:Path, txt, encoding='utf8'):
-    "Write `txt` to `self`, creating directories as needed"
-    self.parent.mkdir(parents=True,exist_ok=True)
-    with self.open('w', encoding=encoding) as f: f.write(txt)
-
-# Cell
-@patch
-def save(fn:Path, o):
+def save_pickle(fn, o):
     "Save a pickle file, to a file name or opened file"
+    fn = Path(fn)
     if not isinstance(fn, io.IOBase): fn = open(fn,'wb')
     try: pickle.dump(o, fn)
     finally: fn.close()
 
 # Cell
-@patch
-def load(fn:Path):
+def load_pickle(fn):
     "Load a pickle file from a file name or opened file"
+    fn = Path(fn)
     if not isinstance(fn, io.IOBase): fn = open(fn,'rb')
     try: return pickle.load(fn)
     finally: fn.close()

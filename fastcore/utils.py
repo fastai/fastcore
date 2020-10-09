@@ -506,8 +506,26 @@ Self = _SelfCls()
 # Cell
 @patch
 def readlines(self:Path, hint=-1, encoding='utf8'):
-    "Read the content of `fname`"
+    "Read the content of `self`"
     with self.open(encoding=encoding) as f: return f.readlines(hint)
+
+# Cell
+@patch
+def mk_write(self:Path, data, encoding=None, errors=None, mode=511):
+    "Make all parent dirs of `self`"
+    self.parent.mkdir(exist_ok=True, parents=True, mode=mode)
+    self.write_text(data, encoding=encoding, errors=errors)
+
+# Cell
+@patch
+def ls(self:Path, n_max=None, file_type=None, file_exts=None):
+    "Contents of path as a list"
+    extns=L(file_exts)
+    if file_type: extns += L(k for k,v in mimetypes.types_map.items() if v.startswith(file_type+'/'))
+    has_extns = len(extns)==0
+    res = (o for o in self.iterdir() if has_extns or o.suffix in extns)
+    if n_max is not None: res = itertools.islice(res, n_max)
+    return L(res)
 
 # Cell
 def save_pickle(fn, o):
@@ -524,17 +542,6 @@ def load_pickle(fn):
     if not isinstance(fn, io.IOBase): fn = open(fn,'rb')
     try: return pickle.load(fn)
     finally: fn.close()
-
-# Cell
-@patch
-def ls(self:Path, n_max=None, file_type=None, file_exts=None):
-    "Contents of path as a list"
-    extns=L(file_exts)
-    if file_type: extns += L(k for k,v in mimetypes.types_map.items() if v.startswith(file_type+'/'))
-    has_extns = len(extns)==0
-    res = (o for o in self.iterdir() if has_extns or o.suffix in extns)
-    if n_max is not None: res = itertools.islice(res, n_max)
-    return L(res)
 
 # Cell
 @patch

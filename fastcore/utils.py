@@ -10,7 +10,7 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'Self', 'Self', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run',
            'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
            'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
-           'parallel_gen']
+           'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -23,6 +23,7 @@ from pdb import set_trace
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from urllib.parse import urlencode
+from threading import Thread
 
 # Cell
 def ifnone(a, b):
@@ -570,18 +571,22 @@ def join_path_file(file, path, ext=''):
     return path/f'{file}{ext}'
 
 # Cell
-def urlread(url):
-    "Retrieve `url`"
-    with urlopen(url) as res: return res.read()
+def urlread(url, data=None, **kwargs):
+    "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
+    if kwargs and not data: data=kwargs
+    if data is not None:
+        if not isinstance(data, (str,bytes)): data = urlencode(data)
+        if not isinstance(data, bytes): data = data.encode('ascii')
+    with urlopen(url, data=data) as res: return res.read()
 
 # Cell
-def urljson(url):
+def urljson(url, data=None):
     "Retrieve `url` and decode json"
-    return json.loads(urlread(url))
+    return json.loads(urlread(url, data=data))
 
 # Cell
 def run(cmd, *rest, ignore_ex=False, as_bytes=False):
-    "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`, returning `stdout`, or raise `IOError` on failure"
+    "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, capture_output=True)
@@ -778,3 +783,13 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     f=partial(_f_pg, cls(**kwargs), queue)
     done=partial(_done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())
+
+# Cell
+def threaded(f):
+    "Run `f` in a thread, and returns the thread"
+    @wraps(f)
+    def _f(*args, **kwargs):
+        res = Thread(target=f, args=args, kwargs=kwargs)
+        res.start()
+        return res
+    return _f

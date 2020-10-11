@@ -448,7 +448,7 @@ class Config:
     def __init__(self, cfg_name='settings.ini'):
         cfg_path = Path.cwd()
         while cfg_path != cfg_path.parent and not (cfg_path/cfg_name).exists(): cfg_path = cfg_path.parent
-        self.config_file = cfg_path/cfg_name
+        self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
         assert self.config_file.exists(), f"Could not find {cfg_name}"
         self.d = read_config_file(self.config_file)['DEFAULT']
         _add_new_defaults(self.d, self.config_file,
@@ -462,4 +462,4 @@ class Config:
     def get(self,k,default=None):
         v = self.d.get(k, default)
         if v is None: return v
-        return self.config_file.parent/v if k.endswith('_path') else v
+        return self.config_path/v if k.endswith('_path') else v

@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.1.1
+
+### New Features
+
+- `threaded` decorator ([#124](https://github.com/fastai/fastcore/issues/124))
+- POST support for `urlread` ([#124](https://github.com/fastai/fastcore/issues/124))
+- add `sorted_ex, `map_ex`, `filter_ex`, and `argwhere` ([#122](https://github.com/fastai/fastcore/issues/122))
+
+
 ## 1.1.0
 
 ### Breaking Changes

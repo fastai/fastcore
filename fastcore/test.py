@@ -2,7 +2,7 @@
 
 __all__ = ['test_fail', 'test', 'nequals', 'test_eq', 'test_eq_type', 'test_ne', 'is_close', 'test_close', 'test_is',
            'test_shuffled', 'test_stdout', 'test_warns', 'TEST_IMAGE', 'TEST_IMAGE_BW', 'test_fig_exists',
-           'ExceptionExpected']
+           'ExceptionExpected', 'exception']
 
 # Cell
 from .imports import *
@@ -101,12 +101,13 @@ def test_fig_exists(ax):
 
 # Cell
 class ExceptionExpected:
-    "A context manager to allow you to test if an exception (ex) is raised. Optionally, search the exception's error message with a regex."
-    def __init__(self, ex:Exception, regex:str=None):store_attr()
+    "Context manager that tests if an exception is raised"
+    def __init__(self, ex=Exception, regex=''): store_attr()
     def __enter__(self): pass
     def __exit__(self, type, value, traceback):
-        if isinstance(value, self.ex):
-            if self.regex:
-                assert re.search(self.regex, ' '.join(value.args)) is not None, f"Did not find regex:{self.regex} in Exception message."
-            return True
-        else: raise TypeError(f"An error of {self.ex} was not raised.")
+        if not isinstance(value, self.ex) or (self.regex and not re.search(self.regex, f'{value.args}')):
+            raise TypeError(f"Expected {self.ex.__name__}({self.regex}) not raised.")
+        return True
+
+# Cell
+exception = ExceptionExpected()

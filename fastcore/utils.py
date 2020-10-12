@@ -676,6 +676,9 @@ class ContextManagers(GetAttr):
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
 
 # Cell
+def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
+
+# Cell
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
@@ -686,9 +689,9 @@ def typed(f):
         if len(anno) > 0:
             for i,arg in enumerate(args): kw[names[i]] = arg
             for k,v in kw.items():
-                if not isinstance(v,anno[k]): raise TypeError(f"{k}=={v} not {anno[k]}")
+                if not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
         res = f(*args,**kwargs)
-        if ret is not None and not isinstance(res,ret): raise TypeError(f"return=={res} not {ret}")
+        if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res
     return functools.update_wrapper(_f, f)
 

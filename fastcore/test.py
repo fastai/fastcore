@@ -99,8 +99,8 @@ def test_fig_exists(ax):
     assert ax and len(ax.figure.canvas.tostring_argb())
 
 # Cell
-class TestFail():
-    "A context manager to allow you to test if an exception (e) is raised. Optionally, search the exception's error message with regex."
+class TestFail:
+    "A context manager to allow you to test if an exception (ex) is raised. Optionally, search the exception's error message with a regex."
     def __init__(self, ex:Exception, regex:str=None):store_attr()
     def __enter__(self): pass
     def __exit__(self, type, value, traceback):

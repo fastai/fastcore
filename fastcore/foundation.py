@@ -422,15 +422,15 @@ L.__signature__ = pickle.loads(b'\x80\x03cinspect\nSignature\nq\x00(cinspect\nPa
 Sequence.register(L);
 
 # Cell
-def save_config_file(file, d):
+def save_config_file(file, d, **kwargs):
     "Write settings dict to a new config file, or overwrite the existing one."
-    config = ConfigParser()
+    config = ConfigParser(**kwargs)
     config['DEFAULT'] = d
     config.write(open(file, 'w'))
 
 # Cell
-def read_config_file(file):
-    config = ConfigParser()
+def read_config_file(file, **kwargs):
+    config = ConfigParser(**kwargs)
     config.read(file)
     return config
 

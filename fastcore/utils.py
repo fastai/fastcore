@@ -9,8 +9,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
            'Self', 'Self', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run',
            'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
-           'ContextManagers', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
-           'parallel_gen', 'threaded']
+           'ContextManagers', 'typed', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
+           'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -674,6 +674,23 @@ class ContextManagers(GetAttr):
     def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
     def __enter__(self): self.default.map(self.stack.enter_context)
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
+
+# Cell
+def typed(f):
+    "Decorator to check param and return types at runtime"
+    names = f.__code__.co_varnames
+    anno = f.__annotations__
+    ret = anno.pop('return',None)
+    def _f(*args,**kwargs):
+        kw = {**kwargs}
+        if len(anno) > 0:
+            for i,arg in enumerate(args): kw[names[i]] = arg
+            for k,v in kw.items():
+                if not isinstance(v,anno[k]): raise TypeError(f"{k}=={v} not {anno[k]}")
+        res = f(*args,**kwargs)
+        if ret is not None and not isinstance(res,ret): raise TypeError(f"return=={res} not {ret}")
+        return res
+    return functools.update_wrapper(_f, f)
 
 # Cell
 from multiprocessing import Process, Queue

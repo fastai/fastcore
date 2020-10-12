@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.1.2
+
+### New Features
+
+- runtime type checking with `typed` decorator ([#125](https://github.com/fastai/fastcore/issues/125))
+
+
 ## 1.1.1
 
 ### New Features

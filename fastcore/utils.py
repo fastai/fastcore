@@ -7,8 +7,8 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge', 'is_listy', 'range_of',
            'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods',
            'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
-           'Self', 'Self', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run',
-           'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
+           'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson',
+           'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
            'ContextManagers', 'typed', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
            'run_procs', 'parallel_gen', 'threaded']
 
@@ -17,7 +17,7 @@ from .imports import *
 from .foundation import *
 from functools import wraps
 
-import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex
+import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip
 from contextlib import contextmanager
 from pdb import set_trace
 from urllib.request import Request,urlopen
@@ -529,20 +529,23 @@ def ls(self:Path, n_max=None, file_type=None, file_exts=None):
     return L(res)
 
 # Cell
+def open_file(fn, mode='r'):
+    "Open a file, with optional compression if gz or bz2 suffix"
+    if isinstance(fn, io.IOBase): return fn
+    fn = Path(fn)
+    if   fn.suffix=='.bz2': return bz2.BZ2File(fn, mode)
+    elif fn.suffix=='.gz' : return gzip.GzipFile(fn, mode)
+    else: return open(fn,mode)
+
+# Cell
 def save_pickle(fn, o):
     "Save a pickle file, to a file name or opened file"
-    fn = Path(fn)
-    if not isinstance(fn, io.IOBase): fn = open(fn,'wb')
-    try: pickle.dump(o, fn)
-    finally: fn.close()
+    with open_file(fn, 'wb') as f: pickle.dump(o, f)
 
 # Cell
 def load_pickle(fn):
     "Load a pickle file from a file name or opened file"
-    fn = Path(fn)
-    if not isinstance(fn, io.IOBase): fn = open(fn,'rb')
-    try: return pickle.load(fn)
-    finally: fn.close()
+    with open_file(fn, 'rb') as f: return pickle.load(f)
 
 # Cell
 @patch

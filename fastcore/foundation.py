@@ -327,7 +327,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def __reversed__(self): return self._new(reversed(self.items))
     def __invert__(self): return self._new(not i for i in self)
     def __repr__(self): return repr(self.items)
-    def _repr_pretty_(self, p, cycle): p.text(repr(self.items) if _is_array(self.items) else coll_repr(self))
+    def _repr_pretty_(self, p, cycle):
+        p.text('...' if cycle else repr(self.items) if _is_array(self.items) else coll_repr(self))
     def __mul__ (a,b): return a._new(a.items*b)
     def __add__ (a,b): return a._new(a.items+_listify(b))
     def __radd__(a,b): return a._new(b)+a

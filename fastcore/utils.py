@@ -99,7 +99,7 @@ def exec_local(code, var_name):
 
 # Cell
 def risinstance(types, obj=None):
-    "Curried `isinstance` but with args reversed, suitable for `partial`"
+    "Curried `isinstance` but with args reversed"
     if not obj: return partial(risinstance,types)
     return isinstance(obj, types)
 
@@ -586,8 +586,10 @@ def urlread(url, data=None, **kwargs):
     if data is not None:
         if not isinstance(data, (str,bytes)): data = urlencode(data)
         if not isinstance(data, bytes): data = data.encode('ascii')
-    req=urllib.request.Request(url,headers={'User-Agent': 'Mozilla/5.0'})
-    with urlopen(req, data=data) as res: return res.read()
+    cls = urllib.request.Request
+    if not isinstance(url,cls): url = cls(url)
+    url.headers['User-Agent'] = 'Mozilla/5.0'
+    with urlopen(url, data=data) as res: return res.read()
 
 # Cell
 def urljson(url, data=None):

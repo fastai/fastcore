@@ -326,7 +326,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def __contains__(self,b): return b in self.items
     def __reversed__(self): return self._new(reversed(self.items))
     def __invert__(self): return self._new(not i for i in self)
-    def __repr__(self): return repr(self.items) if _is_array(self.items) else coll_repr(self)
+    def __repr__(self): return repr(self.items)
+    def _repr_pretty_(self, p, cycle): p.text(repr(self.items) if _is_array(self.items) else coll_repr(self))
     def __mul__ (a,b): return a._new(a.items*b)
     def __add__ (a,b): return a._new(a.items+_listify(b))
     def __radd__(a,b): return a._new(b)+a
@@ -458,8 +459,7 @@ class Config:
     def __contains__(self,k):  return k in self.d
     def save(self):            save_config_file(self.config_file,self.d)
     def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
-
-    def get(self,k,default=None):
-        v = self.d.get(k, default)
-        if v is None: return v
-        return self.config_path/v if k.endswith('_path') else v
+    def get(self,k,default=None): return self.d.get(k, default)
+    def path(self,k,default=None):
+        v = self.get(k, default)
+        return v if v is None else self.config_path/v

@@ -580,7 +580,8 @@ def urlread(url, data=None, **kwargs):
     if data is not None:
         if not isinstance(data, (str,bytes)): data = urlencode(data)
         if not isinstance(data, bytes): data = data.encode('ascii')
-    with urlopen(url, data=data) as res: return res.read()
+    req=urllib.request.Request(url,headers={'User-Agent': 'Mozilla/5.0'})
+    with urlopen(req, data=data) as res: return res.read()
 
 # Cell
 def urljson(url, data=None):

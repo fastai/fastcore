@@ -86,3 +86,8 @@ def in_notebook():
     return in_colab() or in_jupyter()
 
 IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(),in_notebook()
+
+def remove_prefix(text, prefix):
+    "Temporary until py39 is a prereq"
+    return text[text.startswith(prefix) and len(prefix):]
+

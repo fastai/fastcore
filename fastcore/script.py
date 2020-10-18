@@ -43,6 +43,7 @@ def anno_parser(func, prog=None, from_name=False):
         param = func.__annotations__.get(k, Param())
         param.set_default(v.default)
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
+    p.add_argument(f"--pdb", help="Run in pdb debugger (default: False)", type=bool_arg)
     p.add_argument(f"--xtra", help="Parse for additional args", type=str)
     return p
 
@@ -69,6 +70,7 @@ def call_parse(func):
         if not mod: return func(*args, **kwargs)
         p = anno_parser(func)
         args = p.parse_args().__dict
+        if args.pop('pdb_debug', False): func = trace(func)
         xtra = otherwise(args.pop('xtra', eq(1), p.prog))
         func(**merge(args, args_from_prog(func, xtra)))
 

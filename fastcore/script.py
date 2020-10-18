@@ -50,6 +50,7 @@ def anno_parser(func, prog=None, from_name=False):
 # Cell
 def args_from_prog(func, prog):
     "Extract args from `prog`"
+    if prog is None or '#' not in prog: return {}
     if '##' in prog: _,prog = prog.split('##', 1)
     progsp = prog.split("#")
     args = {progsp[i]:progsp[i+1] for i in range(0, len(progsp), 2)}
@@ -69,10 +70,10 @@ def call_parse(func):
         mod = inspect.getmodule(inspect.currentframe().f_back)
         if not mod: return func(*args, **kwargs)
         p = anno_parser(func)
-        args = p.parse_args().__dict
-        if args.pop('pdb_debug', False): func = trace(func)
-        xtra = otherwise(args.pop('xtra', eq(1), p.prog))
-        func(**merge(args, args_from_prog(func, xtra)))
+        args = p.parse_args().__dict__
+        xtra = otherwise(args.pop('xtra', ''), eq(1), p.prog)
+        tfunc = trace(func) if args.pop('pdb', False) else func
+        tfunc(**merge(args, args_from_prog(func, xtra)))
 
     if mod.__name__=="__main__":
         setattr(mod, func.__name__, _f)

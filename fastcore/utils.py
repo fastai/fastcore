@@ -2,12 +2,12 @@
 
 __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions',
            'exec_local', 'risinstance', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul',
-           'truediv', 'is_', 'is_not', 'in_', 'true', 'gen', 'chunked', 'AttrDict', 'dict2obj', 'with_cast',
-           'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs',
-           'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify', 'merge',
-           'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped',
-           'instantiate', 'using_attr', 'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip',
+           'truediv', 'is_', 'is_not', 'in_', 'true', 'gen', 'chunked', 'otherwise', 'AttrDict', 'dict2obj',
+           'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs',
+           'setattrs', 'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify',
+           'merge', 'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection',
+           'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler',
+           'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip',
            'join_path_file', 'urlread', 'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple',
            'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'typed', 'set_num_threads', 'ProcessPoolExecutor',
            'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
@@ -165,6 +165,11 @@ def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
         res = list(itertools.islice(it, chunk_sz))
         if res and (len(res)==chunk_sz or not drop_last): yield res
         if len(res)<chunk_sz: return
+
+# Cell
+def otherwise(x, tst, y):
+    "`y if tst(x) else x`"
+    return y if tst(x) else x
 
 # Cell
 class AttrDict(dict):

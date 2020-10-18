@@ -3,7 +3,7 @@
 __all__ = ['Param', 'bool_arg', 'anno_parser', 'args_from_prog', 'call_parse']
 
 # Cell
-import inspect,functools
+import inspect,functools,pdb,traceback
 import argparse
 from .imports import *
 
@@ -43,6 +43,7 @@ def anno_parser(func, prog=None, from_name=False):
         param.set_default(v.default)
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
     p.add_argument(f"--xtra", help="Parse for additional args", type=str)
+    p.add_argument("--pdb-debug", help="Enter debugger on error", action='store_true', required=False)
     return p
 
 # Cell
@@ -57,7 +58,7 @@ def args_from_prog(func, prog):
     return args
 
 # Cell
-def call_parse(func):
+def call_parse(func, debug=False):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
     mod = inspect.getmodule(inspect.currentframe().f_back)
     if not mod: return func
@@ -69,12 +70,22 @@ def call_parse(func):
 
         p = anno_parser(func)
         args = p.parse_args()
+        debug = args.pdb_debug
         xtra = getattr(args, 'xtra', None)
         if xtra is not None:
             if xtra==1: xtra = p.prog
             for k,v in args_from_prog(func, xtra).items(): setattr(args,k,v)
         del(args.xtra)
-        func(**args.__dict__)
+        del(args.pdb_debug)
+        if debug:
+            try:
+                func(**args.__dict__)
+            except:
+                _, _, tb = sys.exc_info()
+                traceback.print_exc()
+                pdb.post_mortem(tb)
+        else: func(**args.__dict__)
+
     if mod.__name__=="__main__":
         setattr(mod, func.__name__, _f)
         return _f()

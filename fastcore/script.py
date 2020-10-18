@@ -6,6 +6,7 @@ __all__ = ['Param', 'bool_arg', 'anno_parser', 'args_from_prog', 'call_parse']
 import inspect,functools
 import argparse
 from .imports import *
+from .utils import *
 
 # Cell
 class Param:
@@ -66,15 +67,11 @@ def call_parse(func):
     def _f(*args, **kwargs):
         mod = inspect.getmodule(inspect.currentframe().f_back)
         if not mod: return func(*args, **kwargs)
-
         p = anno_parser(func)
-        args = p.parse_args()
-        xtra = getattr(args, 'xtra', None)
-        if xtra is not None:
-            if xtra==1: xtra = p.prog
-            for k,v in args_from_prog(func, xtra).items(): setattr(args,k,v)
-        del(args.xtra)
-        func(**args.__dict__)
+        args = p.parse_args().__dict
+        xtra = args.pop('xtra', {})
+        func(**merge(args, args_from_prog(func, p.prog if xtra==1 else xtra)))
+
     if mod.__name__=="__main__":
         setattr(mod, func.__name__, _f)
         return _f()

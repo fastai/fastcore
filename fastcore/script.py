@@ -58,7 +58,7 @@ def args_from_prog(func, prog):
     return args
 
 # Cell
-def call_parse(func, debug=False):
+def call_parse(func):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
     mod = inspect.getmodule(inspect.currentframe().f_back)
     if not mod: return func

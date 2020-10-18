@@ -69,8 +69,8 @@ def call_parse(func):
         if not mod: return func(*args, **kwargs)
         p = anno_parser(func)
         args = p.parse_args().__dict
-        xtra = args.pop('xtra', {})
-        func(**merge(args, args_from_prog(func, p.prog if xtra==1 else xtra)))
+        xtra = otherwise(args.pop('xtra', eq(1), p.prog))
+        func(**merge(args, args_from_prog(func, xtra)))
 
     if mod.__name__=="__main__":
         setattr(mod, func.__name__, _f)

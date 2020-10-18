@@ -22,6 +22,7 @@ def copy_func(f):
     "Copy a non-builtin function (NB `copy.copy` does not work for this)"
     if not isinstance(f,FunctionType): return copy(f)
     fn = FunctionType(f.__code__, f.__globals__, f.__name__, f.__defaults__, f.__closure__)
+    fn.__kwdefaults__ = f.__kwdefaults__
     fn.__dict__.update(f.__dict__)
     return fn
 

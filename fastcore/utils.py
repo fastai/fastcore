@@ -9,15 +9,15 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler',
            'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip',
            'join_path_file', 'urlread', 'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple',
-           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'typed', 'set_num_threads', 'ProcessPoolExecutor',
-           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
+           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'typed', 'str2bool', 'set_num_threads',
+           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
 from .foundation import *
 from functools import wraps
 
-import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip
+import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,distutils.util
 from contextlib import contextmanager
 from pdb import set_trace
 from urllib.request import Request,urlopen
@@ -711,6 +711,12 @@ def typed(f):
         if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res
     return functools.update_wrapper(_f, f)
+
+# Cell
+def str2bool(s):
+    "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
+    if not isinstance(s,str): return bool(s)
+    return bool(distutils.util.strtobool(s)) if s else False
 
 # Cell
 from multiprocessing import Process, Queue

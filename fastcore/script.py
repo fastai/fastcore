@@ -21,10 +21,7 @@ def store_false():
 # Cell
 def bool_arg(v):
     "Use as `type` for `Param` to get `bool` behavior"
-    if isinstance(v, bool): return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'): return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'): return False
-    else: raise argparse.ArgumentTypeError('Boolean value expected.')
+    return str2bool(v)
 
 # Cell
 class Param:

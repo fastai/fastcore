@@ -190,7 +190,7 @@ def with_cast(f):
     "Decorator which uses any parameter annotations as preprocessing functions"
     anno = f.__annotations__
     params = f.__code__.co_varnames[:f.__code__.co_argcount]
-    defaults = dict(zip(reversed(params), reversed(f.__defaults__)))
+    defaults = dict(zip(reversed(params), reversed(f.__defaults__))) if f.__defaults__ else {}
     @functools.wraps(f)
     def _inner(*args, **kwargs):
         args = list(args)

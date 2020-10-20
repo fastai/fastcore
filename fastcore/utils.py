@@ -5,12 +5,13 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'truediv', 'is_', 'is_not', 'in_', 'true', 'gen', 'chunked', 'otherwise', 'AttrDict', 'dict2obj',
            'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs',
            'setattrs', 'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify',
-           'merge', 'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'IterLen', 'ReindexCollection',
-           'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler',
-           'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip',
-           'join_path_file', 'urlread', 'urljson', 'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple',
-           'even_mults', 'num_cpus', 'add_props', 'ContextManagers', 'typed', 'str2bool', 'set_num_threads',
-           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
+           'merge', 'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'filter_dict', 'filter_keys',
+           'filter_values', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple',
+           'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'open_file',
+           'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run', 'do_request',
+           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers',
+           'typed', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
+           'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -299,7 +300,7 @@ def replicate(item,match):
 
 # Cell
 def uniqueify(x, sort=False, bidir=False, start=None):
-    "Return the unique elements in `x`, optionally `sort`-ed, optionally return the reverse correspondence, optionally prepended with a list or tuple of elements."
+    "Unique elements in `x`, optionally `sort`-ed, optionally return reverse correspondence, optionally prepend with elements."
     res = L(x).unique()
     if start is not None: res = start+res
     if sort: res.sort()
@@ -344,6 +345,21 @@ def shufflish(x, pct=0.04):
     "Randomly relocate items of `x` up to `pct` of `len(x)` from their starting location"
     n = len(x)
     return L(x[i] for i in sorted(range_of(x), key=lambda o: o+n*(1+random.random()*pct)))
+
+# Cell
+def filter_dict(d, func):
+    "Filter a `dict` using `func`, applied to keys and values"
+    return {k:v for k,v in d.items() if func(k,v)}
+
+# Cell
+def filter_keys(d, func):
+    "Filter a `dict` using `func`, applied to keys"
+    return {k:v for k,v in d.items() if func(k)}
+
+# Cell
+def filter_values(d, func):
+    "Filter a `dict` using `func`, applied to values"
+    return {k:v for k,v in d.items() if func(v)}
 
 # Cell
 #hide

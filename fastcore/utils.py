@@ -189,7 +189,9 @@ def dict2obj(d):
 def with_cast(f):
     "Decorator which uses any parameter annotations as preprocessing functions"
     anno = f.__annotations__
-    params = f.__code__.co_varnames
+    params = f.__code__.co_varnames[:f.__code__.co_argcount]
+    defaults = dict(zip(reversed(params), reversed(f.__defaults__)))
+    @functools.wraps(f)
     def _inner(*args, **kwargs):
         args = list(args)
         for i,v in enumerate(params):
@@ -197,6 +199,7 @@ def with_cast(f):
                 c = anno[v]
                 if v in kwargs: kwargs[v] = c(kwargs[v])
                 elif i<len(args): args[i] = c(args[i])
+                elif v in defaults: kwargs[v] = c(defaults[v])
         return f(*args, **kwargs)
     return _inner
 

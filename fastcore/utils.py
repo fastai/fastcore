@@ -4,14 +4,14 @@ __all__ = ['ifnone', 'maybe_attr', 'basic_repr', 'get_class', 'mk_class', 'wrap_
            'exec_local', 'risinstance', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul',
            'truediv', 'is_', 'is_not', 'in_', 'true', 'gen', 'chunked', 'otherwise', 'AttrDict', 'dict2obj',
            'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs',
-           'setattrs', 'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate', 'uniqueify', 'setify',
-           'merge', 'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'filter_dict', 'filter_keys',
-           'filter_values', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple',
-           'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr', 'Self', 'Self', 'open_file',
-           'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson', 'run', 'do_request',
-           'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props', 'ContextManagers',
-           'typed', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
-           'parallel_gen', 'threaded']
+           'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'tuplify', 'detuplify', 'replicate',
+           'uniqueify', 'setify', 'merge', 'is_listy', 'range_of', 'groupby', 'last_index', 'shufflish', 'filter_dict',
+           'filter_keys', 'filter_values', 'IterLen', 'ReindexCollection', 'num_methods', 'rnum_methods',
+           'inum_methods', 'fastuple', 'trace', 'compose', 'maps', 'partialler', 'mapped', 'instantiate', 'using_attr',
+           'Self', 'Self', 'open_file', 'save_pickle', 'load_pickle', 'bunzip', 'join_path_file', 'urlread', 'urljson',
+           'run', 'do_request', 'sort_by_run', 'PrettyString', 'round_multiple', 'even_mults', 'num_cpus', 'add_props',
+           'ContextManagers', 'typed', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor',
+           'parallel', 'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -264,6 +264,14 @@ def setattrs(dest, flds, src):
     f = dict.get if isinstance(src, dict) else getattr
     flds = re.split(r",\s*", flds)
     for fld in flds: setattr(dest, fld, f(src, fld))
+
+# Cell
+def try_attrs(obj, *attrs):
+    "Return first attr that exists in `obj`"
+    for att in attrs:
+        try: return getattr(obj, att)
+        except: pass
+    raise AttributeError(attrs)
 
 # Cell
 #hide

@@ -25,7 +25,7 @@ def anno_ret(func):
 # Cell
 def lenient_issubclass(cls, types):
     "If possible return whether `cls` is a subclass of `types`, otherwise return False."
-    if cls is object and types is type: return False # treat `object` as higher level than `type`
+    if cls is object and types is not object: return False # treat `object` as highest level
     try: return isinstance(cls, types) or issubclass(cls, types)
     except: return False
 

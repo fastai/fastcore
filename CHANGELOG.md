@@ -2,6 +2,20 @@
 
 <!-- do not remove -->
 
+## 1.2.3
+
+### New Features
+
+- add `try_attrs` ([#142](https://github.com/fastai/fastcore/issues/142))
+- add `filter_dict`, `filter_keys`, and `filter_values` ([#140](https://github.com/fastai/fastcore/issues/140))
+- add `str2bool` ([#138](https://github.com/fastai/fastcore/issues/138))
+
+### Bugs Squashed
+
+- `type` fails with `@typedispatch` ([#144](https://github.com/fastai/fastcore/issues/144))
+- `with_cast` fails to cast default values ([#139](https://github.com/fastai/fastcore/issues/139))
+
+
 ## 1.2.2
 
 ### New Features

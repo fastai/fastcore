@@ -114,7 +114,8 @@ def mask2idxs(mask):
     return [int(i) for i in mask]
 
 # Cell
-def _is_array(x): return hasattr(x,'__array__') or hasattr(x,'iloc')
+def _is_array(x):
+    if hasattr(x,'__array__') or hasattr(x,'iloc'): return bool(x.shape)
 
 def _listify(o):
     if o is None: return []

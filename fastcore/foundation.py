@@ -275,6 +275,10 @@ class CollBase:
     def __delitem__(self, i): del(self.items[i])
     def __repr__(self): return self.items.__repr__()
     def __iter__(self): return self.items.__iter__()
+    @property
+    def shape(self):
+        if hasattr(self.items, 'shape'): return self.items.shape
+        return np.array(self.items).shape
 
 # Cell
 class _L_Meta(type):

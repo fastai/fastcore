@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.2.4
+
+### New Features
+
+- move basic functionality into `fastcore.basics`, using minimal imports ([#149](https://github.com/fastai/fastcore/issues/149))
+- add `anno_dict` and `empty2none` in `meta` ([#145](https://github.com/fastai/fastcore/issues/145))
+
+
 ## 1.2.3
 
 ### New Features

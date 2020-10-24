@@ -6,7 +6,6 @@ __all__ = ['test_fail', 'test', 'nequals', 'test_eq', 'test_eq_type', 'test_ne',
 
 # Cell
 from .imports import *
-from .utils import *
 from collections import Counter
 from contextlib import redirect_stdout
 
@@ -102,7 +101,7 @@ def test_fig_exists(ax):
 # Cell
 class ExceptionExpected:
     "Context manager that tests if an exception is raised"
-    def __init__(self, ex=Exception, regex=''): store_attr()
+    def __init__(self, ex=Exception, regex=''): self.ex,self.regex = ex,regex
     def __enter__(self): pass
     def __exit__(self, type, value, traceback):
         if not isinstance(value, self.ex) or (self.regex and not re.search(self.regex, f'{value.args}')):

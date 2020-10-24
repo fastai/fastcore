@@ -278,6 +278,7 @@ class CollBase:
     @property
     def shape(self):
         if hasattr(self.items, 'shape'): return self.items.shape
+        import numpy as np
         return np.array(self.items).shape
 
 # Cell

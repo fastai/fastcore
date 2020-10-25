@@ -3,13 +3,13 @@
 __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'get_class', 'mk_class',
            'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq',
            'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'true', 'stop', 'gen', 'chunked', 'otherwise',
-           'AttrDict', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr',
-           'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify',
-           'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
-           'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first',
-           'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1',
-           'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr',
-           'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'custom_dir', 'AttrDict', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
+           'class2attr', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'detuplify',
+           'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys',
+           'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of',
+           'renumerate', 'first', 'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods', 'inum_methods',
+           'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler',
+           'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -177,6 +177,11 @@ def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
 def otherwise(x, tst, y):
     "`y if tst(x) else x`"
     return y if tst(x) else x
+
+# Cell
+def custom_dir(c, add:list):
+    "Implement custom `__dir__`, adding `add` to `cls`"
+    return dir(type(c)) + list(c.__dict__.keys()) + add
 
 # Cell
 class AttrDict(dict):

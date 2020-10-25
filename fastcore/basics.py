@@ -6,9 +6,10 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'AttrDict', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr',
            'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify',
            'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
-           'zip_cycle', 'sorted_ex', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'compose', 'maps',
-           'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus',
-           'add_props', 'typed']
+           'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first',
+           'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1',
+           'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr',
+           'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -365,6 +366,61 @@ def sorted_ex(iterable, key=None, reverse=False):
     return sorted(iterable, key=k, reverse=reverse)
 
 # Cell
+def negate_func(f):
+    "Create new function that negates result of `f`"
+    def _f(*args, **kwargs): return not f(*args, **kwargs)
+    return _f
+
+# Cell
+def argwhere(iterable, f, negate=False, **kwargs):
+    "Like `filter_ex`, but return indices for matching items"
+    if kwargs: f = partial(f,**kwargs)
+    if negate: f = negate_func(f)
+    return [i for i,o in enumerate(iterable) if f(o)]
+
+# Cell
+def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
+    "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
+    if kwargs: f = partial(f,**kwargs)
+    if negate: f = negate_func(f)
+    res = filter(f, iterable)
+    if gen: return res
+    return list(res)
+
+# Cell
+def range_of(a, b=None, step=None):
+    "All indices of collection `a`, if `a` is a collection, otherwise `range`"
+    if is_coll(a): a = len(a)
+    return list(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
+
+# Cell
+def renumerate(iterable, start=0):
+    "Same as `enumerate`, but returns index as 2nd element instead of 1st"
+    return ((o,i) for i,o in enumerate(iterable, start=start))
+
+# Cell
+def first(x):
+    "First element of `x`, or None if missing"
+    try: return next(iter(x))
+    except StopIteration: return None
+
+# Cell
+def nested_attr(o, attr, default=None):
+    "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
+    try:
+        for a in attr.split("."): o = getattr(o, a)
+    except AttributeError: return default
+    return o
+
+# Cell
+def nested_idx(coll, *idxs):
+    "Index into nested collections, dicts, etc, with `idxs`"
+    if not coll or not idxs: return coll
+    if isinstance(coll,str) or not isinstance(coll, typing.Collection): return None
+    res = coll.get(idxs[0], None) if hasattr(coll, 'get') else coll[idxs[0]] if idxs[0]<len(coll) else None
+    return nested_idx(res, *idxs[1:])
+
+# Cell
 num_methods = """
     __add__ __sub__ __mul__ __matmul__ __truediv__ __floordiv__ __mod__ __divmod__ __pow__
     __lshift__ __rshift__ __and__ __xor__ __or__ __neg__ __pos__ __abs__
@@ -414,6 +470,40 @@ for n in 'eq ne lt le gt ge'.split(): setattr(fastuple,n,_get_op(n))
 setattr(fastuple,'__invert__',_get_op('__not__'))
 setattr(fastuple,'max',_get_op(max))
 setattr(fastuple,'min',_get_op(min))
+
+# Cell
+class _Arg:
+    def __init__(self,i): self.i = i
+arg0 = _Arg(0)
+arg1 = _Arg(1)
+arg2 = _Arg(2)
+arg3 = _Arg(3)
+arg4 = _Arg(4)
+
+# Cell
+class bind:
+    "Same as `partial`, except you can use `arg0` `arg1` etc param placeholders"
+    def __init__(self, fn, *pargs, **pkwargs):
+        self.fn,self.pargs,self.pkwargs = fn,pargs,pkwargs
+        self.maxi = max((x.i for x in pargs if isinstance(x, _Arg)), default=-1)
+
+    def __call__(self, *args, **kwargs):
+        args = list(args)
+        kwargs = {**self.pkwargs,**kwargs}
+        for k,v in kwargs.items():
+            if isinstance(v,_Arg): kwargs[k] = args.pop(v.i)
+        fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
+        return self.fn(*fargs, **kwargs)
+
+# Cell
+def map_ex(iterable, f, *args, gen=False, **kwargs):
+    "Like `map`, but use `bind`, and supports `str` and indexing"
+    g = (bind(f,*args,**kwargs) if callable(f)
+         else f.format if isinstance(f,str)
+         else f.__getitem__)
+    res = map(g, iterable)
+    if gen: return res
+    return list(res)
 
 # Cell
 def compose(*funcs, order=None):

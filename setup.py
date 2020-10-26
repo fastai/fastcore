@@ -55,6 +55,6 @@ setuptools.setup(
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     zip_safe = False,
-    entry_points = { 'console_scripts': cfg.get('console_scripts','').split() },
+    entry_points = { 'console_scripts': cfg.get('console_scripts','').split(), },
     **setup_cfg)
 

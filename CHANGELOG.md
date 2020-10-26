@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.2.5
+
+### New Features
+
+- add `true`, `NullType`, `null`, and `tonull` ([#153](https://github.com/fastai/fastcore/issues/153))
+- add `working_directory` ([#151](https://github.com/fastai/fastcore/issues/151))
+- move `bind` et al to `fastcore.basics` ([#150](https://github.com/fastai/fastcore/issues/150))
+
+
 ## 1.2.4
 
 ### New Features
@@ -31,17 +40,14 @@
 - support `store_true` and `store_false` in `fastcore.script` ([#137](https://github.com/fastai/fastcore/issues/137))
 - add function `otherwise` ([#136](https://github.com/fastai/fastcore/issues/136))
 - add `pdb` debug flag to scripts ([#133](https://github.com/fastai/fastcore/issues/133))
-
-### Bugs Squashed
-
-- Fix `copy_func` to include required keyword defaults ([#134](https://github.com/fastai/fastcore/pull/134)), thanks to [@worc3131](https://github.com/worc3131)
+- Update `copy_func` to include required keyword defaults ([#134](https://github.com/fastai/fastcore/pull/134)), thanks to [@worc3131](https://github.com/worc3131)
 
 
 ## 1.2.0
 
 ### Breaking Changes
 
-- `Config` no longer magically converts `str->Path` for some keys. Use new `path` method instead ([#131](https://github.com/fastai/fastcore/issues/131))
+- `Config` no longer magically converts `str->Path` for any keys. Use new `path` method instead ([#131](https://github.com/fastai/fastcore/issues/131))
 
 ### New Features
 
@@ -49,10 +55,7 @@
 - Use `_repr_pretty_` for `L` ([#129](https://github.com/fastai/fastcore/issues/129))
 - `open_file` to open optionally-compressed files for reading and writing, and add compression support to `load_pickle` and `save_pickle` ([#128](https://github.com/fastai/fastcore/issues/128))
 - add context manager for failed tests ([#126](https://github.com/fastai/fastcore/pull/126)), thanks to [@hamelsmu](https://github.com/hamelsmu)
-
-### Bugs Squashed
-
-- `urlread` does not work with `Request.request` ([#132](https://github.com/fastai/fastcore/issues/132))
+- Add `Request.request` support to `urlread` ([#132](https://github.com/fastai/fastcore/issues/132))
 
 
 ## 1.1.2

@@ -86,7 +86,7 @@ def docs(cls):
 def coll_repr(c, max_n=10):
     "String repr of up to `max_n` items of (possibly lazy) collection `c`"
     return f'(#{len(c)}) [' + ','.join(itertools.islice(map(repr,c), max_n)) + (
-        '...' if len(c)>10 else '') + ']'
+        '...' if len(c)>max_n else '') + ']'
 
 # Cell
 def is_bool(x):

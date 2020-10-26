@@ -189,7 +189,9 @@ class Pipeline:
     def setup(self, items=None, train_setup=False):
         tfms = self.fs[:]
         self.fs.clear()
-        for t in tfms: self.add(t,items, train_setup)
+        for t in tfms:
+            self.add(t,items, train_setup)
+            items = t(items)
 
     def add(self,t, items=None, train_setup=False):
         t.setup(items, train_setup)

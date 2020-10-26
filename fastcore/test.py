@@ -19,7 +19,7 @@ def test_fail(f, msg='', contains=''):
     assert False,f"Expected exception but none raised. {msg}"
 
 # Cell
-def test(a, b, cmp,cname=None):
+def test(a, b, cmp, cname=None):
     "`assert` that `cmp(a,b)`; display inputs and `cname or cmp.__name__` if it fails"
     if cname is None: cname=cmp.__name__
     assert cmp(a,b),f"{cname}:\n{a}\n{b}"
@@ -82,6 +82,7 @@ def test_stdout(f, exp, regex=False):
 # Cell
 def test_warns(f, show=False):
     with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
         f()
         test_ne(len(w), 0)
         if show:

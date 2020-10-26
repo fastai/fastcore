@@ -115,7 +115,8 @@ def mask2idxs(mask):
 
 # Cell
 def _is_array(x):
-    if hasattr(x,'__array__') or hasattr(x,'iloc'): return bool(x.shape)
+    "First, check if it could be an array (np.array or pandas Dataframe/Serie and then check that has shape. If it doesn't , it's a constant value."
+    return (hasattr(x,'__array__') or hasattr(x,'iloc')) and bool(x.shape)
 
 def _listify(o):
     if o is None: return []

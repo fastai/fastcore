@@ -350,10 +350,14 @@ def range_of(x):
     return list(range(len(x)))
 
 # Cell
-def groupby(x, key):
-    "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy"
+def groupby(x, key, val=noop):
+    "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy, plus some extensions"
+    if   isinstance(key,int): key = itemgetter(key)
+    elif isinstance(key,str): key = attrgetter(key)
+    if   isinstance(val,int): val = itemgetter(val)
+    elif isinstance(val,str): val = attrgetter(val)
     res = {}
-    for o in x: res.setdefault(key(o), []).append(o)
+    for o in x: res.setdefault(key(o), []).append(val(o))
     return res
 
 # Cell

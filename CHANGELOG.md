@@ -3,6 +3,22 @@
 <!-- do not remove -->
 
 ## 1.3.0
+### Breaking Changes
+
+- `change param name `copy_meta`->`as_copy` in `retain_meta` ([#157](https://github.com/fastai/fastcore/issues/157))
+
+### New Features
+
+- `groupby` extensions for `int` and `str` instead of callables, and an optional `val` transform ([#155](https://github.com/fastai/fastcore/issues/155))
+
+- add `modified_env` ([#148](https://github.com/fastai/fastcore/issues/148))
+
+### Bugs Squashed
+
+- fixed coll_repr printing incorrectly when max_n!=10, and added relevant tests ([#154](https://github.com/fastai/fastcore/pull/154)), thanks to [@kessido](https://github.com/kessido)
+
+
+## 1.3.0
 
 ### Breaking Changes
 
@@ -215,6 +231,7 @@
 ### Bugs Squashed
 
 - "has default params. These will be ignored" shown when not appropriate ([#74](https://github.com/fastai/fastcore/issues/74))
+
 
 ## 1.0.1
 

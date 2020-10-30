@@ -279,8 +279,13 @@ class CollBase:
     @property
     def shape(self):
         if hasattr(self.items, 'shape'): return self.items.shape
-        import numpy as np
-        return np.array(self.items).shape
+        if len(self.items):
+            itms, shp = self.items, ()
+            while isinstance(itms, Sequence) and len(itms):
+                shp = shp + (len(itms),)
+                itms = itms[0]
+            return shp
+        return ()
 
 # Cell
 class _L_Meta(type):

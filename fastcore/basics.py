@@ -416,6 +416,7 @@ def argwhere(iterable, f, negate=False, **kwargs):
 # Cell
 def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
     "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
+    if f is None: f = lambda _: True
     if kwargs: f = partial(f,**kwargs)
     if negate: f = negate_func(f)
     res = filter(f, iterable)
@@ -434,9 +435,11 @@ def renumerate(iterable, start=0):
     return ((o,i) for i,o in enumerate(iterable, start=start))
 
 # Cell
-def first(x):
+def first(x, f=None, negate=False, **kwargs):
     "First element of `x`, or None if missing"
-    try: return next(iter(x))
+    x = iter(x)
+    if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
+    try: return next(x)
     except StopIteration: return None
 
 # Cell

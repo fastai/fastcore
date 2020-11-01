@@ -241,7 +241,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else nested_attr(o,k,default))
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
-    def map_filter(self, f=noop, g=noop, *args, gen=False, **kwargs):
+    def map_filter(self, f=noop, g=noop, *args, gen=True, **kwargs):
         res = filter(g, self.map(f, *args, gen=gen, **kwargs))
         if gen: return res
         return self._new(res)

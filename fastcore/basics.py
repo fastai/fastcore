@@ -436,11 +436,10 @@ def renumerate(iterable, start=0):
 
 # Cell
 def first(x, f=None, negate=False, **kwargs):
-    "First element of `x`, or None if missing"
+    "First element of `x`, optionally filtered by `f`, or None if missing"
     x = iter(x)
     if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
-    try: return next(x)
-    except StopIteration: return None
+    return next(x, None)
 
 # Cell
 def nested_attr(o, attr, default=None):

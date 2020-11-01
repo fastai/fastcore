@@ -611,10 +611,16 @@ class _Self:
         self.ready = False
         return self
 
+    def _call(self, *args, **kwargs):
+        self.args,self.kwargs,self.nms = [args],[kwargs],['__call__']
+        self.ready = True
+        return self
+
 # Cell
 class _SelfCls:
     def __getattr__(self,k): return getattr(_Self(),k)
     def __getitem__(self,i): return self.__getattr__('__getitem__')(i)
+    def __call__(self,*args,**kwargs): return self.__getattr__('_call')(*args,**kwargs)
 
 Self = _SelfCls()
 

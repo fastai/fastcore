@@ -142,11 +142,9 @@ def __repr__(self:Path):
 @contextmanager
 def maybe_open(f, mode='r', **kwargs):
     "Context manager: open `f` if it is a path (and close on exit)"
-    ispath = isinstance(f, (str,os.PathLike))
-    if ispath: f = open(f, mode, **kwargs)
-    try: yield f
-    finally:
-        if ispath: f.close()
+    if isinstance(f, (str,os.PathLike)):
+        with open(f, mode, **kwargs) as f: yield f
+    else: yield f
 
 # Cell
 def image_size(fn):

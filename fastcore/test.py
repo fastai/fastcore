@@ -43,7 +43,7 @@ def test_eq_type(a,b):
         elif isinstance_str(x, 'Tensor'):           return ((type(x), x.dtype), x)
         elif isinstance(x, (Generator,map)):        return ((type(x),),         [explode(i) for i in x])
         elif isinstance(x, dict):                   return ((type(x),),         x, [(explode(k), explode(v)) for k,v in x.items()])
-        elif isinstance(x, (set, typing.Sequence)): return ((type(x)),          x, [explode(i) for i in x])
+        elif isinstance(x, (set, typing.Sequence)): return ((type(x),),         x, [explode(i) for i in x])
         else:                                       return ((type(x),),         x)
     test_eq(explode(a),explode(b))
 

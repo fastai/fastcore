@@ -350,10 +350,14 @@ def range_of(x):
     return list(range(len(x)))
 
 # Cell
-def groupby(x, key):
-    "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy"
+def groupby(x, key, val=noop):
+    "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy, plus some extensions"
+    if   isinstance(key,int): key = itemgetter(key)
+    elif isinstance(key,str): key = attrgetter(key)
+    if   isinstance(val,int): val = itemgetter(val)
+    elif isinstance(val,str): val = attrgetter(val)
     res = {}
-    for o in x: res.setdefault(key(o), []).append(o)
+    for o in x: res.setdefault(key(o), []).append(val(o))
     return res
 
 # Cell
@@ -412,6 +416,7 @@ def argwhere(iterable, f, negate=False, **kwargs):
 # Cell
 def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
     "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
+    if f is None: f = lambda _: True
     if kwargs: f = partial(f,**kwargs)
     if negate: f = negate_func(f)
     res = filter(f, iterable)
@@ -430,10 +435,11 @@ def renumerate(iterable, start=0):
     return ((o,i) for i,o in enumerate(iterable, start=start))
 
 # Cell
-def first(x):
-    "First element of `x`, or None if missing"
-    try: return next(iter(x))
-    except StopIteration: return None
+def first(x, f=None, negate=False, **kwargs):
+    "First element of `x`, optionally filtered by `f`, or None if missing"
+    x = iter(x)
+    if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
+    return next(x, None)
 
 # Cell
 def nested_attr(o, attr, default=None):
@@ -604,10 +610,16 @@ class _Self:
         self.ready = False
         return self
 
+    def _call(self, *args, **kwargs):
+        self.args,self.kwargs,self.nms = [args],[kwargs],['__call__']
+        self.ready = True
+        return self
+
 # Cell
 class _SelfCls:
     def __getattr__(self,k): return getattr(_Self(),k)
     def __getitem__(self,i): return self.__getattr__('__getitem__')(i)
+    def __call__(self,*args,**kwargs): return self.__getattr__('_call')(*args,**kwargs)
 
 Self = _SelfCls()
 

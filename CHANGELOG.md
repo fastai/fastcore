@@ -2,6 +2,36 @@
 
 <!-- do not remove -->
 
+
+## 1.3.1
+
+### New Features
+
+- callable support for `Self` ([#162](https://github.com/fastai/fastcore/issues/162))
+- add filter func to `first` ([#161](https://github.com/fastai/fastcore/issues/161))
+- `maybe_open` context manager and fast `image_size` funcion ([#160](https://github.com/fastai/fastcore/issues/160))
+
+### Bugs Squashed
+
+- Redundent `L.map_filter` removed (since `L.map.filter` does the same thing)
+
+
+## 1.3.0
+
+### Breaking Changes
+
+- `change param name `copy_meta`->`as_copy` in `retain_meta` ([#157](https://github.com/fastai/fastcore/issues/157))
+
+### New Features
+
+- `groupby` extensions for `int` and `str` instead of callables, and an optional `val` transform ([#155](https://github.com/fastai/fastcore/issues/155))
+- add `modified_env` ([#148](https://github.com/fastai/fastcore/issues/148))
+
+### Bugs Squashed
+
+- `coll_repr` printing incorrectly when `max_n`!=10 ([#154](https://github.com/fastai/fastcore/pull/154)), thanks to [@kessido](https://github.com/kessido)
+
+
 ## 1.2.5
 
 ### New Features
@@ -199,6 +229,7 @@
 ### Bugs Squashed
 
 - "has default params. These will be ignored" shown when not appropriate ([#74](https://github.com/fastai/fastcore/issues/74))
+
 
 ## 1.0.1
 

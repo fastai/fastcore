@@ -241,12 +241,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else nested_attr(o,k,default))
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
-    def map_filter(self, f=noop, g=noop, *args, gen=False, **kwargs):
-        res = filter(g, self.map(f, *args, gen=gen, **kwargs))
-        if gen: return res
-        return self._new(res)
     def map_first(self, f=noop, g=noop, *args, **kwargs):
-        return first(self.map_filter(f, g, *args, gen=False, **kwargs))
+        return first(self.map(f, *args, gen=False, **kwargs), g)
 
     def starmap(self, f, *args, **kwargs): return self._new(itertools.starmap(partial(f,*args,**kwargs), self))
     def zip(self, cycled=False): return self._new((zip_cycle if cycled else zip)(*self))
@@ -277,7 +273,6 @@ add_docs(L,
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
          argwhere="Like `filter`, but return indices for matching items",
          map="Create new `L` with `f` applied to all `items`, passing `args` and `kwargs` to `f`",
-         map_filter="Same as `map` with `f` followed by `filter` with `g`",
          map_first="First element of `map_filter`",
          map_dict="Like `map`, but creates a dict from `items` to function results",
          starmap="Like `map`, but use `itertools.starmap`",

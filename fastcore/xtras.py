@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'tuplify', 'uniqueify', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'open_file', 'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlread',
-           'urljson', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
-           'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs',
-           'parallel_gen', 'threaded']
+           'urljson', 'urlwrap', 'urlcheck', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple',
+           'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
+           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -16,8 +16,9 @@ import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,distuti
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request,urlopen
-from urllib.error import HTTPError
+from urllib.error import HTTPError,URLError
 from urllib.parse import urlencode
+from http.client import InvalidURL
 from threading import Thread
 
 # Cell
@@ -185,6 +186,25 @@ def urlread(url, data=None, **kwargs):
 def urljson(url, data=None):
     "Retrieve `url` and decode json"
     return json.loads(urlread(url, data=data))
+
+# Cell
+_ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36'
+
+# Cell
+def urlwrap(url):
+    "Wrap `url` in a urllib `Request` with a user-agent header"
+    if not isinstance(url,Request): url = Request(url)
+    url.headers['User-Agent'] = _ua
+    return url
+
+# Cell
+def urlcheck(url, timeout=10):
+    if not url: return True
+    try:
+        with urlopen(urlwrap(url), timeout=timeout) as u: return u.status<400
+    except URLError: return False
+    except socket.timeout: return False
+    except InvalidURL: return False
 
 # Cell
 def run(cmd, *rest, ignore_ex=False, as_bytes=False):

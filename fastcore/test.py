@@ -37,9 +37,11 @@ def test_eq(a,b):
 # Cell
 def test_eq_type(a,b):
     "`test` that `a==b` and are same type"
-    test_eq(a,b)
-    test_eq(type(a),type(b))
-    if isinstance(a,(list,tuple)): test_eq(map(type,a),map(type,b))
+    def explode(x):
+        if isinstance(x, (tuple, list, slice, Generator, set)): return (x, (type(x), [explode(i) for i in x]))
+        if isinstance(x, dict): return (x, (type(x), [(explode(k),explode(v)) for k,v in x.items()]))
+        return (x, (type(x),))
+    test_eq(explode(a),explode(b))
 
 # Cell
 def test_ne(a,b):

@@ -8,8 +8,6 @@ __all__ = ['test_fail', 'test', 'nequals', 'test_eq', 'test_eq_type', 'test_ne',
 from .imports import *
 from collections import Counter
 from contextlib import redirect_stdout
-import torch
-import numpy as np
 
 # Cell
 def test_fail(f, msg='', contains=''):
@@ -40,13 +38,13 @@ def test_eq(a,b):
 def test_eq_type(a,b):
     "`test` that `a==b` and are same type"
     def explode(x):
-        if isinstance(x, (str, range,slice)): return ((type(x),), x)
-        if isinstance(x, np.ndarray): return ((type(x), x.dtype), explode(x.tolist()) if x.dtype == object else x)
-        if isinstance(x, torch.Tensor): return ((type(x), x.dtype), x)
-        if isinstance(x, (Generator,map)): return ((type(x),), [explode(i) for i in x])
-        if isinstance(x, (set, tuple, list, typing.Sequence)): return ((type(x)), x, [explode(i) for i in x])
-        if isinstance(x, dict): return ((type(x),), x, [(explode(k), explode(v)) for k,v in x.items()])
-        return ((type(x),), x)
+        if   isinstance(x, (str, range,slice)):     return ((type(x),),         x)
+        elif isinstance_str(x, 'ndarray'):          return ((type(x), x.dtype), explode(x.tolist()) if x.dtype == object else x)
+        elif isinstance_str(x, 'Tensor'):           return ((type(x), x.dtype), x)
+        elif isinstance(x, (Generator,map)):        return ((type(x),),         [explode(i) for i in x])
+        elif isinstance(x, dict):                   return ((type(x),),         x, [(explode(k), explode(v)) for k,v in x.items()])
+        elif isinstance(x, (set, typing.Sequence)): return ((type(x)),          x, [explode(i) for i in x])
+        else:                                       return ((type(x),),         x)
     test_eq(explode(a),explode(b))
 
 # Cell

@@ -520,8 +520,8 @@ arg4 = _Arg(4)
 # Cell
 class bind:
     "Same as `partial`, except you can use `arg0` `arg1` etc param placeholders"
-    def __init__(self, fn, *pargs, **pkwargs):
-        self.fn,self.pargs,self.pkwargs = fn,pargs,pkwargs
+    def __init__(self, func, *pargs, **pkwargs):
+        self.func,self.pargs,self.pkwargs = func,pargs,pkwargs
         self.maxi = max((x.i for x in pargs if isinstance(x, _Arg)), default=-1)
 
     def __call__(self, *args, **kwargs):
@@ -530,7 +530,7 @@ class bind:
         for k,v in kwargs.items():
             if isinstance(v,_Arg): kwargs[k] = args.pop(v.i)
         fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
-        return self.fn(*fargs, **kwargs)
+        return self.func(*fargs, **kwargs)
 
 # Cell
 def map_ex(iterable, f, *args, gen=False, **kwargs):

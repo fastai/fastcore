@@ -34,7 +34,7 @@ def _repr_dict(d, lvl):
     if isinstance(d,dict):
         its = [f"{k}: {_repr_dict(v,lvl+1)}" for k,v in d.items()]
     elif isinstance(d,(list,L)): its = [_repr_dict(o,lvl+1) for o in d]
-    else: return d
+    else: return str(d)
     return '\n' + '\n'.join([" "*(lvl*2) + "- " + o for o in its])
 
 # Cell

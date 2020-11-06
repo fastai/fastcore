@@ -12,7 +12,7 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,distutils.util,imghdr,struct
+import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,distutils.util,imghdr,struct,socket
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request,urlopen

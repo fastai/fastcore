@@ -91,3 +91,7 @@ def remove_prefix(text, prefix):
     "Temporary until py39 is a prereq"
     return text[text.startswith(prefix) and len(prefix):]
 
+def remove_suffix(text, suffix):
+    "Temporary until py39 is a prereq"
+    return text[:-len(suffix)] if text.endswith(suffix) else text
+

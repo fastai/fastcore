@@ -12,7 +12,7 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,bz2,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,distutils.util,imghdr,struct,socket
+import mimetypes,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,zipfile,distutils.util,imghdr,struct,socket
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request,urlopen
@@ -112,13 +112,14 @@ def ls(self:Path, n_max=None, file_type=None, file_exts=None):
     return L(res)
 
 # Cell
-def open_file(fn, mode='r'):
+def open_file(fn, mode='r', **kwargs):
     "Open a file, with optional compression if gz or bz2 suffix"
     if isinstance(fn, io.IOBase): return fn
     fn = Path(fn)
-    if   fn.suffix=='.bz2': return bz2.BZ2File(fn, mode)
-    elif fn.suffix=='.gz' : return gzip.GzipFile(fn, mode)
-    else: return open(fn,mode)
+    if   fn.suffix=='.bz2': return bz2.BZ2File(fn, mode, **kwargs)
+    elif fn.suffix=='.gz' : return gzip.GzipFile(fn, mode, **kwargs)
+    elif fn.suffix=='.zip': return zipfile.ZipFile(fn, mode, **kwargs)
+    else: return open(fn,mode, **kwargs)
 
 # Cell
 def save_pickle(fn, o):

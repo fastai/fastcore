@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'tuplify', 'uniqueify', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'open_file', 'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlread',
-           'urljson', 'urlwrap', 'urlcheck', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple',
-           'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
-           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
+           'urljson', 'urlwrap', 'urlcheck', 'urlclean', 'urlsave', 'repo_details', 'run', 'do_request', 'sort_by_run',
+           'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads',
+           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -17,7 +17,7 @@ from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError,URLError
-from urllib.parse import urlencode
+from urllib.parse import urlencode,urlparse,urlunparse
 from http.client import InvalidURL
 from threading import Thread
 
@@ -206,6 +206,25 @@ def urlcheck(url, timeout=10):
     except URLError: return False
     except socket.timeout: return False
     except InvalidURL: return False
+
+# Cell
+def urlclean(url):
+    "Remove fragment, params, and querystring from `url` if present"
+    return urlunparse(urlparse(url)[:3]+('','',''))
+
+# Cell
+def urlsave(url):
+    "Retrieve `url` and save based on its name"
+    res = urlread(urlwrap(url))
+    name = urlclean(Path(url).name)
+    Path(name).write_bytes(res)
+
+# Cell
+def repo_details(url):
+    "Tuple of `owner,name` from ssh or https git repo `url`"
+    res = remove_suffix(url.strip(), '.git')
+    res = res.split(':')[-1]
+    return res.split('/')[-2:]
 
 # Cell
 def run(cmd, *rest, ignore_ex=False, as_bytes=False):

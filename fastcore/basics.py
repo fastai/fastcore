@@ -242,7 +242,7 @@ def _store_attr(self, anno, **attrs):
         self.__stored_args__[n] = v
 
 # Cell
-def store_attr(names=None, self=None, but=None, cast=False, **attrs):
+def store_attr(names=None, self=None, but='', cast=False, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = sys._getframe(1)
     args = fr.f_code.co_varnames[:fr.f_code.co_argcount]
@@ -250,9 +250,12 @@ def store_attr(names=None, self=None, but=None, cast=False, **attrs):
     else: self = fr.f_locals[args[0]]
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
     anno = self.__class__.__init__.__annotations__ if cast else {}
-    if attrs: return _store_attr(self, anno, **attrs)
-    ns = re.split(', *', names) if names else args[1:]
-    _store_attr(self, anno, **{n:fr.f_locals[n] for n in ns if n not in listify(but)})
+    if not attrs:
+        ns = re.split(', *', names) if names else args[1:]
+        attrs = {n:fr.f_locals[n] for n in ns}
+    if isinstance(but,str): but = re.split(', *', but)
+    attrs = {k:v for k,v in attrs.items() if k not in but}
+    return _store_attr(self, anno, **attrs)
 
 # Cell
 def attrdict(o, *ks):

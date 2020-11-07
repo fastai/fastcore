@@ -2,10 +2,10 @@
 
 __all__ = ['dict2obj', 'repr_dict', 'tuplify', 'uniqueify', 'is_listy', 'shufflish', 'mapped', 'IterLen',
            'ReindexCollection', 'open_file', 'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip',
-           'join_path_file', 'urlread', 'urljson', 'urlwrap', 'urlcheck', 'urlclean', 'urlsave', 'repo_details', 'run',
-           'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool',
-           'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen',
-           'threaded']
+           'join_path_file', 'urlread', 'urljson', 'urlwrap', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid',
+           'repo_details', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env',
+           'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
+           'run_procs', 'parallel_gen', 'threaded']
 
 # Cell
 from .imports import *
@@ -46,9 +46,7 @@ def repr_dict(d):
 @patch
 def __repr__(self:AttrDict): return repr_dict(self)
 
-# Cell
-@patch
-def _repr_markdown_(self:AttrDict): return repr(self)
+AttrDict._repr_markdown_ = AttrDict.__repr__
 
 # Cell
 def tuplify(o, use_list=False, match=None):
@@ -240,6 +238,11 @@ def urlsave(url):
     res = urlread(urlwrap(url))
     name = urlclean(Path(url).name)
     Path(name).write_bytes(res)
+
+# Cell
+def urlvalid(x):
+    "Test if `x` is a valid URL"
+    return all (getattrs(urlparse(str(x)), 'scheme', 'netloc'))
 
 # Cell
 def repo_details(url):

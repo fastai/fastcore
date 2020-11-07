@@ -4,13 +4,13 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'Inf',
            'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'true',
            'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'with_cast', 'store_attr', 'attrdict',
-           'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint',
-           'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index',
-           'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere',
-           'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods',
-           'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps',
-           'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus',
-           'add_props', 'typed']
+           'properties', 'camel2snake', 'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs',
+           'ShowPrint', 'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
+           'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex',
+           'negate_func', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx',
+           'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind',
+           'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString',
+           'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -283,6 +283,11 @@ def snake2camel(s):
 def class2attr(self, cls_name):
     "Return the snake-cased name of the class; strip ending `cls_name` if it exists."
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
+
+# Cell
+def getattrs(o, *attrs, default=None):
+    "List of all `attrs` in `o`"
+    return [getattr(o,attr,default) for attr in attrs]
 
 # Cell
 def hasattrs(o,attrs):

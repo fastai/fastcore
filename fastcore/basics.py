@@ -14,7 +14,6 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
 
 # Cell
 from .imports import *
-import weakref
 
 # Cell
 defaults = SimpleNamespace()
@@ -266,8 +265,6 @@ def _store_attr(self, anno, **attrs):
     for n,v in attrs.items():
         if n in anno: v = anno[n](v)
         setattr(self, n, v)
-        try: v = weakref.proxy(v)
-        except TypeError: pass
         stored[n] = v
 
 # Cell

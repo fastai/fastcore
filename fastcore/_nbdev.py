@@ -210,6 +210,7 @@ index = {"test_fail": "00_test.ipynb",
          "Param": "08_script.ipynb",
          "anno_parser": "08_script.ipynb",
          "args_from_prog": "08_script.ipynb",
+         "SCRIPT_INFO": "08_script.ipynb",
          "call_parse": "08_script.ipynb"}
 
 modules = ["test.py",

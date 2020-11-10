@@ -701,7 +701,7 @@ def typed(f):
         if len(anno) > 0:
             for i,arg in enumerate(args): kw[names[i]] = arg
             for k,v in kw.items():
-                if not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
+                if k in anno and not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
         res = f(*args,**kwargs)
         if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res

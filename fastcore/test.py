@@ -39,10 +39,12 @@ def test_eq_type(a,b):
     "`test` that `a==b` and are same type, and also check recursivly for eq typing"
     test_eq(type(a),type(b))
     test_eq(a, b)
+    if isinstance_str(a, 'ndarray') or isinstance_str(a, 'Tensor'): test_eq(a.dtype,b.dtype); test_eq(a.shape,b.shape)
+    def tensor2list(x): return list(x) if x.ndim>0 else [x.item()]
     if isinstance(a, (str,range,slice)): return #in order to use typing.Sequence to also support L
     if isinstance_str(a, 'NDFrame'): a,b = a.to_dict(),b.to_dict()
-    if isinstance_str(a, 'ndarray'): test_eq(a.dtype,b.dtype); a,b = list(a),list(b)
-    if isinstance_str(a, 'Tensor'): a,b = list(a),list(b)
+    if isinstance_str(a, 'ndarray'): a,b = list(a),list(b)
+    if isinstance_str(a, 'Tensor'): a,b = tensor2list(a),tensor2list(b)
     if isinstance(a, dict): a,b = list(a.items()),list(b.items())
     if isinstance(a, (tuple, Generator, map, set, typing.Sequence)): a,b = list(a),list(b)
     if isinstance(a, list):

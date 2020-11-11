@@ -47,8 +47,8 @@ jobs:
         path: nbdev/   
     - name: Install libraries
       run: |
-        cd ../fastcore && pip install -Ue .[dev]
-        cd nbdev && pip install -Ue .[dev]
+        cd fastcore && pip install -Ue .[dev]
+        cd ../nbdev && pip install -Ue .[dev]
     - name: test nbdev notebooks
       run: make test
         

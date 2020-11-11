@@ -49,9 +49,7 @@ def isinstance_str(x, cls_name):
 def array_equal(a,b):
     if hasattr(a, '__array__'): a = a.__array__()
     if hasattr(b, '__array__'): b = b.__array__()
-    a_shape = getattr(a,'shape',None)
-    b_shape = getattr(b,'shape',None)
-    return a_shape == b_shape and (a==b).all()
+    return (a==b).all()
 
 def equals(a,b):
     "Compares `a` and `b` for equality; supports sublists, tensors and arrays too"

@@ -39,7 +39,7 @@ jobs:
     - name: clone this branch [fastcore]
       uses: actions/checkout@v2
       with:
-        path: fastcore
+        path: fastcore_lib
     - name: clone nbdev
       uses: actions/checkout@v2
       with:
@@ -47,14 +47,11 @@ jobs:
         path: nbdev   
     - name: Install libraries
       run: |
-        cd fastcore && pip install -Ue .[dev]
+        cd fastcore_lib && pip install -Ue .[dev]
         cd ../nbdev && pip install -Ue .[dev]
     - name: test nbdev notebooks
       run: |
-        echo "debug"
-        pwd
-        ls
-        nbdev_test_nbs --flags ''
+        cd nbdev && make test
         
   fastai-integration-test:
     needs: filter

@@ -40,11 +40,13 @@ def noops(self, x=None, *args, **kwargs):
     "Do nothing (method)"
     return x
 
+_isinstance = isinstance
+def isinstance(x, type_or_tuple):
+    if _isinstance(type_or_tuple, str):   return type_or_tuple in [t.__name__ for t in type(x).__mro__]
+    if _isinstance(type_or_tuple, tuple): return any(isinstance(x,t) for t in type_or_tuple)
+    return _isinstance(x, type_or_tuple)
+    
 def any_is_instance(t, *args): return any(isinstance(a,t) for a in args)
-
-def isinstance_str(x, cls_name):
-    "Like `isinstance`, except takes a type name instead of a type"
-    return cls_name in [t.__name__ for t in type(x).__mro__]
 
 def array_equal(a,b):
     if hasattr(a, '__array__'): a = a.__array__()
@@ -57,7 +59,7 @@ def equals(a,b):
     if any_is_instance(type,a,b): return a==b
     if hasattr(a, '__array_eq__'): return a.__array_eq__(b)
     if hasattr(b, '__array_eq__'): return b.__array_eq__(a)
-    cmp = (array_equal   if isinstance_str(a, 'ndarray') or isinstance_str(b, 'ndarray') else
+    cmp = (array_equal   if any_is_instance('ndarray', a, b) else
            operator.eq   if any_is_instance((str,dict,set), a, b) else
            all_equal     if is_iter(a) or is_iter(b) else
            operator.eq)

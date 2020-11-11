@@ -174,7 +174,7 @@ def default_set_meta(self, x, as_copy=False):
 def cast(x, typ):
     "cast `x` to type `typ` (may also change `x` inplace)"
     res = typ._before_cast(x) if hasattr(typ, '_before_cast') else x
-    if isinstance_str(res, 'ndarray'): res = res.view(typ)
+    if isinstance(res, 'ndarray'): res = res.view(typ)
     elif hasattr(res, 'as_subclass'): res = res.as_subclass(typ)
     else:
         try: res.__class__ = typ

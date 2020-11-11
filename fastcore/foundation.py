@@ -91,7 +91,7 @@ def coll_repr(c, max_n=10):
 # Cell
 def is_bool(x):
     "Check whether `x` is a bool or None"
-    return isinstance(x,(bool,NoneType)) or isinstance_str(x, 'bool_')
+    return isinstance(x,(bool,NoneType)) or isinstance(x, 'bool_')
 
 # Cell
 def mask2idxs(mask):
@@ -199,7 +199,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
             for i,o_ in zip(idx,o): self.items[i] = o_
 
     def __eq__(self,b):
-        if isinstance_str(b, 'ndarray'): return array_equal(b, self)
+        if isinstance(b, 'ndarray'): return array_equal(b, self)
         if isinstance(b, (str,dict)): return False
         return all_equal(b,self)
 

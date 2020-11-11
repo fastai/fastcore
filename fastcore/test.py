@@ -36,10 +36,17 @@ def test_eq(a,b):
 
 # Cell
 def test_eq_type(a,b):
-    "`test` that `a==b` and are same type"
-    test_eq(a,b)
+    "`test` that `a==b` and are same type, and also check recursivly for eq typing"
     test_eq(type(a),type(b))
-    if isinstance(a,(list,tuple)): test_eq(map(type,a),map(type,b))
+    test_eq(a, b)
+    if isinstance(a, (str,range,slice)): return #in order to use typing.Sequence to also support L
+    if isinstance_str(a, 'NDFrame'): a,b = a.to_dict(),b.to_dict()
+    if isinstance_str(a, 'ndarray'): test_eq(a.dtype,b.dtype); a,b = list(a),list(b)
+    if isinstance_str(a, 'Tensor'): a,b = list(a),list(b)
+    if isinstance(a, dict): a,b = list(a.items()),list(b.items())
+    if isinstance(a, (tuple, Generator, map, set, typing.Sequence)): a,b = list(a),list(b)
+    if isinstance(a, list):
+        for a1,b1 in zip(a,b): test_eq_type(a1,b1)
 
 # Cell
 def test_ne(a,b):

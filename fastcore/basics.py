@@ -271,7 +271,7 @@ def _store_attr(self, anno, **attrs):
 def store_attr(names=None, self=None, but='', cast=False, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = sys._getframe(1)
-    args = fr.f_code.co_varnames[:fr.f_code.co_argcount]
+    args = fr.f_code.co_varnames[:fr.f_code.co_argcount+fr.f_code.co_kwonlyargcount]
     if self: args = ('self', *args)
     else: self = fr.f_locals[args[0]]
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}

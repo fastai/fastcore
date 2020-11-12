@@ -251,7 +251,7 @@ def urlvalid(x):
 
 # Cell
 def untar_dir(file, dest):
-    with tempfile.TemporaryDirectory() as d:
+    with tempfile.TemporaryDirectory(dir='.') as d:
         d = Path(d)
         with tarfile.open(mode='r:gz', fileobj=file) as t: t.extractall(d)
         next(d.iterdir()).rename(dest)

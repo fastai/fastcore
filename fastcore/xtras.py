@@ -2,8 +2,8 @@
 
 __all__ = ['dict2obj', 'repr_dict', 'tuplify', 'uniqueify', 'is_listy', 'shufflish', 'mapped', 'IterLen',
            'ReindexCollection', 'open_file', 'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip',
-           'join_path_file', 'urlread', 'urljson', 'urlwrap', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid',
-           'repo_details', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env',
+           'join_path_file', 'urlwrap', 'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid',
+           'untar_dir', 'repo_details', 'run', 'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env',
            'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
            'run_procs', 'parallel_gen', 'threaded']
 
@@ -13,10 +13,11 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,zipfile,distutils.util,imghdr,struct,socket
+import mimetypes,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,zipfile,tarfile
+import imghdr,struct,socket,distutils.util,urllib.request,tempfile
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
-from urllib.request import Request,urlopen
+from urllib.request import Request
 from urllib.error import HTTPError,URLError
 from urllib.parse import urlencode,urlparse,urlunparse
 from http.client import InvalidURL
@@ -192,23 +193,6 @@ def join_path_file(file, path, ext=''):
     return path/f'{file}{ext}'
 
 # Cell
-def urlread(url, data=None, **kwargs):
-    "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
-    if kwargs and not data: data=kwargs
-    if data is not None:
-        if not isinstance(data, (str,bytes)): data = urlencode(data)
-        if not isinstance(data, bytes): data = data.encode('ascii')
-    cls = urllib.request.Request
-    if not isinstance(url,cls): url = cls(url)
-    url.headers['User-Agent'] = 'Mozilla/5.0'
-    with urlopen(url, data=data) as res: return res.read()
-
-# Cell
-def urljson(url, data=None):
-    "Retrieve `url` and decode json"
-    return json.loads(urlread(url, data=data))
-
-# Cell
 _ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36'
 
 # Cell
@@ -219,10 +203,29 @@ def urlwrap(url):
     return url
 
 # Cell
+def urlopen(url, data=None, **kwargs):
+    "Like `urllib.request.urlopen`, but first `urlwrap` the `url`, and encode `data`"
+    if kwargs and not data: data=kwargs
+    if data is not None:
+        if not isinstance(data, (str,bytes)): data = urlencode(data)
+        if not isinstance(data, bytes): data = data.encode('ascii')
+    return urllib.request.urlopen(urlwrap(url))
+
+# Cell
+def urlread(url, data=None, **kwargs):
+    "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
+    with urlopen(url, data=data) as res: return res.read()
+
+# Cell
+def urljson(url, data=None):
+    "Retrieve `url` and decode json"
+    return json.loads(urlread(url, data=data))
+
+# Cell
 def urlcheck(url, timeout=10):
     if not url: return True
     try:
-        with urlopen(urlwrap(url), timeout=timeout) as u: return u.status<400
+        with urlopen(url, timeout=timeout) as u: return u.status<400
     except URLError: return False
     except socket.timeout: return False
     except InvalidURL: return False
@@ -233,16 +236,25 @@ def urlclean(url):
     return urlunparse(urlparse(url)[:3]+('','',''))
 
 # Cell
-def urlsave(url):
+def urlsave(url, dest=None):
     "Retrieve `url` and save based on its name"
     res = urlread(urlwrap(url))
-    name = urlclean(Path(url).name)
+    if dest is None: dest = Path(url).name
+    name = urlclean(dest)
     Path(name).write_bytes(res)
+    return dest
 
 # Cell
 def urlvalid(x):
     "Test if `x` is a valid URL"
     return all (getattrs(urlparse(str(x)), 'scheme', 'netloc'))
+
+# Cell
+def untar_dir(file, dest):
+    with tempfile.TemporaryDirectory() as d:
+        d = Path(d)
+        with tarfile.open(mode='r:gz', fileobj=file) as t: t.extractall(d)
+        next(d.iterdir()).rename(dest)
 
 # Cell
 def repo_details(url):

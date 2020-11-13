@@ -2,6 +2,27 @@
 
 <!-- do not remove -->
 
+## 1.3.5
+
+### Breaking Changes
+
+- remove `log_args` ([#176](https://github.com/fastai/fastcore/issues/176))
+
+### New Features
+
+- `Stateful` base class/mixin for objects that should not serialize all their state ([#196](https://github.com/fastai/fastcore/issues/196))
+- new `frame` param to `argnames` ([#195](https://github.com/fastai/fastcore/issues/195))
+- add `urlopen` and `untar_dir` ([#192](https://github.com/fastai/fastcore/issues/192))
+- `SCRIPT_INFO.func` to let functions know what CLI name was called in `fastcore.script` ([#185](https://github.com/fastai/fastcore/issues/185))
+- add `annotations` and `argnames` functions ([#179](https://github.com/fastai/fastcore/issues/179))
+- allow `but` param in `store_attr` to be either `list` or `str` ([#174](https://github.com/fastai/fastcore/issues/174))
+- add `urlvalid` ([#173](https://github.com/fastai/fastcore/issues/173))
+
+### Bugs Squashed
+
+- `@typed` doesn't work with classes ([#183](https://github.com/fastai/fastcore/issues/183)) (reported by @krishnap)
+
+
 ## 1.3.2
 
 ### New Features

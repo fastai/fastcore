@@ -237,10 +237,10 @@ def anno_ret(func):
     return annotations(func).get('return', None) if func else None
 
 # Cell
-def argnames(f):
-    "Names of arguments to function `f`"
-    code = f.__code__
-    return code.co_varnames[:code.co_argcount]
+def argnames(f, frame=False):
+    "Names of arguments to function or frame `f`"
+    code = getattr(f, 'f_code' if frame else '__code__')
+    return code.co_varnames[:code.co_argcount+code.co_kwonlyargcount]
 
 # Cell
 def with_cast(f):
@@ -271,7 +271,7 @@ def _store_attr(self, anno, **attrs):
 def store_attr(names=None, self=None, but='', cast=False, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = sys._getframe(1)
-    args = fr.f_code.co_varnames[:fr.f_code.co_argcount+fr.f_code.co_kwonlyargcount]
+    args = argnames(fr, True)
     if self: args = ('self', *args)
     else: self = fr.f_locals[args[0]]
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}

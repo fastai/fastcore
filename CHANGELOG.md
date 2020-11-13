@@ -2,6 +2,20 @@
 
 <!-- do not remove -->
 
+## 1.3.2
+
+### New Features
+
+- add `repr_dict` and use for display for `AttrDict` ([#172](https://github.com/fastai/fastcore/issues/172))
+- add `urlsave`, `urlclean`, and `repo_details` ([#171](https://github.com/fastai/fastcore/issues/171))
+- `remove_suffix` function ([#170](https://github.com/fastai/fastcore/issues/170))
+- add `urlcheck` and `urlwrap` ([#168](https://github.com/fastai/fastcore/issues/168))
+- new `AutoInit` mixin ([#165](https://github.com/fastai/fastcore/issues/165))
+
+### Bugs Squashed
+
+- `risinstance` fails if param is not truthy ([#166](https://github.com/fastai/fastcore/issues/166))
+
 
 ## 1.3.1
 

@@ -3,14 +3,14 @@
 __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'true', 'NullType', 'null',
            'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'Inf',
            'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_', 'true',
-           'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'with_cast', 'store_attr', 'attrdict',
-           'properties', 'camel2snake', 'snake2camel', 'class2attr', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint',
-           'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index',
-           'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere',
-           'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods',
-           'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps',
-           'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus',
-           'add_props', 'typed']
+           'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations', 'anno_ret',
+           'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr',
+           'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'detuplify',
+           'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys',
+           'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of',
+           'renumerate', 'first', 'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods', 'inum_methods',
+           'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler',
+           'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -217,11 +217,36 @@ class AttrDict(dict):
     def __dir__(self): return custom_dir(self, list(self.keys()))
 
 # Cell
+def type_hints(f):
+    "Same as `typing.get_type_hints` but returns `{}` if not allowed type"
+    return typing.get_type_hints(f) if isinstance(f, typing._allowed_types) else {}
+
+# Cell
+def annotations(o):
+    "Annotations for `o`, or `type(o)`"
+    res = {}
+    if not o: return res
+    res = type_hints(o)
+    if not res: res = type_hints(getattr(o,'__init__',None))
+    if not res: res = type_hints(type(o))
+    return res
+
+# Cell
+def anno_ret(func):
+    "Get the return annotation of `func`"
+    return annotations(func).get('return', None) if func else None
+
+# Cell
+def argnames(f):
+    "Names of arguments to function `f`"
+    code = f.__code__
+    return code.co_varnames[:code.co_argcount]
+
+# Cell
 def with_cast(f):
     "Decorator which uses any parameter annotations as preprocessing functions"
-    anno = f.__annotations__
-    params = f.__code__.co_varnames[:f.__code__.co_argcount]
-    defaults = dict(zip(reversed(params), reversed(f.__defaults__))) if f.__defaults__ else {}
+    anno,params = annotations(f),argnames(f)
+    defaults = dict(zip(reversed(params), reversed(f.__defaults__ or {})))
     @functools.wraps(f)
     def _inner(*args, **kwargs):
         args = list(args)
@@ -236,28 +261,32 @@ def with_cast(f):
 
 # Cell
 def _store_attr(self, anno, **attrs):
+    stored = self.__stored_args__
     for n,v in attrs.items():
         if n in anno: v = anno[n](v)
         setattr(self, n, v)
-        self.__stored_args__[n] = v
+        stored[n] = v
 
 # Cell
-def store_attr(names=None, self=None, but=None, cast=False, **attrs):
+def store_attr(names=None, self=None, but='', cast=False, **attrs):
     "Store params named in comma-separated `names` from calling context into attrs in `self`"
     fr = sys._getframe(1)
-    args = fr.f_code.co_varnames[:fr.f_code.co_argcount]
+    args = fr.f_code.co_varnames[:fr.f_code.co_argcount+fr.f_code.co_kwonlyargcount]
     if self: args = ('self', *args)
     else: self = fr.f_locals[args[0]]
     if not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
-    anno = self.__class__.__init__.__annotations__ if cast else {}
-    if attrs: return _store_attr(self, anno, **attrs)
-    ns = re.split(', *', names) if names else args[1:]
-    _store_attr(self, anno, **{n:fr.f_locals[n] for n in ns if n not in listify(but)})
+    anno = annotations(self) if cast else {}
+    if not attrs:
+        ns = re.split(', *', names) if names else args[1:]
+        attrs = {n:fr.f_locals[n] for n in ns}
+    if isinstance(but,str): but = re.split(', *', but)
+    attrs = {k:v for k,v in attrs.items() if k not in but}
+    return _store_attr(self, anno, **attrs)
 
 # Cell
-def attrdict(o, *ks):
+def attrdict(o, *ks, default=None):
     "Dict from each `k` in `ks` to `getattr(o,k)`"
-    return {k:getattr(o,k) for k in ks}
+    return {k:getattr(o, k, default) for k in ks}
 
 # Cell
 def properties(cls, *ps):
@@ -283,6 +312,11 @@ def snake2camel(s):
 def class2attr(self, cls_name):
     "Return the snake-cased name of the class; strip ending `cls_name` if it exists."
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
+
+# Cell
+def getattrs(o, *attrs, default=None):
+    "List of all `attrs` in `o`"
+    return [getattr(o,attr,default) for attr in attrs]
 
 # Cell
 def hasattrs(o,attrs):
@@ -660,14 +694,14 @@ def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
-    anno = f.__annotations__
+    anno = annotations(f)
     ret = anno.pop('return',None)
     def _f(*args,**kwargs):
         kw = {**kwargs}
         if len(anno) > 0:
             for i,arg in enumerate(args): kw[names[i]] = arg
             for k,v in kw.items():
-                if not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
+                if k in anno and not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
         res = f(*args,**kwargs)
         if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res

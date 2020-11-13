@@ -14,7 +14,7 @@ To install fastcore run: `conda install fastcore` (if you use Anaconda, which we
 
 - `test`: Simple testing functions
 - `foundation`: Mixins, delegation, composition, and more
-- `utils`: Utility functions to help with functional-style programming, parallel processing, and more
+- `xtras`: Utility functions to help with functional-style programming, parallel processing, and more
 - `dispatch`: Multiple dispatch methods
 - `transform`: Pipelines of composed partially reversible transformations
 

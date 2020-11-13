@@ -1,4 +1,4 @@
-import sys,os,re,shutil,typing,itertools,operator,functools,math,warnings,functools,io
+import sys,os,re,typing,itertools,operator,functools,math,warnings,functools,io
 
 from operator import itemgetter,attrgetter
 from warnings import warn
@@ -58,6 +58,7 @@ def equals(a,b):
     if hasattr(a, '__array_eq__'): return a.__array_eq__(b)
     if hasattr(b, '__array_eq__'): return b.__array_eq__(a)
     cmp = (array_equal   if isinstance_str(a, 'ndarray') or isinstance_str(b, 'ndarray') else
+           array_equal   if isinstance_str(a, 'Tensor')  or isinstance_str(b, 'Tensor') else
            operator.eq   if any_is_instance((str,dict,set), a, b) else
            all_equal     if is_iter(a) or is_iter(b) else
            operator.eq)
@@ -90,4 +91,8 @@ IN_IPYTHON,IN_JUPYTER,IN_COLAB,IN_NOTEBOOK = in_ipython(),in_jupyter(),in_colab(
 def remove_prefix(text, prefix):
     "Temporary until py39 is a prereq"
     return text[text.startswith(prefix) and len(prefix):]
+
+def remove_suffix(text, suffix):
+    "Temporary until py39 is a prereq"
+    return text[:-len(suffix)] if text.endswith(suffix) else text
 

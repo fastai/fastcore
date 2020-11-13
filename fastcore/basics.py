@@ -34,7 +34,7 @@ def basic_repr(flds=None):
     if isinstance(flds, str): flds = re.split(', *', flds)
     flds = list(flds or [])
     def _f(self):
-        sig = ', '.join(f'{o}={maybe_attr(getattr(self,o), "__name__")}' for o in flds)
+        sig = ', '.join(f'{o}={getattr(self,o)!r}' for o in flds)
         return f'{self.__class__.__name__}({sig})'
     return _f
 

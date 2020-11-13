@@ -10,7 +10,8 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of',
            'renumerate', 'first', 'nested_attr', 'nested_idx', 'num_methods', 'rnum_methods', 'inum_methods',
            'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler',
-           'instantiate', 'using_attr', 'Self', 'Self', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'instantiate', 'using_attr', 'Self', 'Self', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus',
+           'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -659,6 +660,26 @@ Self = _SelfCls()
 
 # Cell
 #nbdev_comment _all_ = ['Self']
+
+# Cell
+class Stateful:
+    "A base class/mixin for objects that should not serialize all their state"
+    _stateattrs=()
+    def __init__(self,*args,**kwargs):
+        self._init_state()
+        super().__init__(*args,**kwargs)
+
+    def __getstate__(self):
+        return {k:v for k,v in self.__dict__.items()
+                if k not in self._stateattrs+('_state',)}
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self._init_state()
+
+    def _init_state(self):
+        "Override for custom deserialization logic"
+        self._state = {}
 
 # Cell
 class PrettyString(str):

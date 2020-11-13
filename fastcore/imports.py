@@ -58,6 +58,7 @@ def equals(a,b):
     if hasattr(a, '__array_eq__'): return a.__array_eq__(b)
     if hasattr(b, '__array_eq__'): return b.__array_eq__(a)
     cmp = (array_equal   if isinstance_str(a, 'ndarray') or isinstance_str(b, 'ndarray') else
+           array_equal   if isinstance_str(a, 'Tensor')  or isinstance_str(b, 'Tensor') else
            operator.eq   if any_is_instance((str,dict,set), a, b) else
            all_equal     if is_iter(a) or is_iter(b) else
            operator.eq)

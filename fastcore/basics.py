@@ -667,7 +667,7 @@ class Stateful:
     _stateattrs=()
     def __init__(self,*args,**kwargs):
         self._init_state()
-        super().__init__(*args,**kwargs)
+        super().__init__(*args,**kwargs) # required for mixin usage
 
     def __getstate__(self):
         return {k:v for k,v in self.__dict__.items()
@@ -678,7 +678,7 @@ class Stateful:
         self._init_state()
 
     def _init_state(self):
-        "Override for custom deserialization logic"
+        "Override for custom init and deserialization logic"
         self._state = {}
 
 # Cell

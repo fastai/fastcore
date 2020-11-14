@@ -167,14 +167,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     "Behaves like a list of `items` but can also index with list of indices or masks"
     _default='items'
     def __init__(self, items=None, *rest, use_list=False, match=None):
-        if rest: items = (items,)+rest
-        if items is None: items = []
         if (use_list is not None) or not is_array(items):
-            items = list(items) if use_list else listify(items)
-        if match is not None:
-            if is_coll(match): match = len(match)
-            if len(items)==1: items = items*match
-            else: assert len(items)==match, 'Match length mismatch'
+            items = listify(items, *rest, use_list=use_list, match=match)
         super().__init__(items)
 
     @property
@@ -228,28 +222,27 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def filter(self, f=noop, negate=False, gen=False, **kwargs):
         return self._new(filter_ex(self, f=f, negate=negate, gen=gen, **kwargs))
 
-    def unique(self): return L(dict.fromkeys(self).keys())
     def enumerate(self): return L(enumerate(self))
     def renumerate(self): return L(renumerate(self))
-    def val2idx(self): return {v:k for k,v in self.enumerate()}
-    def itemgot(self, *idxs):
-        x = self
-        for idx in idxs: x = x.map(itemgetter(idx))
-        return x
-
-    def attrgot(self, k, default=None):
-        return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else nested_attr(o,k,default))
+    def unique(self, sort=False, bidir=False, start=None): return L(uniqueify(self, sort=sort, bidir=bidir, start=start))
+    def val2idx(self): return val2idx(self)
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_first(self, f=noop, g=noop, *args, **kwargs):
         return first(self.map(f, *args, gen=False, **kwargs), g)
 
+    def itemgot(self, *idxs):
+        x = self
+        for idx in idxs: x = x.map(itemgetter(idx))
+        return x
+    def attrgot(self, k, default=None):
+        return self.map(lambda o: o.get(k,default) if isinstance(o, dict) else nested_attr(o,k,default))
+
     def starmap(self, f, *args, **kwargs): return self._new(itertools.starmap(partial(f,*args,**kwargs), self))
     def zip(self, cycled=False): return self._new((zip_cycle if cycled else zip)(*self))
     def zipwith(self, *rest, cycled=False): return self._new([self, *rest]).zip(cycled=cycled)
     def map_zip(self, f, *args, cycled=False, **kwargs): return self.zip(cycled=cycled).starmap(f, *args, **kwargs)
-    def map_zipwith(self, f, *rest, cycled=False, **kwargs):
-        return self.zipwith(*rest, cycled=cycled).starmap(f, **kwargs)
+    def map_zipwith(self, f, *rest, cycled=False, **kwargs): return self.zipwith(*rest, cycled=cycled).starmap(f, **kwargs)
     def shuffle(self):
         it = copy(self.items)
         random.shuffle(it)

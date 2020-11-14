@@ -34,21 +34,33 @@ def test_eq(a,b):
     "`test` that `a==b`"
     test(a,b,equals, '==')
 
+# Internal Cell
+def _test_eq_type_array(a,b):
+    test_eq(a.dtype,b.dtype)
+    test_eq(a.shape,b.shape)
+    if a.dtype == object: test_eq_type(a.tolist(), b.tolist()) # need to check inner types...
+    else:                 test_eq(a,b)
+
+def _is_pandas(a): return isinstance_str(a, 'NDFrame')
+def _is_array(a):  return isinstance_str(a, 'ndarray') or isinstance_str(a, 'Tensor')
+def _test_eq_type_list(a,b):
+    def _to_list(x):
+        if _is_pandas(x): x = x.to_dict()
+        if isinstance(a, dict): x = x.items()
+        return x if isinstance(x, list) else list(x)
+    a,b = _to_list(a),_to_list(b)
+    test_eq(len(a),len(b))
+    for a1,b1 in zip(a,b): test_eq_type(a1,b1)
+
 # Cell
 def test_eq_type(a,b):
     "`test` that `a==b` and are same type, and also check recursivly for eq typing"
     test_eq(type(a),type(b))
-    test_eq(a, b)
-    if isinstance_str(a, 'ndarray') or isinstance_str(a, 'Tensor'): test_eq(a.dtype,b.dtype); test_eq(a.shape,b.shape)
-    def tensor2list(x): return list(x) if x.ndim>0 else [x.item()]
-    if isinstance(a, (str,range,slice)): return #in order to use typing.Sequence to also support L
-    if isinstance_str(a, 'NDFrame'): a,b = a.to_dict(),b.to_dict()
-    if isinstance_str(a, 'ndarray'): a,b = list(a),list(b)
-    if isinstance_str(a, 'Tensor'): a,b = tensor2list(a),tensor2list(b)
-    if isinstance(a, dict): a,b = list(a.items()),list(b.items())
-    if isinstance(a, (tuple, Generator, map, set, typing.Sequence)): a,b = list(a),list(b)
-    if isinstance(a, list):
-        for a1,b1 in zip(a,b): test_eq_type(a1,b1)
+    cmp = (test_eq             if isinstance(a, (str, range, slice)) else # o.w will listify which is unneeded.
+           _test_eq_type_array if _is_array(a) else
+           _test_eq_type_list  if is_coll(a) or _is_pandas(a) else
+           test_eq)
+    cmp(a,b)
 
 # Cell
 def test_ne(a,b):

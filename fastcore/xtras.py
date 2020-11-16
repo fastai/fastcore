@@ -3,9 +3,9 @@
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlwrap', 'urlopen',
            'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'untar_dir', 'repo_details', 'run',
-           'do_request', 'sort_by_run', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool',
-           'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen',
-           'threaded']
+           'do_request', 'threaded', 'start_server', 'start_client', 'sort_by_run', 'trace', 'round_multiple',
+           'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
+           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -14,7 +14,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,socket,distutils.util,urllib.request,tempfile
+import imghdr,struct,socket,distutils.util,urllib.request,tempfile,time
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request
@@ -272,6 +272,43 @@ def do_request(url, post=False, headers=None, **data):
     return urljson(Request(url, headers=headers, data=data or None))
 
 # Cell
+def threaded(f):
+    "Run `f` in a thread, and returns the thread"
+    @wraps(f)
+    def _f(*args, **kwargs):
+        res = Thread(target=f, args=args, kwargs=kwargs)
+        res.start()
+        return res
+    return _f
+
+# Cell
+def _socket_det(port,host,dgram):
+    if isinstance(port,int): family,addr = socket.AF_INET,(host or socket.gethostname(),port)
+    else: family,addr = socket.AF_UNIX,port
+    return family,addr,(socket.SOCK_STREAM,socket.SOCK_DGRAM)[dgram]
+
+# Cell
+def start_server(port, host=None, dgram=False, n_queue=None):
+    "Create a `socket` server on `port`, with optional `host`, of type `dgram`"
+    listen_args = [n_queue] if n_queue else []
+    family,addr,typ = _socket_det(port,host,dgram)
+    if family==socket.AF_UNIX:
+        if os.path.exists(addr): os.unlink(addr)
+        assert not os.path.exists(addr), f"{addr} in use"
+    s = socket.socket(family, typ)
+    s.bind(addr)
+    s.listen(*listen_args)
+    return s
+
+# Cell
+def start_client(port, host=None, dgram=False):
+    "Create a `socket` client on `port`, with optional `host`, of type `dgram`"
+    family,addr,typ = _socket_det(port,host,dgram)
+    s = socket.socket(family, typ)
+    s.connect(addr)
+    return s
+
+# Cell
 def _is_instance(f, gs):
     tst = [g if type(g) in [type, 'function'] else g.__class__ for g in gs]
     for g in tst:
@@ -342,7 +379,6 @@ def str2bool(s):
 # Cell
 from multiprocessing import Process, Queue
 import concurrent.futures
-import time
 from multiprocessing import Manager
 
 # Cell
@@ -447,13 +483,3 @@ def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     f=partial(_f_pg, cls(**kwargs), queue)
     done=partial(_done_pg, queue, items)
     yield from run_procs(f, done, L(batches,idx).zip())
-
-# Cell
-def threaded(f):
-    "Run `f` in a thread, and returns the thread"
-    @wraps(f)
-    def _f(*args, **kwargs):
-        res = Thread(target=f, args=args, kwargs=kwargs)
-        res.start()
-        return res
-    return _f

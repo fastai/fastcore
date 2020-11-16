@@ -184,9 +184,12 @@ _ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
 # Cell
 def urlquote(url):
     "Update url's path with `urllib.parse.quote`"
+    subdelims = "!$&'()*+,;="
+    gendelims = ":?#[]@"
+    safe = subdelims+gendelims+"%"
     p = list(urlparse(url))
-    p[2] = urllib.parse.quote(p[2])
-    for i in range(3,6): p[i] = urllib.parse.quote(p[i], safe="/=&")
+    p[2] = urllib.parse.quote(p[2], safe=safe)
+    for i in range(3,6): p[i] = urllib.parse.quote(p[i], safe=safe)
     return urlunparse(p)
 
 # Cell

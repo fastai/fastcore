@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.3.6
+
+### New Features
+
+- quote URL paths in `urlwrap` ([#211](https://github.com/fastai/fastcore/issues/211))
+- Add `start_server` and `start_client` for simple socket networking ([#210](https://github.com/fastai/fastcore/issues/210))
+- new `uniqueify` and `val2idx` functions, and additional params to `listify` ([#209](https://github.com/fastai/fastcore/issues/209))
+- improve representation in `basic_repr` ([#197](https://github.com/fastai/fastcore/issues/197))
+
+
 ## 1.3.5
 
 ### Breaking Changes

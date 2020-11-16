@@ -186,6 +186,7 @@ def urlquote(url):
     "Update url's path with `urllib.parse.quote`"
     p = list(urlparse(url))
     p[2] = urllib.parse.quote(p[2])
+    for i in range(3,6): p[i] = urllib.parse.quote(p[i], safe="/=&")
     return urlunparse(p)
 
 # Cell

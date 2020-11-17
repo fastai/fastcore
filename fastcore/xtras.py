@@ -299,7 +299,7 @@ def _socket_det(port,host,dgram):
     return family,addr,(socket.SOCK_STREAM,socket.SOCK_DGRAM)[dgram]
 
 # Cell
-def start_server(port, host=None, dgram=False, n_queue=None):
+def start_server(port, host=None, dgram=False, reuse_addr=True, n_queue=None):
     "Create a `socket` server on `port`, with optional `host`, of type `dgram`"
     listen_args = [n_queue] if n_queue else []
     family,addr,typ = _socket_det(port,host,dgram)
@@ -307,6 +307,7 @@ def start_server(port, host=None, dgram=False, n_queue=None):
         if os.path.exists(addr): os.unlink(addr)
         assert not os.path.exists(addr), f"{addr} in use"
     s = socket.socket(family, typ)
+    if reuse_addr and family==socket.AF_INET: s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(addr)
     s.listen(*listen_args)
     return s

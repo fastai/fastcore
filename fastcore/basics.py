@@ -10,11 +10,12 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex',
            'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex',
-           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'Stateful', 'PrettyString',
-           'even_mults', 'num_cpus', 'add_props', 'typed']
+           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
+           'patch', 'patch_property', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
+import builtins
 
 # Cell
 defaults = SimpleNamespace()
@@ -687,6 +688,48 @@ Self = _SelfCls()
 
 # Cell
 #nbdev_comment _all_ = ['Self']
+
+# Cell
+def copy_func(f):
+    "Copy a non-builtin function (NB `copy.copy` does not work for this)"
+    if not isinstance(f,FunctionType): return copy(f)
+    fn = FunctionType(f.__code__, f.__globals__, f.__name__, f.__defaults__, f.__closure__)
+    fn.__kwdefaults__ = f.__kwdefaults__
+    fn.__dict__.update(f.__dict__)
+    return fn
+
+# Cell
+def patch_to(cls, as_prop=False, cls_method=False):
+    "Decorator: add `f` to `cls`"
+    if not isinstance(cls, (tuple,list)): cls=(cls,)
+    def _inner(f):
+        for c_ in cls:
+            nf = copy_func(f)
+            nm = f.__name__
+            # `functools.update_wrapper` when passing patched function to `Pipeline`, so we do it manually
+            for o in functools.WRAPPER_ASSIGNMENTS: setattr(nf, o, getattr(f,o))
+            nf.__qualname__ = f"{c_.__name__}.{nm}"
+            if cls_method:
+                setattr(c_, nm, MethodType(nf, c_))
+            else:
+                setattr(c_, nm, property(nf) if as_prop else nf)
+        # Avoid clobbering existing functions
+        return globals().get(nm, builtins.__dict__.get(nm, None))
+    return _inner
+
+# Cell
+def patch(f=None, *, as_prop=False, cls_method=False):
+    "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
+    if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
+    cls = next(iter(f.__annotations__.values()))
+    return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
+
+# Cell
+def patch_property(f):
+    "Deprecated; use `patch(as_prop=True)` instead"
+    warnings.warn("`patch_property` is deprecated and will be removed; use `patch(as_prop=True)` instead")
+    cls = next(iter(f.__annotations__.values()))
+    return patch_to(cls, as_prop=True)(f)
 
 # Cell
 class Stateful:

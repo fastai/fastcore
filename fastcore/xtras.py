@@ -265,7 +265,7 @@ def run(cmd, *rest, ignore_ex=False, as_bytes=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
-    res = subprocess.run(cmd, capture_output=True)
+    res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
     if not as_bytes: stdout = stdout.decode()
     if ignore_ex: return (res.returncode, stdout)

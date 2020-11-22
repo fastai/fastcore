@@ -3,8 +3,8 @@
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlquote', 'urlwrap',
            'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'untar_dir', 'repo_details',
-           'run', 'do_request', 'threaded', 'start_server', 'start_client', 'sort_by_run', 'trace', 'round_multiple',
-           'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
+           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'sort_by_run', 'trace',
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
            'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
@@ -193,25 +193,25 @@ def urlquote(url):
     return urlunparse(p)
 
 # Cell
-def urlwrap(url):
+def urlwrap(url, data=None, headers=None):
     "Wrap `url` in a urllib `Request` with a user-agent header"
-    if not isinstance(url,Request): url = Request(urlquote(url))
+    if not isinstance(url,Request): url = Request(urlquote(url), data=data, headers=headers or {})
     url.headers['User-Agent'] = _ua
     return url
 
 # Cell
-def urlopen(url, data=None, **kwargs):
+def urlopen(url, data=None, headers=None, **kwargs):
     "Like `urllib.request.urlopen`, but first `urlwrap` the `url`, and encode `data`"
     if kwargs and not data: data=kwargs
     if data is not None:
         if not isinstance(data, (str,bytes)): data = urlencode(data)
         if not isinstance(data, bytes): data = data.encode('ascii')
-    return urllib.request.urlopen(urlwrap(url))
+    return urllib.request.urlopen(urlwrap(url, data=data, headers=headers))
 
 # Cell
-def urlread(url, data=None, **kwargs):
+def urlread(url, data=None, headers=None, **kwargs):
     "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
-    with urlopen(url, data=data) as res: return res.read()
+    with urlopen(url, data=data, headers=headers, **kwargs) as res: return res.read()
 
 # Cell
 def urljson(url, data=None):
@@ -291,6 +291,11 @@ def threaded(f):
         res.start()
         return res
     return _f
+
+# Cell
+def startthread(f):
+    "Like `threaded`, but start thread immediately"
+    threaded(f)()
 
 # Cell
 def _socket_det(port,host,dgram):

@@ -95,6 +95,7 @@ def call_parse(func):
         mod = inspect.getmodule(inspect.currentframe().f_back)
         if not mod: return func(*args, **kwargs)
         if not SCRIPT_INFO.func and mod.__name__=="__main__": SCRIPT_INFO.func = func.__name__
+        if len(sys.argv)>1 and sys.argv[1]=='': sys.argv.pop(1)
         p = anno_parser(func)
         args = p.parse_args().__dict__
         xtra = otherwise(args.pop('xtra', ''), eq(1), p.prog)

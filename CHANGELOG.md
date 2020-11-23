@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.3.7
+
+### New Features
+
+- add `startthread` ([#218](https://github.com/fastai/fastcore/issues/218))
+- make `run` compatible with py36 ([#216](https://github.com/fastai/fastcore/issues/216))
+- `reuse_addr` param to `start_server` ([#215](https://github.com/fastai/fastcore/issues/215))
+- add rfc3986 list to `urlquote` ([#213](https://github.com/fastai/fastcore/issues/213))
+
+
 ## 1.3.6
 
 ### New Features

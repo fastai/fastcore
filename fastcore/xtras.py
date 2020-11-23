@@ -216,7 +216,8 @@ def urlread(url, data=None, headers=None, **kwargs):
 # Cell
 def urljson(url, data=None):
     "Retrieve `url` and decode json"
-    return json.loads(urlread(url, data=data))
+    res = urlread(url, data=data)
+    return json.loads(res) if res else {}
 
 # Cell
 def urlcheck(url, timeout=10):

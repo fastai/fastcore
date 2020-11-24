@@ -3,9 +3,9 @@
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlquote', 'urlwrap',
            'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'untar_dir', 'repo_details',
-           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'sort_by_run', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'set_num_threads', 'ProcessPoolExecutor',
-           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
+           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'stringfmt_names', 'trace',
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'set_num_threads',
+           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -14,7 +14,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,urllib,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,socket,distutils.util,urllib.request,tempfile,time
+import imghdr,struct,socket,distutils.util,urllib.request,tempfile,time,string
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from urllib.request import Request
@@ -327,29 +327,12 @@ def start_client(port, host=None, dgram=False):
     return s
 
 # Cell
-def _is_instance(f, gs):
-    tst = [g if type(g) in [type, 'function'] else g.__class__ for g in gs]
-    for g in tst:
-        if isinstance(f, g) or f==g: return True
-    return False
+_fmt = string.Formatter()
 
-def _is_first(f, gs):
-    for o in L(getattr(f, 'run_after', None)):
-        if _is_instance(o, gs): return False
-    for g in gs:
-        if _is_instance(f, L(getattr(g, 'run_before', None))): return False
-    return True
-
-def sort_by_run(fs):
-    end = L(fs).attrgot('toward_end')
-    inp,res = L(fs)[~end] + L(fs)[end], L()
-    while len(inp):
-        for i,o in enumerate(inp):
-            if _is_first(o, inp):
-                res.append(inp.pop(i))
-                break
-        else: raise Exception("Impossible to sort")
-    return res
+# Cell
+def stringfmt_names(s:str)->L:
+    "Unique brace-delimited names in `s`"
+    return uniqueify(o[1] for o in _fmt.parse(s) if o[1])
 
 # Cell
 def trace(f):
@@ -393,6 +376,31 @@ def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)
     return bool(distutils.util.strtobool(s)) if s else False
+
+# Cell
+def _is_instance(f, gs):
+    tst = [g if type(g) in [type, 'function'] else g.__class__ for g in gs]
+    for g in tst:
+        if isinstance(f, g) or f==g: return True
+    return False
+
+def _is_first(f, gs):
+    for o in L(getattr(f, 'run_after', None)):
+        if _is_instance(o, gs): return False
+    for g in gs:
+        if _is_instance(f, L(getattr(g, 'run_before', None))): return False
+    return True
+
+def sort_by_run(fs):
+    end = L(fs).attrgot('toward_end')
+    inp,res = L(fs)[~end] + L(fs)[end], L()
+    while len(inp):
+        for i,o in enumerate(inp):
+            if _is_first(o, inp):
+                res.append(inp.pop(i))
+                break
+        else: raise Exception("Impossible to sort")
+    return res
 
 # Cell
 from multiprocessing import Process, Queue

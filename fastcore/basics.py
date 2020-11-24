@@ -7,7 +7,7 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
            'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float',
            'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict',
-           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex',
+           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex',
            'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex',
            'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
@@ -451,7 +451,7 @@ def sorted_ex(iterable, key=None, reverse=False):
     return sorted(iterable, key=k, reverse=reverse)
 
 # Cell
-def negate_func(f):
+def not_(f):
     "Create new function that negates result of `f`"
     def _f(*args, **kwargs): return not f(*args, **kwargs)
     return _f
@@ -460,7 +460,7 @@ def negate_func(f):
 def argwhere(iterable, f, negate=False, **kwargs):
     "Like `filter_ex`, but return indices for matching items"
     if kwargs: f = partial(f,**kwargs)
-    if negate: f = negate_func(f)
+    if negate: f = not_(f)
     return [i for i,o in enumerate(iterable) if f(o)]
 
 # Cell
@@ -468,7 +468,7 @@ def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
     "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
     if f is None: f = lambda _: True
     if kwargs: f = partial(f,**kwargs)
-    if negate: f = negate_func(f)
+    if negate: f = not_(f)
     res = filter(f, iterable)
     if gen: return res
     return list(res)

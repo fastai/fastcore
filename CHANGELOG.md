@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.3.8
+
+### New Features
+
+- rename `negate_func` to `not_` for consistency with other curried ops ([#221](https://github.com/fastai/fastcore/issues/221))
+- Support empty content for `urljson` ([#219](https://github.com/fastai/fastcore/issues/219))
+- move `patch` and `patch_to` to `fastcore.basics`, and avoid clobbering existing symbols when patching ([#214](https://github.com/fastai/fastcore/issues/214))
+
+
 ## 1.3.7
 
 ### New Features

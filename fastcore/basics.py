@@ -4,14 +4,14 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'null', 'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
-           'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
-           'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float',
-           'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict',
-           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex',
-           'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex',
-           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'anno_ret', 'argnames', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel', 'class2attr',
+           'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float', 'detuplify',
+           'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys',
+           'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'negate_func', 'argwhere', 'filter_ex', 'range_of',
+           'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods', 'rnum_methods',
+           'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps',
+           'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch',
+           'patch_property', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -255,23 +255,6 @@ def argnames(f, frame=False):
     "Names of arguments to function or frame `f`"
     code = getattr(f, 'f_code' if frame else '__code__')
     return code.co_varnames[:code.co_argcount+code.co_kwonlyargcount]
-
-# Cell
-def with_cast(f):
-    "Decorator which uses any parameter annotations as preprocessing functions"
-    anno,params = annotations(f),argnames(f)
-    defaults = dict(zip(reversed(params), reversed(f.__defaults__ or {})))
-    @functools.wraps(f)
-    def _inner(*args, **kwargs):
-        args = list(args)
-        for i,v in enumerate(params):
-            if v in anno:
-                c = anno[v]
-                if v in kwargs: kwargs[v] = c(kwargs[v])
-                elif i<len(args): args[i] = c(args[i])
-                elif v in defaults: kwargs[v] = c(defaults[v])
-        return f(*args, **kwargs)
-    return _inner
 
 # Cell
 def _store_attr(self, anno, **attrs):

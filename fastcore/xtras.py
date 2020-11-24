@@ -3,9 +3,10 @@
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlquote', 'urlwrap',
            'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'untar_dir', 'repo_details',
-           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'stringfmt_names', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'set_num_threads',
-           'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
+           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'stringfmt_names',
+           'PartialFormatter', 'partial_format', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
+           'str2bool', 'sort_by_run', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
+           'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -330,9 +331,31 @@ def start_client(port, host=None, dgram=False):
 _fmt = string.Formatter()
 
 # Cell
-def stringfmt_names(s:str)->L:
+def stringfmt_names(s:str)->list:
     "Unique brace-delimited names in `s`"
     return uniqueify(o[1] for o in _fmt.parse(s) if o[1])
+
+# Cell
+class PartialFormatter(string.Formatter):
+    def __init__(self):
+        self.missing = set()
+        super().__init__()
+
+    def get_field(self, nm, args, kwargs):
+        try: return super().get_field(nm, args, kwargs)
+        except KeyError:
+            self.missing.add(nm)
+            return '{'+nm+'}',nm
+
+    def check_unused_args(self, used, args, kwargs):
+        self.xtra = filter_keys(kwargs, lambda o: o not in used)
+
+# Cell
+def partial_format(s:str, **kwargs):
+    "string format `s`, ignoring missing field errors, returning missing and extra fields"
+    fmt = PartialFormatter()
+    res = fmt.format(s, **kwargs)
+    return res,list(fmt.missing),fmt.xtra
 
 # Cell
 def trace(f):

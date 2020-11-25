@@ -261,14 +261,14 @@ def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
           parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
     "Same as `json.loads`, but handles `None`"
     if not s: return {}
-    return json.loads(s, encoding, cls, object_hook=object_hook, parse_float=parse_float,
+    return json.loads(s, encoding=encoding, cls=cls, object_hook=object_hook, parse_float=parse_float,
           parse_int=parse_int, parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
 
 # Cell
 def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True):
     "Send request with `urlrequest`, converting result to json if `return_json`"
-    req = urlread(urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data))
-    return loads(res) if use_json else res
+    res = urlread(urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data))
+    return loads(res) if return_json else res
 
 # Cell
 def untar_dir(file, dest):

@@ -2,11 +2,11 @@
 
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlquote', 'urlwrap',
-           'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'loads', 'urlsend',
-           'untar_dir', 'repo_details', 'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client',
-           'stringfmt_names', 'PartialFormatter', 'partial_format', 'trace', 'round_multiple', 'modified_env',
-           'ContextManagers', 'str2bool', 'sort_by_run', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor',
-           'parallel', 'run_procs', 'parallel_gen']
+           'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'urlrequest', 'loads',
+           'urlsend', 'untar_dir', 'repo_details', 'run', 'do_request', 'threaded', 'startthread', 'start_server',
+           'start_client', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'trace', 'round_multiple',
+           'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'set_num_threads', 'ProcessPoolExecutor',
+           'ThreadPoolExecutor', 'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -247,6 +247,14 @@ def urlsave(url, dest=None):
 def urlvalid(x):
     "Test if `x` is a valid URL"
     return all (getattrs(urlparse(str(x)), 'scheme', 'netloc'))
+
+# Cell
+def urlrequest(url, verb, headers=None, route=None, query=None, data=None, json_data=True):
+    "`Request` for `url` with optional route params replaced by `route`, plus `query` string, and post `data`"
+    if route: url = url.format(**route)
+    if query: url += '?' + urlencode(query)
+    if data: data = (json.dumps if json_data else urlencode)(data).encode('ascii')
+    return Request(url, headers=headers or {}, data=data or None, method=verb)
 
 # Cell
 def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,

@@ -254,7 +254,7 @@ def urlrequest(url, verb, headers=None, route=None, query=None, data=None, json_
     if route: url = url.format(**route)
     if query: url += '?' + urlencode(query)
     if data: data = (json.dumps if json_data else urlencode)(data).encode('ascii')
-    return Request(url, headers=headers or {}, data=data or None, method=verb)
+    return Request(url, headers=headers or {}, data=data or None, method=verb.upper())
 
 # Cell
 def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,

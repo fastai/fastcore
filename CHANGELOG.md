@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.3.9
+
+### New Features
+
+- use `__slots__` in `store_attr` if exists ([#226](https://github.com/fastai/fastcore/issues/226))
+- add `urlrequest` ([#225](https://github.com/fastai/fastcore/issues/225))
+- add `loads` and `urlsend` ([#224](https://github.com/fastai/fastcore/issues/224))
+- add `PartialFormatter` and `partial_format` ([#223](https://github.com/fastai/fastcore/issues/223))
+- add `stringfmt_names` ([#222](https://github.com/fastai/fastcore/issues/222))
+
+
 ## 1.3.8
 
 ### New Features

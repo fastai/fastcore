@@ -2,11 +2,11 @@
 
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'open_file',
            'save_pickle', 'load_pickle', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'urlquote', 'urlwrap',
-           'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'untar_dir', 'repo_details',
-           'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client', 'stringfmt_names',
-           'PartialFormatter', 'partial_format', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
-           'str2bool', 'sort_by_run', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor', 'parallel',
-           'run_procs', 'parallel_gen']
+           'urlopen', 'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'loads', 'urlsend',
+           'untar_dir', 'repo_details', 'run', 'do_request', 'threaded', 'startthread', 'start_server', 'start_client',
+           'stringfmt_names', 'PartialFormatter', 'partial_format', 'trace', 'round_multiple', 'modified_env',
+           'ContextManagers', 'str2bool', 'sort_by_run', 'set_num_threads', 'ProcessPoolExecutor', 'ThreadPoolExecutor',
+           'parallel', 'run_procs', 'parallel_gen']
 
 # Cell
 from .imports import *
@@ -247,6 +247,20 @@ def urlsave(url, dest=None):
 def urlvalid(x):
     "Test if `x` is a valid URL"
     return all (getattrs(urlparse(str(x)), 'scheme', 'netloc'))
+
+# Cell
+def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
+          parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+    "Same as `json.loads`, but handles `None`"
+    if not s: return {}
+    return json.loads(s, encoding, cls, object_hook=object_hook, parse_float=parse_float,
+          parse_int=parse_int, parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+
+# Cell
+def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True):
+    "Send request with `urlrequest`, converting result to json if `return_json`"
+    req = urlread(urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data))
+    return loads(res) if use_json else res
 
 # Cell
 def untar_dir(file, dest):

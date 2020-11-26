@@ -265,9 +265,17 @@ def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
           parse_int=parse_int, parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
 
 # Cell
-def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True):
+@patch
+def summary(self:Request)->dict:
+    "Summary containing full_url, headers, method, and data"
+    return L('full_url','method','headers','data').map_dict(partial(getattr,self))
+
+# Cell
+def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True, debug=None):
     "Send request with `urlrequest`, converting result to json if `return_json`"
-    res = urlread(urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data))
+    req = urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data)
+    if debug: debug(req)
+    res = urlread(req)
     return loads(res) if return_json else res
 
 # Cell

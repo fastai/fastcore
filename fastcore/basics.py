@@ -11,7 +11,8 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex',
            'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults',
+           'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -730,6 +731,28 @@ def patch_property(f):
     warnings.warn("`patch_property` is deprecated and will be removed; use `patch(as_prop=True)` instead")
     cls = next(iter(f.__annotations__.values()))
     return patch_to(cls, as_prop=True)(f)
+
+# Cell
+class ImportEnum(enum.Enum):
+    "An `Enum` that can have its values imported"
+    @classmethod
+    def imports(cls):
+        g = sys._getframe(1).f_locals
+        for o in cls: g[o.name]=o
+
+# Cell
+class StrEnum(str,ImportEnum):
+    "An `ImportEnum` that behaves like a `str`"
+    def __str__(self): return self.name
+    @classmethod
+    def imports(cls):
+        g = sys._getframe(1).f_locals
+        for o in cls: g[o.name]=o
+
+# Cell
+def str_enum(name, *vals):
+    "Simplified creation of `StrEnum` types"
+    return StrEnum(name, {o:o for o in vals})
 
 # Cell
 class Stateful:

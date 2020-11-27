@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.3.10
+
+### New Features
+
+- split `parallel` and `net` modules out of `xtras` ([#234](https://github.com/fastai/fastcore/issues/234))
+- New HTTP Exceptions hierarchy for each status code, used by `url*` functions
+- add `Request.summary` and `debug` paramaeter to `urlsend` ([#233](https://github.com/fastai/fastcore/issues/233))
+- Add `ImportEnum`, `StrEnum`, and `str_enum` ([#232](https://github.com/fastai/fastcore/issues/232))
+- handle encoded data in `urlrequest` ([#231](https://github.com/fastai/fastcore/issues/231))
+
+
 ## 1.3.9
 
 ### New Features

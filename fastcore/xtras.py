@@ -266,9 +266,11 @@ def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
 
 # Cell
 @patch
-def summary(self:Request)->dict:
-    "Summary containing full_url, headers, method, and data"
-    return L('full_url','method','headers','data').map_dict(partial(getattr,self))
+def summary(self:Request, skip=None)->dict:
+    "Summary containing full_url, headers, method, and data, removing `skip` from headers"
+    res = L('full_url','method','data').map_dict(partial(getattr,self))
+    res['headers'] = {k:v for k,v in self.headers.items() if k not in listify(skip)}
+    return res
 
 # Cell
 def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True, debug=None):

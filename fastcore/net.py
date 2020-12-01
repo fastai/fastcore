@@ -22,7 +22,6 @@ from .parallel import *
 from functools import wraps
 
 import json,urllib
-# import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
 import socket,urllib.request,http,urllib
 from contextlib import contextmanager,ExitStack
 from urllib.request import Request
@@ -99,7 +98,7 @@ def urlread(url, data=None, headers=None, **kwargs):
     try:
         with urlopen(url, data=data, headers=headers, **kwargs) as res: return res.read()
     except HTTPError as e:
-        if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp)
+        if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp) from None
         else: raise
 
 # Cell

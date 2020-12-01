@@ -744,10 +744,6 @@ class ImportEnum(enum.Enum):
 class StrEnum(str,ImportEnum):
     "An `ImportEnum` that behaves like a `str`"
     def __str__(self): return self.name
-    @classmethod
-    def imports(cls):
-        g = sys._getframe(1).f_locals
-        for o in cls: g[o.name]=o
 
 # Cell
 def str_enum(name, *vals):

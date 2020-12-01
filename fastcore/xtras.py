@@ -172,11 +172,11 @@ def join_path_file(file, path, ext=''):
     return path/f'{file}{ext}'
 
 # Cell
-def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
+def loads(s, cls=None, object_hook=None, parse_float=None,
           parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
     "Same as `json.loads`, but handles `None`"
     if not s: return {}
-    return json.loads(s, encoding=encoding, cls=cls, object_hook=object_hook, parse_float=parse_float,
+    return json.loads(s, cls=cls, object_hook=object_hook, parse_float=parse_float,
           parse_int=parse_int, parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
 
 # Cell

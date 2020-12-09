@@ -5,14 +5,14 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
            'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
-           'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'ShowPrint', 'Int', 'Str', 'Float',
-           'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict',
-           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex',
-           'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'map_ex',
-           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults',
-           'num_cpus', 'add_props', 'typed']
+           'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr',
+           'ShowPrint', 'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
+           'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_',
+           'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx',
+           'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3',
+           'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self',
+           'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
+           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -220,16 +220,16 @@ def otherwise(x, tst, y):
     return y if tst(x) else x
 
 # Cell
-def custom_dir(c, add:list):
+def custom_dir(c, add):
     "Implement custom `__dir__`, adding `add` to `cls`"
-    return dir(type(c)) + list(c.__dict__.keys()) + add
+    return object.__dir__(c) + listify(add)
 
 # Cell
 class AttrDict(dict):
     "`dict` subclass that also provides access to keys as attrs"
     def __getattr__(self,k): return self[k] if k in self else stop(AttributeError(k))
     def __setattr__(self, k, v): (self.__setitem__,super().__setattr__)[k[0]=='_'](k,v)
-    def __dir__(self): return custom_dir(self, list(self.keys()))
+    def __dir__(self): return super().__dir__() + list(self.keys())
 
 # Cell
 def type_hints(f):
@@ -353,6 +353,40 @@ def try_attrs(obj, *attrs):
         try: return getattr(obj, att)
         except: pass
     raise AttributeError(attrs)
+
+# Cell
+class GetAttrBase:
+    "Basic delegation of `__getattr__` and `__dir__`"
+    _attr=noop
+    def __getattr__(self,k):
+        if k[0]=='_' or k==self._attr: return super().__getattr__(k)
+        return self._getattr(getattr(self, self._attr)[k])
+    def __dir__(self): return custom_dir(self, getattr(self, self._attr))
+
+# Cell
+class GetAttr:
+    "Inherit from this to have all attr accesses in `self._xtra` passed down to `self.default`"
+    _default='default'
+    def _component_attr_filter(self,k):
+        if k.startswith('__') or k in ('_xtra',self._default): return False
+        xtra = getattr(self,'_xtra',None)
+        return xtra is None or k in xtra
+    def _dir(self): return [k for k in dir(getattr(self,self._default)) if self._component_attr_filter(k)]
+    def __getattr__(self,k):
+        if self._component_attr_filter(k):
+            attr = getattr(self,self._default,None)
+            if attr is not None: return getattr(attr,k)
+        raise AttributeError(k)
+    def __dir__(self): return custom_dir(self,self._dir())
+#     def __getstate__(self): return self.__dict__
+    def __setstate__(self,data): self.__dict__.update(data)
+
+# Cell
+def delegate_attr(self, k, to):
+    "Use in `__getattr__` to delegate to attr `to` without inheriting from `GetAttr`"
+    if k.startswith('_') or k==to: raise AttributeError(k)
+    try: return getattr(getattr(self,to), k)
+    except AttributeError: raise AttributeError(k) from None
 
 # Cell
 #hide

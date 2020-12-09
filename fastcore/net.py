@@ -104,13 +104,17 @@ def urlopen(url, data=None, headers=None, **kwargs):
     return _opener.open(urlwrap(url, data=data, headers=headers))
 
 # Cell
-def urlread(url, data=None, headers=None, decode=True, **kwargs):
+def urlread(url, data=None, headers=None, decode=True, return_json=False, return_headers=False, **kwargs):
     "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
     try:
-        with urlopen(url, data=data, headers=headers, **kwargs) as res: return res.read().decode() if decode else res.read()
+        with urlopen(url, data=data, headers=headers, **kwargs) as u: res,hdrs = u.read(),u.headers
     except HTTPError as e:
         if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp) from None
         else: raise
+
+    if decode: res = res.decode()
+    if return_json: res = loads(res)
+    return (res,dict(hdrs)) if return_headers else res
 
 # Cell
 def urljson(url, data=None):
@@ -163,12 +167,12 @@ def summary(self:Request, skip=None)->dict:
     return res
 
 # Cell
-def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True, return_json=True, debug=None):
+def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True,
+            return_json=True, return_headers=False, debug=None):
     "Send request with `urlrequest`, converting result to json if `return_json`"
     req = urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data)
     if debug: debug(req)
-    res = urlread(req)
-    return loads(res) if return_json else res
+    return urlread(req, return_json=return_json, return_headers=return_headers)
 
 # Cell
 def do_request(url, post=False, headers=None, **data):

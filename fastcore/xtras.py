@@ -2,8 +2,8 @@
 
 __all__ = ['dict2obj', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection', 'maybe_open',
            'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run', 'open_file',
-           'save_pickle', 'load_pickle', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'save_pickle', 'load_pickle', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local',
+           'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -15,6 +15,7 @@ import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
 import imghdr,struct,distutils.util,tempfile,time,string
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
+from datetime import datetime, timezone
 
 # Cell
 def dict2obj(d):
@@ -240,6 +241,16 @@ def partial_format(s:str, **kwargs):
     fmt = PartialFormatter()
     res = fmt.format(s, **kwargs)
     return res,list(fmt.missing),fmt.xtra
+
+# Cell
+def utc2local(dt:datetime)->datetime:
+    "Convert `dt` from UTC to local time"
+    return dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
+
+# Cell
+def local2utc(dt:datetime)->datetime:
+    "Convert `dt` from local to UTC time"
+    return dt.replace(tzinfo=None).astimezone(tz=timezone.utc)
 
 # Cell
 def trace(f):

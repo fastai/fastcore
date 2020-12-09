@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.3.11
+
+### Bugs Squashed
+
+- regression in urlopen header user-agent not set ([#237](https://github.com/fastai/fastcore/issues/237))
+- `loads` incompatible with Python 3.9 ([#236](https://github.com/fastai/fastcore/issues/236))
+- Documentation search not working ([#235](https://github.com/fastai/fastcore/issues/235))
+
+
 ## 1.3.10
 
 ### New Features

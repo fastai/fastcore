@@ -46,7 +46,9 @@ def urlquote(url):
 # Cell
 def urlwrap(url, data=None, headers=None):
     "Wrap `url` in a urllib `Request` with `urlquote`"
-    return url if isinstance(url,Request) else Request(urlquote(url), data=data, headers=headers or {})
+    headers=headers or {}
+    headers['User-agent'] = _ua
+    return url if isinstance(url,Request) else Request(urlquote(url), data=data, headers=headers)
 
 # Cell
 ExceptionsHTTP = {}
@@ -62,8 +64,8 @@ class HTTP5xxServerError(HTTPError):
     pass
 
 # Cell
-_opener = urllib.request.build_opener()
-_opener.addheaders = [('User-agent', _ua)]
+# _opener = urllib.request.build_opener()
+# _opener.addheaders = [('User-agent', _ua)]
 
 _httperrors = (
     (400,'Bad Request'),(401,'Unauthorized'),(402,'Payment Required'),(403,'Forbidden'),(404,'Not Found'),
@@ -90,7 +92,7 @@ def urlopen(url, data=None, headers=None, **kwargs):
     if data is not None:
         if not isinstance(data, (str,bytes)): data = urlencode(data)
         if not isinstance(data, bytes): data = data.encode('ascii')
-    return _opener.open(urlwrap(url, data=data, headers=headers))
+    return urllib.request.urlopen(urlwrap(url, data=data, headers=headers))
 
 # Cell
 def urlread(url, data=None, headers=None, **kwargs):

@@ -10,7 +10,6 @@ __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped
 from .imports import *
 from .foundation import *
 from .basics import *
-import json
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile

@@ -28,7 +28,8 @@ jobs:
       uses: fastai/workflows/nb@master
     - name: Run fastcore tests
       run: |
-        pip install -Uqq nbdev fastcore[dev]
+        pip install -Uqq nbdev
+        pip install -e ".[dev]"
         nbdev_test_nbs
   
   nbdev-integration-test:

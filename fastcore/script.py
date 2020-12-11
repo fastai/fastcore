@@ -27,7 +27,7 @@ def bool_arg(v):
 # Cell
 def clean_type_str(x:str):
     x = str(x)
-    x = re.sub("(class|function|__main__\.|\ at.*)", '', x)
+    x = re.sub("(enum |class|function|__main__\.|\ at.*)", '', x)
     x = re.sub("(<|>|'|\ )", '', x) # spl characters
     return x
 
@@ -38,6 +38,7 @@ class Param:
                  choices=None, required=None, default=None):
         if type==store_true:  type,action,default=None,'store_true' ,False
         if type==store_false: type,action,default=None,'store_false',True
+        if type and isinstance(type,typing.Type) and issubclass(type,enum.Enum) and not choices: choices=list(type)
         store_attr()
 
     def set_default(self, d):
@@ -52,10 +53,10 @@ class Param:
     def kwargs(self): return {k:v for k,v in self.__dict__.items()
                               if v is not None and k!='opt' and k[0]!='_'}
     def __repr__(self):
-        if self.help is None and self.type is None: return ""
-        if self.help is None and self.type is not None: return f"{clean_type_str(self.type)}"
-        if self.help is not None and self.type is None: return f"<{self.help}>"
-        if self.help is not None and self.type is not None: return f"{clean_type_str(self.type)} <{self.help}>"
+        if not self.help and self.type is None: return ""
+        if not self.help and self.type is not None: return f"{clean_type_str(self.type)}"
+        if self.help and self.type is None: return f"<{self.help}>"
+        if self.help and self.type is not None: return f"{clean_type_str(self.type)} <{self.help}>"
 
 # Cell
 def anno_parser(func, prog=None, from_name=False):
@@ -65,8 +66,8 @@ def anno_parser(func, prog=None, from_name=False):
         param = func.__annotations__.get(k, Param())
         param.set_default(v.default)
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
-    p.add_argument(f"--pdb", help="Run in pdb debugger (default: False)", action='store_true')
-    p.add_argument(f"--xtra", help="Parse for additional args (default: '')", type=str)
+    p.add_argument(f"--pdb", help=argparse.SUPPRESS, action='store_true')
+    p.add_argument(f"--xtra", help=argparse.SUPPRESS, type=str)
     return p
 
 # Cell

@@ -2,6 +2,66 @@
 
 <!-- do not remove -->
 
+## 1.3.11
+
+### Bugs Squashed
+
+- regression in urlopen header user-agent not set ([#237](https://github.com/fastai/fastcore/issues/237))
+- `loads` incompatible with Python 3.9 ([#236](https://github.com/fastai/fastcore/issues/236))
+- Documentation search not working ([#235](https://github.com/fastai/fastcore/issues/235))
+
+
+## 1.3.10
+
+### New Features
+
+- split `parallel` and `net` modules out of `xtras` ([#234](https://github.com/fastai/fastcore/issues/234))
+- New HTTP Exceptions hierarchy for each status code, used by `url*` functions
+- add `Request.summary` and `debug` paramaeter to `urlsend` ([#233](https://github.com/fastai/fastcore/issues/233))
+- Add `ImportEnum`, `StrEnum`, and `str_enum` ([#232](https://github.com/fastai/fastcore/issues/232))
+- handle encoded data in `urlrequest` ([#231](https://github.com/fastai/fastcore/issues/231))
+
+
+## 1.3.9
+
+### New Features
+
+- use `__slots__` in `store_attr` if exists ([#226](https://github.com/fastai/fastcore/issues/226))
+- add `urlrequest` ([#225](https://github.com/fastai/fastcore/issues/225))
+- add `loads` and `urlsend` ([#224](https://github.com/fastai/fastcore/issues/224))
+- add `PartialFormatter` and `partial_format` ([#223](https://github.com/fastai/fastcore/issues/223))
+- add `stringfmt_names` ([#222](https://github.com/fastai/fastcore/issues/222))
+
+
+## 1.3.8
+
+### New Features
+
+- rename `negate_func` to `not_` for consistency with other curried ops ([#221](https://github.com/fastai/fastcore/issues/221))
+- Support empty content for `urljson` ([#219](https://github.com/fastai/fastcore/issues/219))
+- move `patch` and `patch_to` to `fastcore.basics`, and avoid clobbering existing symbols when patching ([#214](https://github.com/fastai/fastcore/issues/214))
+
+
+## 1.3.7
+
+### New Features
+
+- add `startthread` ([#218](https://github.com/fastai/fastcore/issues/218))
+- make `run` compatible with py36 ([#216](https://github.com/fastai/fastcore/issues/216))
+- `reuse_addr` param to `start_server` ([#215](https://github.com/fastai/fastcore/issues/215))
+- add rfc3986 list to `urlquote` ([#213](https://github.com/fastai/fastcore/issues/213))
+
+
+## 1.3.6
+
+### New Features
+
+- quote URL paths in `urlwrap` ([#211](https://github.com/fastai/fastcore/issues/211))
+- Add `start_server` and `start_client` for simple socket networking ([#210](https://github.com/fastai/fastcore/issues/210))
+- new `uniqueify` and `val2idx` functions, and additional params to `listify` ([#209](https://github.com/fastai/fastcore/issues/209))
+- improve representation in `basic_repr` ([#197](https://github.com/fastai/fastcore/issues/197))
+
+
 ## 1.3.5
 
 ### Breaking Changes

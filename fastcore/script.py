@@ -4,8 +4,7 @@ __all__ = ['store_true', 'store_false', 'bool_arg', 'clean_type_str', 'Param', '
            'SCRIPT_INFO', 'call_parse']
 
 # Cell
-import inspect,functools
-import argparse
+import inspect,functools,argparse,shutil
 from .imports import *
 from .utils import *
 
@@ -61,7 +60,9 @@ class Param:
 # Cell
 def anno_parser(func, prog=None, from_name=False):
     "Look at params (annotated with `Param`) in func and return an `ArgumentParser`"
-    p = argparse.ArgumentParser(description=func.__doc__, prog=prog)
+    cols = shutil.get_terminal_size((120,30))[0]
+    fmtr = partial(argparse.HelpFormatter, max_help_position=cols//2, width=cols)
+    p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=fmtr)
     for k,v in inspect.signature(func).parameters.items():
         param = func.__annotations__.get(k, Param())
         param.set_default(v.default)

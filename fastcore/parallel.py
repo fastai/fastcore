@@ -63,7 +63,7 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
         if self.not_parallel: max_workers=1
         super().__init__(max_workers, **kwargs)
 
-    def map(self, f, items, timeout=None, chunksize=1, *args, **kwargs):
+    def map(self, f, items, *args, timeout=None, chunksize=1, **kwargs):
         self.lock = Manager().Lock()
         g = partial(f, *args, **kwargs)
         if self.not_parallel: return map(g, items)
@@ -81,7 +81,7 @@ class ThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
         if self.not_parallel: max_workers=1
         super().__init__(max_workers, **kwargs)
 
-    def map(self, f, items, timeout=None, chunksize=1, *args, **kwargs):
+    def map(self, f, items, *args, timeout=None, chunksize=1, **kwargs):
         self.lock = Manager().Lock()
         g = partial(f, *args, **kwargs)
         if self.not_parallel: return map(g, items)

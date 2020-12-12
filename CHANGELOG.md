@@ -2,6 +2,22 @@
 
 <!-- do not remove -->
 
+## 1.3.12
+
+### New Features
+
+- enum support for `call_parse` ([#245](https://github.com/fastai/fastcore/issues/245))
+- Added obj2dict ([#244](https://github.com/fastai/fastcore/issues/244))
+- `return_headers` param for `urlsend` and `urlread` ([#242](https://github.com/fastai/fastcore/issues/242))
+- add common Chrome headers ([#241](https://github.com/fastai/fastcore/issues/241))
+- add `utc2local` and `local2utc` ([#239](https://github.com/fastai/fastcore/issues/239))
+- add `Path.read_json` ([#238](https://github.com/fastai/fastcore/issues/238))
+
+### Bugs Squashed
+
+- `*args` not handled correctly in process/thread pools ([#246](https://github.com/fastai/fastcore/issues/246))
+
+
 ## 1.3.11
 
 ### Bugs Squashed

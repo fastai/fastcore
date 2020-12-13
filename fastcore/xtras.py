@@ -2,7 +2,7 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
-           'open_file', 'save_pickle', 'load_pickle', 'time_events', 'stringfmt_names', 'PartialFormatter',
+           'open_file', 'save_pickle', 'load_pickle', 'autostart', 'time_events', 'stringfmt_names', 'PartialFormatter',
            'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
            'str2bool', 'sort_by_run']
 
@@ -222,8 +222,19 @@ def __repr__(self:Path):
     return f"Path({self.as_posix()!r})"
 
 # Cell
+def autostart(g):
+    "Decorator that automatically starts a generator"
+    @functools.wraps(g)
+    def f():
+        r = g()
+        next(r)
+        return r
+    return f
+
+# Cell
+@autostart
 def time_events():
-    "A simple event timer implemented as a coroutine"
+    "An event timer implemented as a coroutine"
     start,events = default_timer(),0
     while True: events += (yield events,events/(default_timer()-start)) or 0
 
@@ -237,6 +248,7 @@ def stringfmt_names(s:str)->list:
 
 # Cell
 class PartialFormatter(string.Formatter):
+    "A `string.Formatter` that doesn't error on missing fields, and tracks missing fields and unused args"
     def __init__(self):
         self.missing = set()
         super().__init__()

@@ -51,7 +51,7 @@ For more details, including a link to the full documentation and source code, us
 doc(coll_repr)
 ```
 
-<img width="499" src="nbs/images/att_00000.png" align="left">
+<img width="499" src="nbs/images/att_00000.png" style="max-width: 499px">
 
 The documentation also contains links to any related functions or classes, which appear like this: `coll_repr` (in the notebook itself you will just see a word with back-ticks around it; the links are auto-generated in the documentation site). The documentation will generally show one or more examples of use, along with any background context necessary to understand them. As you'll see, the examples for each function and method are shown as tests, rather than example outputs, so let's start by explaining that. 
 

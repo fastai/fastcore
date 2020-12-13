@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
-           'open_file', 'save_pickle', 'load_pickle', 'stringfmt_names', 'PartialFormatter', 'partial_format',
-           'utc2local', 'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool',
-           'sort_by_run']
+           'open_file', 'save_pickle', 'load_pickle', 'time_events', 'stringfmt_names', 'PartialFormatter',
+           'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
+           'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -17,6 +17,7 @@ import imghdr,struct,distutils.util,tempfile,time,string
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
+from timeit import default_timer
 
 # Cell
 def dict2obj(d):
@@ -219,6 +220,12 @@ def __repr__(self:Path):
         try: self = self.relative_to(b)
         except: pass
     return f"Path({self.as_posix()!r})"
+
+# Cell
+def time_events():
+    "A simple event timer implemented as a coroutine"
+    start,events = default_timer(),0
+    while True: events += (yield events,events/(default_timer()-start)) or 0
 
 # Cell
 _fmt = string.Formatter()

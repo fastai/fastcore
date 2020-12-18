@@ -6,9 +6,9 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
            'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
            'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr',
-           'ShowPrint', 'Int', 'Str', 'Float', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
-           'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_',
-           'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx',
+           'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of',
+           'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex',
+           'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx',
            'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3',
            'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self',
            'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
@@ -408,6 +408,11 @@ class Str(str,ShowPrint):
 class Float(float,ShowPrint):
     "An extensible `float`"
     pass
+
+# Cell
+def concat(colls)->list:
+    "Concatenate all collections in `colls`"
+    return list(itertools.chain.from_iterable(colls))
 
 # Cell
 def detuplify(x):

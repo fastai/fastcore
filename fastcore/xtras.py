@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
-           'open_file', 'save_pickle', 'load_pickle', 'autostart', 'time_events', 'stringfmt_names', 'PartialFormatter',
-           'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
-           'str2bool', 'sort_by_run']
+           'open_file', 'save_pickle', 'load_pickle', 'spark_chars', 'sparkline', 'autostart', 'time_events',
+           'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple',
+           'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -220,6 +220,23 @@ def __repr__(self:Path):
         try: self = self.relative_to(b)
         except: pass
     return f"Path({self.as_posix()!r})"
+
+# Cell
+spark_chars = '▁▂▃▅▆▇'
+
+# Cell
+def _sparkchar(x, mn, incr, empty_zero):
+    if x is None or (empty_zero and not x): return ' '
+    res = int((x-mn)/incr-0.5)
+    return spark_chars[res]
+
+# Cell
+def sparkline(data, empty_zero=False):
+    "Sparkline for `data`, with `None`s (and zero, if `empty_zero`) shown as empty column"
+    valid = [o for o in data if o is not None]
+    mn,mx,n = min(valid),max(valid),len(spark_chars)
+    res = [_sparkchar(o,mn,(mx-mn)/n,empty_zero) for o in data]
+    return ''.join(res)
 
 # Cell
 def autostart(g):

@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
-           'open_file', 'save_pickle', 'load_pickle', 'spark_chars', 'sparkline', 'autostart', 'time_events',
-           'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple',
-           'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
+           'time_events', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -220,6 +220,11 @@ def __repr__(self:Path):
         try: self = self.relative_to(b)
         except: pass
     return f"Path({self.as_posix()!r})"
+
+# Cell
+def truncstr(s:str, maxlen:int, suf:str='…')->str:
+    "Truncate `s` to length `maxlen`, adding suffix `suf` if truncated"
+    return s[:maxlen-len(suf)]+suf if len(s)>maxlen else s
 
 # Cell
 spark_chars = '▁▂▃▅▆▇'

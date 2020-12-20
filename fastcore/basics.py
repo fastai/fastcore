@@ -4,14 +4,14 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'null', 'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
-           'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2snake', 'snake2camel',
-           'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr',
-           'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of',
-           'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex',
-           'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx',
-           'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3',
-           'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self',
-           'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
+           'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake',
+           'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
+           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'detuplify', 'replicate', 'setify', 'merge',
+           'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle',
+           'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx',
+           'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2',
+           'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self',
+           'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
            'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
@@ -311,8 +311,14 @@ def properties(cls, *ps):
     for p in ps: setattr(cls,p,property(getattr(cls,p)))
 
 # Cell
+_c2w_re = re.compile(r'((?<=[a-z])[A-Z]|(?<!\A)[A-Z](?=[a-z]))')
 _camel_re1 = re.compile('(.)([A-Z][a-z]+)')
 _camel_re2 = re.compile('([a-z0-9])([A-Z])')
+
+# Cell
+def camel2words(s, space=' '):
+    "Convert CamelCase to 'spaced words'"
+    return re.sub(_c2w_re, rf'{space}\1', s)
 
 # Cell
 def camel2snake(name):

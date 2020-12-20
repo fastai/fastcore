@@ -3,8 +3,8 @@
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
            'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
-           'time_events', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'time_events', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local',
+           'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -13,7 +13,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,distutils.util,tempfile,time,string
+import imghdr,struct,distutils.util,tempfile,time,string,collections
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
@@ -222,9 +222,9 @@ def __repr__(self:Path):
     return f"Path({self.as_posix()!r})"
 
 # Cell
-def truncstr(s:str, maxlen:int, suf:str='…')->str:
+def truncstr(s:str, maxlen:int, suf:str='…', space='')->str:
     "Truncate `s` to length `maxlen`, adding suffix `suf` if truncated"
-    return s[:maxlen-len(suf)]+suf if len(s)>maxlen else s
+    return s[:maxlen-len(suf)]+suf if len(s)+len(space)>maxlen else s+space
 
 # Cell
 spark_chars = '▁▂▃▅▆▇'
@@ -236,10 +236,10 @@ def _sparkchar(x, mn, incr, empty_zero):
     return spark_chars[res]
 
 # Cell
-def sparkline(data, empty_zero=False):
+def sparkline(data, mn=None, mx=None, empty_zero=False):
     "Sparkline for `data`, with `None`s (and zero, if `empty_zero`) shown as empty column"
     valid = [o for o in data if o is not None]
-    mn,mx,n = min(valid),max(valid),len(spark_chars)
+    mn,mx,n = ifnone(mn,min(valid)),ifnone(mx,max(valid)),len(spark_chars)
     res = [_sparkchar(o,mn,(mx-mn)/n,empty_zero) for o in data]
     return ''.join(res)
 
@@ -259,6 +259,28 @@ def time_events():
     "An event timer implemented as a coroutine"
     start,events = default_timer(),0
     while True: events += (yield events,events/(default_timer()-start)) or 0
+
+# Cell
+class EventTimer:
+    "An event timer with history of `store` items of time `span`"
+    def __init__(self, store=5, span=60):
+        self.hist,self.span,self.last = collections.deque(maxlen=store),span,default_timer()
+        self._reset()
+
+    def _reset(self): self.start,self.events = self.last,0
+
+    def add(self, n=1):
+        "Record `n` events"
+        if self.duration>self.span:
+            self.hist.append(self.freq)
+            self._reset()
+        self.events +=n
+        self.last = default_timer()
+
+    @property
+    def duration(self): return default_timer()-self.start
+    @property
+    def freq(self): return self.events/self.duration
 
 # Cell
 _fmt = string.Formatter()

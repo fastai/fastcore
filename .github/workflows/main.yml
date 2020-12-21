@@ -80,7 +80,6 @@ jobs:
         pip install -Uqq nbdev
         cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]
-        pip install "sentencepiece<0.1.90" wandb tensorboard albumentations pydicom opencv-python scikit-image pyarrow kornia catalyst captum neptune-client
 
     - name: check for cache hit
       uses: actions/cache@v2

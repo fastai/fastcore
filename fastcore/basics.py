@@ -293,10 +293,10 @@ def store_attr(names=None, self=None, but='', cast=False, store_args=None, **att
     if store_args is None: store_args = not hasattr(self,'__slots__')
     if store_args and not hasattr(self, '__stored_args__'): self.__stored_args__ = {}
     anno = annotations(self) if cast else {}
-    if not attrs:
-        if names and isinstance(names,str): names = re.split(', *', names)
-        ns = names if names else getattr(self, '__slots__', args[1:])
-        attrs = {n:fr.f_locals[n] for n in ns}
+    if names and isinstance(names,str): names = re.split(', *', names)
+    ns = names if names else getattr(self, '__slots__', args[1:])
+    added = {n:fr.f_locals[n] for n in ns}
+    attrs = {**attrs, **added}
     if isinstance(but,str): but = re.split(', *', but)
     attrs = {k:v for k,v in attrs.items() if k not in but}
     return _store_attr(self, anno, **attrs)

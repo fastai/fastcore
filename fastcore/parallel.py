@@ -97,11 +97,10 @@ except: progress_bar = None
 def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0,
              threadpool=False, timeout=None, chunksize=1, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
-    if progress is None: progress = progress_bar is not None
     pool = ThreadPoolExecutor if threadpool else ProcessPoolExecutor
     with pool(n_workers, pause=pause) as ex:
         r = ex.map(f,items, *args, timeout=timeout, chunksize=chunksize, **kwargs)
-        if progress:
+        if progress and progress_bar:
             if total is None: total = len(items)
             r = progress_bar(r, total=total, leave=False)
         return L(r)

@@ -143,7 +143,10 @@ def exec_local(code, var_name):
 # Cell
 def risinstance(types, obj=None):
     "Curried `isinstance` but with args reversed"
+    types = tuplify(types)
     if obj is None: return partial(risinstance,types)
+    if any(isinstance(t,str) for t in types):
+        return any(t.__name__ in types for t in type(obj).__mro__)
     return isinstance(obj, types)
 
 # Cell

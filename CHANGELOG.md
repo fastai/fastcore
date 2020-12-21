@@ -2,6 +2,103 @@
 
 <!-- do not remove -->
 
+## 1.3.12
+
+### New Features
+
+- enum support for `call_parse` ([#245](https://github.com/fastai/fastcore/issues/245))
+- Added obj2dict ([#244](https://github.com/fastai/fastcore/issues/244))
+- `return_headers` param for `urlsend` and `urlread` ([#242](https://github.com/fastai/fastcore/issues/242))
+- add common Chrome headers ([#241](https://github.com/fastai/fastcore/issues/241))
+- add `utc2local` and `local2utc` ([#239](https://github.com/fastai/fastcore/issues/239))
+- add `Path.read_json` ([#238](https://github.com/fastai/fastcore/issues/238))
+
+### Bugs Squashed
+
+- `*args` not handled correctly in process/thread pools ([#246](https://github.com/fastai/fastcore/issues/246))
+
+
+## 1.3.11
+
+### Bugs Squashed
+
+- regression in urlopen header user-agent not set ([#237](https://github.com/fastai/fastcore/issues/237))
+- `loads` incompatible with Python 3.9 ([#236](https://github.com/fastai/fastcore/issues/236))
+- Documentation search not working ([#235](https://github.com/fastai/fastcore/issues/235))
+
+
+## 1.3.10
+
+### New Features
+
+- split `parallel` and `net` modules out of `xtras` ([#234](https://github.com/fastai/fastcore/issues/234))
+- New HTTP Exceptions hierarchy for each status code, used by `url*` functions
+- add `Request.summary` and `debug` paramaeter to `urlsend` ([#233](https://github.com/fastai/fastcore/issues/233))
+- Add `ImportEnum`, `StrEnum`, and `str_enum` ([#232](https://github.com/fastai/fastcore/issues/232))
+- handle encoded data in `urlrequest` ([#231](https://github.com/fastai/fastcore/issues/231))
+
+
+## 1.3.9
+
+### New Features
+
+- use `__slots__` in `store_attr` if exists ([#226](https://github.com/fastai/fastcore/issues/226))
+- add `urlrequest` ([#225](https://github.com/fastai/fastcore/issues/225))
+- add `loads` and `urlsend` ([#224](https://github.com/fastai/fastcore/issues/224))
+- add `PartialFormatter` and `partial_format` ([#223](https://github.com/fastai/fastcore/issues/223))
+- add `stringfmt_names` ([#222](https://github.com/fastai/fastcore/issues/222))
+
+
+## 1.3.8
+
+### New Features
+
+- rename `negate_func` to `not_` for consistency with other curried ops ([#221](https://github.com/fastai/fastcore/issues/221))
+- Support empty content for `urljson` ([#219](https://github.com/fastai/fastcore/issues/219))
+- move `patch` and `patch_to` to `fastcore.basics`, and avoid clobbering existing symbols when patching ([#214](https://github.com/fastai/fastcore/issues/214))
+
+
+## 1.3.7
+
+### New Features
+
+- add `startthread` ([#218](https://github.com/fastai/fastcore/issues/218))
+- make `run` compatible with py36 ([#216](https://github.com/fastai/fastcore/issues/216))
+- `reuse_addr` param to `start_server` ([#215](https://github.com/fastai/fastcore/issues/215))
+- add rfc3986 list to `urlquote` ([#213](https://github.com/fastai/fastcore/issues/213))
+
+
+## 1.3.6
+
+### New Features
+
+- quote URL paths in `urlwrap` ([#211](https://github.com/fastai/fastcore/issues/211))
+- Add `start_server` and `start_client` for simple socket networking ([#210](https://github.com/fastai/fastcore/issues/210))
+- new `uniqueify` and `val2idx` functions, and additional params to `listify` ([#209](https://github.com/fastai/fastcore/issues/209))
+- improve representation in `basic_repr` ([#197](https://github.com/fastai/fastcore/issues/197))
+
+
+## 1.3.5
+
+### Breaking Changes
+
+- remove `log_args` ([#176](https://github.com/fastai/fastcore/issues/176))
+
+### New Features
+
+- `Stateful` base class/mixin for objects that should not serialize all their state ([#196](https://github.com/fastai/fastcore/issues/196))
+- new `frame` param to `argnames` ([#195](https://github.com/fastai/fastcore/issues/195))
+- add `urlopen` and `untar_dir` ([#192](https://github.com/fastai/fastcore/issues/192))
+- `SCRIPT_INFO.func` to let functions know what CLI name was called in `fastcore.script` ([#185](https://github.com/fastai/fastcore/issues/185))
+- add `annotations` and `argnames` functions ([#179](https://github.com/fastai/fastcore/issues/179))
+- allow `but` param in `store_attr` to be either `list` or `str` ([#174](https://github.com/fastai/fastcore/issues/174))
+- add `urlvalid` ([#173](https://github.com/fastai/fastcore/issues/173))
+
+### Bugs Squashed
+
+- `@typed` doesn't work with classes ([#183](https://github.com/fastai/fastcore/issues/183)) (reported by @krishnap)
+
+
 ## 1.3.2
 
 ### New Features

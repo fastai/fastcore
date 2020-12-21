@@ -2,6 +2,7 @@
     "name": "fastcore-codespaces",
     "dockerComposeFile": "docker-compose.yml",
     "settings": {"terminal.integrated.shell.linux": "/bin/bash"},
+    "workspaceFolder": "/data/",
     "service": "watcher",
     "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
     "forwardPorts": [4000, 8080],
@@ -9,5 +10,5 @@
     "extensions": ["ms-python.python",
                    "ms-azuretools.vscode-docker"],
     "runServices": ["notebook", "jekyll", "watcher"],
-    "postStartCommand": "pip install -e ."
+    "postStartCommand": "cd /data && pip install -e \".[dev]\""
 }

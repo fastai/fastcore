@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'untar_dir', 'repo_details', 'run',
-           'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
-           'time_events', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local',
-           'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart', 'EventTimer',
+           'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple',
+           'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -252,13 +252,6 @@ def autostart(g):
         next(r)
         return r
     return f
-
-# Cell
-@autostart
-def time_events():
-    "An event timer implemented as a coroutine"
-    start,events = default_timer(),0
-    while True: events += (yield events,events/(default_timer()-start)) or 0
 
 # Cell
 class EventTimer:

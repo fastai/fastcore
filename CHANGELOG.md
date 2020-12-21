@@ -2,6 +2,23 @@
 
 <!-- do not remove -->
 
+## 1.3.13
+
+### New Features
+- add  `EventTimer` ([#263](https://github.com/fastai/fastcore/issues/263))
+- Store kwargs in `store_attr  ([#262](https://github.com/fastai/fastcore/issues/262))
+- add `truncstr` ([#261](https://github.com/fastai/fastcore/issues/261))
+- add `sparkline` ([#260](https://github.com/fastai/fastcore/issues/260))
+- add `autostart` for generators ([#249](https://github.com/fastai/fastcore/issues/249))
+- dynamic fastcore.script help width ([#247](https://github.com/fastai/fastcore/issues/247))
+- optional override to `risinstance` to support both types and str in the same function ([#191](https://github.com/fastai/fastcore/pull/191)), thanks to [@kessido](https://github.com/kessido)
+
+### Bugs Squashed
+
+- delegates doesn't pull the `__init__` of a class ([#217](https://github.com/fastai/fastcore/issues/217))
+- `test_eq` incorrect for pandas `DataFrame` ([#188](https://github.com/fastai/fastcore/pull/188)), thanks to [@kessido](https://github.com/kessido)
+
+
 ## 1.3.12
 
 ### New Features

@@ -260,7 +260,8 @@ def argnames(f, frame=False):
 # Cell
 def with_cast(f):
     "Decorator which uses any parameter annotations as preprocessing functions"
-    anno,params = annotations(f),argnames(f)
+    anno, out_anno, params = annotations(f), anno_ret(f), argnames(f)
+    c_out = ifnone(out_anno, noop)
     defaults = dict(zip(reversed(params), reversed(f.__defaults__ or {})))
     @functools.wraps(f)
     def _inner(*args, **kwargs):
@@ -271,7 +272,7 @@ def with_cast(f):
                 if v in kwargs: kwargs[v] = c(kwargs[v])
                 elif i<len(args): args[i] = c(args[i])
                 elif v in defaults: kwargs[v] = c(defaults[v])
-        return f(*args, **kwargs)
+        return c_out(f(*args, **kwargs))
     return _inner
 
 # Cell

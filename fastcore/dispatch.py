@@ -98,7 +98,7 @@ class TypeDispatch:
     def returns(self, x): return anno_ret(self[type(x)])
     def returns_none(self, x):
         r = anno_ret(self[type(x)])
-        return r if r == NoneType else None
+        return None if r == NoneType else r
 
     def _attname(self,k): return getattr(k,'__name__',str(k))
     def __repr__(self):

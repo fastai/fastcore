@@ -75,7 +75,6 @@ class _TypeDict:
     def first(self): return first(self.d.values())
 
 # Cell
-@docs
 class TypeDispatch:
     "Dictionary-like object; `__getitem__` matches keys of types using `issubclass`"
     def __init__(self, funcs=(), bases=()):
@@ -94,11 +93,13 @@ class TypeDispatch:
             self.funcs.add(a0, t)
         t.add(a1, f)
 
-    def first(self): return self.funcs.first().first()
-    def returns(self, x): return anno_ret(self[type(x)])
-    def returns_none(self, x):
-        r = anno_ret(self[type(x)])
-        return None if r == NoneType else r
+    def first(self):
+        "Get first function in ordered dict of type:func."
+        return self.funcs.first().first()
+
+    def returns(self, x):
+        "Get the return type of annotation of `x`."
+        return anno_ret(self[type(x)])
 
     def _attname(self,k): return getattr(k,'__name__',str(k))
     def __repr__(self):
@@ -133,10 +134,6 @@ class TypeDispatch:
             res = base[k]
             if res is not None: return res
         return None
-
-    _docs = dict(first="Get first function in ordered dict of type:func.",
-                 returns="Get the return type of annotation of `x`.",
-                 returns_none="Returns `None` if return type annotation is `None` or `NoneType`.")
 
 # Cell
 class DispatchReg:

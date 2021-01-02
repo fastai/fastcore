@@ -2,6 +2,20 @@
 
 <!-- do not remove -->
 
+## 1.3.14
+
+### New Features
+
+- add `loads_multi` ([#271](https://github.com/fastai/fastcore/issues/271))
+
+### Bugs Squashed
+
+- ignored empty str `names` in `store_attr` ([#267](https://github.com/fastai/fastcore/issues/267))
+- `returns_none` not returning non-none type ([#266](https://github.com/fastai/fastcore/issues/266))
+- `Transform` return type ignored ([#265](https://github.com/fastai/fastcore/issues/265))
+- `test_eq` incorrect for pandas `DataFrame` ([#188](https://github.com/fastai/fastcore/pull/188)), thanks to [@kessido](https://github.com/kessido)
+
+
 ## 1.3.13
 
 ### New Features

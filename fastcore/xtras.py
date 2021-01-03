@@ -371,6 +371,20 @@ def str2bool(s):
     return bool(distutils.util.strtobool(s)) if s else False
 
 # Cell
+def _is_instance(f, gs):
+    tst = [g if type(g) in [type, 'function'] else g.__class__ for g in gs]
+    for g in tst:
+        if isinstance(f, g) or f==g: return True
+    return False
+
+def _is_first(f, gs):
+    for o in L(getattr(f, 'run_after', None)):
+        if _is_instance(o, gs): return False
+    for g in gs:
+        if _is_instance(f, L(getattr(g, 'run_before', None))): return False
+    return True
+
+# Cell
 def sort_by_run(fs):
     end = L(fs).attrgot('toward_end')
     inp,res = L(fs)[~end] + L(fs)[end], L()

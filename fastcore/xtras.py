@@ -4,7 +4,7 @@ __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi', 'untar_dir', 'repo_details',
            'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool']
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -369,3 +369,15 @@ def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)
     return bool(distutils.util.strtobool(s)) if s else False
+
+# Cell
+def sort_by_run(fs):
+    end = L(fs).attrgot('toward_end')
+    inp,res = L(fs)[~end] + L(fs)[end], L()
+    while len(inp):
+        for i,o in enumerate(inp):
+            if _is_first(o, inp):
+                res.append(inp.pop(i))
+                break
+        else: raise Exception("Impossible to sort")
+    return res

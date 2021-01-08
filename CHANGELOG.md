@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.3.17
+
+### New Features
+
+- add `strcat` and `mapt` ([#273](https://github.com/fastai/fastcore/issues/273))
+
+
 ## 1.3.14
 
 ### New Features

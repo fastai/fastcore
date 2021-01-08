@@ -162,13 +162,13 @@ def repo_details(url):
     return res.split('/')[-2:]
 
 # Cell
-def run(cmd, *rest, ignore_ex=False, as_bytes=False):
+def run(cmd, *rest, ignore_ex=False, as_bytes=False, stderr=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
-    if res.stderr: stdout += b' ;; ' + res.stderr
+    if stderr and res.stderr: stdout += b' ;; ' + res.stderr
     if not as_bytes: stdout = stdout.decode().strip()
     if ignore_ex: return (res.returncode, stdout)
     if res.returncode: raise IOError(stdout)

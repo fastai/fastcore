@@ -168,9 +168,10 @@ def run(cmd, *rest, ignore_ex=False, as_bytes=False):
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
-    if not as_bytes: stdout = stdout.decode()
+    if res.stderr: stdout += b' ;; ' + res.stderr
+    if not as_bytes: stdout = stdout.decode().strip()
     if ignore_ex: return (res.returncode, stdout)
-    if res.returncode: raise IOError("{} ;; {}".format(res.stdout, res.stderr))
+    if res.returncode: raise IOError(stdout)
     return stdout
 
 # Cell

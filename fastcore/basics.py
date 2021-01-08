@@ -6,13 +6,13 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
            'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake',
            'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
-           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'detuplify', 'replicate', 'setify', 'merge',
-           'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle',
-           'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx',
-           'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2',
-           'arg3', 'arg4', 'bind', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self',
-           'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
-           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'strcat', 'detuplify', 'replicate', 'setify',
+           'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
+           'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr',
+           'nested_idx', 'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0',
+           'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate',
+           'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum',
+           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -425,6 +425,11 @@ def concat(colls)->list:
     return list(itertools.chain.from_iterable(colls))
 
 # Cell
+def strcat(its, sep:str='')->str:
+    "Concatenate stringified items `its`"
+    return sep.join(map(str,its))
+
+# Cell
 def detuplify(x):
     "If `x` is a tuple with one thing, extract it"
     return None if len(x)==0 else x[0] if len(x)==1 and getattr(x, 'ndim', 1)==1 else x
@@ -644,6 +649,11 @@ class bind:
             if isinstance(v,_Arg): kwargs[k] = args.pop(v.i)
         fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
         return self.func(*fargs, **kwargs)
+
+# Cell
+def mapt(func, *iterables):
+    "Tuplified `map`"
+    return tuple(map(func, *iterables))
 
 # Cell
 def map_ex(iterable, f, *args, gen=False, **kwargs):

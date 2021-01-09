@@ -243,6 +243,7 @@ spark_chars = '▁▂▃▅▆▇'
 # Cell
 def _sparkchar(x, mn, incr, empty_zero):
     if x is None or (empty_zero and not x): return ' '
+    if incr == 0: return spark_chars[0]
     res = int((x-mn)/incr-0.5)
     return spark_chars[res]
 
@@ -250,6 +251,7 @@ def _sparkchar(x, mn, incr, empty_zero):
 def sparkline(data, mn=None, mx=None, empty_zero=False):
     "Sparkline for `data`, with `None`s (and zero, if `empty_zero`) shown as empty column"
     valid = [o for o in data if o is not None]
+    if not valid: return ' '
     mn,mx,n = ifnone(mn,min(valid)),ifnone(mx,max(valid)),len(spark_chars)
     res = [_sparkchar(o,mn,(mx-mn)/n,empty_zero) for o in data]
     return ''.join(res)

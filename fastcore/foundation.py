@@ -10,7 +10,7 @@ from functools import lru_cache
 from contextlib import contextmanager
 from copy import copy
 from configparser import ConfigParser
-import random,pickle
+import random,pickle,inspect
 
 # Cell
 @contextmanager
@@ -222,7 +222,10 @@ add_docs(L,
 
 # Cell
 #hide
-L.__signature__ = pickle.loads(b'\x80\x03cinspect\nSignature\nq\x00(cinspect\nParameter\nq\x01X\x05\x00\x00\x00itemsq\x02cinspect\n_ParameterKind\nq\x03K\x01\x85q\x04Rq\x05\x86q\x06Rq\x07}q\x08(X\x08\x00\x00\x00_defaultq\tNX\x0b\x00\x00\x00_annotationq\ncinspect\n_empty\nq\x0bubh\x01X\x04\x00\x00\x00restq\x0ch\x03K\x02\x85q\rRq\x0e\x86q\x0fRq\x10}q\x11(h\th\x0bh\nh\x0bubh\x01X\x08\x00\x00\x00use_listq\x12h\x03K\x03\x85q\x13Rq\x14\x86q\x15Rq\x16}q\x17(h\t\x89h\nh\x0bubh\x01X\x05\x00\x00\x00matchq\x18h\x14\x86q\x19Rq\x1a}q\x1b(h\tNh\nh\x0bubtq\x1c\x85q\x1dRq\x1e}q\x1fX\x12\x00\x00\x00_return_annotationq h\x0bsb.')
+# Here we are fixing the signature of L. What happens is that the __call__ method on the MetaClass of L shadows the __init__
+# giving the wrong signature (https://stackoverflow.com/questions/49740290/call-from-metaclass-shadows-signature-of-init).
+def _f(items=None, *rest, use_list=False, match=None): ...
+L.__signature__ = inspect.signature(_f)
 
 # Cell
 Sequence.register(L);

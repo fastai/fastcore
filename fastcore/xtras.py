@@ -2,9 +2,9 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi', 'untar_dir', 'repo_details',
-           'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'ceil', 'sparkline',
-           'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc',
-           'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
+           'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
 
 # Cell
 from .imports import *
@@ -242,12 +242,12 @@ def truncstr(s:str, maxlen:int, suf:str='…', space='')->str:
 spark_chars = '▁▂▃▅▆▇'
 
 # Cell
-def ceil(x, lim=None): return x if (not lim or x <= lim) else lim
+def _ceil(x, lim=None): return x if (not lim or x <= lim) else lim
 
 def _sparkchar(x, mn, mx, incr, empty_zero):
     if x is None or (empty_zero and not x): return ' '
     if incr == 0: return spark_chars[0]
-    res = int((ceil(x,mx)-mn)/incr-0.5)
+    res = int((_ceil(x,mx)-mn)/incr-0.5)
     return spark_chars[res]
 
 # Cell

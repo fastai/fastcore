@@ -139,7 +139,7 @@ def urlclean(url):
 # Cell
 def urlsave(url, dest=None):
     "Retrieve `url` and save based on its name"
-    res = urlread(urlwrap(url))
+    res = urlread(urlwrap(url), decode=False)
     if dest is None: dest = Path(url).name
     name = urlclean(dest)
     Path(name).write_bytes(res)

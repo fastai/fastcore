@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.3.19
+
+
+### Bugs Squashed
+
+- `urlsave` using str instead of bytes ([#280](https://github.com/fastai/fastcore/issues/280))
+- `sparkline` errors when a value is given that exceeds `mx` ([#277](https://github.com/fastai/fastcore/issues/277))
+
+
 ## 1.3.17
 
 ### New Features

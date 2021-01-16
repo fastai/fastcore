@@ -31,8 +31,8 @@ from http.client import InvalidURL
 
 # Cell
 url_default_headers = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-#     "Accept-Encoding": "gzip, deflate, br",
+    "Accept":
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     "Accept-Language": "en-US,en;q=0.9",
     "Cache-Control": "max-age=0",
     "Sec-Fetch-Dest": "document",
@@ -139,7 +139,7 @@ def urlclean(url):
 # Cell
 def urlsave(url, dest=None):
     "Retrieve `url` and save based on its name"
-    res = urlread(urlwrap(url))
+    res = urlread(urlwrap(url), decode=False)
     if dest is None: dest = Path(url).name
     name = urlclean(dest)
     Path(name).write_bytes(res)

@@ -102,7 +102,7 @@ class ReindexCollection(GetAttr, IterLen):
 def maybe_open(f, mode='r', **kwargs):
     "Context manager: open `f` if it is a path (and close on exit)"
     if isinstance(f, (str,os.PathLike)):
-        with open(f, mode, **kwargs) as f: yield f
+        with open(f, mode, **kwargs) as f:yield f
     else: yield f
 
 # Cell

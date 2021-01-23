@@ -46,7 +46,7 @@ jobs:
         import os
         print(os.environ['SHELL'])
       env:
-        SHELL:  ${{ matrix.shell }
+        SHELL:  ${{ matrix.shell }}
       shell: python
 #     - name: Install dependencies
 #       run: |

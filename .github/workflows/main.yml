@@ -20,7 +20,12 @@ jobs:
           echo "head_commit.author.username: ${{ github.event.head_commit.author.username }}"
   fastcore:
     needs: filter
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:  [ubuntu, windows, macos]
+        shell: ["/bin/bash"]
+    runs-on: ${{ matrix.os }}-latest
 #     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
@@ -37,14 +42,14 @@ jobs:
       env:
         SHELL: "/bin/bash"
       shell: python
-    - name: Install dependencies
-      run: |
-        pip install -Uqq nbdev
-        pip install -e ".[dev]"
-    - name: Check if notebooks are synced and cleaned
-      uses: fastai/workflows/nb@master
-    - name: Run tests
-      run: nbdev_test_nbs
+#     - name: Install dependencies
+#       run: |
+#         pip install -Uqq nbdev
+#         pip install -e ".[dev]"
+#     - name: Check if notebooks are synced and cleaned
+#       uses: fastai/workflows/nb@master
+#     - name: Run tests
+#       run: nbdev_test_nbs
 
   
   nbdev-integration-test:

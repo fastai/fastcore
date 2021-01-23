@@ -13,8 +13,9 @@ from functools import wraps
 # from contextlib import contextmanager,ExitStack
 from multiprocessing import Process, Queue
 import concurrent.futures,time
-from multiprocessing import Manager
+from multiprocessing import Manager, set_start_method
 from threading import Thread
+if sys.platform == 'darwin': set_start_method("fork")
 
 # Cell
 def threaded(f):

@@ -15,7 +15,10 @@ from multiprocessing import Process, Queue
 import concurrent.futures,time
 from multiprocessing import Manager, set_start_method
 from threading import Thread
-if sys.platform == 'darwin': set_start_method("fork")
+
+try:
+    if sys.platform == 'darwin': set_start_method("fork")
+except: pass
 
 # Cell
 def threaded(f):

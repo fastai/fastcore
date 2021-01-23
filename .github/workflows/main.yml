@@ -48,14 +48,16 @@ jobs:
       env:
         SHELL:  ${{ matrix.shell }}
       shell: python
-#     - name: Install dependencies
-#       run: |
-#         pip install -Uqq nbdev
-#         pip install -e ".[dev]"
-#     - name: Check if notebooks are synced and cleaned
-#       uses: fastai/workflows/nb@master
-#     - name: Run tests
-#       run: nbdev_test_nbs
+    - name: Install dependencies
+      run: |
+        pip install -Uqq nbdev
+        pip install -e ".[dev]"
+    - name: Check if notebooks are synced and cleaned
+      uses: fastai/workflows/nb@master
+    - name: Run tests
+      run: nbdev_test_nbs
+      env:
+        SHELL:  ${{ matrix.shell }}
 
   
   nbdev-integration-test:

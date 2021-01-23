@@ -32,22 +32,12 @@ jobs:
           - os: macos 
             shell: "/bin/bash"
     runs-on: ${{ matrix.os }}-latest
-#     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: see env
-      run: echo $SHELL
-    - name: see env with python
-      run: |
-        import os
-        print(os.environ['SHELL'])
-      env:
-        SHELL:  ${{ matrix.shell }}
-      shell: python
     - name: Install dependencies
       run: |
         pip install -Uqq nbdev
@@ -59,9 +49,7 @@ jobs:
       env:
         SHELL:  ${{ matrix.shell }}
 
-  
   nbdev-integration-test:
-    if: 1==2
     needs: filter
     container: fastai/jekyll
     runs-on: ubuntu-latest
@@ -84,7 +72,6 @@ jobs:
         cd nbdev && make test
         
   fastai-integration-test:
-    if: 1==2
     needs: filter
     container: fastai/fastai
     runs-on: ubuntu-latest

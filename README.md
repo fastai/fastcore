@@ -8,6 +8,9 @@ Python is a powerful, dynamic language. Rather than bake everything into the lan
 
 To install fastcore run: `conda install fastcore` (if you use Anaconda, which we strongly recommend) or `pip install fastcore`. For an [editable install](https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install), clone this repo and run: `pip install -e ".[dev]"`.
 
+
+fastcore is tested to work on Ubuntu, Macos and Windows, for the versions of operating system tagged with the `-latest` prefix in [these docs](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources).   
+
 ## A tour
 
 `fastcore` contains many features. See the [docs](https://fastcore.fast.ai) for all the details, which cover the modules provided:
@@ -24,7 +27,7 @@ Here's a (somewhat) quick tour of a few higlights, showing examples from each of
 
 All fast.ai projects, including this one, are built with [nbdev](https://nbdev.fast.ai), which is a full literate programming environment built on Jupyter Notebooks. That means that every piece of documentation, including the page you're reading now, can be accessed as interactive Jupyter notebooks. In fact, you can even grab a link directly to a notebook running interactively on Google Colab - if you want to follow along with this tour, click the link below, or click the badge at the top of the page:
 
-```
+```python
 colab_link('index')
 ```
 
@@ -34,7 +37,7 @@ colab_link('index')
 
 The full docs are available at [fastcore.fast.ai](https://fastcore.fast.ai). The code in the examples and in all fast.ai libraries follow the [fast.ai style guide](https://docs.fast.ai/dev/style.html). In order to support interactive programming, all fast.ai libraries are designed to allow for `import *` to be used safely, particular by ensuring that [`__all__`](https://riptutorial.com/python/example/2894/the---all---special-variable) is defined in all packages. In order to see where a function is from, just type it:
 
-```
+```python
 coll_repr
 ```
 
@@ -61,13 +64,13 @@ fastcore's testing module is designed to work well with [nbdev](https://nbdev.fa
 
 Tests look like this:
 
-```
+```python
 test_eq(coll_repr(range(1000), 5), '(#1000) [0,1,2,3,4...]')
 ```
 
 That's an example from the docs for `coll_repr`. As you see, it's not showing you the output directly. Here's what that would look like:
 
-```
+```python
 coll_repr(range(1000), 5)
 ```
 
@@ -84,7 +87,7 @@ So every test shown in the docs is also showing you the behavior of the library 
 
 Test functions always start with `test_`, and then follow with the operation being tested. So `test_eq` tests for equality (as you saw in the example above). This includes tests for equality of arrays and tensors, lists and generators, and many more:
 
-```
+```python
 test_eq([0,1,2,3], np.arange(4))
 ```
 
@@ -105,20 +108,20 @@ If you want to check that objects are the same type, rather than the just contai
 
 You can test with any comparison function using `test`, e.g test whether an object is less than:
 
-```
+```python
 test(2, 3, operator.lt)
 ```
 
 You can even test that exceptions are raised:
 
-```
+```python
 def divide_zero(): return 1/0
 test_fail(divide_zero)
 ```
 
 ...and test that things are printed to stdout:
 
-```
+```python
 test_stdout(lambda: print('hi'), 'hi')
 ```
 
@@ -126,7 +129,7 @@ test_stdout(lambda: print('hi'), 'hi')
 
 fast.ai is unusual in that we often use [mixins](https://en.wikipedia.org/wiki/Mixin) in our code. Mixins are widely used in many programming languages, such as Ruby, but not so much in Python. We use mixins to attach new behavior to existing libraries, or to allow modules to add new behavior to our own classes, such as in extension modules. One useful example of a mixin we define is `Path.ls`, which lists a directory and returns an `L` (an extended list class which we'll discuss shortly):
 
-```
+```python
 p = Path('images')
 p.ls()
 ```
@@ -134,13 +137,13 @@ p.ls()
 
 
 
-    (#6) [Path('images/att_00007.png'),Path('images/att_00000.png'),Path('images/puppy.jpg'),Path('images/att_00006.png'),Path('images/mnist3.png'),Path('images/att_00005.png')]
+    (#6) [Path('images/mnist3.png'),Path('images/att_00000.png'),Path('images/att_00005.png'),Path('images/att_00007.png'),Path('images/att_00006.png'),Path('images/puppy.jpg')]
 
 
 
 You can easily add you own mixins with the `patch` [decorator](https://realpython.com/primer-on-python-decorators/), which takes advantage of Python 3 [function annotations](https://www.python.org/dev/peps/pep-3107/#parameters) to say what class to patch:
 
-```
+```python
 @patch
 def num_items(self:Path): return len(self.ls())
 
@@ -158,7 +161,7 @@ We also use `**kwargs` frequently. In python `**kwargs` in a parameter like mean
 
 `GetAttr` solves a similar problem (and is also discussed in the article linked above): it's allows you to use Python's exceptionally useful `__getattr__` magic method, but avoids the problem that normally in Python tab-completion and docs break when using this. For instance, you can see here that Python's `dir` function, which is used to find the attributes of a python object, finds everything inside the `self.default` attribute here:
 
-```
+```python
 class Author:
     def __init__(self, name): self.name = name
 
@@ -179,7 +182,7 @@ p = ProductPage(Author("Jeremy"), 1.50, 0.50)
 
 Looking at that `ProductPage` example, it's rather verbose and duplicates a lot of attribute names, which can lead to bugs later if you change them only in one place. `fastcore` provides `store_attr` to simplify this common pattern. It also provides `basic_repr` to give simple objects a useful `repr`:
 
-```
+```python
 class ProductPage:
     def __init__(self,author,price,cost): store_attr()
     __repr__ = basic_repr('author,price,cost')
@@ -190,13 +193,13 @@ ProductPage("Jeremy", 1.50, 0.50)
 
 
 
-    ProductPage(author=Jeremy, price=1.5, cost=0.5)
+    ProductPage(author='Jeremy', price=1.5, cost=0.5)
 
 
 
 One of the most interesting `fastcore` functions is the `funcs_kwargs` decorator. This allows class behavior to be modified without sub-classing. This can allow folks that aren't familiar with object-oriented progressing to customize your class more easily. Here's an example of a class that uses `funcs_kwargs`:
 
-```
+```python
 @funcs_kwargs
 class T:
     _methods=['some_method']
@@ -222,7 +225,7 @@ Like most languages, Python allows for very concise syntax for some very common 
 
 On this basis, `fastcore` has just one type that has a single letter name:`L`. The reason for this is that it is designed to be a replacement for `list`, so we want it to be just as easy to use as `[1,2,3]`. Here's how to create that as an `L`:
 
-```
+```python
 L(1,2,3)
 ```
 
@@ -235,7 +238,7 @@ L(1,2,3)
 
 The first thing to notice is that an `L` object includes in its representation its number of elements; that's the `(#3)` in the output above. If there's more than 10 elements, it will automatically truncate the list:
 
-```
+```python
 p = L.range(20).shuffle()
 p
 ```
@@ -243,33 +246,33 @@ p
 
 
 
-    (#20) [18,7,1,11,10,14,3,16,13,15...]
+    (#20) [0,10,7,16,5,1,14,17,9,8...]
 
 
 
 `L` contains many of the same indexing ideas that NumPy's `array` does, including indexing with a list of indexes, or a boolean mask list:
 
-```
+```python
 p[2,4,6]
 ```
 
 
 
 
-    (#3) [1,10,3]
+    (#3) [7,5,14]
 
 
 
 It also contains other methods used in `array`, such as `L.argwhere`:
 
-```
+```python
 p.argwhere(ge(15))
 ```
 
 
 
 
-    (#5) [0,7,9,16,17]
+    (#5) [3,7,11,14,18]
 
 
 
@@ -277,7 +280,7 @@ As you can see from this example, `fastcore` also includes a number of features 
 
 There's too much functionality to show it all here, so be sure to check the docs. Many little things are added that we thought should have been in `list` in the first place, such as making this do what you'd expect (which is an error with `list`, but works fine with `L`):
 
-```
+```python
 1 + L(2,3,4)
 ```
 
@@ -292,7 +295,7 @@ There's too much functionality to show it all here, so be sure to check the docs
 
 Most Python programmers use object oriented methods and inheritance to allow different objects to behave in different ways even when called with the same method name. Some languages use a very different approach, such as Julia, which uses [multiple dispatch generic functions](https://docs.julialang.org/en/v1/manual/methods/). Python provides [single dispatch generic functions](https://www.python.org/dev/peps/pep-0443/) as part of the standard library. `fastcore` provides multiple dispatch, with the `typedispatch` decorator (which is actually an instance of `DispatchReg`):
 
-```
+```python
 @typedispatch
 def _f(x:numbers.Integral, y): return x+1
 @typedispatch
@@ -321,7 +324,7 @@ This approach to dispatch is particularly useful for adding implementations of f
 
 `Transform` looks for three special methods, <code>encodes</code>, <code>decodes</code>, and <code>setups</code>, which provide the implementation for [`__call__`](https://www.python-course.eu/python3_magic_methods.php), `decode`, and `setup` respectively. For instance:
 
-```
+```python
 class A(Transform):
     def encodes(self, x): return x+1
 
@@ -337,7 +340,7 @@ A()(1)
 
 For simple transforms like this, you can also use `Transform` as a decorator:
 
-```
+```python
 @Transform
 def f(x): return x+1
 
@@ -353,7 +356,7 @@ f(1)
 
 Transforms can be composed into a `Pipeline`:
 
-```
+```python
 @Transform
 def g(x): return x/2
 

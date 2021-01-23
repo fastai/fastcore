@@ -31,7 +31,6 @@ jobs:
             shell: "/bin/bash"
           - os: macos 
             shell: "/bin/bash"
-        shell: ["/bin/bash"]
     runs-on: ${{ matrix.os }}-latest
 #     container: fastai/fastai 
     steps:

@@ -21,16 +21,20 @@ jobs:
   fastcore:
     needs: filter
     runs-on: ubuntu-latest
-    container: fastai/fastai 
+#     container: fastai/fastai 
     steps:
     - uses: actions/checkout@v2
-    - name: Check if notebooks are synced and cleaned
-      uses: fastai/workflows/nb@master
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
     - name: Run fastcore tests
       run: |
         pip install -Uqq nbdev
         pip install -e ".[dev]"
         nbdev_test_nbs
+    - name: Check if notebooks are synced and cleaned
+      uses: fastai/workflows/nb@master
   
   nbdev-integration-test:
     needs: filter

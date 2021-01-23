@@ -24,6 +24,13 @@ jobs:
       fail-fast: false
       matrix:
         os:  [ubuntu, windows, macos]
+        include:
+          - os: windows
+            shell: "/usr/bin/bash"
+          - os: ubuntu 
+            shell: "/bin/bash"
+          - os: macos 
+            shell: "/bin/bash"
         shell: ["/bin/bash"]
     runs-on: ${{ matrix.os }}-latest
 #     container: fastai/fastai 
@@ -40,7 +47,7 @@ jobs:
         import os
         print(os.environ['SHELL'])
       env:
-        SHELL: "/bin/bash"
+        SHELL:  ${{ matrix.shell }
       shell: python
 #     - name: Install dependencies
 #       run: |

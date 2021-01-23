@@ -24,6 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         os:  [ubuntu, windows, macos]
+        py:  [3.6, 3.7, 3.8]
         include:
           - os: windows
             shell: "/usr/bin/bash"
@@ -37,7 +38,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ matrix.py }}
     - name: Install dependencies
       run: |
         pip install -Uqq nbdev

@@ -9,7 +9,7 @@ Python is a powerful, dynamic language. Rather than bake everything into the lan
 To install fastcore run: `conda install fastcore` (if you use Anaconda, which we strongly recommend) or `pip install fastcore`. For an [editable install](https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install), clone this repo and run: `pip install -e ".[dev]"`.
 
 
-fastcore is tested to work on Ubuntu, Macos and Windows, for the versions of operating system tagged with the `-latest` prefix in [these docs](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources).   
+fastcore is tested to work on Ubuntu, Macos and Windows, for the versions of operating system tagged with the `-latest` suffix in [these docs](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources).   
 
 ## A tour
 

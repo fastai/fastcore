@@ -34,6 +34,8 @@ jobs:
         pip install -e ".[dev]"
     - name: Check if notebooks are synced and cleaned
       uses: fastai/workflows/nb@master
+    - name: see env
+      run: echo $SHELL
     - name: Run tests
       run: nbdev_test_nbs
 

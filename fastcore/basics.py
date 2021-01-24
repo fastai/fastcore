@@ -672,9 +672,14 @@ def compose(*funcs, order=None):
     if len(funcs)==0: return noop
     if len(funcs)==1: return funcs[0]
     if order is not None: funcs = sorted_ex(funcs, key=order)
-    def _inner(x, *args, **kwargs):
-        for f in funcs: x = f(x, *args, **kwargs)
-        return x
+    def _inner(*args, **kwargs):
+        fa = list(inspect.signature(funcs[0]).parameters)[0]
+        if fa in kwargs:
+            first = kwargs[fa]
+            del kwargs[fa]
+        else: first, *args = args
+        for f in funcs: first = f(first, *args, **kwargs)
+        return first
     return _inner
 
 # Cell

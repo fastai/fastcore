@@ -4,7 +4,7 @@ __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi', 'untar_dir', 'repo_details',
            'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run']
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'is_in_ipython']
 
 # Cell
 from .imports import *
@@ -400,3 +400,7 @@ def sort_by_run(fs):
                 break
         else: raise Exception("Impossible to sort")
     return res
+
+# Cell
+def is_in_ipython():
+    return True if get_ipython() else False

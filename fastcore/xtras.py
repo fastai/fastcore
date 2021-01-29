@@ -18,6 +18,7 @@ from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
 from timeit import default_timer
+from IPython import get_ipython
 
 # Cell
 def dict2obj(d):
@@ -403,4 +404,4 @@ def sort_by_run(fs):
 
 # Cell
 def is_in_ipython():
-    return True if get_ipython() else False
+    return True if get_ipython() != None else False

@@ -197,7 +197,7 @@ ProductPage("Jeremy", 1.50, 0.50)
 
 
 
-One of the most interesting `fastcore` functions is the `funcs_kwargs` decorator. This allows class behavior to be modified without sub-classing. This can allow folks that aren't familiar with object-oriented progressing to customize your class more easily. Here's an example of a class that uses `funcs_kwargs`:
+One of the most interesting `fastcore` functions is the `funcs_kwargs` decorator. This allows class behavior to be modified without sub-classing. This can allow folks that aren't familiar with object-oriented programming to customize your class more easily. Here's an example of a class that uses `funcs_kwargs`:
 
 ```python
 @funcs_kwargs

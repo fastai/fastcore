@@ -10,9 +10,10 @@ from collections import Counter
 from contextlib import redirect_stdout
 
 # Cell
-def test_fail(f, msg='', contains=''):
+def test_fail(f, msg='', contains='', args=None, kwargs=None):
+    args, kwargs = args or [], kwargs or {}
     "Fails with `msg` unless `f()` raises an exception and (optionally) has `contains` in `e.args`"
-    try: f()
+    try: f(*args, **kwargs)
     except Exception as e:
         assert not contains or contains in str(e)
         return

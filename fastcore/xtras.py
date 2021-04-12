@@ -164,8 +164,8 @@ def repo_details(url):
 # Cell
 def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
-    # Even the command is same on Windows, we have to add `cmd /c`"
-    if sys.platform == "win32" and same_in_win: cmd = 'cmd /c' + cmd
+    # Even the command is same on Windows, we have to add `cmd /c `"
+    if sys.platform == "win32" and same_in_win: cmd = 'cmd /c ' + cmd
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

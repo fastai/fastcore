@@ -167,12 +167,12 @@ def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=F
     # Even the command is same on Windows, we have to add `cmd /c `"
     import logging
     if rest:
-        if sys.platform == "win32" and same_in_win:
+        if sys.platform == 'win32' and same_in_win:
             cmd = ('cmd', '/c', cmd, *rest)
         else:
             cmd = (cmd,)+rest
     elif isinstance(cmd,str):
-        if sys.platform == "win32" and same_in_win: cmd = 'cmd /c ' + cmd
+        if sys.platform == 'win32' and same_in_win: cmd = 'cmd /c ' + cmd
         cmd = shlex.split(cmd)
     logging.info(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -180,7 +180,7 @@ def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=F
     if stderr and res.stderr: stdout += b' ;; ' + res.stderr
     if not as_bytes: stdout = stdout.decode().strip()
     if ignore_ex: return (res.returncode, stdout)
-    logging.info(res.returncode)
+    print(res.returncode)
     if res.returncode: raise IOError(stdout)
     return stdout
 

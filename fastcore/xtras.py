@@ -168,11 +168,13 @@ def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=F
     if sys.platform == "win32" and same_in_win: cmd = 'cmd /c ' + cmd
     if rest: cmd = (cmd,)+rest
     elif isinstance(cmd,str): cmd = shlex.split(cmd)
+    print(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
     if stderr and res.stderr: stdout += b' ;; ' + res.stderr
     if not as_bytes: stdout = stdout.decode().strip()
     if ignore_ex: return (res.returncode, stdout)
+    print(res.returncode)
     if res.returncode: raise IOError(stdout)
     return stdout
 

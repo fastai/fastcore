@@ -165,16 +165,22 @@ def repo_details(url):
 def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
     # Even the command is same on Windows, we have to add `cmd /c `"
-    if sys.platform == "win32" and same_in_win: cmd = 'cmd /c ' + cmd
-    if rest: cmd = (cmd,)+rest
-    elif isinstance(cmd,str): cmd = shlex.split(cmd)
-    print(cmd)
+    import logging
+    if rest:
+        if sys.platform == "win32" and same_in_win:
+            cmd = ('cmd', '/c', cmd, *rest)
+        else:
+            cmd = (cmd,)+rest
+    elif isinstance(cmd,str):
+        if sys.platform == "win32" and same_in_win: cmd = 'cmd /c ' + cmd
+        cmd = shlex.split(cmd)
+    logging.info(cmd)
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
     if stderr and res.stderr: stdout += b' ;; ' + res.stderr
     if not as_bytes: stdout = stdout.decode().strip()
     if ignore_ex: return (res.returncode, stdout)
-    print(res.returncode)
+    logging.info(res.returncode)
     if res.returncode: raise IOError(stdout)
     return stdout
 

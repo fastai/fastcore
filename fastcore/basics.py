@@ -782,6 +782,7 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
     cls = next(iter(f.__annotations__.values()))
+    if cls_method: cls = f.__annotations__.pop('cls')
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell

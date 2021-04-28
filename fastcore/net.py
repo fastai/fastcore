@@ -172,6 +172,10 @@ def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_dat
     "Send request with `urlrequest`, converting result to json if `return_json`"
     req = urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data)
     if debug: debug(req)
+
+    if route and route.get('archive_format', None):
+        return urlread(req, decode=False, return_json=False, return_headers=return_headers)
+
     return urlread(req, return_json=return_json, return_headers=return_headers)
 
 # Cell

@@ -162,10 +162,20 @@ def repo_details(url):
     return res.split('/')[-2:]
 
 # Cell
-def run(cmd, *rest, ignore_ex=False, as_bytes=False, stderr=False):
+def run(cmd, *rest, same_in_win=False, ignore_ex=False, as_bytes=False, stderr=False):
     "Pass `cmd` (splitting with `shlex` if string) to `subprocess.run`; return `stdout`; raise `IOError` if fails"
-    if rest: cmd = (cmd,)+rest
-    elif isinstance(cmd,str): cmd = shlex.split(cmd)
+    # Even the command is same on Windows, we have to add `cmd /c `"
+    import logging
+    if rest:
+        if sys.platform == 'win32' and same_in_win:
+            cmd = ('cmd', '/c', cmd, *rest)
+        else:
+            cmd = (cmd,)+rest
+    elif isinstance(cmd, str):
+        if sys.platform == 'win32' and same_in_win: cmd = 'cmd /c ' + cmd
+        cmd = shlex.split(cmd)
+    elif isinstance(cmd, list):
+        if sys.platform == 'win32' and same_in_win: cmd = ['cmd', '/c'] + cmd
     res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout = res.stdout
     if stderr and res.stderr: stdout += b' ;; ' + res.stderr

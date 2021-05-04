@@ -191,9 +191,11 @@ class Pipeline:
         self.fs.clear()
         for t in tfms: self.add(t,items, train_setup)
 
-    def add(self,t, items=None, train_setup=False):
-        t.setup(items, train_setup)
-        self.fs.append(t)
+    def add(self,ts, items=None, train_setup=False):
+        if not is_listy(ts): ts=[ts]
+        for t in ts: t.setup(items, train_setup)
+        self.fs+=ts
+        self.fs = self.fs.sorted(key='order')
 
     def __call__(self, o): return compose_tfms(o, tfms=self.fs, split_idx=self.split_idx)
     def __repr__(self): return f"Pipeline: {' -> '.join([f.name for f in self.fs if f.name != 'noop'])}"

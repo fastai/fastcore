@@ -2,12 +2,25 @@
 
 <!-- do not remove -->
 
+## 1.3.20
+
+### New Features
+
+- make patch more compatible with classmethods ([#309](https://github.com/fastai/fastcore/pull/309)), thanks to [@tezike](https://github.com/tezike)
+- Added order and list support for Pipeline.add ([#297](https://github.com/fastai/fastcore/pull/297)), thanks to [@marii-moe](https://github.com/marii-moe)
+- support windows: only add lock if it runs parallelly ([#283](https://github.com/fastai/fastcore/pull/283)), thanks to [@mszhanyi](https://github.com/mszhanyi)
+
+### Bugs Squashed
+
+- fix #304 UnicodeDecodeError while downloading git archive ([#308](https://github.com/fastai/fastcore/pull/308)), thanks to [@pradeepbbl](https://github.com/pradeepbbl)
+- Fix saving str as bytes in urlsave ([#278](https://github.com/fastai/fastcore/pull/278)), thanks to [@jochym](https://github.com/jochym)
+
+
 ## 1.3.19
 
 
 ### Bugs Squashed
 
-- `urlsave` using str instead of bytes ([#280](https://github.com/fastai/fastcore/issues/280))
 - `sparkline` errors when a value is given that exceeds `mx` ([#277](https://github.com/fastai/fastcore/issues/277))
 
 

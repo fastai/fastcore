@@ -210,7 +210,7 @@ def gen(func, seq, cond=true):
 def chunked(it, chunk_sz=None, drop_last=False, n_chunks=None):
     "Return batches from iterator `it` of size `chunk_sz` (or return `n_chunks` total)"
     assert bool(chunk_sz) ^ bool(n_chunks)
-    if n_chunks: chunk_sz = math.ceil(len(it)/n_chunks)
+    if n_chunks: chunk_sz = max(math.ceil(len(it)/n_chunks), 1)
     if not isinstance(it, Iterator): it = iter(it)
     while True:
         res = list(itertools.islice(it, chunk_sz))

@@ -13,7 +13,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,distutils.util,tempfile,time,string,collections
+import imghdr,struct,distutils.util,tempfile,time,string,collections,yaml
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
@@ -215,6 +215,12 @@ def readlines(self:Path, hint=-1, encoding='utf8'):
 def read_json(self:Path, encoding=None, errors=None):
     "Same as `read_text` followed by `loads`"
     return loads(self.read_text(encoding=encoding, errors=errors))
+
+# Cell
+@patch
+def read_yaml(self:Path, loader=yaml.FullLoader):
+    "Read a yaml file into a dict"
+    return yaml.load(self.read_text(), Loader=loader)
 
 # Cell
 @patch

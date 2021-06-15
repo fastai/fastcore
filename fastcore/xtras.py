@@ -148,10 +148,13 @@ def loads_multi(s:str):
         s = s[pos:]
 
 # Cell
-def untar_dir(file, dest):
+def untar_dir(fname, dest):
+    "untar `file` into `dest`"
     with tempfile.TemporaryDirectory(dir='.') as d:
         d = Path(d)
-        with tarfile.open(mode='r:gz', fileobj=file) as t: t.extractall(d)
+        with open(fname, 'rb') as f:
+            with tarfile.open(mode='r:gz', fileobj=f) as t:
+                t.extractall(d)
         next(d.iterdir()).rename(dest)
 
 # Cell

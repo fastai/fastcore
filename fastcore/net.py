@@ -134,15 +134,17 @@ def urlcheck(url, timeout=10):
 # Cell
 def urlclean(url):
     "Remove fragment, params, and querystring from `url` if present"
-    return urlunparse(urlparse(url)[:3]+('','',''))
+    return urlunparse(urlparse(str(url))[:3]+('','',''))
 
 # Cell
 def urlsave(url, dest=None):
     "Retrieve `url` and save based on its name"
     res = urlread(urlwrap(url), decode=False)
-    if dest is None: dest = Path(url).name
-    name = urlclean(dest)
-    Path(name).write_bytes(res)
+    name = urlclean(Path(url).name)
+    if dest is None: dest = name
+    dest = Path(dest)
+    if dest.is_dir(): dest = dest/name
+    Path(dest).write_bytes(res)
     return dest
 
 # Cell

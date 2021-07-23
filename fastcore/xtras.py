@@ -151,11 +151,10 @@ def loads_multi(s:str):
 def untar_dir(fname, dest):
     "untar `file` into `dest`"
     with tempfile.TemporaryDirectory(dir='.') as d:
-        d = Path(d)
-        with open(fname, 'rb') as f:
-            with tarfile.open(mode='r:gz', fileobj=f) as t:
-                t.extractall(d)
-        next(d.iterdir()).rename(dest)
+        shutil.unpack_archive(fname, d)
+        ls = Path(d).ls()
+        if len(ls) == 1: shutil.move(str(ls[0]), dest)
+        else: shutil.move(str(d), dest/remove_suffix(Path(fname).stem, '.tar'))
 
 # Cell
 def repo_details(url):

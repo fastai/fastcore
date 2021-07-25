@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.3.21
+
+### New Features
+
+- remove fastai-specific pieces from `Config` ([#334](https://github.com/fastai/fastcore/issues/334))
+- in `untar_dir` create a directory if there is more than one item in root of archive ([#333](https://github.com/fastai/fastcore/issues/333))
+- allow directory `dest` in `urlsave` ([#327](https://github.com/fastai/fastcore/issues/327))
 
 
 ## 1.3.20

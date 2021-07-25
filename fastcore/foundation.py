@@ -241,33 +241,24 @@ def save_config_file(file, d, **kwargs):
 def read_config_file(file, **kwargs):
     config = ConfigParser(**kwargs)
     config.read(file)
-    return config
-
-# Cell
-def _add_new_defaults(cfg, file, **kwargs):
-    for k,v in kwargs.items():
-        if cfg.get(k, None) is None:
-            cfg[k] = v
-            save_config_file(file, cfg)
+    return config['DEFAULT']
 
 # Cell
 @lru_cache(maxsize=None)
 class Config:
-    "Reading and writing `settings.ini`"
-    def __init__(self, cfg_name='settings.ini'):
-        cfg_path = Path.cwd()
-        while cfg_path != cfg_path.parent and not (cfg_path/cfg_name).exists(): cfg_path = cfg_path.parent
+    "Reading and writing `ConfigParser` ini files"
+    def __init__(self, cfg_path, cfg_name):
+        cfg_path = Path(cfg_path).expanduser().absolute()
         self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
         assert self.config_file.exists(), f"Could not find {cfg_name}"
-        self.d = read_config_file(self.config_file)['DEFAULT']
-        _add_new_defaults(self.d, self.config_file,
-                         host="github", doc_host="https://%(user)s.github.io", doc_baseurl="/%(lib_name)s/")
+        self.d = read_config_file(self.config_file)
 
     def __setitem__(self,k,v): self.d[k] = str(v)
     def __contains__(self,k):  return k in self.d
     def save(self):            save_config_file(self.config_file,self.d)
     def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
     def get(self,k,default=None): return self.d.get(k, default)
+
     def path(self,k,default=None):
         v = self.get(k, default)
         return v if v is None else self.config_path/v

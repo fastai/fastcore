@@ -244,7 +244,6 @@ def read_config_file(file, **kwargs):
     return config['DEFAULT']
 
 # Cell
-@lru_cache(maxsize=None)
 class Config:
     "Reading and writing `ConfigParser` ini files"
     def __init__(self, cfg_path, cfg_name):

@@ -10,8 +10,8 @@ __all__ = ['url_default_headers', 'urlquote', 'urlwrap', 'ExceptionsHTTP', 'HTTP
            'HTTP422UnprocessableEntityError', 'HTTP423LockedError', 'HTTP424FailedDependencyError',
            'HTTP425TooEarlyError', 'HTTP426UpgradeRequiredError', 'HTTP428PreconditionRequiredError',
            'HTTP429TooManyRequestsError', 'HTTP431HeaderFieldsTooLargeError', 'HTTP451LegalReasonsError', 'urlopen',
-           'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlsave', 'urlvalid', 'urlrequest', 'urlsend', 'do_request',
-           'start_server', 'start_client']
+           'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlretrieve', 'urlsave', 'urlvalid', 'urlrequest', 'urlsend',
+           'do_request', 'start_server', 'start_client']
 
 # Cell
 from .imports import *
@@ -21,10 +21,10 @@ from .xtras import *
 from .parallel import *
 from functools import wraps
 
-import json,urllib
+import json,urllib,contextlib
 import socket,urllib.request,http,urllib
 from contextlib import contextmanager,ExitStack
-from urllib.request import Request
+from urllib.request import Request,urlretrieve,install_opener
 from urllib.error import HTTPError,URLError
 from urllib.parse import urlencode,urlparse,urlunparse
 from http.client import InvalidURL
@@ -75,6 +75,7 @@ class HTTP5xxServerError(HTTPError):
 # Cell
 _opener = urllib.request.build_opener()
 _opener.addheaders = list(url_default_headers.items())
+install_opener(_opener)
 
 _httperrors = (
     (400,'Bad Request'),(401,'Unauthorized'),(402,'Payment Required'),(403,'Forbidden'),(404,'Not Found'),
@@ -137,15 +138,41 @@ def urlclean(url):
     return urlunparse(urlparse(str(url))[:3]+('','',''))
 
 # Cell
-def urlsave(url, dest=None):
+def urlretrieve(url, filename=None, reporthook=None, data=None):
+    "Same as `urllib.request.urlretrieve` but also works with `Request` objects"
+    with contextlib.closing(urlopen(url, data)) as fp:
+        headers = fp.info()
+        if filename: tfp = open(filename, 'wb')
+        else:
+            tfp = tempfile.NamedTemporaryFile(delete=False)
+            filename = tfp.name
+
+        with tfp:
+            bs,size,read,blocknum = 1024*8,-1,0,0
+            if "content-length" in headers: size = int(headers["Content-Length"])
+            if reporthook: reporthook(blocknum, bs, size)
+            while True:
+                block = fp.read(bs)
+                if not block: break
+                read += len(block)
+                tfp.write(block)
+                blocknum += 1
+                if reporthook: reporthook(blocknum, bs, size)
+
+    if size >= 0 and read < size:
+        raise ContentTooShortError(f"retrieval incomplete: got only {read} out of {size} bytes", headers)
+    return filename,headers
+
+# Cell
+def urlsave(url, dest=None, reporthook=None):
     "Retrieve `url` and save based on its name"
-    res = urlread(urlwrap(url), decode=False)
     name = urlclean(Path(url).name)
     if dest is None: dest = name
     dest = Path(dest)
     if dest.is_dir(): dest = dest/name
-    Path(dest).write_bytes(res)
-    return dest
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    nm,msg = urlretrieve(url, dest, reporthook)
+    return nm
 
 # Cell
 def urlvalid(x):

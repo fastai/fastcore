@@ -153,7 +153,7 @@ def untar_dir(fname, dest, rename=False, overwrite=False):
     with tempfile.TemporaryDirectory(dir='.') as d:
         out = Path(d)/remove_suffix(Path(fname).stem, '.tar')
         out.mkdir()
-        shutil.unpack_archive(fname, out)
+        shutil.unpack_archive(str(fname), str(out))
         ls = out.ls()
         src = ls[0] if len(ls) == 1 else out
         dest = dest/(out if rename else src).name

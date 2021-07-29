@@ -10,8 +10,8 @@ __all__ = ['url_default_headers', 'urlquote', 'urlwrap', 'ExceptionsHTTP', 'HTTP
            'HTTP422UnprocessableEntityError', 'HTTP423LockedError', 'HTTP424FailedDependencyError',
            'HTTP425TooEarlyError', 'HTTP426UpgradeRequiredError', 'HTTP428PreconditionRequiredError',
            'HTTP429TooManyRequestsError', 'HTTP431HeaderFieldsTooLargeError', 'HTTP451LegalReasonsError', 'urlopen',
-           'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlretrieve', 'urlsave', 'urlvalid', 'urlrequest', 'urlsend',
-           'do_request', 'start_server', 'start_client']
+           'urlread', 'urljson', 'urlcheck', 'urlclean', 'urlretrieve', 'urldest', 'urlsave', 'urlvalid', 'urlrequest',
+           'urlsend', 'do_request', 'start_server', 'start_client']
 
 # Cell
 from .imports import *
@@ -164,12 +164,16 @@ def urlretrieve(url, filename=None, reporthook=None, data=None):
     return filename,headers
 
 # Cell
-def urlsave(url, dest=None, reporthook=None):
-    "Retrieve `url` and save based on its name"
+def urldest(url, dest=None):
     name = urlclean(Path(url).name)
     if dest is None: dest = name
     dest = Path(dest)
-    if dest.is_dir(): dest = dest/name
+    return dest/name if dest.is_dir() else dest
+
+# Cell
+def urlsave(url, dest=None, reporthook=None):
+    "Retrieve `url` and save based on its name"
+    dest = urldest(url, dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
     nm,msg = urlretrieve(url, dest, reporthook)
     return nm

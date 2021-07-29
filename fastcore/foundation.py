@@ -246,16 +246,22 @@ def read_config_file(file, **kwargs):
 # Cell
 class Config:
     "Reading and writing `ConfigParser` ini files"
-    def __init__(self, cfg_path, cfg_name):
+    def __init__(self, cfg_path, cfg_name, create=None):
         cfg_path = Path(cfg_path).expanduser().absolute()
         self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
-        assert self.config_file.exists(), f"Could not find {cfg_name}"
+        if not self.config_file.exists():
+            if create:
+                self.d = create
+                cfg_path.mkdir(exist_ok=True, parents=True)
+                self.save()
+            else: raise Exception(f"Could not find {cfg_name}")
         self.d = read_config_file(self.config_file)
 
     def __setitem__(self,k,v): self.d[k] = str(v)
     def __contains__(self,k):  return k in self.d
     def save(self):            save_config_file(self.config_file,self.d)
     def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
+    def __getitem__(self,k):   return stop(IndexError(k)) if k not in self.d else self.get(k)
     def get(self,k,default=None): return self.d.get(k, default)
 
     def path(self,k,default=None):

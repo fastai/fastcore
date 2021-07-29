@@ -13,7 +13,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,distutils.util,tempfile,time,string,collections
+import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
@@ -148,15 +148,18 @@ def loads_multi(s:str):
         s = s[pos:]
 
 # Cell
-def untar_dir(fname, dest):
-    "untar `file` into `dest`"
+def untar_dir(fname, dest, rename=False, overwrite=False):
+    "untar `file` into `dest`, creating a directory if the root contains more than one item"
     with tempfile.TemporaryDirectory(dir='.') as d:
-        out = Path(d)/'out'
+        out = Path(d)/remove_suffix(Path(fname).stem, '.tar')
         out.mkdir()
         shutil.unpack_archive(fname, out)
         ls = out.ls()
-        if len(ls) == 1: shutil.move(str(ls[0]), dest)
-        else: shutil.move(str(out), dest/remove_suffix(Path(fname).stem, '.tar'))
+        src = ls[0] if len(ls) == 1 else out
+        dest = dest/(out if rename else src).name
+        if overwrite: shutil.rmtree(dest, ignore_errors=True)
+        shutil.move(str(src), dest)
+        return dest
 
 # Cell
 def repo_details(url):
@@ -246,6 +249,14 @@ def __repr__(self:Path):
         try: self = self.relative_to(b)
         except: pass
     return f"Path({self.as_posix()!r})"
+
+# Cell
+@patch
+def delete(self:Path):
+    "Delete a file, symlink, or directory tree"
+    if not self.exists(): return
+    if self.is_dir(): shutil.rmtree(self)
+    else: self.unlink()
 
 # Cell
 def truncstr(s:str, maxlen:int, suf:str='…', space='')->str:

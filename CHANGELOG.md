@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.3.22
+
+### New Features
+
+- New method: `Path.delete()` to remove a file or directory ([#336](https://github.com/fastai/fastcore/issues/336))
+- Add `urlretrieve`, which as same as `urllib.request.urlretrieve` but also works with `Request` objects ([#335](https://github.com/fastai/fastcore/issues/335))
+
+
 ## 1.3.21
 
 ### New Features

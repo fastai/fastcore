@@ -2,6 +2,12 @@
 
 <!-- do not remove -->
 
+## 1.3.23
+
+### New Features
+
+- Support py36 in `untar_dir`
+
 ## 1.3.22
 
 ### New Features

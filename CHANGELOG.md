@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+
+
+## 1.3.25
+
+### Bugs Squashed
+
+- `untar_dir` always extracts archive even if already exists ([#337](https://github.com/fastai/fastcore/issues/337))
+
+
 ## 1.3.23
 
 ### New Features

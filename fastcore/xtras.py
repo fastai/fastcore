@@ -157,7 +157,9 @@ def untar_dir(fname, dest, rename=False, overwrite=False):
         ls = out.ls()
         src = ls[0] if len(ls) == 1 else out
         dest = dest/(out if rename else src).name
-        if overwrite: shutil.rmtree(dest, ignore_errors=True)
+        if dest.exists():
+            if overwrite: shutil.rmtree(dest)
+            else: return dest
         shutil.move(str(src), dest)
         return dest
 

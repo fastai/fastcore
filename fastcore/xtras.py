@@ -148,18 +148,25 @@ def loads_multi(s:str):
         s = s[pos:]
 
 # Cell
+def _unpack(fname, out):
+    shutil.unpack_archive(str(fname), str(out))
+    ls = out.ls()
+    return ls[0] if len(ls) == 1 else out
+
+# Cell
 def untar_dir(fname, dest, rename=False, overwrite=False):
     "untar `file` into `dest`, creating a directory if the root contains more than one item"
     with tempfile.TemporaryDirectory(dir='.') as d:
         out = Path(d)/remove_suffix(Path(fname).stem, '.tar')
         out.mkdir()
-        shutil.unpack_archive(str(fname), str(out))
-        ls = out.ls()
-        src = ls[0] if len(ls) == 1 else out
-        dest = dest/(out if rename else src).name
+        if rename: dest = dest/out.name
+        else:
+            src = _unpack(fname, out)
+            dest = dest/src.name
         if dest.exists():
             if overwrite: shutil.rmtree(dest)
             else: return dest
+        if rename: src = _unpack(fname, out)
         shutil.move(str(src), dest)
         return dest
 

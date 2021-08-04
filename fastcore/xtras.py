@@ -126,7 +126,10 @@ def join_path_file(file, path, ext=''):
     "Return `path/file` if file is a string or a `Path`, file otherwise"
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
-    return path/f'{file}{ext}'
+    split = os.path.splitext(file)
+    fn,ex = split[0],split[1]
+    fn = fn+ex if ext != ex else fn
+    return path/f'{fn}{ext}'
 
 # Cell
 def loads(s, cls=None, object_hook=None, parse_float=None,

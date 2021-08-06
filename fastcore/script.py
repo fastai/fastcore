@@ -7,6 +7,7 @@ __all__ = ['store_true', 'store_false', 'bool_arg', 'clean_type_str', 'Param', '
 import inspect,functools,argparse,shutil
 from .imports import *
 from .utils import *
+from .docments import docments
 
 # Cell
 def store_true():
@@ -35,7 +36,7 @@ class Param:
     "A parameter in a function used in `anno_parser` or `call_parse`"
     def __init__(self, help=None, type=None, opt=True, action=None, nargs=None, const=None,
                  choices=None, required=None, default=None):
-        if type==store_true:  type,action,default=None,'store_true' ,False
+        if type in (store_true,bool):  type,action,default=None,'store_true' ,False
         if type==store_false: type,action,default=None,'store_false',True
         if type and isinstance(type,typing.Type) and issubclass(type,enum.Enum) and not choices: choices=list(type)
         store_attr()
@@ -63,8 +64,10 @@ def anno_parser(func, prog=None, from_name=False):
     cols = shutil.get_terminal_size((120,30))[0]
     fmtr = partial(argparse.HelpFormatter, max_help_position=cols//2, width=cols)
     p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=fmtr)
+    docs = docments(func)
     for k,v in inspect.signature(func).parameters.items():
         param = func.__annotations__.get(k, Param())
+        if not isinstance(param,Param): param = Param(docs[k], param)
         param.set_default(v.default)
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
     p.add_argument(f"--pdb", help=argparse.SUPPRESS, action='store_true')

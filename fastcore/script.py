@@ -64,10 +64,9 @@ def anno_parser(func, prog=None, from_name=False):
     cols = shutil.get_terminal_size((120,30))[0]
     fmtr = partial(argparse.HelpFormatter, max_help_position=cols//2, width=cols)
     p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=fmtr)
-    docs = docments(func)
-    for k,v in inspect.signature(func).parameters.items():
-        param = func.__annotations__.get(k, Param())
-        if not isinstance(param,Param): param = Param(docs[k], param)
+    for k,v in docments(func, full=True, returns=False).items():
+        param = v.anno
+        if not isinstance(param,Param): param = Param(v.docment, v.anno)
         param.set_default(v.default)
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
     p.add_argument(f"--pdb", help=argparse.SUPPRESS, action='store_true')

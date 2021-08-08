@@ -18,6 +18,7 @@ jobs:
           echo "passed filter"
           echo "event_name: ${{ github.event_name }}"
           echo "head_commit.author.username: ${{ github.event.head_commit.author.username }}"
+
   fastcore:
     needs: filter
     strategy:

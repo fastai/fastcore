@@ -96,19 +96,19 @@ for code,msg in _httperrors:
 #nbdev_comment _all_ = ['HTTP400BadRequestError', 'HTTP401UnauthorizedError', 'HTTP402PaymentRequiredError', 'HTTP403ForbiddenError', 'HTTP404NotFoundError', 'HTTP405MethodNotAllowedError', 'HTTP406NotAcceptableError', 'HTTP407ProxyAuthRequiredError', 'HTTP408RequestTimeoutError', 'HTTP409ConflictError', 'HTTP410GoneError', 'HTTP411LengthRequiredError', 'HTTP412PreconditionFailedError', 'HTTP413PayloadTooLargeError', 'HTTP414URITooLongError', 'HTTP415UnsupportedMediaTypeError', 'HTTP416RangeNotSatisfiableError', 'HTTP417ExpectationFailedError', 'HTTP418AmAteapotError', 'HTTP421MisdirectedRequestError', 'HTTP422UnprocessableEntityError', 'HTTP423LockedError', 'HTTP424FailedDependencyError', 'HTTP425TooEarlyError', 'HTTP426UpgradeRequiredError', 'HTTP428PreconditionRequiredError', 'HTTP429TooManyRequestsError', 'HTTP431HeaderFieldsTooLargeError', 'HTTP451LegalReasonsError']
 
 # Cell
-def urlopen(url, data=None, headers=None, **kwargs):
+def urlopen(url, data=None, headers=None, timeout=None, **kwargs):
     "Like `urllib.request.urlopen`, but first `urlwrap` the `url`, and encode `data`"
     if kwargs and not data: data=kwargs
     if data is not None:
         if not isinstance(data, (str,bytes)): data = urlencode(data)
         if not isinstance(data, bytes): data = data.encode('ascii')
-    return _opener.open(urlwrap(url, data=data, headers=headers))
+    return _opener.open(urlwrap(url, data=data, headers=headers), timeout=timeout)
 
 # Cell
-def urlread(url, data=None, headers=None, decode=True, return_json=False, return_headers=False, **kwargs):
+def urlread(url, data=None, headers=None, decode=True, return_json=False, return_headers=False, timeout=None, **kwargs):
     "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
     try:
-        with urlopen(url, data=data, headers=headers, **kwargs) as u: res,hdrs = u.read(),u.headers
+        with urlopen(url, data=data, headers=headers, timeout=timeout, **kwargs) as u: res,hdrs = u.read(),u.headers
     except HTTPError as e:
         if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp) from None
         else: raise
@@ -118,9 +118,9 @@ def urlread(url, data=None, headers=None, decode=True, return_json=False, return
     return (res,dict(hdrs)) if return_headers else res
 
 # Cell
-def urljson(url, data=None):
+def urljson(url, data=None, timeout=None):
     "Retrieve `url` and decode json"
-    res = urlread(url, data=data)
+    res = urlread(url, data=data, timeout=timeout)
     return json.loads(res) if res else {}
 
 # Cell
@@ -138,9 +138,9 @@ def urlclean(url):
     return urlunparse(urlparse(str(url))[:3]+('','',''))
 
 # Cell
-def urlretrieve(url, filename=None, reporthook=None, data=None):
+def urlretrieve(url, filename=None, reporthook=None, data=None, timeout=None):
     "Same as `urllib.request.urlretrieve` but also works with `Request` objects"
-    with contextlib.closing(urlopen(url, data)) as fp:
+    with contextlib.closing(urlopen(url, data, timeout=timeout)) as fp:
         headers = fp.info()
         if filename: tfp = open(filename, 'wb')
         else:
@@ -171,11 +171,11 @@ def urldest(url, dest=None):
     return dest/name if dest.is_dir() else dest
 
 # Cell
-def urlsave(url, dest=None, reporthook=None):
+def urlsave(url, dest=None, reporthook=None, timeout=None):
     "Retrieve `url` and save based on its name"
     dest = urldest(url, dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    nm,msg = urlretrieve(url, dest, reporthook)
+    nm,msg = urlretrieve(url, dest, reporthook, timeout=timeout)
     return nm
 
 # Cell

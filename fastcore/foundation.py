@@ -153,6 +153,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
 
     def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self, f, *args, gen=gen, **kwargs))
     def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self, f, negate, **kwargs))
+    def argfirst(self, f, negate=False): return first(i for i,o in self.enumerate() if f(o))
     def filter(self, f=noop, negate=False, gen=False, **kwargs):
         return self._new(filter_ex(self, f=f, negate=negate, gen=gen, **kwargs))
 
@@ -163,7 +164,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def cycle(self): return cycle(self)
     def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_first(self, f=noop, g=noop, *args, **kwargs):
-        return first(self.map(f, *args, gen=False, **kwargs), g)
+        return first(self.map(f, *args, gen=True, **kwargs), g)
 
     def itemgot(self, *idxs):
         x = self
@@ -199,6 +200,7 @@ add_docs(L,
          val2idx="Dict from value to index",
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
          argwhere="Like `filter`, but return indices for matching items",
+         argfirst="Return index of first matching item",
          map="Create new `L` with `f` applied to all `items`, passing `args` and `kwargs` to `f`",
          map_first="First element of `map_filter`",
          map_dict="Like `map`, but creates a dict from `items` to function results",

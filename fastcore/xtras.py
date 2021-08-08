@@ -106,6 +106,25 @@ def maybe_open(f, mode='r', **kwargs):
     else: yield f
 
 # Cell
+def _jpg_size(f):
+        size,ftype = 2,0
+        while not 0xc0 <= ftype <= 0xcf:
+            f.seek(size, 1)
+            byte = f.read(1)
+            while ord(byte) == 0xff: byte = f.read(1)
+            ftype = ord(byte)
+            size = struct.unpack('>H', f.read(2))[0] - 2
+        f.seek(1, 1)  # `precision'
+        h,w = struct.unpack('>HH', f.read(4))
+        return w,h
+
+def _gif_size(f): return struct.unpack('<HH', head[6:10])
+
+def _png_size(f):
+    assert struct.unpack('>i', head[4:8])[0]==0x0d0a1a0a
+    return struct.unpack('>ii', head[16:24])
+
+# Cell
 def image_size(fn):
     "Tuple of (w,h) for png, gif, or jpg; `None` otherwise"
     d = dict(png=_png_size, gif=_gif_size, jpeg=_jpg_size)
@@ -238,6 +257,12 @@ def mk_write(self:Path, data, encoding=None, errors=None, mode=511):
     "Make all parent dirs of `self`, and write `data`"
     self.parent.mkdir(exist_ok=True, parents=True, mode=mode)
     self.write_text(data, encoding=encoding, errors=errors)
+
+# Cell
+@patch
+def relpath(self:Path, start=None):
+    "Same as `os.path.relpath`, but returns a `Path`, and resolves symlinks"
+    return Path(os.path.relpath(self.resolve(), Path(start).resolve()))
 
 # Cell
 @patch

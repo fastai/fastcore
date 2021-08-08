@@ -9,7 +9,7 @@ from io import BytesIO
 from textwrap import dedent
 from .basics import *
 from types import SimpleNamespace
-from inspect import getsource,isfunction,signature,Parameter
+from inspect import getsource,isfunction,isclass,signature,Parameter
 
 import re
 
@@ -54,6 +54,7 @@ def _get_full(anno, name, default, docs):
 # Cell
 def docments(s, full=False, returns=True):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
+    if isclass(s): s = s.__init__ # Constructor for a class
     comments = {o.start[0]:_clean_comment(o.string) for o in _tokens(s) if o.type==COMMENT}
     parms = _param_locs(s, returns=returns)
     docs = {arg:_get_comment(line, arg, comments, parms) for line,arg in parms.items()}

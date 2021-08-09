@@ -7,9 +7,9 @@ from tokenize import tokenize,COMMENT
 from ast import parse,FunctionDef
 from io import BytesIO
 from textwrap import dedent
-from .basics import *
 from types import SimpleNamespace
 from inspect import getsource,isfunction,isclass,signature,Parameter
+from .basics import *
 
 import re
 

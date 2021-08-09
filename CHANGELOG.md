@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.3.26
+
+### New Features
+
+- add class init support to docments ([#347](https://github.com/fastai/fastcore/issues/347))
+- add timeout param to url functions ([#346](https://github.com/fastai/fastcore/issues/346))
+- add `L.argfirst` ([#345](https://github.com/fastai/fastcore/issues/345))
+- add `Path.relpath` ([#344](https://github.com/fastai/fastcore/issues/344))
+- add `full` and `returns` to `docments`, and derive type from default in `fastcore.script` ([#342](https://github.com/fastai/fastcore/issues/342))
+- allow use of `docments` in `fastcore.script.call_parse` ([#341](https://github.com/fastai/fastcore/issues/341))
+- add `docments` ([#340](https://github.com/fastai/fastcore/issues/340))
 
 
 ## 1.3.25

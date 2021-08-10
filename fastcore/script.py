@@ -59,6 +59,9 @@ class Param:
         if self.help and self.type is not None: return f"{clean_type_str(self.type)} <{self.help}>"
 
 # Cell
+def _replace_pct(x): return x.replace('%','%%') if isinstance(x,str) else x
+
+# Cell
 def anno_parser(func, prog=None, from_name=False):
     "Look at params (annotated with `Param`) in func and return an `ArgumentParser`"
     cols = shutil.get_terminal_size((120,30))[0]
@@ -66,8 +69,8 @@ def anno_parser(func, prog=None, from_name=False):
     p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=fmtr)
     for k,v in docments(func, full=True, returns=False).items():
         param = v.anno
-        if not isinstance(param,Param): param = Param(v.docment, v.anno)
-        param.set_default(v.default)
+        if not isinstance(param,Param): param = Param(_replace_pct(v.docment), v.anno)
+        param.set_default(_replace_pct(v.default))
         p.add_argument(f"{param.pre}{k}", **param.kwargs)
     p.add_argument(f"--pdb", help=argparse.SUPPRESS, action='store_true')
     p.add_argument(f"--xtra", help=argparse.SUPPRESS, type=str)

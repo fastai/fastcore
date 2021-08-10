@@ -4,8 +4,7 @@ __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped
            'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi', 'untar_dir', 'repo_details',
            'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars', 'sparkline', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'compile_ast',
-           'PythonKernel']
+           'round_multiple', 'modified_env', 'ContextManagers', 'str2bool', 'sort_by_run', 'PythonKernel']
 
 # Cell
 from .imports import *
@@ -14,7 +13,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil,ast
+import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
@@ -462,19 +461,20 @@ def sort_by_run(fs):
     return res
 
 # Cell
-def compile_ast(tree, name):
-    if isinstance(tree,ast.Expr): mode,c = 'eval',ast.Expression(tree.value)
-    else: mode,c = 'exec',ast.Module([tree], type_ignores=[])
-    return compile(c, name, mode)
+from ast import parse,Expr,Expression,Module
 
 # Cell
 class PythonKernel:
     "A tiny persistent kernel for Python code"
-    def __init__(self, name='kernel'): self.globals,self.locals,self.name = {},{},name
+    def __init__(self, name='kernel', glb=None):
+        self.name,self.idx,self.glb = name,-1,glb or {}
+
+    def _run(self, p, mode='exec'):
+        return eval(compile(p, f'{self.name}-{self.idx}', mode), self.glb)
 
     def __call__(self, code):
-        res = None
-        for tree in ast.parse(code).body:
-            compiled = compile_ast(tree, self.name)
-            res = eval(compiled, self.globals, self.locals)
-        return res
+        self.idx += 1
+        p = parse(code) if not isinstance(code, Module) else code
+        expr = p.body.pop() if p.body and isinstance(p.body[-1], Expr) else None
+        self._run(p)
+        if expr: return self._run(Expression(expr.value), 'eval')

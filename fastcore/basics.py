@@ -12,7 +12,7 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'nested_idx', 'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate',
            'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum',
-           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'PythonKernel']
+           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
 
 # Cell
 from .imports import *
@@ -876,12 +876,3 @@ def typed(f):
         if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res
     return functools.update_wrapper(_f, f)
-
-# Cell
-class PythonKernel:
-    "A tiny persistent kernel for Python code"
-    def __init__(self): self.globals,self.locals = {},{}
-    def __call__(self, code):
-        try: c = compile(code, 'kernel', 'eval')
-        except SyntaxError: c = compile(code, 'kernel', 'exec')
-        return eval(c, self.globals, self.locals)

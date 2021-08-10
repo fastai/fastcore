@@ -20,11 +20,11 @@ from datetime import datetime, timezone
 from timeit import default_timer
 
 # Cell
-def dict2obj(d):
+def dict2obj(d, list_func=L, dict_func=AttrDict):
     "Convert (possibly nested) dicts (or lists of dicts) to `AttrDict`"
-    if isinstance(d, (L,list)): return L(d).map(dict2obj)
+    if isinstance(d, (L,list)): return list_func(d).map(dict2obj)
     if not isinstance(d, dict): return d
-    return AttrDict(**{k:dict2obj(v) for k,v in d.items()})
+    return dict_func(**{k:dict2obj(v) for k,v in d.items()})
 
 # Cell
 def obj2dict(d):

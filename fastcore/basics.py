@@ -12,7 +12,7 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'nested_idx', 'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0',
            'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate',
            'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'ImportEnum', 'StrEnum',
-           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed']
+           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
 
 # Cell
 from .imports import *
@@ -876,3 +876,10 @@ def typed(f):
         if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
         return res
     return functools.update_wrapper(_f, f)
+
+# Cell
+def exec_new(code):
+    "Execute `code` in a new environment and return it"
+    g = {}
+    exec(code, g)
+    return g

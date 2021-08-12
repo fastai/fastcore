@@ -127,6 +127,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
             for i,o_ in zip(idx,o): self.items[i] = o_
 
     def __eq__(self,b):
+        if b is None: return False
         if risinstance('ndarray', b): return array_equal(b, self)
         if isinstance(b, (str,dict)): return False
         return all_equal(b,self)

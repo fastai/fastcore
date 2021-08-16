@@ -13,7 +13,7 @@ from .basics import *
 from functools import wraps
 
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
-import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
+import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil,copy
 from typing import List,Set,Dict
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
@@ -121,7 +121,7 @@ def globtastic(
                 not skip_file_glob or not fnmatch(name, skip_file_glob)) and (
                 not skip_file_re or not skip_file_re.search(name)):
                 res.append(os.path.join(root, name))
-        for name in copy(dirs):
+        for name in copy.copy(dirs):
             if (folder_re and not folder_re.search(name)) or (
                 skip_folder_re and skip_folder_re.search(name)):
                 dirs.remove(name)

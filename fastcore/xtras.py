@@ -15,7 +15,6 @@ from functools import wraps
 import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
 import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from copy import copy
-from typing import List,Set,Dict
 from contextlib import contextmanager,ExitStack
 from pdb import set_trace
 from datetime import datetime, timezone
@@ -116,7 +115,7 @@ def walk(
 
 # Cell
 def globtastic(
-    path:(Path,str), # path to start searching
+    path:Union[Path,str], # path to start searching
     recursive:bool=True, # search subfolders
     symlinks:bool=True, # follow symlinks?
     file_glob:str=None, # Only include files matching glob
@@ -125,8 +124,10 @@ def globtastic(
     skip_file_glob:str=None, # Skip files matching glob
     skip_file_re:str=None, # Skip files matching regex
     skip_folder_re:str=None # Skip folders matching regex
-)->List[Path]: # Paths to matched files
+)->L: # Paths to matched files
     "A more powerful `glob`, including regex matches, symlink handling, and skip parameters"
+    path = Path(path)
+    if path.is_file(): return L([path])
     if not recursive: skip_folder_re='.'
     file_re,folder_re = compile_re(file_re),compile_re(folder_re)
     skip_file_re,skip_folder_re = compile_re(skip_file_re),compile_re(skip_folder_re)
@@ -138,7 +139,6 @@ def globtastic(
     def _keep_folder(root, name):
         return (not folder_re or folder_re.search(name)) and (
             not skip_folder_re or not skip_folder_re.search(name))
-    path = Path(path)
     return L(path/o for o in walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder))
 
 # Cell

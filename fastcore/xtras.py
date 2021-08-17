@@ -139,7 +139,7 @@ def globtastic(
     def _keep_folder(root, name):
         return (not folder_re or folder_re.search(name)) and (
             not skip_folder_re or not skip_folder_re.search(name))
-    return L(path/o for o in walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder))
+    return L(walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder))
 
 # Cell
 @contextmanager

@@ -10,7 +10,7 @@ from functools import lru_cache
 from contextlib import contextmanager
 from copy import copy
 from configparser import ConfigParser
-import random,pickle,inspect
+import random,pickle,inspect,tomlkit
 
 # Cell
 @contextmanager
@@ -235,15 +235,26 @@ Sequence.register(L);
 # Cell
 def save_config_file(file, d, **kwargs):
     "Write settings dict to a new config file, or overwrite the existing one."
-    config = ConfigParser(**kwargs)
-    config['DEFAULT'] = d
-    config.write(open(file, 'w'))
+    file = Path(file)
+    if file.suffix == '.toml':
+        existing_configs = tomlkit.parse(file.read_text()) if file.exists() else {}
+        if 'tool' not in existing_configs: existing_configs['tool'] = {}
+        # Merge existing configs with d (d's values take precedence on duplicate keys)
+        existing_configs['tool']['fastai'] = {**existing_configs['tool'].get('fastai',{}), **d}
+        file.write_text(tomlkit.dumps(existing_configs))
+    else:
+        config = ConfigParser(**kwargs)
+        config['DEFAULT'] = d
+        config.write(open(file, 'w'))
 
 # Cell
 def read_config_file(file, **kwargs):
-    config = ConfigParser(**kwargs)
-    config.read(file)
-    return config['DEFAULT']
+    file = Path(file)
+    if file.suffix == '.toml': return tomlkit.parse(file.read_text())['tool']['fastai']
+    else:
+        config = ConfigParser(**kwargs)
+        config.read(file)
+        return config['DEFAULT']
 
 # Cell
 class Config:

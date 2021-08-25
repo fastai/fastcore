@@ -704,7 +704,7 @@ def _using_attr(f, attr, x): return f(getattr(x,attr))
 
 # Cell
 def using_attr(f, attr):
-    "Change function `f` to operate on `attr`"
+    "Construct a function which applies `f` to the argument's attribute `attr`"
     return partial(_using_attr, f, attr)
 
 # Cell

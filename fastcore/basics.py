@@ -592,12 +592,12 @@ def loop_first_last(values):
 
 # Cell
 def loop_first(values):
-    "Iterate and generate a tuple with a flag for first and last value."
+    "Iterate and generate a tuple with a flag for first value."
     return ((b,o) for b,_,o in loop_first_last(values))
 
 # Cell
 def loop_last(values):
-    "Iterate and generate a tuple with a flag for first and last value."
+    "Iterate and generate a tuple with a flag for last value."
     return ((b,o) for _,b,o in loop_first_last(values))
 
 # Cell

@@ -219,7 +219,7 @@ def _unpack(fname, out):
 # Cell
 def untar_dir(fname, dest, rename=False, overwrite=False):
     "untar `file` into `dest`, creating a directory if the root contains more than one item"
-    with tempfile.TemporaryDirectory(dir='.') as d:
+    with tempfile.TemporaryDirectory() as d:
         out = Path(d)/remove_suffix(Path(fname).stem, '.tar')
         out.mkdir()
         if rename: dest = dest/out.name

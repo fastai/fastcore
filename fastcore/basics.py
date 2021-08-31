@@ -9,11 +9,11 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'strcat', 'detuplify', 'replicate', 'setify',
            'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
            'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr',
-           'nested_idx', 'val2idx', 'uniqueify', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0',
-           'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate',
-           'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum',
-           'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed',
-           'exec_new']
+           'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'num_methods',
+           'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex',
+           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
+           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString',
+           'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
 
 # Cell
 from .imports import *
@@ -575,6 +575,30 @@ def uniqueify(x, sort=False, bidir=False, start=None):
     if start is not None: res = listify(start)+res
     if sort: res.sort()
     return (res,val2idx(res)) if bidir else res
+
+# Cell
+
+# looping functions from https://github.com/willmcgugan/rich/blob/master/rich/_loop.py
+def loop_first_last(values):
+    "Iterate and generate a tuple with a flag for first and last value."
+    iter_values = iter(values)
+    try: previous_value = next(iter_values)
+    except StopIteration: return
+    first = True
+    for value in iter_values:
+        yield first,False,previous_value
+        first,previous_value = False,value
+    yield first,True,previous_value
+
+# Cell
+def loop_first(values):
+    "Iterate and generate a tuple with a flag for first and last value."
+    return ((b,o) for b,_,o in loop_first_last(values))
+
+# Cell
+def loop_last(values):
+    "Iterate and generate a tuple with a flag for first and last value."
+    return ((b,o) for _,b,o in loop_first_last(values))
 
 # Cell
 num_methods = """

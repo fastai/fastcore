@@ -5,6 +5,7 @@ __all__ = ['test_sig', 'FixSigMeta', 'PrePostInitMeta', 'AutoInit', 'NewChkMeta'
 
 # Cell
 from .imports import *
+from .test import *
 from contextlib import contextmanager
 from copy import copy
 import inspect

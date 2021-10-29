@@ -6,14 +6,14 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
            'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake',
            'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
-           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'strcat', 'detuplify', 'replicate', 'setify',
-           'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
-           'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr',
-           'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'num_methods',
-           'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex',
-           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString',
-           'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
+           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate',
+           'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values',
+           'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first',
+           'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last',
+           'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind',
+           'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func',
+           'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
+           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
 
 # Cell
 from .imports import *
@@ -421,9 +421,16 @@ class Float(float,ShowPrint):
     pass
 
 # Cell
+def flatten(o):
+    "Concatenate all collections and items as a generator"
+    for item in o:
+        try: yield from flatten(item)
+        except TypeError: yield item
+
+# Cell
 def concat(colls)->list:
-    "Concatenate all collections in `colls`"
-    return list(itertools.chain.from_iterable(colls))
+    "Concatenate all collections and items as a list"
+    return list(flatten(colls))
 
 # Cell
 def strcat(its, sep:str='')->str:

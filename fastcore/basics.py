@@ -9,7 +9,7 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'concat', 'strcat', 'detuplify', 'replicate', 'setify',
            'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle',
            'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr',
-           'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'num_methods',
+           'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'flatten', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex',
            'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
            'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString',
@@ -599,6 +599,12 @@ def loop_first(values):
 def loop_last(values):
     "Iterate and generate a tuple with a flag for last value."
     return ((b,o) for _,b,o in loop_first_last(values))
+
+# Cell
+def flatten(o):
+    for item in o:
+        if isinstance(item, (list, tuple, set)): yield from flatten(item)
+        else: yield item
 
 # Cell
 num_methods = """

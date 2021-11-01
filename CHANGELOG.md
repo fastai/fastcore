@@ -2,6 +2,22 @@
 
 <!-- do not remove -->
 
+## 1.3.27
+
+### New Features
+
+- add loop functions, thanks to @willmcgugan ([#363](https://github.com/fastai/fastcore/issues/363))
+- add `walk` function ([#355](https://github.com/fastai/fastcore/issues/355))
+- add `globtastic` and `compile_re` ([#354](https://github.com/fastai/fastcore/issues/354))
+- add `exec_new` ([#350](https://github.com/fastai/fastcore/issues/350))
+- add `PythonKernel` ([#348](https://github.com/fastai/fastcore/issues/348))
+- add `flatten`
+
+### Bugs Squashed
+
+- avoid expansion of `%` format strings in `fastcore.script` ([#349](https://github.com/fastai/fastcore/issues/349))
+
+
 ## 1.3.26
 
 ### New Features

@@ -5,6 +5,7 @@ from warnings import warn
 from typing import Iterable,Generator,Sequence,Iterator,List,Set,Dict,Union,Optional
 from functools import partial,reduce
 from pathlib import Path
+from packaging.version import parse
 
 try:
     from types import WrapperDescriptorType,MethodWrapperType,MethodDescriptorType
@@ -99,3 +100,10 @@ def remove_suffix(text, suffix):
     "Temporary until py39 is a prereq"
     return text[:-len(suffix)] if text.endswith(suffix) else text
 
+def ismin_version(min_version, package_version):
+    "Check if `package_version` >= `min_version` using packaging.version"
+    return parse(package_version) >= parse(min_version)
+
+def notmax_version(max_version, package_version):
+    "Check if `package_version` < `max_version` using packaging.version"
+    return  parse(package_version) < parse(max_version)

@@ -359,7 +359,6 @@ def get_source_link(func):
     mod = inspect.getmodule(func)
     module = mod.__name__.replace('.', '/') + '.py'
     try:
-
         nbdev_mod = importlib.import_module(mod.__package__.split('.')[0] + '._nbdev')
         return f"{nbdev_mod.git_url}{module}#L{line}"
     except: return f"{module}#L{line}"

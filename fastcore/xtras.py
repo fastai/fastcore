@@ -13,7 +13,7 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile,importlib
+import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile,importlib,inspect
 import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from copy import copy
 from contextlib import contextmanager,ExitStack
@@ -359,6 +359,7 @@ def get_source_link(func):
     mod = inspect.getmodule(func)
     module = mod.__name__.replace('.', '/') + '.py'
     try:
+
         nbdev_mod = importlib.import_module(mod.__package__.split('.')[0] + '._nbdev')
         return f"{nbdev_mod.git_url}{module}#L{line}"
     except: return f"{module}#L{line}"

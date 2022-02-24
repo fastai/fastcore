@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.3.29
+
+
+### Bugs Squashed
+
+- fix missing import for `get_source_link` ([#392](https://github.com/fastai/fastcore/pull/392)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+- fix missing import ([#391](https://github.com/fastai/fastcore/pull/391)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+
+
 ## 1.3.28
 
 ### New Features

@@ -2,6 +2,12 @@
 
 <!-- do not remove -->
 
+## 1.3.28
+
+### New Features
+
+- add `get_source_link` from nbdev ([#390](https://github.com/fastai/fastcore/pull/390)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+
 ## 1.3.27
 
 ### New Features

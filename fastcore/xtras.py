@@ -12,7 +12,7 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
+import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile,importlib
 import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from copy import copy
 from contextlib import contextmanager,ExitStack

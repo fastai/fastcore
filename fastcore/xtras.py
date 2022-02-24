@@ -2,9 +2,10 @@
 
 __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped', 'IterLen', 'ReindexCollection',
            'walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi',
-           'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'truncstr', 'spark_chars',
-           'sparkline', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local',
-           'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers', 'str2bool']
+           'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'get_source_link', 'truncstr',
+           'spark_chars', 'sparkline', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
+           'partial_format', 'utc2local', 'local2utc', 'trace', 'round_multiple', 'modified_env', 'ContextManagers',
+           'str2bool']
 
 # Cell
 from .imports import *
@@ -12,7 +13,7 @@ from .foundation import *
 from .basics import *
 from functools import wraps
 
-import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile
+import mimetypes,pickle,random,json,subprocess,shlex,bz2,gzip,zipfile,tarfile,importlib
 import imghdr,struct,distutils.util,tempfile,time,string,collections,shutil
 from copy import copy
 from contextlib import contextmanager,ExitStack
@@ -335,6 +336,32 @@ def delete(self:Path):
     if not self.exists(): return
     if self.is_dir(): shutil.rmtree(self)
     else: self.unlink()
+
+# Cell
+def _is_type_dispatch(x): return type(x).__name__ == "TypeDispatch"
+def _unwrapped_type_dispatch_func(x): return x.first() if _is_type_dispatch(x) else x
+
+def _is_property(x): return type(x)==property
+def _has_property_getter(x): return _is_property(x) and hasattr(x, 'fget') and hasattr(x.fget, 'func')
+def _property_getter(x): return x.fget.func if _has_property_getter(x) else x
+
+def _unwrapped_func(x):
+    x = _unwrapped_type_dispatch_func(x)
+    x = _property_getter(x)
+    return x
+
+
+def get_source_link(func):
+    "Return link to `func` in source code"
+    func = _unwrapped_func(func)
+    try: line = inspect.getsourcelines(func)[1]
+    except Exception: return ''
+    mod = inspect.getmodule(func)
+    module = mod.__name__.replace('.', '/') + '.py'
+    try:
+        nbdev_mod = importlib.import_module(mod.__package__.split('.')[0] + '._nbdev')
+        return f"{nbdev_mod.git_url}{module}#L{line}"
+    except: return f"{module}#L{line}"
 
 # Cell
 def truncstr(s:str, maxlen:int, suf:str='…', space='')->str:

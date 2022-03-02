@@ -12,12 +12,12 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last',
            'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind',
            'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func',
-           'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful',
-           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
+           'get_annotations_ex', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum',
+           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
 
 # Cell
 from .imports import *
-import builtins
+import builtins,types
 
 # Cell
 defaults = SimpleNamespace()
@@ -791,6 +791,53 @@ def copy_func(f):
     return fn
 
 # Cell
+def get_annotations_ex(obj, *, globals=None, locals=None):
+    "Backport of py3.10 `get_annotations` that returns globals/locals"
+    if isinstance(obj, type):
+        obj_dict = getattr(obj, '__dict__', None)
+        if obj_dict and hasattr(obj_dict, 'get'):
+            ann = obj_dict.get('__annotations__', None)
+            if isinstance(ann, types.GetSetDescriptorType): ann = None
+        else: ann = None
+
+        obj_globals = None
+        module_name = getattr(obj, '__module__', None)
+        if module_name:
+            module = sys.modules.get(module_name, None)
+            if module: obj_globals = getattr(module, '__dict__', None)
+        obj_locals = dict(vars(obj))
+        unwrap = obj
+    elif isinstance(obj, types.ModuleType):
+        ann = getattr(obj, '__annotations__', None)
+        obj_globals = getattr(obj, '__dict__')
+        obj_locals,unwrap = None,None
+    elif callable(obj):
+        ann = getattr(obj, '__annotations__', None)
+        obj_globals = getattr(obj, '__globals__', None)
+        obj_locals,unwrap = None,obj
+    else: raise TypeError(f"{obj!r} is not a module, class, or callable.")
+
+    if ann is None: ann = {}
+    if not isinstance(ann, dict): raise ValueError(f"{obj!r}.__annotations__ is neither a dict nor None")
+    if not ann: ann = {}
+
+    if unwrap is not None:
+        while True:
+            if hasattr(unwrap, '__wrapped__'):
+                unwrap = unwrap.__wrapped__
+                continue
+            if isinstance(unwrap, functools.partial):
+                unwrap = unwrap.func
+                continue
+            break
+        if hasattr(unwrap, "__globals__"): obj_globals = unwrap.__globals__
+
+    if globals is None: globals = obj_globals
+    if locals is None: locals = obj_locals
+
+    return dict(ann), globals, locals
+
+# Cell
 def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"
     if not isinstance(cls, (tuple,list)): cls=(cls,)
@@ -813,8 +860,10 @@ def patch_to(cls, as_prop=False, cls_method=False):
 def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
-    cls = next(iter(f.__annotations__.values()))
-    if cls_method: cls = f.__annotations__.pop('cls')
+    ann,glb,loc = get_annotations_ex(f)
+    cls = ann.pop('cls') if cls_method else next(iter(ann.values()))
+    if isinstance(cls,str): cls = eval(cls, glb, loc)
+    elif isinstance(cls,(tuple,list)): cls = [eval(c, glb, loc) if isinstance(c,str) else c for c in cls]
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell

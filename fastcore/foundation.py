@@ -257,7 +257,7 @@ class Config:
                 self.d = create
                 cfg_path.mkdir(exist_ok=True, parents=True)
                 self.save()
-            else: raise Exception(f"Could not find {cfg_name}")
+            else: raise FileNotFoundError(f"Could not find {cfg_name}")
         self.d = read_config_file(self.config_file)
 
     def __setitem__(self,k,v): self.d[k] = str(v)

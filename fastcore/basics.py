@@ -839,10 +839,10 @@ def get_annotations_ex(obj, *, globals=None, locals=None):
     return dict(ann), globals, locals
 
 # Cell
-def eval_type(t):
+def eval_type(t, glb, loc):
     "`eval` a type or collection of types, if needed, for annotations in py3.10+"
     if isinstance(t,str): return eval(t, glb, loc)
-    if isinstance(t,(tuple,list)): return type(t)([eval(c, glb, loc) if isinstance(c,str) else c for c in cls])
+    if isinstance(t,(tuple,list)): return type(t)([eval(c, glb, loc) if isinstance(c,str) else c for c in t])
     return t
 
 # Cell
@@ -869,7 +869,7 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
     ann,glb,loc = get_annotations_ex(f)
-    cls = eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())))
+    cls = eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())), glb, loc)
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell

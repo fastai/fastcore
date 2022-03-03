@@ -12,8 +12,9 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last',
            'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind',
            'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func',
-           'get_annotations_ex', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum',
-           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
+           'get_annotations_ex', 'eval_type', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum',
+           'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed',
+           'exec_new']
 
 # Cell
 from .imports import *
@@ -838,6 +839,13 @@ def get_annotations_ex(obj, *, globals=None, locals=None):
     return dict(ann), globals, locals
 
 # Cell
+def eval_type(t):
+    "`eval` a type or collection of types, if needed, for annotations in py3.10+"
+    if isinstance(t,str): return eval(t, glb, loc)
+    if isinstance(t,(tuple,list)): return type(t)([eval(c, glb, loc) if isinstance(c,str) else c for c in cls])
+    return t
+
+# Cell
 def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"
     if not isinstance(cls, (tuple,list)): cls=(cls,)
@@ -861,9 +869,7 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
     ann,glb,loc = get_annotations_ex(f)
-    cls = ann.pop('cls') if cls_method else next(iter(ann.values()))
-    if isinstance(cls,str): cls = eval(cls, glb, loc)
-    elif isinstance(cls,(tuple,list)): cls = [eval(c, glb, loc) if isinstance(c,str) else c for c in cls]
+    cls = eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())))
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell

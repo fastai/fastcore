@@ -3,18 +3,17 @@
 __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType',
            'null', 'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
-           'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'type_hints', 'annotations',
-           'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake',
-           'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
-           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate',
-           'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values',
-           'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first',
-           'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last',
-           'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind',
-           'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func',
-           'get_annotations_ex', 'eval_type', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum',
-           'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed',
-           'exec_new']
+           'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'get_annotations_ex', 'eval_type',
+           'type_hints', 'annotations', 'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
+           'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs',
+           'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat',
+           'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict',
+           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex',
+           'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'val2idx', 'uniqueify', 'loop_first_last',
+           'loop_first', 'loop_last', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2',
+           'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr',
+           'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum',
+           'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new']
 
 # Cell
 from .imports import *
@@ -237,9 +236,71 @@ class AttrDict(dict):
     def __dir__(self): return super().__dir__() + list(self.keys())
 
 # Cell
+def get_annotations_ex(obj, *, globals=None, locals=None):
+    "Backport of py3.10 `get_annotations` that returns globals/locals"
+    if isinstance(obj, type):
+        obj_dict = getattr(obj, '__dict__', None)
+        if obj_dict and hasattr(obj_dict, 'get'):
+            ann = obj_dict.get('__annotations__', None)
+            if isinstance(ann, types.GetSetDescriptorType): ann = None
+        else: ann = None
+
+        obj_globals = None
+        module_name = getattr(obj, '__module__', None)
+        if module_name:
+            module = sys.modules.get(module_name, None)
+            if module: obj_globals = getattr(module, '__dict__', None)
+        obj_locals = dict(vars(obj))
+        unwrap = obj
+    elif isinstance(obj, types.ModuleType):
+        ann = getattr(obj, '__annotations__', None)
+        obj_globals = getattr(obj, '__dict__')
+        obj_locals,unwrap = None,None
+    elif callable(obj):
+        ann = getattr(obj, '__annotations__', None)
+        obj_globals = getattr(obj, '__globals__', None)
+        obj_locals,unwrap = None,obj
+    else: raise TypeError(f"{obj!r} is not a module, class, or callable.")
+
+    if ann is None: ann = {}
+    if not isinstance(ann, dict): raise ValueError(f"{obj!r}.__annotations__ is neither a dict nor None")
+    if not ann: ann = {}
+
+    if unwrap is not None:
+        while True:
+            if hasattr(unwrap, '__wrapped__'):
+                unwrap = unwrap.__wrapped__
+                continue
+            if isinstance(unwrap, functools.partial):
+                unwrap = unwrap.func
+                continue
+            break
+        if hasattr(unwrap, "__globals__"): obj_globals = unwrap.__globals__
+
+    if globals is None: globals = obj_globals
+    if locals is None: locals = obj_locals
+
+    return dict(ann), globals, locals
+
+# Cell
+def eval_type(t, glb, loc):
+    "`eval` a type or collection of types, if needed, for annotations in py3.10+"
+    if isinstance(t,str):
+        if '|' in t: return eval_type(tuple(t.split('|')), glb, loc)
+        return eval(t, glb, loc)
+    if isinstance(t,(tuple,list)): return type(t)([eval_type(c, glb, loc) for c in t])
+    return t
+
+# Cell
+def _eval_type(t, glb, loc):
+    res = eval_type(t, glb, loc)
+    return NoneType if res is None else res
+
 def type_hints(f):
-    "Same as `typing.get_type_hints` but returns `{}` if not allowed type"
-    return typing.get_type_hints(f) if isinstance(f, typing._allowed_types) else {}
+    "Like `typing.get_type_hints` but returns `{}` if not allowed type"
+    if not isinstance(f, typing._allowed_types): return {}
+    ann,glb,loc = get_annotations_ex(f)
+    return {k:_eval_type(v,glb,loc) for k,v in ann.items()}
 
 # Cell
 def annotations(o):
@@ -790,60 +851,6 @@ def copy_func(f):
     fn.__kwdefaults__ = f.__kwdefaults__
     fn.__dict__.update(f.__dict__)
     return fn
-
-# Cell
-def get_annotations_ex(obj, *, globals=None, locals=None):
-    "Backport of py3.10 `get_annotations` that returns globals/locals"
-    if isinstance(obj, type):
-        obj_dict = getattr(obj, '__dict__', None)
-        if obj_dict and hasattr(obj_dict, 'get'):
-            ann = obj_dict.get('__annotations__', None)
-            if isinstance(ann, types.GetSetDescriptorType): ann = None
-        else: ann = None
-
-        obj_globals = None
-        module_name = getattr(obj, '__module__', None)
-        if module_name:
-            module = sys.modules.get(module_name, None)
-            if module: obj_globals = getattr(module, '__dict__', None)
-        obj_locals = dict(vars(obj))
-        unwrap = obj
-    elif isinstance(obj, types.ModuleType):
-        ann = getattr(obj, '__annotations__', None)
-        obj_globals = getattr(obj, '__dict__')
-        obj_locals,unwrap = None,None
-    elif callable(obj):
-        ann = getattr(obj, '__annotations__', None)
-        obj_globals = getattr(obj, '__globals__', None)
-        obj_locals,unwrap = None,obj
-    else: raise TypeError(f"{obj!r} is not a module, class, or callable.")
-
-    if ann is None: ann = {}
-    if not isinstance(ann, dict): raise ValueError(f"{obj!r}.__annotations__ is neither a dict nor None")
-    if not ann: ann = {}
-
-    if unwrap is not None:
-        while True:
-            if hasattr(unwrap, '__wrapped__'):
-                unwrap = unwrap.__wrapped__
-                continue
-            if isinstance(unwrap, functools.partial):
-                unwrap = unwrap.func
-                continue
-            break
-        if hasattr(unwrap, "__globals__"): obj_globals = unwrap.__globals__
-
-    if globals is None: globals = obj_globals
-    if locals is None: locals = obj_locals
-
-    return dict(ann), globals, locals
-
-# Cell
-def eval_type(t, glb, loc):
-    "`eval` a type or collection of types, if needed, for annotations in py3.10+"
-    if isinstance(t,str): return eval(t, glb, loc)
-    if isinstance(t,(tuple,list)): return type(t)([eval(c, glb, loc) if isinstance(c,str) else c for c in t])
-    return t
 
 # Cell
 def patch_to(cls, as_prop=False, cls_method=False):

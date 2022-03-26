@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.4.0
+
+### New Features
+
+- Support union types with `|` in `typedispatch` and `@patch` ([#397](https://github.com/fastai/fastcore/issues/397))
+- Support py3.10 annotations ([#396](https://github.com/fastai/fastcore/issues/396))
+
+### Bugs Squashed
+
+- fix missing import for `get_source_link` ([#392](https://github.com/fastai/fastcore/pull/392)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+
+
 ## 1.3.29
 
 

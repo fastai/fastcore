@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.4.1
+
+### New Features
+
+- py310 annotation support ([#402](https://github.com/fastai/fastcore/issues/402))
+- add `set_nested_idx` ([#401](https://github.com/fastai/fastcore/issues/401))
+
+
 ## 1.4.0
 
 ### New Features

@@ -52,7 +52,7 @@ def _get_full(anno, name, default, docs):
     return AttrDict(docment=docs.get(name), anno=anno, default=default)
 
 # Cell
-def docments(s, full=False, returns=True):
+def docments(s, full=False, returns=True, eval_str=False):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
     if isclass(s): s = s.__init__ # Constructor for a class
     comments = {o.start[0]:_clean_comment(o.string) for o in _tokens(s) if o.type==COMMENT}
@@ -64,4 +64,8 @@ def docments(s, full=False, returns=True):
     sig = signature(s)
     res = {arg:_get_full(p.annotation, p.name, p.default, docs) for arg,p in sig.parameters.items()}
     if returns: res['return'] = _get_full(sig.return_annotation, 'return', Parameter.empty, docs)
+    if eval_str:
+        hints = type_hints(s)
+        for k,v in res.items():
+            if k in hints: v['anno'] = hints.get(k)
     return res

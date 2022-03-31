@@ -69,7 +69,7 @@ class _HelpFormatter(argparse.HelpFormatter):
 def anno_parser(func, prog=None, from_name=False):
     "Look at params (annotated with `Param`) in func and return an `ArgumentParser`"
     p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=_HelpFormatter)
-    for k,v in docments(func, full=True, returns=False).items():
+    for k,v in docments(func, full=True, returns=False, eval_str=True).items():
         param = v.anno
         if not isinstance(param,Param): param = Param(v.docment, v.anno)
         param.set_default(v.default)
@@ -85,8 +85,9 @@ def args_from_prog(func, prog):
     if '##' in prog: _,prog = prog.split('##', 1)
     progsp = prog.split("#")
     args = {progsp[i]:progsp[i+1] for i in range(0, len(progsp), 2)}
+    annos = type_hints(func)
     for k,v in args.items():
-        t = func.__annotations__.get(k, Param()).type
+        t = annos.get(k, Param()).type
         if t: args[k] = t(v)
     return args
 

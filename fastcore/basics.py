@@ -631,7 +631,7 @@ def _access(coll, idx): return coll.get(idx, None) if hasattr(coll, 'get') else 
 def _nested_idx(coll, *idxs):
     *idxs,last_idx = idxs
     for idx in idxs:
-        if isinstance(coll,str) or not isinstance(coll, typing.Collection): return
+        if isinstance(coll,str) or not isinstance(coll, typing.Collection): return None,None
         coll = coll.get(idx, None) if hasattr(coll, 'get') else coll[idx] if idx<len(coll) else None
     return coll,last_idx
 

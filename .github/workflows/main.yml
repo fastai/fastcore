@@ -53,7 +53,6 @@ jobs:
 
   nbdev-integration-test:
     needs: filter
-#     container: fastai/jekyll
     runs-on: ubuntu-latest
     steps:
     - name: Set up Python
@@ -89,12 +88,6 @@ jobs:
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
         
-#     - name: clone fastai
-#       uses: actions/checkout@v3
-#       with:
-#         repository: 'fastai/fastai'
-#         path: fastai
-        
     - name: Install libraries
       run: |
         python -m pip install --upgrade pip
@@ -103,11 +96,11 @@ jobs:
         pip install -Ue .[dev]
 
     - name: check for cache hit
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache
       with:
         path: ~/.fastai/data
-        key: 'fastai-test-data-v4'
+        key: 'fastai-test-data-v5'
 
     - name: download data
       if: env.download == 'true' && steps.cache.outputs.cache-hit != 'true'

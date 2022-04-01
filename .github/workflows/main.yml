@@ -101,6 +101,8 @@ jobs:
         
     - name: Install libraries
       run: |
+        python -m pip install --upgrade pip
+        pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
         pip install -Uqq nbdev
         cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]

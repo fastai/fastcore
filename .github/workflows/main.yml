@@ -84,16 +84,22 @@ jobs:
       matrix:
         nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
-    
     - name: clone this branch [fastcore]
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
+      with:
+        path: fastcore/
+        
+    - name: clone fastai
+      uses: actions/checkout@v2
+      with:
+        repository: 'fastai/fastai'
+        path: fastai
         
     - name: Install libraries
       run: |
-        python -m pip install --upgrade pip
-        pip install -Uq git+https://github.com/fastai/fastai.git
-        pip install -Uq git+https://github.com/fastai/nbdev.git
-        pip install -Ue .[dev]
+        pip install -Uqq nbdev
+        cd fastai && pip install -Ue .[dev]
+        cd ../fastcore && pip install -Ue .[dev]
 
     - name: check for cache hit
       uses: actions/cache@v3

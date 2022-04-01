@@ -77,7 +77,7 @@ jobs:
         
   fastai-integration-test:
     needs: filter
-#     container: fastai/fastai
+    container: fastai/fastai
     runs-on: ubuntu-latest
     env:
       download: "true"
@@ -90,22 +90,19 @@ jobs:
       
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
-      with:
-        path: fastcore/
         
-    - name: clone fastai
-      uses: actions/checkout@v3
-      with:
-        repository: 'fastai/fastai'
-        path: fastai
+#     - name: clone fastai
+#       uses: actions/checkout@v3
+#       with:
+#         repository: 'fastai/fastai'
+#         path: fastai
         
     - name: Install libraries
       run: |
         python -m pip install --upgrade pip
-        python -m pip install torch==1.8.2+cpu torchvision==0.9.2+cpu torchaudio==0.8.2 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
-        pip install -Uqq nbdev
-        cd fastai && pip install -Ue .[dev]
-        cd ../fastcore && pip install -Ue .[dev]
+        pip install -Uuq git+https://github.com/fastai/fastai.git
+        pip install -Uuq git+https://github.com/fastai/nbdev.git
+        pip install -Ue .[dev]
 
     - name: check for cache hit
       uses: actions/cache@v2

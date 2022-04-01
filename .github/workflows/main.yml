@@ -77,7 +77,7 @@ jobs:
         
   fastai-integration-test:
     needs: filter
-    container: fastai/fastai
+#     container: fastai/fastai
     runs-on: ubuntu-latest
     env:
       download: "true"

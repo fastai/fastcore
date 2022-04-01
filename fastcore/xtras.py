@@ -21,6 +21,7 @@ from pdb import set_trace
 from datetime import datetime, timezone
 from timeit import default_timer
 from fnmatch import fnmatch
+import pprint
 
 # Cell
 def dict2obj(d, list_func=L, dict_func=AttrDict):
@@ -48,12 +49,6 @@ def _repr_dict(d, lvl):
 def repr_dict(d):
     "Print nested dicts and lists, such as returned by `dict2obj`"
     return _repr_dict(d,0).strip()
-
-# Cell
-@patch
-def __repr__(self:AttrDict): return repr_dict(self)
-
-AttrDict._repr_markdown_ = AttrDict.__repr__
 
 # Cell
 def is_listy(x):

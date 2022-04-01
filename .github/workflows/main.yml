@@ -37,7 +37,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.py }}
     - name: Install dependencies
@@ -53,9 +53,11 @@ jobs:
 
   nbdev-integration-test:
     needs: filter
-    container: fastai/jekyll
+#     container: fastai/jekyll
     runs-on: ubuntu-latest
     steps:
+    - name: Set up Python
+      uses: actions/setup-python@v3
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
       with:

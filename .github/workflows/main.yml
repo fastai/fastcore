@@ -35,7 +35,7 @@ jobs:
             shell: "/bin/bash"
     runs-on: ${{ matrix.os }}-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -57,11 +57,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: clone this branch [fastcore]
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: fastcore_lib
     - name: clone nbdev
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: 'fastai/nbdev'
         path: nbdev   
@@ -84,12 +84,12 @@ jobs:
         nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
     - name: clone this branch [fastcore]
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: fastcore/
         
     - name: clone fastai
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: 'fastai/fastai'
         path: fastai

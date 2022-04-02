@@ -101,6 +101,9 @@ jobs:
         cd fastai && pip install -Ue .[dev]
         cd ../fastcore && pip install -Ue .[dev]
 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+
     - name: check for cache hit
       uses: actions/cache@v3
       id: cache

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
 
-        
+jobs:
   fastai-integration-test:
     runs-on: ubuntu-latest
     env:

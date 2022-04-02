@@ -97,9 +97,9 @@ jobs:
         
     - name: Install libraries
       run: |
-        sudo -H pip3 install -Uqq nbdev
-        cd fastai && sudo -H pip3 install -Ue .[dev]
-        cd ../fastcore && sudo -H pip3 install -Ue .[dev]
+        pip3 install -Uqq nbdev
+        cd fastai && pip3 install -Ue .[dev]
+        cd ../fastcore && pip3 install -Ue .[dev]
 
     - name: check for cache hit
       uses: actions/cache@v3

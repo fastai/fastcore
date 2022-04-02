@@ -101,9 +101,6 @@ jobs:
         cd fastai && sudo -H pip3 install -Ue .[dev]
         cd ../fastcore && sudo -H pip3 install -Ue .[dev]
 
-    - name: debug
-      uses: lhotari/action-upterm@v1
-
     - name: check for cache hit
       uses: actions/cache@v3
       id: cache

@@ -96,7 +96,10 @@ jobs:
       with:
         repository: 'fastai/fastai'
         path: fastai
-        
+  
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+      
     - name: install torch
       run: |
         cd fastai && pip3 install -Ue ".[dev]" --extra-index-url https://download.pytorch.org/whl/cpu

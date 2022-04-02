@@ -97,9 +97,9 @@ jobs:
         
     - name: Install libraries
       run: |
-        pip install -Uqq nbdev
-        cd fastai && pip install -Ue .[dev]
-        cd ../fastcore && pip install -Ue .[dev]
+        pip3 install -Uqq nbdev
+        cd fastai && pip3 install -Ue .[dev]
+        cd ../fastcore && pip3 install -Ue .[dev]
 
     - name: debug
       uses: lhotari/action-upterm@v1

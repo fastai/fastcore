@@ -40,7 +40,6 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.py }}
-        cache: 'pip'
     - name: Install dependencies
       run: |
         pip install -Uqq nbdev
@@ -60,7 +59,6 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.9'
-        cache: 'pip'
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
       with:
@@ -92,7 +90,6 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.9'
-        cache: 'pip'
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
       with:

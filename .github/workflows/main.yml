@@ -97,10 +97,13 @@ jobs:
         repository: 'fastai/fastai'
         path: fastai
         
+    - name: install torch
+      run: |
+        cd fastai && pip3 install -Ue ".[dev]" --extra-index-url https://download.pytorch.org/whl/cpu
+        
     - name: Install libraries
       run: |
         pip3 install -Uqq nbdev
-        cd fastai && pip3 install -Ue .[dev]
         cd ../fastcore && pip3 install -Ue .[dev]
 
     - name: check for cache hit

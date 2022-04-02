@@ -76,7 +76,7 @@ jobs:
         
   fastai-integration-test:
     needs: filter
-    container: fastai/fastai
+#     container: fastai/fastai
     runs-on: ubuntu-latest
     env:
       download: "true"
@@ -84,6 +84,8 @@ jobs:
       matrix:
         nb: ['[0-1]', '[2-3]', '[4-5]','[6-7]', '[8-9]']
     steps:
+    - name: Set up Python
+      uses: actions/setup-python@v3
     - name: clone this branch [fastcore]
       uses: actions/checkout@v3
       with:

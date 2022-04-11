@@ -10,17 +10,16 @@ defaults:
     shell: bash
 
 jobs:
-  filter:
-    runs-on: ubuntu-latest
-    if: (github.event_name == 'push' && github.event.head_commit.author.username == 'jph00') || github.event_name != 'push'
-    steps:
-      - run: |
-          echo "passed filter"
-          echo "event_name: ${{ github.event_name }}"
-          echo "head_commit.author.username: ${{ github.event.head_commit.author.username }}"
+#   filter:
+#     runs-on: ubuntu-latest
+#     if: (github.event_name == 'push' && github.event.head_commit.author.username == 'jph00') || github.event_name != 'push'
+#     steps:
+#       - run: |
+#           echo "passed filter"
+#           echo "event_name: ${{ github.event_name }}"
+#           echo "head_commit.author.username: ${{ github.event.head_commit.author.username }}"
 
   fastcore:
-    needs: filter
     strategy:
       fail-fast: false
       matrix:
@@ -52,7 +51,6 @@ jobs:
         SHELL:  ${{ matrix.shell }}
 
   nbdev-integration-test:
-    needs: filter
     runs-on: ubuntu-latest
     steps:
     - name: Set up Python
@@ -77,8 +75,6 @@ jobs:
         cd nbdev && make test
         
   fastai-integration-test:
-    needs: filter
-#     container: fastai/fastai
     runs-on: ubuntu-latest
     env:
       download: "true"

@@ -19,14 +19,14 @@ from inspect import getsource,isfunction,isclass,signature,Parameter
 from .utils import *
 
 from fastcore import docscrape
-from inspect import isclass
+from inspect import isclass,getdoc
 
 # Cell
 def docstring(sym):
     "Get docstring for `sym` for functions ad classes"
     if isinstance(sym, str): return sym
-    res = getattr(sym, "__doc__", None)
-    if not res and isclass(sym): res = nested_attr(sym, "__init__.__doc__")
+    res = getdoc(sym)
+    if not res and isclass(sym): res = getdoc(sym.__init__)
     return res or ""
 
 # Cell

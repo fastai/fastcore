@@ -178,8 +178,7 @@ class NumpyDocString(Mapping):
             summary = self._doc.read_to_next_empty_line()
             summary_str = " ".join([s.strip() for s in summary]).strip()
             compiled = re.compile(r'^([\w., ]+=)?\s*[\w\.]+\(.*\)$')
-            if compiled.match(summary_str):
-                if not self._is_at_section(): continue
+            if compiled.match(summary_str) and not self._is_at_section(): continue
             break
 
         if summary is not None: self['Summary'] = summary
@@ -222,41 +221,8 @@ class NumpyDocString(Mapping):
         return None
 
     def _error_location(self, msg, error=True):
-        if self._obj is not None:
-            # Make UserWarning more descriptive via object introspection.
-            # Skip if introspection fails
-            name = getattr(self._obj, '__name__', None)
-            if name is None:
-                name = getattr(getattr(self._obj, '__class__', None), '__name__', None)
-            if name is not None: msg += f" in the docstring of {name}"
         if error: raise ValueError(msg)
         else: warn(msg)
-
-    # string conversion routines
-
-    def _str_header(self, name, symbol='-'): return [name, len(name)*symbol]
-    def _str_indent(self, doc, indent=4): return [' '*indent + line for line in doc]
-
-    def _str_summary(self):
-        if self['Summary']: return self['Summary'] + ['']
-        return []
-
-    def _str_extended_summary(self):
-        if self['Extended']: return self['Extended'] + ['']
-        return []
-
-    def _str_param_list(self, name):
-        out = []
-        if self[name]:
-            out += self._str_header(name)
-            for param in self[name]:
-                parts = []
-                if param.name: parts.append(param.name)
-                if param.type: parts.append(param.type)
-                out += [' : '.join(parts)]
-                if param.desc and ''.join(param.desc).strip(): out += self._str_indent(param.desc)
-            out += ['']
-        return out
 
 
 def dedent_lines(lines, split=True):

@@ -21,6 +21,11 @@ met:
        contributors may be used to endorse or promote products derived
        from this software without specific prior written permission. """
 
+import textwrap, re, copy
+from warnings import warn
+from collections import namedtuple
+from collections.abc import Mapping
+
 __all__ = ['Parameter', 'NumpyDocString', 'dedent_lines']
 
 Parameter = namedtuple('Parameter', ['name', 'type', 'desc'])
@@ -89,14 +94,17 @@ class ParseError(Exception):
 
 class NumpyDocString(Mapping):
     """Parses a numpydoc string to an abstract representation """
-    sections = { 'Signature': '', 'Summary': [''], 'Extended': [], 'Parameters': [], 'Returns': [], 'Yields': [], 'Raises': [] }
+    sections = { 'Summary': [''], 'Extended': [], 'Parameters': [], 'Returns': [] }
 
     def __init__(self, docstring, config=None):
         docstring = textwrap.dedent(docstring).split('\n')
         self._doc = Reader(docstring)
         self._parsed_data = copy.deepcopy(self.sections)
         self._parse()
-        if 'Parameters' in self: self['Parameters'] = {o.name:o for o in self['Parameters']}
+        self['Parameters'] = {o.name:o for o in self['Parameters']}
+        if self['Returns']: self['Returns'] = self['Returns'][0]
+        self['Summary'] = dedent_lines(self['Summary'], split=False)
+        self['Extended'] = dedent_lines(self['Extended'], split=False)
 
     def __iter__(self): return iter(self._parsed_data)
     def __len__(self): return len(self._parsed_data)
@@ -171,7 +179,6 @@ class NumpyDocString(Mapping):
             summary_str = " ".join([s.strip() for s in summary]).strip()
             compiled = re.compile(r'^([\w., ]+=)?\s*[\w\.]+\(.*\)$')
             if compiled.match(summary_str):
-                self['Signature'] = summary_str
                 if not self._is_at_section(): continue
             break
 
@@ -216,16 +223,12 @@ class NumpyDocString(Mapping):
 
     def _error_location(self, msg, error=True):
         if self._obj is not None:
-            # we know where the docs came from:
-            try: filename = inspect.getsourcefile(self._obj)
-            except TypeError: filename = None
             # Make UserWarning more descriptive via object introspection.
             # Skip if introspection fails
             name = getattr(self._obj, '__name__', None)
             if name is None:
                 name = getattr(getattr(self._obj, '__class__', None), '__name__', None)
             if name is not None: msg += f" in the docstring of {name}"
-            msg += f" in {filename}." if filename else ""
         if error: raise ValueError(msg)
         else: warn(msg)
 
@@ -233,10 +236,6 @@ class NumpyDocString(Mapping):
 
     def _str_header(self, name, symbol='-'): return [name, len(name)*symbol]
     def _str_indent(self, doc, indent=4): return [' '*indent + line for line in doc]
-
-    def _str_signature(self):
-        if self['Signature']: return [self['Signature'].replace('*', r'\*')] + ['']
-        return ['']
 
     def _str_summary(self):
         if self['Summary']: return self['Summary'] + ['']
@@ -259,18 +258,10 @@ class NumpyDocString(Mapping):
             out += ['']
         return out
 
-    def __str__(self, func_role=''):
-        out = []
-        out += self._str_signature()
-        out += self._str_summary()
-        out += self._str_extended_summary()
-        for param_list in ('Parameters', 'Returns', 'Yields', 'Receives', 'Other Parameters', 'Raises', 'Warns'):
-            out += self._str_param_list(param_list)
-        for param_list in ('Attributes', 'Methods'): out += self._str_param_list(param_list)
-        return '\n'.join(out)
 
-
-def dedent_lines(lines):
+def dedent_lines(lines, split=True):
     """Deindent a list of lines maximally"""
-    return textwrap.dedent("\n".join(lines)).split("\n")
+    res = textwrap.dedent("\n".join(lines))
+    if split: res = res.split("\n")
+    return res
 

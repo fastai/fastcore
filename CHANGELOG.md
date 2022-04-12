@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.4.2
+
+### New Features
+
+- numpy-style docstring support for `docments` ([#405](https://github.com/fastai/fastcore/issues/405))
+
+
 ## 1.4.1
 
 ### New Features

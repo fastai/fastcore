@@ -14,7 +14,7 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler',
            'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property',
            'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus',
-           'add_props', 'typed', 'exec_new']
+           'add_props', 'typed', 'exec_new', 'exec_import']
 
 # Cell
 from .imports import *
@@ -998,6 +998,13 @@ def typed(f):
 # Cell
 def exec_new(code):
     "Execute `code` in a new environment and return it"
-    g = {}
+    pkg = None if __name__=='__main__' else Path().cwd().name
+    g = {'__name__': __name__, '__package__': pkg}
     exec(code, g)
     return g
+
+# Cell
+def exec_import(mod, sym):
+    "Import `sym` from `mod` in a new environment"
+    pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
+    return exec_new(f'from {pref}{mod} import {sym}')

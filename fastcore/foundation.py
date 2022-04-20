@@ -186,8 +186,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
 
     def concat(self): return self._new(itertools.chain.from_iterable(self.map(L)))
     def reduce(self, f, initial=None): return reduce(f, self) if initial is None else reduce(f, self, initial)
-    def sum(self): return self.reduce(operator.add)
-    def product(self): return self.reduce(operator.mul)
+    def sum(self): return self.reduce(operator.add, 0)
+    def product(self): return self.reduce(operator.mul, 1)
     def setattrs(self, attr, val): [setattr(o,attr,val) for o in self]
 
 # Cell

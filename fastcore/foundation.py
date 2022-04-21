@@ -189,6 +189,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def sum(self): return self.reduce(operator.add, 0)
     def product(self): return self.reduce(operator.mul, 1)
     def setattrs(self, attr, val): [setattr(o,attr,val) for o in self]
+    def count(self): return len(self)
 
 # Cell
 add_docs(L,
@@ -220,7 +221,8 @@ add_docs(L,
          reduce="Wrapper for `functools.reduce`",
          sum="Sum of the items",
          product="Product of the items",
-         setattrs="Call `setattr` on all items"
+         setattrs="Call `setattr` on all items",
+         count="Count of the items"
         )
 
 # Cell

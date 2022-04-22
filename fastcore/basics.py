@@ -489,6 +489,7 @@ class Float(float,ShowPrint):
 def flatten(o):
     "Concatenate all collections and items as a generator"
     for item in o:
+        if isinstance(item, str): yield item; continue
         try: yield from flatten(item)
         except TypeError: yield item
 

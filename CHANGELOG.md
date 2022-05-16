@@ -3,6 +3,18 @@
 <!-- do not remove -->
 
 
+## 1.4.3
+
+### New Features
+
+- Add initial value for product and sum on L ([#406](https://github.com/fastai/fastcore/pull/406)), thanks to [@radekosmulski](https://github.com/radekosmulski)
+- add ppretty print repr to AttrDict ([#403](https://github.com/fastai/fastcore/pull/403)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+- Raise better error when a config isn't found ([#394](https://github.com/fastai/fastcore/pull/394)), thanks to [@muellerzr](https://github.com/muellerzr)
+
+### Bugs Squashed
+
+- Bugfix handle edge case when we have string in list and want to flatten ([#410](https://github.com/fastai/fastcore/pull/410)), thanks to [@Salehbigdeli](https://github.com/Salehbigdeli)
+
 
 ## 1.4.2
 

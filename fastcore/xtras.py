@@ -223,7 +223,7 @@ def untar_dir(fname, dest, rename=False, overwrite=False):
             src = _unpack(fname, out)
             dest = dest/src.name
         if dest.exists():
-            if overwrite: shutil.rmtree(dest)
+            if overwrite: shutil.rmtree(dest) if dest.is_dir() else dest.unlink()
             else: return dest
         if rename: src = _unpack(fname, out)
         shutil.move(str(src), dest)

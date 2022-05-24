@@ -4,18 +4,19 @@
 from __future__ import annotations
 
 
-__all__ = ['docstring', 'parse_docstring', 'empty', 'docments']
+__all__ = ['docstring', 'parse_docstring', 'isdataclass', 'get_dataclass_source', 'get_source', 'empty', 'docments']
 
 # Cell
 #nbdev_comment from __future__ import annotations
 
 import re
 from tokenize import tokenize,COMMENT
-from ast import parse,FunctionDef
+from ast import parse,FunctionDef,AnnAssign
 from io import BytesIO
 from textwrap import dedent
 from types import SimpleNamespace
 from inspect import getsource,isfunction,isclass,signature,Parameter
+from dataclasses import dataclass, is_dataclass
 from .utils import *
 
 from fastcore import docscrape
@@ -36,13 +37,25 @@ def parse_docstring(sym):
     return AttrDict(**docscrape.NumpyDocString(docstring(sym)))
 
 # Cell
+def isdataclass(s):
+    "Check if `s` is a dataclass but not a dataclass' instance"
+    return is_dataclass(s) and isclass(s)
+
+def get_dataclass_source(s):
+    "Get source code for dataclass `s`"
+    return getsource(s) if not getattr(s, "__module__") == '__main__' else ""
+
+def get_source(s):
+    "Get source code for string, function object or dataclass `s`"
+    return getsource(s) if isfunction(s) else get_dataclass_source(s) if isdataclass(s) else s
+
 def _parses(s):
-    "Parse Python code in string or function object `s`"
-    return parse(dedent(getsource(s) if isfunction(s) else s))
+    "Parse Python code in string, function object or dataclass `s`"
+    return parse(dedent(get_source(s)))
 
 def _tokens(s):
     "Tokenize Python code in string or function object `s`"
-    if isfunction(s): s = getsource(s)
+    s = get_source(s)
     return tokenize(BytesIO(s.encode('utf-8')).readline)
 
 _clean_re = re.compile('^\s*#(.*)\s*$')
@@ -53,11 +66,16 @@ def _clean_comment(s):
 def _param_locs(s, returns=True):
     "`dict` of parameter line numbers to names"
     body = _parses(s).body
-    if len(body)!=1 or not isinstance(body[0], FunctionDef): return None
-    defn = body[0]
-    res = {arg.lineno:arg.arg for arg in defn.args.args}
-    if returns and defn.returns: res[defn.returns.lineno] = 'return'
-    return res
+    if len(body)==1: #or not isinstance(body[0], FunctionDef): return None
+        defn = body[0]
+        if isinstance(defn, FunctionDef):
+            res = {arg.lineno:arg.arg for arg in defn.args.args}
+            if returns and defn.returns: res[defn.returns.lineno] = 'return'
+            return res
+        elif isdataclass(s):
+            res = {arg.lineno:arg.target.id for arg in defn.body if isinstance(arg, AnnAssign)}
+            return res
+    return None
 
 # Cell
 empty = Parameter.empty
@@ -93,9 +111,9 @@ def _merge_docs(dms, npdocs):
 def docments(s, full=False, returns=True, eval_str=False):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
     nps = parse_docstring(s)
-    if isclass(s): s = s.__init__ # Constructor for a class
+    if isclass(s) and not is_dataclass(s): s = s.__init__ # Constructor for a class
     comments = {o.start[0]:_clean_comment(o.string) for o in _tokens(s) if o.type==COMMENT}
-    parms = _param_locs(s, returns=returns)
+    parms = _param_locs(s, returns=returns) or {}
     docs = {arg:_get_comment(line, arg, comments, parms) for line,arg in parms.items()}
 
     if isinstance(s,str): s = eval(s)

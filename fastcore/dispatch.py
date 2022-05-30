@@ -24,7 +24,7 @@ def lenient_issubclass(cls, types):
 
 # Cell
 def sorted_topologically(iterable, *, cmp=operator.lt, reverse=False):
-    "Return a new list containing all items from the iterable sorted topologically"
+    "Return a new list containing all items from `iterable` sorted topologically."
     l,res = L(list(iterable)),[]
     for _ in range(len(l)):
         t = l.reduce(lambda x,y: y if cmp(y,x) else x)
@@ -43,7 +43,7 @@ def _chk_defaults(f, ann):
 
 # Cell
 def _p2_anno(f):
-    "Get the 1st 2 annotations of `f`, defaulting to `object`"
+    "Get 1st 2 annotations of `f`, defaulting to `object`"
     hints = type_hints(f)
     ann = [o for n,o in hints.items() if n!='return']
     if callable(f): _chk_defaults(f, ann)
@@ -52,31 +52,28 @@ def _p2_anno(f):
 
 # Cell
 class _TypeDict:
+    "Dict-like keyed by types and matched by `lenient_issubclass`"
     def __init__(self): self.d,self.cache = {},{}
 
-    def _reset(self):
-        self.d = {k:self.d[k] for k in sorted_topologically(self.d, cmp=lenient_issubclass)}
+    def __setitem__(self, t, v):
+        "Map type `t` (tuple interpreted as union) to `v`"
+        for t_ in L(t): self.d[t_] = v
+        self.d = {k:self.d[k] for k in sorted_topologically(self.d,cmp=lenient_issubclass)}
         self.cache = {}
 
-    def add(self, t, f):
-        "Add type `t` and function `f`"
-        if not isinstance(t,tuple): t=tuple(L(t))
-        for t_ in t: self.d[t_] = f
-        self._reset()
+    def setdefault(self, t, default):
+        v = self.d.get(t)
+        if v is None: v = self[t] = default
+        return v
 
-    def all_matches(self, k):
-        "Find first matching type that is a super-class of `k`"
-        if k not in self.cache:
-            types = [f for f in self.d if lenient_issubclass(k,f)]
-            self.cache[k] = [self.d[o] for o in types]
-        return self.cache[k]
+    def all_matches(self, t):
+        "Find all values matching types that are a super-class of `t`"
+        vs = self.cache.get(t)
+        if vs is None: vs = self.cache[t] = [v for k, v in self.d.items() if lenient_issubclass(t,k)]
+        return vs
 
-    def __getitem__(self, k):
-        "Find first matching type that is a super-class of `k`"
-        res = self.all_matches(k)
-        return res[0] if len(res) else None
-
-    def __repr__(self): return self.d.__repr__()
+    def __getitem__(self, t): return first(self.all_matches(t))
+    def __repr__(self): return repr(self.d)
     def first(self): return first(self.d.values())
 
 # Cell
@@ -92,11 +89,7 @@ class TypeDispatch:
         "Add type `t` and function `f`"
         if isinstance(f, staticmethod): a0,a1 = _p2_anno(f.__func__)
         else: a0,a1 = _p2_anno(f)
-        t = self.funcs.d.get(a0)
-        if t is None:
-            t = _TypeDict()
-            self.funcs.add(a0, t)
-        t.add(a1, f)
+        self.funcs.setdefault(a0,_TypeDict())[a1] = f
 
     def first(self):
         "Get first function in ordered dict of type:func."

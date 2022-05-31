@@ -1,5 +1,6 @@
 import sys,os,re,typing,itertools,operator,functools,math,warnings,functools,io,enum
 
+from copy import copy
 from operator import itemgetter,attrgetter
 from warnings import warn
 from typing import Iterable,Generator,Sequence,Iterator,List,Set,Dict,Union,Optional,Tuple
@@ -13,6 +14,15 @@ except ImportError:
     MethodWrapperType = type(object().__str__)
     MethodDescriptorType = type(str.join)
 from types import BuiltinFunctionType,BuiltinMethodType,MethodType,FunctionType,SimpleNamespace
+
+#Patch autoreload (if its loaded) to work with plum
+try: from IPython import get_ipython
+except ImportError: pass
+else:
+    ip = get_ipython()
+    if ip is not None and 'IPython.extensions.storemagic' in ip.extension_manager.loaded:
+        from plum.autoreload import activate
+        activate()
 
 NoneType = type(None)
 string_classes = (str,bytes)

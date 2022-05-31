@@ -4,154 +4,96 @@
 from __future__ import annotations
 
 
-__all__ = ['lenient_issubclass', 'sorted_topologically', 'TypeDispatch', 'DispatchReg', 'typedispatch', 'cast',
-           'retain_meta', 'default_set_meta', 'retain_type', 'retain_types', 'explode_types']
+__all__ = ['FastFunction', 'FastDispatcher', 'typedispatch', 'cast', 'retain_meta', 'default_set_meta', 'retain_type',
+           'retain_types', 'explode_types']
 
 # Cell
 #nbdev_comment from __future__ import annotations
 from .imports import *
 from .foundation import *
 from .utils import *
+from .meta import delegates
 
 from collections import defaultdict
+from plum import Function, Dispatcher
 
 # Cell
-def lenient_issubclass(cls, types):
-    "If possible return whether `cls` is a subclass of `types`, otherwise return False."
-    if cls is object and types is not object: return False # treat `object` as highest level
-    try: return isinstance(cls, types) or issubclass(cls, types)
-    except: return False
+def _eval_annotations(f):
+    "Evaluate future annotations before passing to plum to support backported union operator `|`"
+    f = copy_func(f)
+    for k, v in type_hints(f).items(): f.__annotations__[k] = Union[v] if isinstance(v, tuple) else v
+    return f
 
 # Cell
-def sorted_topologically(iterable, *, cmp=operator.lt, reverse=False):
-    "Return a new list containing all items from the iterable sorted topologically"
-    l,res = L(list(iterable)),[]
-    for _ in range(len(l)):
-        t = l.reduce(lambda x,y: y if cmp(y,x) else x)
-        res.append(t), l.remove(t)
-    return res[::-1] if reverse else res
+def _pt_repr(o):
+    "Concise repr of plum types"
+    n = type(o).__name__
+    if n == 'Tuple': return f"{n.lower()}[{','.join(_pt_repr(t) for t in o._el_types)}]"
+    if n == 'List': return f'{n.lower()}[{_pt_repr(o._el_type)}]'
+    if n == 'Dict': return f'{n.lower()}[{_pt_repr(o._key_type)},{_pt_repr(o._value_type)}]'
+    if n in ('Sequence','Iterable'): return f'{n}[{_pt_repr(o._el_type)}]'
+    if n == 'VarArgs': return f'{n}[{_pt_repr(o.type)}]'
+    if n == 'Union': return '|'.join(sorted(t.__name__ for t in (o.get_types())))
+    assert len(o.get_types()) == 1
+    return o.get_types()[0].__name__
 
 # Cell
-def _chk_defaults(f, ann):
-    pass
-# Implementation removed until we can figure out how to do this without `inspect` module
-#     try: # Some callables don't have signatures, so ignore those errors
-#         params = list(inspect.signature(f).parameters.values())[:min(len(ann),2)]
-#         if any(p.default!=inspect.Parameter.empty for p in params):
-#             warn(f"{f.__name__} has default params. These will be ignored.")
-#     except ValueError: pass
-
-# Cell
-def _p2_anno(f):
-    "Get the 1st 2 annotations of `f`, defaulting to `object`"
-    hints = type_hints(f)
-    ann = [o for n,o in hints.items() if n!='return']
-    if callable(f): _chk_defaults(f, ann)
-    while len(ann)<2: ann.append(object)
-    return ann[:2]
-
-# Cell
-class _TypeDict:
-    def __init__(self): self.d,self.cache = {},{}
-
-    def _reset(self):
-        self.d = {k:self.d[k] for k in sorted_topologically(self.d, cmp=lenient_issubclass)}
-        self.cache = {}
-
-    def add(self, t, f):
-        "Add type `t` and function `f`"
-        if not isinstance(t, tuple): t = tuple(L(union2tuple(t)))
-        for t_ in t: self.d[t_] = f
-        self._reset()
-
-    def all_matches(self, k):
-        "Find first matching type that is a super-class of `k`"
-        if k not in self.cache:
-            types = [f for f in self.d if lenient_issubclass(k,f)]
-            self.cache[k] = [self.d[o] for o in types]
-        return self.cache[k]
-
-    def __getitem__(self, k):
-        "Find first matching type that is a super-class of `k`"
-        res = self.all_matches(k)
-        return res[0] if len(res) else None
-
-    def __repr__(self): return self.d.__repr__()
-    def first(self): return first(self.d.values())
-
-# Cell
-class TypeDispatch:
-    "Dictionary-like object; `__getitem__` matches keys of types using `issubclass`"
-    def __init__(self, funcs=(), bases=()):
-        self.funcs,self.bases = _TypeDict(),L(bases).filter(is_not(None))
-        for o in L(funcs): self.add(o)
-        self.inst = None
-        self.owner = None
-
-    def add(self, f):
-        "Add type `t` and function `f`"
-        if isinstance(f, staticmethod): a0,a1 = _p2_anno(f.__func__)
-        else: a0,a1 = _p2_anno(f)
-        t = self.funcs.d.get(a0)
-        if t is None:
-            t = _TypeDict()
-            self.funcs.add(a0, t)
-        t.add(a1, f)
-
-    def first(self):
-        "Get first function in ordered dict of type:func."
-        return self.funcs.first().first()
-
-    def returns(self, x):
-        "Get the return type of annotation of `x`."
-        return anno_ret(self[type(x)])
-
-    def _attname(self,k): return getattr(k,'__name__',str(k))
+class FastFunction(Function):
     def __repr__(self):
-        r = [f'({self._attname(k)},{self._attname(l)}) -> {getattr(v, "__name__", type(v).__name__)}'
-             for k in self.funcs.d for l,v in self.funcs[k].d.items()]
-        r = r + [o.__repr__() for o in self.bases]
-        return '\n'.join(r)
+        return '\n'.join(f"{f.__name__}: ({','.join(_pt_repr(t) for t in s.types)}) -> {_pt_repr(r)}"
+                         for s, (f, r) in self.methods.items())
 
-    def __call__(self, *args, **kwargs):
-        ts = L(args).map(type)[:2]
-        f = self[tuple(ts)]
-        if not f: return args[0]
-        if isinstance(f, staticmethod): f = f.__func__
-        elif self.inst is not None: f = MethodType(f, self.inst)
-        elif self.owner is not None: f = MethodType(f, self.owner)
-        return f(*args, **kwargs)
+    @delegates(Function.dispatch)
+    def dispatch(self, f=None, **kwargs): return super().dispatch(_eval_annotations(f), **kwargs)
 
-    def __get__(self, inst, owner):
-        self.inst = inst
-        self.owner = owner
-        return self
-
-    def __getitem__(self, k):
-        "Find first matching type that is a super-class of `k`"
-        k = L(k)
-        while len(k)<2: k.append(object)
-        r = self.funcs.all_matches(k[0])
-        for t in r:
-            o = t[k[1]]
-            if o is not None: return o
-        for base in self.bases:
-            res = base[k]
-            if res is not None: return res
-        return None
+    def __getitem__(self, ts):
+        "Return the most-specific matching method with fewest parameters"
+        ts = L(ts)
+        nargs = min(len(o) for o in self.methods.keys())
+        while len(ts) < nargs: ts.append(object)
+        return self.invoke(*ts)
 
 # Cell
-class DispatchReg:
-    "A global registry for `TypeDispatch` objects keyed by function name"
-    def __init__(self): self.d = defaultdict(TypeDispatch)
-    def __call__(self, f):
-        if isinstance(f, (classmethod, staticmethod)): nm = f'{f.__func__.__qualname__}'
-        else: nm = f'{f.__qualname__}'
-        if isinstance(f, classmethod): f=f.__func__
-        self.d[nm].add(f)
-        return self.d[nm]
+class FastDispatcher(Dispatcher):
+    def _get_function(self, method, owner):
+        "Adapted from `Dispatcher._get_function` to use `FastFunction`"
+        name = method.__name__
+        if owner:
+            if owner not in self._classes: self._classes[owner] = {}
+            namespace = self._classes[owner]
+        else: namespace = self._functions
+        if name not in namespace: namespace[name] = FastFunction(method, owner=owner)
+        return namespace[name]
 
-typedispatch = DispatchReg()
+    @delegates(Dispatcher.__call__, but='method')
+    def __call__(self, f, **kwargs): return super().__call__(_eval_annotations(f), **kwargs)
+
+    def _to(self, cls, nm, f, **kwargs):
+        nf = copy_func(f)
+        nf.__qualname__ = f'{cls.__name__}.{nm}' # plum uses __qualname__ to infer f's owner
+        pf = self(nf, **kwargs)
+        # plum uses __set_name__ to resolve a plum.Function's owner
+        # since we assign after class creation, __set_name__ must be called directly
+        # source: https://docs.python.org/3/reference/datamodel.html#object.__set_name__
+        pf.__set_name__(cls, nm)
+        pf = pf.resolve()
+        setattr(cls, nm, pf)
+        return pf
+
+    def to(self, cls):
+        "Decorator: dispatch `f` to `cls.f`"
+        def _inner(f, **kwargs):
+            nm = f.__name__
+            # check __dict__ to avoid inherited methods but use getattr so pf.__get__ is called, which plum relies on
+            if nm in cls.__dict__:
+                pf = getattr(cls, nm)
+                if not hasattr(pf, 'dispatch'): pf = self._to(cls, nm, pf, **kwargs)
+                pf.dispatch(f)
+            else: pf = self._to(cls, nm, f, **kwargs)
+            return pf
+        return _inner
+
+typedispatch = FastDispatcher()
 
 # Cell
 #nbdev_comment _all_=['cast']

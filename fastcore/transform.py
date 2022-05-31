@@ -9,6 +9,7 @@ from .foundation import *
 from .utils import *
 from .dispatch import *
 import inspect
+from plum import add_conversion_method
 
 # Cell
 _tfm_methods = 'encodes','decodes','setups'
@@ -16,29 +17,20 @@ _tfm_methods = 'encodes','decodes','setups'
 def _is_tfm_method(n, f): return n in _tfm_methods and callable(f)
 
 class _TfmDict(dict):
-    def __setitem__(self, k, v):
-        if not _is_tfm_method(k, v): return super().__setitem__(k,v)
-        if k not in self: super().__setitem__(k,TypeDispatch())
-        self[k].add(v)
+    def __setitem__(self, k, v): super().__setitem__(k, typedispatch(v) if _is_tfm_method(k, v) else v)
 
 # Cell
 class _TfmMeta(type):
     def __new__(cls, name, bases, dict):
-        res = super().__new__(cls, name, bases, dict)
-        for nm in _tfm_methods:
-            base_td = [getattr(b,nm,None) for b in bases]
-            if nm in res.__dict__: getattr(res,nm).bases = base_td
-            else: setattr(res, nm, TypeDispatch(bases=base_td))
         # _TfmMeta.__call__ shadows the signature of inheriting classes, set it back
+        res = super().__new__(cls, name, bases, dict)
         res.__signature__ = inspect.signature(res.__init__)
         return res
 
     def __call__(cls, *args, **kwargs):
         f = first(args)
         n = getattr(f, '__name__', None)
-        if _is_tfm_method(n, f):
-            getattr(cls,n).add(f)
-            return f
+        if _is_tfm_method(n, f): return typedispatch.to(cls)(f)
         obj = super().__call__(*args, **kwargs)
         # _TfmMeta.__new__ replaces cls.__signature__ which breaks the signature of a callable
         # instances of cls, fix it
@@ -67,13 +59,14 @@ class Transform(metaclass=_TfmMeta):
         self.init_enc = enc or dec
         if not self.init_enc: return
 
-        self.encodes,self.decodes,self.setups = TypeDispatch(),TypeDispatch(),TypeDispatch()
+        def identity(x): return x
+        for n in _tfm_methods: setattr(self,n,FastFunction(identity).dispatch(identity))
         if enc:
-            self.encodes.add(enc)
+            self.encodes.dispatch(enc)
             self.order = getattr(enc,'order',self.order)
             if len(type_hints(enc)) > 0: self.input_types = union2tuple(first(type_hints(enc).values()))
             self._name = _get_name(enc)
-        if dec: self.decodes.add(dec)
+        if dec: self.decodes.dispatch(dec)
 
     @property
     def name(self): return getattr(self, '_name', _get_name(self))
@@ -92,12 +85,23 @@ class Transform(metaclass=_TfmMeta):
     def _do_call(self, f, x, **kwargs):
         if not _is_tuple(x):
             if f is None: return x
-            ret = f.returns(x) if hasattr(f,'returns') else None
-            return retain_type(f(x, **kwargs), x, ret)
+            ts = [type(self),type(x)] if hasattr(f,'instance') else [type(x)]
+            _, ret = f.resolve_method(*ts)
+            ret = ret._type
+            # plum reads empty return annotation as object, retain_type expects it as None
+            if ret is object: ret = None
+            return retain_type(f(x,**kwargs), x, ret)
         res = tuple(self._do_call(f, x_, **kwargs) for x_ in x)
         return retain_type(res, x)
+    def encodes(self, x): return x
+    def decodes(self, x): return x
+    def setups(self, dl): return dl
 
 add_docs(Transform, decode="Delegate to <code>decodes</code> to undo transform", setup="Delegate to <code>setups</code> to set up transform")
+
+# Cell
+#Implement the Transform convention that a None return annotation disables conversion
+add_conversion_method(object, NoneType, lambda x: x)
 
 # Cell
 class InplaceTransform(Transform):

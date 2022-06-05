@@ -1007,5 +1007,5 @@ def exec_new(code):
 # Cell
 def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
-    pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
-    return exec_new(f'from {pref}{mod} import {sym}')
+#     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
+    return exec_new(f'from {mod} import {sym}')

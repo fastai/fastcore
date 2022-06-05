@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.4.4
+
+### New Features
+
+- backport shutil pathlib compat ([#416](https://github.com/fastai/fastcore/issues/416))
+- handle plain files in `untar_dir` ([#412](https://github.com/fastai/fastcore/issues/412))
+
 
 ## 1.4.3
 

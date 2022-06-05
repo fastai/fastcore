@@ -10,7 +10,7 @@ def str_src_dest(f):
 
 def str_path(f):
     @wraps(f)
-    def _f(path, *args, **kwargs): return f(path, *args, **kwargs)
+    def _f(path, *args, **kwargs): return f(str(path), *args, **kwargs)
     return _f
 
 src_dests = ['copymode', 'copystat', 'copy', 'copy2', 'move', 'copytree']

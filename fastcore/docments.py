@@ -15,7 +15,7 @@ from ast import parse,FunctionDef,AnnAssign
 from io import BytesIO
 from textwrap import dedent
 from types import SimpleNamespace
-from inspect import getsource,isfunction,isclass,signature,Parameter
+from inspect import getsource,isfunction,ismethod,isclass,signature,Parameter
 from dataclasses import dataclass, is_dataclass
 from .utils import *
 
@@ -47,7 +47,7 @@ def get_dataclass_source(s):
 
 def get_source(s):
     "Get source code for string, function object or dataclass `s`"
-    return getsource(s) if isfunction(s) else get_dataclass_source(s) if isdataclass(s) else s
+    return getsource(s) if isfunction(s) or ismethod(s) else get_dataclass_source(s) if isdataclass(s) else s
 
 def _parses(s):
     "Parse Python code in string, function object or dataclass `s`"

@@ -122,7 +122,7 @@ class ItemTransform(Transform):
 # Cell
 def get_func(t, name, *args, **kwargs):
     "Get the `t.name` (potentially partial-ized with `args` and `kwargs`) or `noop` if not defined"
-    f = getattr(t, name, noop)
+    f = nested_callable(t, name)
     return f if not (args or kwargs) else partial(f, *args, **kwargs)
 
 # Cell

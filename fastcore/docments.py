@@ -4,7 +4,8 @@
 from __future__ import annotations
 
 
-__all__ = ['docstring', 'parse_docstring', 'isdataclass', 'get_dataclass_source', 'get_source', 'empty', 'docments']
+__all__ = ['docstring', 'parse_docstring', 'isdataclass', 'get_dataclass_source', 'get_source', 'empty', 'get_name',
+           'qual_name', 'docments']
 
 # Cell
 #nbdev_comment from __future__ import annotations
@@ -18,7 +19,7 @@ from types import SimpleNamespace
 from inspect import getsource,isfunction,ismethod,isclass,signature,Parameter
 from dataclasses import dataclass, is_dataclass
 from .utils import *
-
+from .meta import delegates
 from fastcore import docscrape
 from inspect import isclass,getdoc
 
@@ -108,7 +109,23 @@ def _merge_docs(dms, npdocs):
     return params
 
 # Cell
-def docments(s, full=False, returns=True, eval_str=False):
+def get_name(obj):
+    "Get the name of `obj`"
+    if hasattr(obj, '__name__'):       return obj.__name__
+    elif getattr(obj, '_name', False): return obj._name
+    elif hasattr(obj,'__origin__'):    return str(obj.__origin__).split('.')[-1] #for types
+    elif type(obj)==property:          return _get_property_name(obj)
+    else:                              return str(obj).split('.')[-1]
+
+# Cell
+def qual_name(obj):
+    "Get the qualified name of `obj`"
+    if hasattr(obj,'__qualname__'): return obj.__qualname__
+    if ismethod(obj):       return f"{get_name(obj.__self__)}.{get_name(fn)}"
+    return get_name(obj)
+
+# Cell
+def _docments(s, returns=True, eval_str=False):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
     nps = parse_docstring(s)
     if isclass(s) and not is_dataclass(s): s = s.__init__ # Constructor for a class
@@ -125,5 +142,20 @@ def docments(s, full=False, returns=True, eval_str=False):
         hints = type_hints(s)
         for k,v in res.items():
             if k in hints: v['anno'] = hints.get(k)
+    return res
+
+# Cell
+@delegates(_docments)
+def docments(elt, full=False, **kwargs):
+    "Generates a `docment`"
+    res = _docments(elt, **kwargs)
+    if hasattr(elt, "__delwrap__"): #for delegates
+        delwrap_dict = _docments(elt.__delwrap__, **kwargs)
+        for k,v in res.items():
+            if k in delwrap_dict and v["docment"] is None and k != "return":
+                if delwrap_dict[k]["docment"] is not None:
+                    v["docment"] = delwrap_dict[k]["docment"] + f" passed to `{qual_name(elt.__delwrap__)}`"
+                else: v['docment'] = f"Argument passed to `{qual_name(elt.__delwrap__)}`"
+
     if not full: res = {k:v['docment'] for k,v in res.items()}
     return AttrDict(res)

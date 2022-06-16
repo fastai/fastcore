@@ -5,16 +5,16 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'get_annotations_ex', 'eval_type',
            'type_hints', 'annotations', 'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
-           'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs',
-           'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat',
-           'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict',
-           'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex',
-           'range_of', 'renumerate', 'first', 'nested_attr', 'nested_idx', 'set_nested_idx', 'val2idx', 'uniqueify',
-           'loop_first_last', 'loop_first', 'loop_last', 'num_methods', 'rnum_methods', 'inum_methods', 'fastuple',
-           'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler',
-           'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to', 'patch', 'patch_property',
-           'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus',
-           'add_props', 'typed', 'exec_new', 'exec_import']
+           'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs',
+           'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten',
+           'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index',
+           'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere',
+           'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_callable', 'nested_idx',
+           'set_nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'num_methods',
+           'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex',
+           'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
+           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString',
+           'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import']
 
 # Cell
 from .imports import *
@@ -407,6 +407,11 @@ def class2attr(self, cls_name):
     return camel2snake(re.sub(rf'{cls_name}$', '', self.__class__.__name__) or cls_name.lower())
 
 # Cell
+def getcallable(o, attr):
+    "Calls `getattr` with a default of `noop`"
+    return getattr(o, attr, noop)
+
+# Cell
 def getattrs(o, *attrs, default=None):
     "List of all `attrs` in `o`"
     return [getattr(o,attr,default) for attr in attrs]
@@ -627,6 +632,11 @@ def nested_attr(o, attr, default=None):
         for a in attr.split("."): o = getattr(o, a)
     except AttributeError: return default
     return o
+
+# Cell
+def nested_callable(o, attr):
+    "Same as `nested_attr` but if not found will return `noop`"
+    return nested_attr(o, attr, noop)
 
 # Cell
 def _access(coll, idx): return coll.get(idx, None) if hasattr(coll, 'get') else coll[idx] if idx<len(coll) else None

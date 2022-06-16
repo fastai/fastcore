@@ -8,7 +8,7 @@ __all__ = ['dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'shufflish', 'mapped
            'walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'join_path_file', 'loads', 'loads_multi',
            'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'get_source_link', 'truncstr',
            'spark_chars', 'sparkline', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
-           'partial_format', 'utc2local', 'local2utc', 'trace', 'raise_with_msg', 'round_multiple', 'modified_env',
+           'partial_format', 'utc2local', 'local2utc', 'trace', 'modify_exception', 'round_multiple', 'modified_env',
            'ContextManagers', 'str2bool']
 
 # Cell
@@ -475,14 +475,14 @@ def trace(f):
     return _inner
 
 # Cell
-def raise_with_msg(
+def modify_exception(
     e:Exception, # An exception
-    msg:str|list=None, # A custom message
-    replace:bool=False # Whether to replace e.args with [msg]
-):
-    "Raises `e` with a custom message attached"
-    e.args = listify(msg) if replace else listify(e.args) + listify(msg)
-    raise e
+    msg:str=None, # A custom message
+    replace:bool=False, # Whether to replace e.args with [msg]
+) -> Exception:
+    "Modifies `e` with a custom message attached"
+    e.args = [f'{e.args[0]} {msg}'] if not replace and len(e.args) > 0 else [msg]
+    return e
 
 # Cell
 def round_multiple(x, mult, round_down=False):

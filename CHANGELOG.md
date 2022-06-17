@@ -2,6 +2,21 @@
 
 <!-- do not remove -->
 
+## 1.4.5
+
+### New Features
+
+- Custom raise message helper ([#419](https://github.com/fastai/fastcore/pull/419)), thanks to [@muellerzr](https://github.com/muellerzr)
+- make `docments` handle delegates ([#418](https://github.com/fastai/fastcore/pull/418)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+- Add a `nested_callable` and `getcallable` util ([#417](https://github.com/fastai/fastcore/pull/417)), thanks to [@muellerzr](https://github.com/muellerzr)
+- Add dataclass to docments ([#413](https://github.com/fastai/fastcore/pull/413)), thanks to [@MarkB2](https://github.com/MarkB2)
+- Use docments ([#387](https://github.com/fastai/fastcore/pull/387)), thanks to [@muellerzr](https://github.com/muellerzr)
+
+### Bugs Squashed
+
+- `test_sig` returns NameError: name `test_eq` is not defined ([#372](https://github.com/fastai/fastcore/pull/372)), thanks to [@ababino](https://github.com/ababino)
+
+
 ## 1.4.4
 
 ### New Features

@@ -8,6 +8,7 @@ import inspect,functools,argparse,shutil
 from .imports import *
 from .utils import *
 from .docments import docments
+import ast
 
 # Cell
 def store_true():
@@ -95,6 +96,12 @@ def args_from_prog(func, prog):
 SCRIPT_INFO = SimpleNamespace(func=None)
 
 # Cell
+def _is_called(code, nm):
+    "determine if `nm` is called"
+    ex_ast = ast.parse(code)
+    return nm in {node.func.id for node in ast.walk(ex_ast) if isinstance(node, ast.Call) and hasattr(node, 'func')}
+
+# Cell
 def call_parse(func):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
     mod = inspect.getmodule(inspect.currentframe().f_back)
@@ -113,6 +120,7 @@ def call_parse(func):
         tfunc(**merge(args, args_from_prog(func, xtra)))
 
     if mod.__name__=="__main__":
+        if _is_called(inspect.getsource(mod), func.__name__): return func
         setattr(mod, func.__name__, _f)
         SCRIPT_INFO.func = func.__name__
         return _f()

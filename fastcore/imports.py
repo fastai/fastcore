@@ -2,7 +2,7 @@ import sys,os,re,typing,itertools,operator,functools,math,warnings,functools,io,
 
 from operator import itemgetter,attrgetter
 from warnings import warn
-from typing import Iterable,Generator,Sequence,Iterator,List,Set,Dict,Union,Optional
+from typing import Iterable,Generator,Sequence,Iterator,List,Set,Dict,Union,Optional,Tuple
 from functools import partial,reduce
 from pathlib import Path
 

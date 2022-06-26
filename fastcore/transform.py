@@ -64,7 +64,7 @@ class Transform(metaclass=_TfmMeta):
         if enc:
             self.encodes.add(enc)
             self.order = getattr(enc,'order',self.order)
-            if len(type_hints(enc)) > 0: self.input_types = first(type_hints(enc).values())
+            if len(type_hints(enc)) > 0: self.input_types = union2tuple(first(type_hints(enc).values()))
             self._name = _get_name(enc)
         if dec: self.decodes.add(dec)
 

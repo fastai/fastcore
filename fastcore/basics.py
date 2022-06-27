@@ -4,12 +4,12 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
            'null', 'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
            'Inf', 'in_', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'in_',
            'true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'get_annotations_ex', 'eval_type',
-           'type_hints', 'annotations', 'anno_ret', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
-           'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs',
-           'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten',
-           'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index',
-           'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere',
-           'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_callable', 'nested_idx',
+           'type_hints', 'annotations', 'anno_ret', 'union2tuple', 'argnames', 'with_cast', 'store_attr', 'attrdict',
+           'properties', 'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs',
+           'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str',
+           'Float', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
+           'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_',
+           'argwhere', 'filter_ex', 'range_of', 'renumerate', 'first', 'nested_attr', 'nested_callable', 'nested_idx',
            'set_nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'num_methods',
            'rnum_methods', 'inum_methods', 'fastuple', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'bind', 'mapt', 'map_ex',
            'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'Self', 'Self', 'copy_func', 'patch_to',
@@ -20,6 +20,8 @@ __all__ = ['defaults', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listif
 from .imports import *
 import builtins,types
 import pprint
+try: from types import UnionType
+except ImportError: UnionType = None
 
 # Cell
 defaults = SimpleNamespace()
@@ -289,7 +291,7 @@ def get_annotations_ex(obj, *, globals=None, locals=None):
 def eval_type(t, glb, loc):
     "`eval` a type or collection of types, if needed, for annotations in py3.10+"
     if isinstance(t,str):
-        if '|' in t: return eval_type(tuple(t.split('|')), glb, loc)
+        if '|' in t: return Union[eval_type(tuple(t.split('|')), glb, loc)]
         return eval(t, glb, loc)
     if isinstance(t,(tuple,list)): return type(t)([eval_type(c, glb, loc) for c in t])
     return t
@@ -319,6 +321,12 @@ def annotations(o):
 def anno_ret(func):
     "Get the return annotation of `func`"
     return annotations(func).get('return', None) if func else None
+
+# Cell
+def union2tuple(t):
+    if (getattr(t, '__origin__', None) is Union
+        or (UnionType and isinstance(t, UnionType))): return t.__args__
+    return t
 
 # Cell
 def argnames(f, frame=False):
@@ -906,7 +914,7 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
     ann,glb,loc = get_annotations_ex(f)
-    cls = eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())), glb, loc)
+    cls = union2tuple(eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())), glb, loc))
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
 # Cell

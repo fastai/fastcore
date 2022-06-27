@@ -104,7 +104,7 @@ class ReindexCollection(GetAttr, IterLen):
 
 # Cell
 def walk(
-    path:(Path,str), # path to start searching
+    path:Path|str, # path to start searching
     symlinks:bool=True, # follow symlinks?
     keep_file:callable=noop, # function that returns True for wanted files
     keep_folder:callable=noop, # function that returns True for folders to enter
@@ -118,7 +118,7 @@ def walk(
 
 # Cell
 def globtastic(
-    path:Union[Path,str], # path to start searching
+    path:Path|str, # path to start searching
     recursive:bool=True, # search subfolders
     symlinks:bool=True, # follow symlinks?
     file_glob:str=None, # Only include files matching glob

@@ -60,7 +60,7 @@ class _TypeDict:
 
     def add(self, t, f):
         "Add type `t` and function `f`"
-        if not isinstance(t,tuple): t=tuple(L(t))
+        if not isinstance(t, tuple): t = tuple(L(union2tuple(t)))
         for t_ in t: self.d[t_] = f
         self._reset()
 

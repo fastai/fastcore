@@ -10,14 +10,12 @@ from .basics import *
 from .xtras import *
 from functools import wraps
 
-# from contextlib import contextmanager,ExitStack
 from multiprocessing import Process, Queue
 import concurrent.futures,time
 from multiprocessing import Manager, set_start_method
 from threading import Thread
-
 try:
-    if sys.platform == 'darwin': set_start_method("fork")
+    if sys.platform == 'darwin' and IN_NOTEBOOK: set_start_method("fork")
 except: pass
 
 # Cell

@@ -888,6 +888,8 @@ def copy_func(f):
     fn = FunctionType(f.__code__, f.__globals__, f.__name__, f.__defaults__, f.__closure__)
     fn.__kwdefaults__ = f.__kwdefaults__
     fn.__dict__.update(f.__dict__)
+    fn.__annotations__.update(f.__annotations__)
+    fn.__qualname__ = f.__qualname__
     return fn
 
 # Cell

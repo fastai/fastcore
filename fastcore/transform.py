@@ -13,9 +13,11 @@ import inspect
 # Cell
 _tfm_methods = 'encodes','decodes','setups'
 
+def _is_tfm_method(n, f): return n in _tfm_methods and callable(f)
+
 class _TfmDict(dict):
-    def __setitem__(self,k,v):
-        if k not in _tfm_methods or not callable(v): return super().__setitem__(k,v)
+    def __setitem__(self, k, v):
+        if not _is_tfm_method(k, v): return super().__setitem__(k,v)
         if k not in self: super().__setitem__(k,TypeDispatch())
         self[k].add(v)
 
@@ -27,16 +29,21 @@ class _TfmMeta(type):
             base_td = [getattr(b,nm,None) for b in bases]
             if nm in res.__dict__: getattr(res,nm).bases = base_td
             else: setattr(res, nm, TypeDispatch(bases=base_td))
+        # _TfmMeta.__call__ shadows the signature of inheriting classes, set it back
         res.__signature__ = inspect.signature(res.__init__)
         return res
 
     def __call__(cls, *args, **kwargs):
-        f = args[0] if args else None
-        n = getattr(f,'__name__',None)
-        if callable(f) and n in _tfm_methods:
+        f = first(args)
+        n = getattr(f, '__name__', None)
+        if _is_tfm_method(n, f):
             getattr(cls,n).add(f)
             return f
-        return super().__call__(*args, **kwargs)
+        obj = super().__call__(*args, **kwargs)
+        # _TfmMeta.__new__ replaces cls.__signature__ which breaks the signature of a callable
+        # instances of cls, fix it
+        if hasattr(obj, '__call__'): obj.__signature__ = inspect.signature(obj.__call__)
+        return obj
 
     @classmethod
     def __prepare__(cls, name, bases): return _TfmDict()

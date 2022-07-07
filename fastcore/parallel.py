@@ -4,7 +4,10 @@ __all__ = ['threaded', 'startthread', 'parallelable', 'ThreadPoolExecutor', 'Pro
            'add_one', 'run_procs', 'parallel_gen']
 
 # Cell
-from .utils import *
+from .imports import *
+from .foundation import *
+from .basics import *
+from .xtras import *
 from functools import wraps
 
 from multiprocessing import Process, Queue

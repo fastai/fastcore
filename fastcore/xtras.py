@@ -445,9 +445,9 @@ def autostart(g):
 # Cell
 class EventTimer:
     "An event timer with history of `store` items of time `span`"
-    import collections
 
     def __init__(self, store=5, span=60):
+        import collections
         self.hist,self.span,self.last = collections.deque(maxlen=store),span,time.perf_counter()
         self._reset()
 

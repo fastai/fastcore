@@ -351,6 +351,7 @@ def _unwrapped_func(x):
 
 def get_source_link(func):
     "Return link to `func` in source code"
+    import inspect
     func = _unwrapped_func(func)
     try: line = inspect.getsourcelines(func)[1]
     except Exception: return ''

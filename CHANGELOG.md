@@ -2,6 +2,22 @@
 
 <!-- do not remove -->
 
+## 1.5.0
+
+### Breaking Changes
+
+- Importing `fastcore.utils` now longer imports `fastcore.net`
+
+### New Features
+
+- Move imports into functions to make import faster ([#426](https://github.com/fastai/fastcore/issues/426))
+- use py310 style union annotations ([#421](https://github.com/fastai/fastcore/pull/421)), thanks to [@seeM](https://github.com/seeM)
+
+### Bugs Squashed
+
+- repr patching broken by pep 563 ([#270](https://github.com/fastai/fastcore/issues/270))
+
+
 ## 1.4.5
 
 ### New Features

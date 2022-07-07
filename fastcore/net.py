@@ -14,10 +14,7 @@ __all__ = ['url_default_headers', 'urlquote', 'urlwrap', 'ExceptionsHTTP', 'HTTP
            'urlsend', 'do_request', 'start_server', 'start_client']
 
 # Cell
-from .imports import *
-from .foundation import *
-from .basics import *
-from .xtras import *
+from .utils import *
 from .parallel import *
 from functools import wraps
 

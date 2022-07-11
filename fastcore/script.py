@@ -95,8 +95,10 @@ def args_from_prog(func, prog):
 SCRIPT_INFO = SimpleNamespace(func=None)
 
 # Cell
-def call_parse(func):
+def call_parse(func=None, nested=False):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
+    if func is None: return functools.partial(call_parse, nested=nested)
+
     mod = inspect.getmodule(inspect.currentframe().f_back)
     if not mod: return func
 
@@ -107,7 +109,9 @@ def call_parse(func):
         if not SCRIPT_INFO.func and mod.__name__=="__main__": SCRIPT_INFO.func = func.__name__
         if len(sys.argv)>1 and sys.argv[1]=='': sys.argv.pop(1)
         p = anno_parser(func)
-        args = p.parse_args().__dict__
+        if nested: args, sys.argv[1:] = p.parse_known_args()
+        else: args = p.parse_args()
+        args = args.__dict__
         xtra = otherwise(args.pop('xtra', ''), eq(1), p.prog)
         tfunc = trace(func) if args.pop('pdb', False) else func
         tfunc(**merge(args, args_from_prog(func, xtra)))

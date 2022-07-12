@@ -49,7 +49,8 @@ def globtastic(
     folder_re:str=None, # Only enter folders matching regex
     skip_file_glob:str=None, # Skip files matching glob
     skip_file_re:str=None, # Skip files matching regex
-    skip_folder_re:str=None # Skip folders matching regex
+    skip_folder_re:str=None, # Skip folders matching regex,
+    func:callable=os.path.join # function to apply to each matched file
 )->L: # Paths to matched files
     "A more powerful `glob`, including regex matches, symlink handling, and skip parameters"
     from fnmatch import fnmatch
@@ -66,7 +67,7 @@ def globtastic(
     def _keep_folder(root, name):
         return (not folder_re or folder_re.search(name)) and (
             not skip_folder_re or not skip_folder_re.search(name))
-    return L(walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder))
+    return L(walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder, func=func))
 
 # Cell
 @contextmanager

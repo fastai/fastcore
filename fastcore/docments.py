@@ -109,6 +109,13 @@ def _merge_docs(dms, npdocs):
     return params
 
 # Cell
+def _get_property_name(p):
+    "Get the name of property `p`"
+    if hasattr(p, 'fget'):
+        return p.fget.func.__qualname__ if hasattr(p.fget, 'func') else p.fget.__qualname__
+    else: return next(iter(re.findall(r'\'(.*)\'', str(p)))).split('.')[-1]
+
+# Cell
 def get_name(obj):
     "Get the name of `obj`"
     if hasattr(obj, '__name__'):       return obj.__name__

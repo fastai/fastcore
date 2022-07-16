@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 
-__all__ = ['walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'untar_dir',
+__all__ = ['walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps', 'untar_dir',
            'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'dict2obj', 'obj2dict', 'repr_dict',
            'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr', 'spark_chars',
            'sparkline', 'modify_exception', 'round_multiple', 'str2bool', 'set_num_threads', 'join_path_file',
@@ -113,13 +113,12 @@ def bunzip(fn):
         for d in iter(lambda: src.read(1024*1024), b''): dst.write(d)
 
 # Cell
-def loads(s, cls=None, object_hook=None, parse_float=None,
-          parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+def loads(s, **kw):
     "Same as `json.loads`, but handles `None`"
     if not s: return {}
-    import json
-    return json.loads(s, cls=cls, object_hook=object_hook, parse_float=parse_float,
-          parse_int=parse_int, parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+    try: import ujson as json
+    except ModuleNotFoundError: import json
+    return json.loads(s, **kw)
 
 # Cell
 def loads_multi(s:str):
@@ -132,6 +131,14 @@ def loads_multi(s:str):
         if not pos: raise ValueError(f'no JSON object found at {pos}')
         yield obj
         s = s[pos:]
+
+# Cell
+def dumps(obj, **kw):
+    "Same as `json.dumps`, but uses `ujson` if available"
+    try: import ujson as json
+    except ModuleNotFoundError: import json
+    else: kw['escape_forward_slashes']=False
+    return json.dumps(obj, **kw)
 
 # Cell
 def _unpack(fname, out):

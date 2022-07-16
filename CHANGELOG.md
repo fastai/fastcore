@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.5.5
+
+### New Features
+
+- use ujson if available ([#432](https://github.com/fastai/fastcore/issues/432))
+- new `func` param for `globtastic` ([#429](https://github.com/fastai/fastcore/issues/429))
+- add nested parser support to `fastcore.script` ([#428](https://github.com/fastai/fastcore/pull/428)), thanks to [@seeM](https://github.com/seeM)
+
+
 ## 1.5.0
 
 ### Breaking Changes

@@ -18,7 +18,7 @@ __all__ = ['walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 
 from .imports import *
 from .foundation import *
 from .basics import *
-
+from importlib import import_module
 from functools import wraps
 import string,time
 from contextlib import contextmanager,ExitStack
@@ -366,7 +366,7 @@ def get_source_link(func):
     mod = inspect.getmodule(func)
     module = mod.__name__.replace('.', '/') + '.py'
     try:
-        nbdev_mod = importlib.import_module(mod.__package__.split('.')[0] + '._nbdev')
+        nbdev_mod = import_module(mod.__package__.split('.')[0] + '._nbdev')
         return f"{nbdev_mod.git_url}{module}#L{line}"
     except: return f"{module}#L{line}"
 

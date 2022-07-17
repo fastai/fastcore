@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.6
+
+### Bugs Squashed
+
+- Fix missing import
+
+
 ## 1.5.5
 
 ### New Features

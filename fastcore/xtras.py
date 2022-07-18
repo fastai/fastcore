@@ -26,7 +26,8 @@ from datetime import datetime, timezone
 
 # Cell
 @contextmanager
-def working_dir(path):
+def working_dir(path:Path|str, # path to temporarily change the working directory to
+               ):
     """Changes working directory and returns to previous on exit."""
     prev_cwd = Path.cwd()
     os.chdir(path)

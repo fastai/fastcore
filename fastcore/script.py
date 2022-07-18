@@ -4,7 +4,8 @@ __all__ = ['store_true', 'store_false', 'bool_arg', 'clean_type_str', 'Param', '
            'SCRIPT_INFO', 'call_parse']
 
 # Cell
-import inspect,functools,argparse,shutil
+import inspect,argparse,shutil
+from functools import wraps,partial
 from .imports import *
 from .utils import *
 from .docments import docments
@@ -97,12 +98,9 @@ SCRIPT_INFO = SimpleNamespace(func=None)
 # Cell
 def call_parse(func=None, nested=False):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
-    if func is None: return functools.partial(call_parse, nested=nested)
+    if func is None: return partial(call_parse, nested=nested)
 
-    mod = inspect.getmodule(inspect.currentframe().f_back)
-    if not mod: return func
-
-    @functools.wraps(func)
+    @wraps(func)
     def _f(*args, **kwargs):
         mod = inspect.getmodule(inspect.currentframe().f_back)
         if not mod: return func(*args, **kwargs)
@@ -114,9 +112,10 @@ def call_parse(func=None, nested=False):
         args = args.__dict__
         xtra = otherwise(args.pop('xtra', ''), eq(1), p.prog)
         tfunc = trace(func) if args.pop('pdb', False) else func
-        tfunc(**merge(args, args_from_prog(func, xtra)))
+        return tfunc(**merge(args, args_from_prog(func, xtra)))
 
-    if mod.__name__=="__main__":
+    mod = inspect.getmodule(inspect.currentframe().f_back)
+    if getattr(mod, __name__, '') =="__main__":
         setattr(mod, func.__name__, _f)
         SCRIPT_INFO.func = func.__name__
         return _f()

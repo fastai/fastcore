@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 
-__all__ = ['walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps', 'untar_dir',
-           'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'dict2obj', 'obj2dict', 'repr_dict',
-           'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr', 'spark_chars',
-           'sparkline', 'modify_exception', 'round_multiple', 'str2bool', 'set_num_threads', 'join_path_file',
-           'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc',
-           'trace', 'modified_env', 'ContextManagers', 'shufflish']
+__all__ = ['working_dir', 'walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps',
+           'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'dict2obj', 'obj2dict',
+           'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
+           'spark_chars', 'sparkline', 'modify_exception', 'round_multiple', 'str2bool', 'set_num_threads',
+           'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format',
+           'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish']
 
 # Cell
 #nbdev_comment from __future__ import annotations
@@ -23,6 +23,17 @@ from functools import wraps
 import string,time
 from contextlib import contextmanager,ExitStack
 from datetime import datetime, timezone
+
+# Cell
+@contextmanager
+def working_dir(path):
+    """Changes working directory and returns to previous on exit."""
+    prev_cwd = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(prev_cwd)
 
 # Cell
 def walk(

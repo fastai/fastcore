@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.7
+
+### New Features
+
+- always set `__wrapped__` in `call_parse` ([#435](https://github.com/fastai/fastcore/issues/435))
+
+
 ## 1.5.6
 
 ### Bugs Squashed

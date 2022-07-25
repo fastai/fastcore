@@ -32,7 +32,7 @@ jobs:
         python-version: ${{ matrix.py }}
     - name: Install dependencies
       run: |
-        pip install -Uqq --pre 'nbdev>=2.0.0'
+        pip install -Uqq --pre nbdev
         pip install -e ".[dev]"
         #- name: Check if notebooks are synced and cleaned
         #uses: fastai/workflows/nb@master

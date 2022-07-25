@@ -5,7 +5,9 @@ __all__ = ['threaded', 'startthread', 'parallelable', 'ThreadPoolExecutor', 'Pro
            'run_procs', 'parallel_gen']
 
 # %% ../nbs/03a_parallel.ipynb 1
-from .utils import *
+from .imports import *
+from .basics import *
+from .foundation import *
 from .meta import *
 from .xtras import *
 from functools import wraps
@@ -13,6 +15,9 @@ from functools import wraps
 import concurrent.futures,time
 from multiprocessing import Process,Queue,Manager,set_start_method,get_all_start_methods,get_context
 from threading import Thread
+try:
+    if sys.platform == 'darwin' and IN_NOTEBOOK: set_start_method("fork")
+except: pass
 
 # %% ../nbs/03a_parallel.ipynb 4
 def threaded(f):

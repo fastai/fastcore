@@ -3,28 +3,55 @@ env:
   HOME: /root
 on: 
   workflow_dispatch:
-  workflow_run:
-    workflows: ["CI"]
-    branches: [master]
-    types: 
-      - completed
   push:
     branches: 
       - master
-defaults:
-  run:
-    shell: bash
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-    container: fastai/jekyll
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: fastai/workflows/build-docs@master
-      with:
-        username: jeremyphoward
-        hostname: ps625762.dreamhostps.com
-        dest_path: fastcore.fast.ai
-        ssh_key: ${{ secrets.DH_KEY }}
-        delete: 'yes'
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --pre nbdev
+          pip install -qe ".[dev]"
+      - run: nbdev_docs
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force_orphan: true
+          publish_dir: ./docs
+          # The following lines assign commit authorship to the official
+          # GH-Actions bot for deploys to `gh-pages` branch.
+          # You can swap them out with your own user credentials.
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --pre nbdev
+          pip install -qe ".[dev]"
+      - run: nbdev_docs
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force_orphan: true
+          publish_dir: ./docs
+          # The following lines assign commit authorship to the official
+          # GH-Actions bot for deploys to `gh-pages` branch.
+          # You can swap them out with your own user credentials.
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+

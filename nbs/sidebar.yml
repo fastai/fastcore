@@ -1,0 +1,31 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_test.ipynb
+      - 01_basics.ipynb
+      - 02_foundation.ipynb
+      - 03_xtras.ipynb
+      - 03a_parallel.ipynb
+      - 03b_net.ipynb
+      - 04_dispatch.ipynb
+      - 05_transform.ipynb
+      - 06_docments.ipynb
+      - 07_meta.ipynb
+      - 08_script.ipynb
+      - parallel_win.ipynb
+      - section: docs
+        contents:
+          - docs/index.html
+          - docs/basics.html
+          - docs/dispatch.html
+          - docs/docments.html
+          - docs/foundation.html
+          - docs/meta.html
+          - docs/net.html
+          - docs/parallel.html
+          - docs/parallel_win.html
+          - docs/script.html
+          - docs/test.html
+          - docs/transform.html
+          - docs/xtras.html

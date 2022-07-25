@@ -5,19 +5,14 @@ __all__ = ['threaded', 'startthread', 'parallelable', 'ThreadPoolExecutor', 'Pro
            'run_procs', 'parallel_gen']
 
 # %% ../nbs/03a_parallel.ipynb 1
-from .imports import *
-from .foundation import *
-from .basics import *
+from .utils import *
+from .meta import *
 from .xtras import *
 from functools import wraps
 
-from multiprocessing import Process, Queue
 import concurrent.futures,time
-from multiprocessing import Manager, set_start_method
+from multiprocessing import Process,Queue,Manager,set_start_method,get_all_start_methods,get_context
 from threading import Thread
-try:
-    if sys.platform == 'darwin' and IN_NOTEBOOK: set_start_method("fork")
-except: pass
 
 # %% ../nbs/03a_parallel.ipynb 4
 def threaded(f):
@@ -73,6 +68,7 @@ class ThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
         except Exception as e: self.on_exc(e)
 
 # %% ../nbs/03a_parallel.ipynb 12
+@delegates()
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
     def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
@@ -100,10 +96,15 @@ except: progress_bar = None
 
 # %% ../nbs/03a_parallel.ipynb 15
 def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0,
-             threadpool=False, timeout=None, chunksize=1, **kwargs):
+             method=None, threadpool=False, timeout=None, chunksize=1, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
-    pool = ThreadPoolExecutor if threadpool else ProcessPoolExecutor
-    with pool(n_workers, pause=pause) as ex:
+    kwpool = {}
+    if threadpool: pool = ThreadPoolExecutor
+    else:
+        if not method and sys.platform == 'darwin': method='fork'
+        if method: kwpool['mp_context'] = get_context(method)
+        pool = ProcessPoolExecutor
+    with pool(n_workers, pause=pause, **kwpool) as ex:
         r = ex.map(f,items, *args, timeout=timeout, chunksize=chunksize, **kwargs)
         if progress and progress_bar:
             if total is None: total = len(items)

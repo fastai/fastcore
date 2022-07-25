@@ -7,9 +7,9 @@ from __future__ import annotations
 __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps',
            'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'dict2obj', 'obj2dict',
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
-           'sparkline', 'modify_exception', 'round_multiple', 'str2bool', 'set_num_threads', 'join_path_file',
-           'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc',
-           'trace', 'modified_env', 'ContextManagers', 'shufflish']
+           'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
+           'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
+           'modified_env', 'ContextManagers', 'shufflish']
 
 # %% ../nbs/03_xtras.ipynb 3
 from .imports import *
@@ -410,16 +410,6 @@ def round_multiple(x, mult, round_down=False):
     return res if is_listy(x) else res[0]
 
 # %% ../nbs/03_xtras.ipynb 127
-def str2bool(s):
-    "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
-    if not isinstance(s,str): return bool(s)
-    if not s: return False
-    s = s.lower()
-    if s in ('y', 'yes', 't', 'true', 'on', '1'): return 1
-    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return 0
-    else: raise ValueError("insid truth sue %r" % (s,))
-
-# %% ../nbs/03_xtras.ipynb 130
 def set_num_threads(nt):
     "Get numpy (and others) to use `nt` threads"
     try: import mkl; mkl.set_num_threads(nt)
@@ -430,14 +420,14 @@ def set_num_threads(nt):
     for o in ['OPENBLAS_NUM_THREADS','NUMEXPR_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS']:
         os.environ[o] = str(nt)
 
-# %% ../nbs/03_xtras.ipynb 132
+# %% ../nbs/03_xtras.ipynb 129
 def join_path_file(file, path, ext=''):
     "Return `path/file` if file is a string or a `Path`, file otherwise"
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
 
-# %% ../nbs/03_xtras.ipynb 135
+# %% ../nbs/03_xtras.ipynb 132
 def autostart(g):
     "Decorator that automatically starts a generator"
     @functools.wraps(g)
@@ -447,7 +437,7 @@ def autostart(g):
         return r
     return f
 
-# %% ../nbs/03_xtras.ipynb 136
+# %% ../nbs/03_xtras.ipynb 133
 class EventTimer:
     "An event timer with history of `store` items of time `span`"
 
@@ -471,15 +461,15 @@ class EventTimer:
     @property
     def freq(self): return self.events/self.duration
 
-# %% ../nbs/03_xtras.ipynb 140
+# %% ../nbs/03_xtras.ipynb 137
 _fmt = string.Formatter()
 
-# %% ../nbs/03_xtras.ipynb 141
+# %% ../nbs/03_xtras.ipynb 138
 def stringfmt_names(s:str)->list:
     "Unique brace-delimited names in `s`"
     return uniqueify(o[1] for o in _fmt.parse(s) if o[1])
 
-# %% ../nbs/03_xtras.ipynb 143
+# %% ../nbs/03_xtras.ipynb 140
 class PartialFormatter(string.Formatter):
     "A `string.Formatter` that doesn't error on missing fields, and tracks missing fields and unused args"
     def __init__(self):
@@ -495,24 +485,24 @@ class PartialFormatter(string.Formatter):
     def check_unused_args(self, used, args, kwargs):
         self.xtra = filter_keys(kwargs, lambda o: o not in used)
 
-# %% ../nbs/03_xtras.ipynb 145
+# %% ../nbs/03_xtras.ipynb 142
 def partial_format(s:str, **kwargs):
     "string format `s`, ignoring missing field errors, returning missing and extra fields"
     fmt = PartialFormatter()
     res = fmt.format(s, **kwargs)
     return res,list(fmt.missing),fmt.xtra
 
-# %% ../nbs/03_xtras.ipynb 148
+# %% ../nbs/03_xtras.ipynb 145
 def utc2local(dt:datetime)->datetime:
     "Convert `dt` from UTC to local time"
     return dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
-# %% ../nbs/03_xtras.ipynb 150
+# %% ../nbs/03_xtras.ipynb 147
 def local2utc(dt:datetime)->datetime:
     "Convert `dt` from local to UTC time"
     return dt.replace(tzinfo=None).astimezone(tz=timezone.utc)
 
-# %% ../nbs/03_xtras.ipynb 152
+# %% ../nbs/03_xtras.ipynb 149
 def trace(f):
     "Add `set_trace` to an existing function `f`"
     from pdb import set_trace
@@ -523,7 +513,7 @@ def trace(f):
     _inner._traced = True
     return _inner
 
-# %% ../nbs/03_xtras.ipynb 154
+# %% ../nbs/03_xtras.ipynb 151
 @contextmanager
 def modified_env(*delete, **replace):
     "Context manager temporarily modifying `os.environ` by deleting `delete` and replacing `replace`"
@@ -536,14 +526,14 @@ def modified_env(*delete, **replace):
         os.environ.clear()
         os.environ.update(prev)
 
-# %% ../nbs/03_xtras.ipynb 156
+# %% ../nbs/03_xtras.ipynb 153
 class ContextManagers(GetAttr):
     "Wrapper for `contextlib.ExitStack` which enters a collection of context managers"
     def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
     def __enter__(self): self.default.map(self.stack.enter_context)
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
 
-# %% ../nbs/03_xtras.ipynb 158
+# %% ../nbs/03_xtras.ipynb 155
 def shufflish(x, pct=0.04):
     "Randomly relocate items of `x` up to `pct` of `len(x)` from their starting location"
     n = len(x)

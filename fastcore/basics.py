@@ -15,7 +15,8 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'loop_last', 'fastuple', 'bind', 'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate',
            'using_attr', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum',
            'str_enum', 'Stateful', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new',
-           'exec_import', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not']
+           'exec_import', 'str2bool', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_',
+           'is_not']
 
 # %% ../nbs/01_basics.ipynb 1
 from .imports import *
@@ -1044,3 +1045,13 @@ def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
+
+# %% ../nbs/01_basics.ipynb 415
+def str2bool(s):
+    "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
+    if not isinstance(s,str): return bool(s)
+    if not s: return False
+    s = s.lower()
+    if s in ('y', 'yes', 't', 'true', 'on', '1'): return 1
+    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return 0
+    else: raise ValueError()

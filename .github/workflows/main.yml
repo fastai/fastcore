@@ -32,12 +32,12 @@ jobs:
         python-version: ${{ matrix.py }}
     - name: Install dependencies
       run: |
-        pip install -Uqq nbdev
+        pip install -Uqq 'nbdev>2.0.0.dev1'
         pip install -e ".[dev]"
         #- name: Check if notebooks are synced and cleaned
         #uses: fastai/workflows/nb@master
     - name: Run tests
-      run: nbdev_test_nbs
+      run: nbdev_test
       env:
         SHELL:  ${{ matrix.shell }}
 
@@ -63,7 +63,7 @@ jobs:
         cd ../nbdev && pip install -Ue .[dev]
     - name: test nbdev notebooks
       run: |
-        cd nbdev && make test
+        cd nbdev && nbdev_test
         
   fastai-integration-test:
     runs-on: ubuntu-latest

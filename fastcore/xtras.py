@@ -366,15 +366,15 @@ def get_source_link(func):
         return f"{nbdev_mod.git_url}{module}#L{line}"
     except: return f"{module}#L{line}"
 
-# %% ../nbs/03_xtras.ipynb 117
+# %% ../nbs/03_xtras.ipynb 115
 def truncstr(s:str, maxlen:int, suf:str='…', space='')->str:
     "Truncate `s` to length `maxlen`, adding suffix `suf` if truncated"
     return s[:maxlen-len(suf)]+suf if len(s)+len(space)>maxlen else s+space
 
-# %% ../nbs/03_xtras.ipynb 119
+# %% ../nbs/03_xtras.ipynb 117
 spark_chars = '▁▂▃▅▆▇'
 
-# %% ../nbs/03_xtras.ipynb 120
+# %% ../nbs/03_xtras.ipynb 118
 def _ceil(x, lim=None): return x if (not lim or x <= lim) else lim
 
 def _sparkchar(x, mn, mx, incr, empty_zero):
@@ -383,7 +383,7 @@ def _sparkchar(x, mn, mx, incr, empty_zero):
     res = int((_ceil(x,mx)-mn)/incr-0.5)
     return spark_chars[res]
 
-# %% ../nbs/03_xtras.ipynb 121
+# %% ../nbs/03_xtras.ipynb 119
 def sparkline(data, mn=None, mx=None, empty_zero=False):
     "Sparkline for `data`, with `None`s (and zero, if `empty_zero`) shown as empty column"
     valid = [o for o in data if o is not None]
@@ -392,7 +392,7 @@ def sparkline(data, mn=None, mx=None, empty_zero=False):
     res = [_sparkchar(x=o, mn=mn, mx=mx, incr=(mx-mn)/n, empty_zero=empty_zero) for o in data]
     return ''.join(res)
 
-# %% ../nbs/03_xtras.ipynb 125
+# %% ../nbs/03_xtras.ipynb 123
 def modify_exception(
     e:Exception, # An exception
     msg:str=None, # A custom message
@@ -402,14 +402,14 @@ def modify_exception(
     e.args = [f'{e.args[0]} {msg}'] if not replace and len(e.args) > 0 else [msg]
     return e
 
-# %% ../nbs/03_xtras.ipynb 127
+# %% ../nbs/03_xtras.ipynb 125
 def round_multiple(x, mult, round_down=False):
     "Round `x` to nearest multiple of `mult`"
     def _f(x_): return (int if round_down else round)(x_/mult)*mult
     res = L(x).map(_f)
     return res if is_listy(x) else res[0]
 
-# %% ../nbs/03_xtras.ipynb 129
+# %% ../nbs/03_xtras.ipynb 127
 def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)
@@ -419,7 +419,7 @@ def str2bool(s):
     elif s in ('n', 'no', 'f', 'false', 'off', '0'): return 0
     else: raise ValueError("insid truth sue %r" % (s,))
 
-# %% ../nbs/03_xtras.ipynb 132
+# %% ../nbs/03_xtras.ipynb 130
 def set_num_threads(nt):
     "Get numpy (and others) to use `nt` threads"
     try: import mkl; mkl.set_num_threads(nt)
@@ -430,14 +430,14 @@ def set_num_threads(nt):
     for o in ['OPENBLAS_NUM_THREADS','NUMEXPR_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS']:
         os.environ[o] = str(nt)
 
-# %% ../nbs/03_xtras.ipynb 134
+# %% ../nbs/03_xtras.ipynb 132
 def join_path_file(file, path, ext=''):
     "Return `path/file` if file is a string or a `Path`, file otherwise"
     if not isinstance(file, (str, Path)): return file
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
 
-# %% ../nbs/03_xtras.ipynb 137
+# %% ../nbs/03_xtras.ipynb 135
 def autostart(g):
     "Decorator that automatically starts a generator"
     @functools.wraps(g)
@@ -447,7 +447,7 @@ def autostart(g):
         return r
     return f
 
-# %% ../nbs/03_xtras.ipynb 138
+# %% ../nbs/03_xtras.ipynb 136
 class EventTimer:
     "An event timer with history of `store` items of time `span`"
 
@@ -471,15 +471,15 @@ class EventTimer:
     @property
     def freq(self): return self.events/self.duration
 
-# %% ../nbs/03_xtras.ipynb 142
+# %% ../nbs/03_xtras.ipynb 140
 _fmt = string.Formatter()
 
-# %% ../nbs/03_xtras.ipynb 143
+# %% ../nbs/03_xtras.ipynb 141
 def stringfmt_names(s:str)->list:
     "Unique brace-delimited names in `s`"
     return uniqueify(o[1] for o in _fmt.parse(s) if o[1])
 
-# %% ../nbs/03_xtras.ipynb 145
+# %% ../nbs/03_xtras.ipynb 143
 class PartialFormatter(string.Formatter):
     "A `string.Formatter` that doesn't error on missing fields, and tracks missing fields and unused args"
     def __init__(self):
@@ -495,24 +495,24 @@ class PartialFormatter(string.Formatter):
     def check_unused_args(self, used, args, kwargs):
         self.xtra = filter_keys(kwargs, lambda o: o not in used)
 
-# %% ../nbs/03_xtras.ipynb 147
+# %% ../nbs/03_xtras.ipynb 145
 def partial_format(s:str, **kwargs):
     "string format `s`, ignoring missing field errors, returning missing and extra fields"
     fmt = PartialFormatter()
     res = fmt.format(s, **kwargs)
     return res,list(fmt.missing),fmt.xtra
 
-# %% ../nbs/03_xtras.ipynb 150
+# %% ../nbs/03_xtras.ipynb 148
 def utc2local(dt:datetime)->datetime:
     "Convert `dt` from UTC to local time"
     return dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
-# %% ../nbs/03_xtras.ipynb 152
+# %% ../nbs/03_xtras.ipynb 150
 def local2utc(dt:datetime)->datetime:
     "Convert `dt` from local to UTC time"
     return dt.replace(tzinfo=None).astimezone(tz=timezone.utc)
 
-# %% ../nbs/03_xtras.ipynb 154
+# %% ../nbs/03_xtras.ipynb 152
 def trace(f):
     "Add `set_trace` to an existing function `f`"
     from pdb import set_trace
@@ -523,7 +523,7 @@ def trace(f):
     _inner._traced = True
     return _inner
 
-# %% ../nbs/03_xtras.ipynb 156
+# %% ../nbs/03_xtras.ipynb 154
 @contextmanager
 def modified_env(*delete, **replace):
     "Context manager temporarily modifying `os.environ` by deleting `delete` and replacing `replace`"
@@ -536,14 +536,14 @@ def modified_env(*delete, **replace):
         os.environ.clear()
         os.environ.update(prev)
 
-# %% ../nbs/03_xtras.ipynb 158
+# %% ../nbs/03_xtras.ipynb 156
 class ContextManagers(GetAttr):
     "Wrapper for `contextlib.ExitStack` which enters a collection of context managers"
     def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
     def __enter__(self): self.default.map(self.stack.enter_context)
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
 
-# %% ../nbs/03_xtras.ipynb 160
+# %% ../nbs/03_xtras.ipynb 158
 def shufflish(x, pct=0.04):
     "Randomly relocate items of `x` up to `pct` of `len(x)` from their starting location"
     n = len(x)

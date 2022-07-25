@@ -34,8 +34,8 @@ jobs:
       run: |
         pip install -Uqq nbdev
         pip install -e ".[dev]"
-    - name: Check if notebooks are synced and cleaned
-      uses: fastai/workflows/nb@master
+        #- name: Check if notebooks are synced and cleaned
+        #uses: fastai/workflows/nb@master
     - name: Run tests
       run: nbdev_test_nbs
       env:

@@ -17,8 +17,8 @@ jobs:
         os:  [ubuntu, macos]#,windows]
         py:  ["3.7", "3.8", "3.9", "3.10"]
         include:
-          - os: windows
-            shell: "/usr/bin/bash"
+          #- os: windows
+          #  shell: "/usr/bin/bash"
           - os: ubuntu 
             shell: "/bin/bash"
           - os: macos 

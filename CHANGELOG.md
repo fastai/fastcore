@@ -2,12 +2,12 @@
 
 <!-- do not remove -->
 
-## 1.5.7
+## 1.5.8
 
 ### New Features
 
 - port to nbdev2 ([#438](https://github.com/fastai/fastcore/issues/438))
-
+- add `signature_ex`
 
 
 ## 1.5.7

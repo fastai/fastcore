@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.9
+
+### New Features
+
+- start mode option for `parallel` ([#440](https://github.com/fastai/fastcore/issues/440))
+
+
 ## 1.5.8
 
 ### New Features

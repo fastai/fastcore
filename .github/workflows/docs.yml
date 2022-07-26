@@ -11,11 +11,6 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-    - uses: fastai/workflows/quarto-rsync@master
+    - uses: fastai/workflows/quarto-ghp@master
       with:
-        username: jeremyphoward
-        hostname: ps625762.dreamhostps.com
-        dest_path: docs.fast.ai
-        ssh_key: ${{ secrets.DH_KEY }}
-        delete: 'yes'
-
+        ghtoken: ${{ secrets.GITHUB_TOKEN }}

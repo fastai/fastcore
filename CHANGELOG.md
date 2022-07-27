@@ -2,6 +2,11 @@
 
 <!-- do not remove -->
 
+## 1.5.11
+
+### New Features
+
+- move `str2bool` to `fastcore.basics` ([#441](https://github.com/fastai/fastcore/issues/441))
 
 
 ## 1.5.9

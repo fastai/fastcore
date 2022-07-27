@@ -90,9 +90,9 @@ jobs:
         
     - name: Install libraries
       run: |
-        pip3 install -Uqq nbdev
-        cd fastai && pip3 install -Ue ".[dev]"
-        cd ../fastcore && pip3 install -Ue .[dev]
+        pip3 install -Uqq git+https://github.com/fastai/nbdev.git
+        cd fastai && pip install -Ue ".[dev]"
+        cd ../fastcore && pip install -Ue .[dev]
 
     - name: check for cache hit
       uses: actions/cache@v3
@@ -112,4 +112,4 @@ jobs:
     - name: Test fastai notebooks
       run: |
         cd fastai
-        nbdev_test_nbs --flags '' --n_workers 3 --pause 1.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"
+        nbdev_test --flags '' --n_workers 3 --pause 1.5 --fname "nbs/[0-9]${{matrix.nb}}*.ipynb"

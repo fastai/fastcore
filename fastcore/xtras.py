@@ -9,7 +9,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'image_size', 'bun
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
            'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'modified_env', 'ContextManagers', 'shufflish']
+           'modified_env', 'ContextManagers', 'shufflish', 'console_help']
 
 # %% ../nbs/03_xtras.ipynb 3
 from .imports import *
@@ -539,3 +539,13 @@ def shufflish(x, pct=0.04):
     n = len(x)
     import random
     return L(x[i] for i in sorted(range_of(x), key=lambda o: o+n*(1+random.random()*pct)))
+
+# %% ../nbs/03_xtras.ipynb 156
+def console_help(
+    libname:str):  # name of library for console script listing
+    "Show help for all console scripts from `libname`"
+    from pkg_resources import iter_entry_points as ep
+    for e in ep('console_scripts'): 
+        if e.module_name.startswith(libname+'.'): 
+            nm = f'\033[1m\033[94m{e.name}\033[0m'
+            print(f'{nm:45}{e.load().__doc__}')

@@ -116,7 +116,7 @@ def call_parse(func=None, nested=False):
         return tfunc(**merge(args, args_from_prog(func, xtra)))
 
     mod = inspect.getmodule(inspect.currentframe().f_back)
-    if getattr(mod, __name__, '') =="__main__":
+    if getattr(mod, '__name__', '') =="__main__":
         setattr(mod, func.__name__, _f)
         SCRIPT_INFO.func = func.__name__
         return _f()

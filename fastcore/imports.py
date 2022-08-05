@@ -29,7 +29,7 @@ def is_coll(o):
 
 def all_equal(a,b):
     "Compares whether `a` and `b` are the same length and have the same contents"
-    if not is_iter(b): return False
+    if not is_iter(b): return a==b
     return all(equals(a_,b_) for a_,b_ in itertools.zip_longest(a,b))
 
 def noop (x=None, *args, **kwargs):

@@ -106,7 +106,7 @@ def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None
     kwpool = {}
     if threadpool: pool = ThreadPoolExecutor
     else:
-        if not method and sys.platform == 'darwin' and not IN_NOTEBOOK: method='spawn'
+        if not method and sys.platform == 'darwin': method='fork'
         if method: kwpool['mp_context'] = get_context(method)
         pool = ProcessPoolExecutor
     with pool(n_workers, pause=pause, **kwpool) as ex:

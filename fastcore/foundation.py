@@ -249,16 +249,15 @@ def read_config_file(file, **kwargs):
 # %% ../nbs/02_foundation.ipynb 131
 class Config:
     "Reading and writing `ConfigParser` ini files"
-    def __init__(self, cfg_path, cfg_name, create=None):
+    def __init__(self, cfg_path, cfg_name, create=None, save=True):
         cfg_path = Path(cfg_path).expanduser().absolute()
         self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
-        if not self.config_file.exists():
-            if create:
-                self.d = create
+        if self.config_file.exists(): self.d = read_config_file(self.config_file)
+        elif create is not None:
+            self.d = ConfigParser(create)['DEFAULT']
+            if save:
                 cfg_path.mkdir(exist_ok=True, parents=True)
                 self.save()
-            else: raise FileNotFoundError(f"Could not find {cfg_name}")
-        self.d = read_config_file(self.config_file)
 
     def __setitem__(self,k,v): self.d[k] = str(v)
     def __contains__(self,k):  return k in self.d

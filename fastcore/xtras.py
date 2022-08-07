@@ -27,14 +27,15 @@ def walk(
     symlinks:bool=True, # follow symlinks?
     keep_file:callable=noop, # function that returns True for wanted files
     keep_folder:callable=noop, # function that returns True for folders to enter
+    skip_folder:callable=noop, # function that returns True for folders to skip
     func:callable=os.path.join # function to apply to each matched file
 ): # Generator of `func` applied to matched files
     "Generator version of `os.walk`, using functions to filter files and folders"
     from copy import copy
     for root,dirs,files in os.walk(path, followlinks=symlinks):
-        yield from (func(root, name) for name in files if keep_file(root,name))
+        if keep_folder(root,''): yield from (func(root, name) for name in files if keep_file(root,name))
         for name in copy(dirs):
-            if not keep_folder(root,name): dirs.remove(name)
+            if skip_folder(root,name): dirs.remove(name)
 
 # %% ../nbs/03_xtras.ipynb 9
 def globtastic(
@@ -61,10 +62,9 @@ def globtastic(
                 not file_re or file_re.search(name)) and (
                 not skip_file_glob or not fnmatch(name, skip_file_glob)) and (
                 not skip_file_re or not skip_file_re.search(name))
-    def _keep_folder(root, name):
-        return (not folder_re or folder_re.search(name)) and (
-            not skip_folder_re or not skip_folder_re.search(name))
-    return L(walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder, func=func))
+    def _keep_folder(root, name): return not folder_re or folder_re.search(os.path.join(root,name))
+    def _skip_folder(root, name): return skip_folder_re and skip_folder_re.search(name)
+    return L(walk(path, symlinks=symlinks, keep_file=_keep_file, keep_folder=_keep_folder, skip_folder=_skip_folder, func=func))
 
 # %% ../nbs/03_xtras.ipynb 11
 @contextmanager

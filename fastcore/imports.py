@@ -29,7 +29,7 @@ def is_coll(o):
 
 def all_equal(a,b):
     "Compares whether `a` and `b` are the same length and have the same contents"
-    if not is_iter(b): return False
+    if not is_iter(b): return a==b
     return all(equals(a_,b_) for a_,b_ in itertools.zip_longest(a,b))
 
 def noop (x=None, *args, **kwargs):
@@ -49,7 +49,8 @@ def isinstance_str(x, cls_name):
 def array_equal(a,b):
     if hasattr(a, '__array__'): a = a.__array__()
     if hasattr(b, '__array__'): b = b.__array__()
-    return (a==b).all()
+    if isinstance_str(a, 'ndarray') and isinstance_str(b, 'ndarray'): return (a==b).all()
+    return all_equal(a,b)
 
 def df_equal(a,b): return a.equals(b) if isinstance_str(a, 'NDFrame') else b.equals(a)
 

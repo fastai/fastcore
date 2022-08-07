@@ -2,7 +2,7 @@ ipynb-filters: [nbdev_filter]
 
 project:
   type: website
-  output-dir: docs
+  output-dir: _docs
   preview:
     port: 3000
     browser: false
@@ -12,9 +12,11 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
+    toc-depth: 4
 
 website:
   title: "fastcore"
+  site-url: "https://fastcore.fast.ai/"
   description: "Python supercharged for fastai development"
   execute: 
     enabled: false
@@ -22,14 +24,14 @@ website:
   open-graph: true
   reader-mode: true
   repo-branch: master
-  repo-url: https://github.com/fastai/fastcore/tree/master/
+  repo-url: "https://github.com/fastai/fastcore/"
   repo-actions: [issue]
   navbar:
     background: primary
     search: true
     right:
       - icon: github
-        href: https://github.com/fastai/fastcore/tree/master/
+        href: "https://github.com/fastai/fastcore/"
   sidebar:
     style: "floating"
 

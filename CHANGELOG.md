@@ -2,6 +2,26 @@
 
 <!-- do not remove -->
 
+## 1.5.15
+
+### New Features
+
+- layered `Config` with `extra_files`; `Config` `repr` ([#456](https://github.com/fastai/fastcore/pull/456)), thanks to [@seeM](https://github.com/seeM)
+- in-memory `Config` by passing `save=False` ([#455](https://github.com/fastai/fastcore/pull/455)), thanks to [@seeM](https://github.com/seeM)
+- use `==` for non iterable args to `all_equal` ([#453](https://github.com/fastai/fastcore/issues/453))
+- New method: `AttrDict.copy`, to return AttrDict instead of plain python dict ([#451](https://github.com/fastai/fastcore/pull/451)), thanks to [@Salehbigdeli](https://github.com/Salehbigdeli)
+- add xdg module ([#450](https://github.com/fastai/fastcore/issues/450))
+- add `console_help` ([#448](https://github.com/fastai/fastcore/issues/448))
+- add module info to `basic_repr` ([#447](https://github.com/fastai/fastcore/issues/447))
+- add `only` and `nested_setdefault` collection functions ([#446](https://github.com/fastai/fastcore/pull/446)), thanks to [@seeM](https://github.com/seeM)
+- include annotations and qualname in `copy_func` ([#425](https://github.com/fastai/fastcore/pull/425)), thanks to [@seeM](https://github.com/seeM)
+
+### Bugs Squashed
+
+- Fix scripts not executing ([#449](https://github.com/fastai/fastcore/pull/449)), thanks to [@renato145](https://github.com/renato145)
+- urllib opener can conflict with fork parallel on macos ([#444](https://github.com/fastai/fastcore/issues/444))
+
+
 ## 1.5.11
 
 ### New Features

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Network, HTTP, and URL functions">
+
+<title>fastcore - Network functionality</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="fastcore - Network functionality">
+<meta property="og:description" content="Network, HTTP, and URL functions">
+<meta property="og:site-name" content="fastcore">
+<meta name="twitter:title" content="fastcore - Network functionality">
+<meta name="twitter:description" content="Network, HTTP, and URL functions">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">fastcore</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/fastai/fastcore/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-reader-toggle nav-link" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Network functionality</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome to fastcore</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./test.html" class="sidebar-item-text sidebar-link">Test</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basics.html" class="sidebar-item-text sidebar-link">Basic functionality</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./foundation.html" class="sidebar-item-text sidebar-link">Foundation</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xtras.html" class="sidebar-item-text sidebar-link">Utility functions</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parallel.html" class="sidebar-item-text sidebar-link">Parallel</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./net.html" class="sidebar-item-text sidebar-link active">Network functionality</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dispatch.html" class="sidebar-item-text sidebar-link">Type dispatch</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./transform.html" class="sidebar-item-text sidebar-link">Transforms</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./docments.html" class="sidebar-item-text sidebar-link">Docments</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./meta.html" class="sidebar-item-text sidebar-link">Meta</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./script.html" class="sidebar-item-text sidebar-link">Script - CLI</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xdg.html" class="sidebar-item-text sidebar-link">XDG</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#urlquote" id="toc-urlquote" class="nav-link active" data-scroll-target="#urlquote">urlquote</a></li>
+  <li><a href="#urlwrap" id="toc-urlwrap" class="nav-link" data-scroll-target="#urlwrap">urlwrap</a></li>
+  <li><a href="#http4xxclienterror" id="toc-http4xxclienterror" class="nav-link" data-scroll-target="#http4xxclienterror">HTTP4xxClientError</a></li>
+  <li><a href="#http5xxservererror" id="toc-http5xxservererror" class="nav-link" data-scroll-target="#http5xxservererror">HTTP5xxServerError</a>
+  <ul class="collapse">
+  <li><a href="#urlopener" id="toc-urlopener" class="nav-link" data-scroll-target="#urlopener">urlopener</a></li>
+  <li><a href="#urlopen" id="toc-urlopen" class="nav-link" data-scroll-target="#urlopen">urlopen</a></li>
+  <li><a href="#urlread" id="toc-urlread" class="nav-link" data-scroll-target="#urlread">urlread</a></li>
+  <li><a href="#urljson" id="toc-urljson" class="nav-link" data-scroll-target="#urljson">urljson</a></li>
+  <li><a href="#urlcheck" id="toc-urlcheck" class="nav-link" data-scroll-target="#urlcheck">urlcheck</a></li>
+  <li><a href="#urlclean" id="toc-urlclean" class="nav-link" data-scroll-target="#urlclean">urlclean</a></li>
+  <li><a href="#urlretrieve" id="toc-urlretrieve" class="nav-link" data-scroll-target="#urlretrieve">urlretrieve</a></li>
+  <li><a href="#urldest" id="toc-urldest" class="nav-link" data-scroll-target="#urldest">urldest</a></li>
+  <li><a href="#urlsave" id="toc-urlsave" class="nav-link" data-scroll-target="#urlsave">urlsave</a></li>
+  <li><a href="#urlvalid" id="toc-urlvalid" class="nav-link" data-scroll-target="#urlvalid">urlvalid</a></li>
+  <li><a href="#urlrequest" id="toc-urlrequest" class="nav-link" data-scroll-target="#urlrequest">urlrequest</a></li>
+  <li><a href="#request.summary" id="toc-request.summary" class="nav-link" data-scroll-target="#request.summary">Request.summary</a></li>
+  <li><a href="#urlsend" id="toc-urlsend" class="nav-link" data-scroll-target="#urlsend">urlsend</a></li>
+  <li><a href="#do_request" id="toc-do_request" class="nav-link" data-scroll-target="#do_request">do_request</a></li>
+  <li><a href="#start_server" id="toc-start_server" class="nav-link" data-scroll-target="#start_server">start_server</a></li>
+  <li><a href="#start_client" id="toc-start_client" class="nav-link" data-scroll-target="#start_client">start_client</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/fastai/fastcore/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Network functionality</h1>
+</div>
+
+<div>
+  <div class="description">
+    Network, HTTP, and URL functions
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.test <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nbdev.showdoc <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.nb_imports <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<section id="urlquote" class="level4">
+<h4 class="anchored" data-anchor-id="urlquote">urlquote</h4>
+<blockquote class="blockquote">
+<pre><code> urlquote (url)</code></pre>
+</blockquote>
+<p>Update url’s path with <code>urllib.parse.quote</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>urlquote(<span class="st">"https://github.com/fastai/fastai/compare/master@</span><span class="sc">{1.day.ago}</span><span class="st">…master"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'https://github.com/fastai/fastai/compare/master@%7B1.day.ago%7D%E2%80%A6master'</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>urlquote(<span class="st">"https://www.google.com/search?q=你好"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>'https://www.google.com/search?q=%E4%BD%A0%E5%A5%BD'</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="urlwrap" class="level4">
+<h4 class="anchored" data-anchor-id="urlwrap">urlwrap</h4>
+<blockquote class="blockquote">
+<pre><code> urlwrap (url, data=None, headers=None)</code></pre>
+</blockquote>
+<p>Wrap <code>url</code> in a urllib <code>Request</code> with <code>urlquote</code></p>
+<hr>
+</section>
+<section id="http4xxclienterror" class="level3">
+<h3 class="anchored" data-anchor-id="http4xxclienterror">HTTP4xxClientError</h3>
+<blockquote class="blockquote">
+<pre><code> HTTP4xxClientError (url, code, msg, hdrs, fp)</code></pre>
+</blockquote>
+<p>Base class for client exceptions (code 4xx) from <code>url*</code> functions</p>
+<hr>
+</section>
+<section id="http5xxservererror" class="level3">
+<h3 class="anchored" data-anchor-id="http5xxservererror">HTTP5xxServerError</h3>
+<blockquote class="blockquote">
+<pre><code> HTTP5xxServerError (url, code, msg, hdrs, fp)</code></pre>
+</blockquote>
+<p>Base class for server exceptions (code 5xx) from <code>url*</code> functions</p>
+<hr>
+<section id="urlopener" class="level4">
+<h4 class="anchored" data-anchor-id="urlopener">urlopener</h4>
+<blockquote class="blockquote">
+<pre><code> urlopener ()</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="urlopen" class="level4">
+<h4 class="anchored" data-anchor-id="urlopen">urlopen</h4>
+<blockquote class="blockquote">
+<pre><code> urlopen (url, data=None, headers=None, timeout=None, **kwargs)</code></pre>
+</blockquote>
+<p>Like <code>urllib.request.urlopen</code>, but first <code>urlwrap</code> the <code>url</code>, and encode <code>data</code></p>
+<hr>
+</section>
+<section id="urlread" class="level4">
+<h4 class="anchored" data-anchor-id="urlread">urlread</h4>
+<blockquote class="blockquote">
+<pre><code> urlread (url, data=None, headers=None, decode=True, return_json=False,
+          return_headers=False, timeout=None, **kwargs)</code></pre>
+</blockquote>
+<p>Retrieve <code>url</code>, using <code>data</code> dict or <code>kwargs</code> to <code>POST</code> if present</p>
+<hr>
+</section>
+<section id="urljson" class="level4">
+<h4 class="anchored" data-anchor-id="urljson">urljson</h4>
+<blockquote class="blockquote">
+<pre><code> urljson (url, data=None, timeout=None)</code></pre>
+</blockquote>
+<p>Retrieve <code>url</code> and decode json</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>test_eq(urljson(<span class="st">'https://httpbin.org/get'</span>)[<span class="st">'headers'</span>][<span class="st">'User-Agent'</span>], url_default_headers[<span class="st">'User-Agent'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="urlcheck" class="level4">
+<h4 class="anchored" data-anchor-id="urlcheck">urlcheck</h4>
+<blockquote class="blockquote">
+<pre><code> urlcheck (url, timeout=10)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="urlclean" class="level4">
+<h4 class="anchored" data-anchor-id="urlclean">urlclean</h4>
+<blockquote class="blockquote">
+<pre><code> urlclean (url)</code></pre>
+</blockquote>
+<p>Remove fragment, params, and querystring from <code>url</code> if present</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>test_eq(urlclean(<span class="st">'http://a.com/b?c=1#d'</span>), <span class="st">'http://a.com/b'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="urlretrieve" class="level4">
+<h4 class="anchored" data-anchor-id="urlretrieve">urlretrieve</h4>
+<blockquote class="blockquote">
+<pre><code> urlretrieve (url, filename=None, reporthook=None, data=None,
+              timeout=None)</code></pre>
+</blockquote>
+<p>Same as <code>urllib.request.urlretrieve</code> but also works with <code>Request</code> objects</p>
+<hr>
+</section>
+<section id="urldest" class="level4">
+<h4 class="anchored" data-anchor-id="urldest">urldest</h4>
+<blockquote class="blockquote">
+<pre><code> urldest (url, dest=None)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="urlsave" class="level4">
+<h4 class="anchored" data-anchor-id="urlsave">urlsave</h4>
+<blockquote class="blockquote">
+<pre><code> urlsave (url, dest=None, reporthook=None, timeout=None)</code></pre>
+</blockquote>
+<p>Retrieve <code>url</code> and save based on its name</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#skip</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> tempfile.TemporaryDirectory() <span class="im">as</span> d: urlsave(<span class="st">'http://www.google.com/index.html'</span>, d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="urlvalid" class="level4">
+<h4 class="anchored" data-anchor-id="urlvalid">urlvalid</h4>
+<blockquote class="blockquote">
+<pre><code> urlvalid (x)</code></pre>
+</blockquote>
+<p>Test if <code>x</code> is a valid URL</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> urlvalid(<span class="st">'http://www.google.com/'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> urlvalid(<span class="st">'www.google.com/'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> urlvalid(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="urlrequest" class="level4">
+<h4 class="anchored" data-anchor-id="urlrequest">urlrequest</h4>
+<blockquote class="blockquote">
+<pre><code> urlrequest (url, verb, headers=None, route=None, query=None, data=None,
+             json_data=True)</code></pre>
+</blockquote>
+<p><code>Request</code> for <code>url</code> with optional route params replaced by <code>route</code>, plus <code>query</code> string, and post <code>data</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>hdr <span class="op">=</span> {<span class="st">'Hdr1'</span>:<span class="st">'1'</span>, <span class="st">'Hdr2'</span>:<span class="st">'2'</span>}</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>req <span class="op">=</span> urlrequest(<span class="st">'http://example.com/</span><span class="sc">{foo}</span><span class="st">/1'</span>, <span class="st">'POST'</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                 headers<span class="op">=</span>hdr, route<span class="op">=</span>{<span class="st">'foo'</span>:<span class="st">'3'</span>}, query<span class="op">=</span>{<span class="st">'q'</span>:<span class="st">'4'</span>}, data<span class="op">=</span>{<span class="st">'d'</span>:<span class="st">'5'</span>})</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>test_eq(req.headers, hdr)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>test_eq(req.full_url, <span class="st">'http://example.com/3/1?q=4'</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>test_eq(req.method, <span class="st">'POST'</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>test_eq(req.data, <span class="st">b'{"d": "5"}'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>req <span class="op">=</span> urlrequest(<span class="st">'http://example.com/</span><span class="sc">{foo}</span><span class="st">/1'</span>, <span class="st">'POST'</span>, data<span class="op">=</span>{<span class="st">'d'</span>:<span class="st">'5'</span>,<span class="st">'e'</span>:<span class="st">'6'</span>}, headers<span class="op">=</span>hdr, json_data<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>test_eq(req.data, <span class="st">b'd=5&amp;e=6'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="request.summary" class="level4">
+<h4 class="anchored" data-anchor-id="request.summary">Request.summary</h4>
+<blockquote class="blockquote">
+<pre><code> Request.summary (skip=None)</code></pre>
+</blockquote>
+<p>Summary containing full_url, headers, method, and data, removing <code>skip</code> from headers</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>req.summary(skip<span class="op">=</span><span class="st">'Hdr1'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>{'full_url': 'http://example.com/{foo}/1',
+ 'method': 'POST',
+ 'data': b'd=5&amp;e=6',
+ 'headers': {'Hdr2': '2'}}</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="urlsend" class="level4">
+<h4 class="anchored" data-anchor-id="urlsend">urlsend</h4>
+<blockquote class="blockquote">
+<pre><code> urlsend (url, verb, headers=None, route=None, query=None, data=None,
+          json_data=True, return_json=True, return_headers=False,
+          debug=None)</code></pre>
+</blockquote>
+<p>Send request with <code>urlrequest</code>, converting result to json if <code>return_json</code></p>
+<hr>
+</section>
+<section id="do_request" class="level4">
+<h4 class="anchored" data-anchor-id="do_request">do_request</h4>
+<blockquote class="blockquote">
+<pre><code> do_request (url, post=False, headers=None, **data)</code></pre>
+</blockquote>
+<p>Call GET or json-encoded POST on <code>url</code>, depending on <code>post</code></p>
+<hr>
+</section>
+<section id="start_server" class="level4">
+<h4 class="anchored" data-anchor-id="start_server">start_server</h4>
+<blockquote class="blockquote">
+<pre><code> start_server (port, host=None, dgram=False, reuse_addr=True,
+               n_queue=None)</code></pre>
+</blockquote>
+<p>Create a <code>socket</code> server on <code>port</code>, with optional <code>host</code>, of type <code>dgram</code></p>
+<p>You can create a TCP client and server pass an int as <code>port</code> and optional <code>host</code>. <code>host</code> defaults to your main network interface if not provided. You can create a Unix socket client and server by passing a string to <code>port</code>. A <code>SOCK_STREAM</code> socket is created by default, unless you pass <code>dgram=True</code>, in which case a <code>SOCK_DGRAM</code> socket is created. <code>n_queue</code> sets the listening queue size.</p>
+<hr>
+</section>
+<section id="start_client" class="level4">
+<h4 class="anchored" data-anchor-id="start_client">start_client</h4>
+<blockquote class="blockquote">
+<pre><code> start_client (port, host=None, dgram=False)</code></pre>
+</blockquote>
+<p>Create a <code>socket</code> client on <code>port</code>, with optional <code>host</code>, of type <code>dgram</code></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

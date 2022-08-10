@@ -1,7 +1,7 @@
 sidebar.yml
 Gemfile.lock
 token
-docs/
+_docs/
 conda/
 .last_checked
 .gitconfig

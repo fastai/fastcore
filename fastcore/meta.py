@@ -4,25 +4,25 @@
 __all__ = ['test_sig', 'FixSigMeta', 'PrePostInitMeta', 'AutoInit', 'NewChkMeta', 'BypassNewMeta', 'empty2none', 'anno_dict',
            'use_kwargs_dict', 'use_kwargs', 'delegates', 'method', 'funcs_kwargs']
 
-# %% ../nbs/07_meta.ipynb 2
+# %% ../nbs/07_meta.ipynb 1
 from .imports import *
 from .test import *
 from contextlib import contextmanager
 from copy import copy
 import inspect
 
-# %% ../nbs/07_meta.ipynb 6
+# %% ../nbs/07_meta.ipynb 5
 def test_sig(f, b):
     "Test the signature of an object"
     test_eq(str(inspect.signature(f)), b)
 
-# %% ../nbs/07_meta.ipynb 8
+# %% ../nbs/07_meta.ipynb 7
 def _rm_self(sig):
     sigd = dict(sig.parameters)
     sigd.pop('self')
     return sig.replace(parameters=sigd.values())
 
-# %% ../nbs/07_meta.ipynb 9
+# %% ../nbs/07_meta.ipynb 8
 class FixSigMeta(type):
     "A metaclass that fixes the signature on classes that override `__new__`"
     def __new__(cls, name, bases, dict):
@@ -30,7 +30,7 @@ class FixSigMeta(type):
         if res.__init__ is not object.__init__: res.__signature__ = _rm_self(inspect.signature(res.__init__))
         return res
 
-# %% ../nbs/07_meta.ipynb 24
+# %% ../nbs/07_meta.ipynb 23
 class PrePostInitMeta(FixSigMeta):
     "A metaclass that calls optional `__pre_init__` and `__post_init__` methods"
     def __call__(cls, *args, **kwargs):
@@ -41,12 +41,12 @@ class PrePostInitMeta(FixSigMeta):
             if hasattr(res,'__post_init__'): res.__post_init__(*args,**kwargs)
         return res
 
-# %% ../nbs/07_meta.ipynb 29
+# %% ../nbs/07_meta.ipynb 28
 class AutoInit(metaclass=PrePostInitMeta):
     "Same as `object`, but no need for subclasses to call `super().__init__`"
     def __pre_init__(self, *args, **kwargs): super().__init__(*args, **kwargs)
 
-# %% ../nbs/07_meta.ipynb 32
+# %% ../nbs/07_meta.ipynb 31
 class NewChkMeta(FixSigMeta):
     "Metaclass to avoid recreating object passed to constructor"
     def __call__(cls, x=None, *args, **kwargs):
@@ -54,7 +54,7 @@ class NewChkMeta(FixSigMeta):
         res = super().__call__(*((x,) + args), **kwargs)
         return res
 
-# %% ../nbs/07_meta.ipynb 45
+# %% ../nbs/07_meta.ipynb 44
 class BypassNewMeta(FixSigMeta):
     "Metaclass: casts `x` to this class if it's of type `cls._bypass_type`"
     def __call__(cls, x=None, *args, **kwargs):
@@ -64,20 +64,20 @@ class BypassNewMeta(FixSigMeta):
         if cls!=x.__class__: x.__class__ = cls
         return x
 
-# %% ../nbs/07_meta.ipynb 55
+# %% ../nbs/07_meta.ipynb 54
 def empty2none(p):
     "Replace `Parameter.empty` with `None`"
     return None if p==inspect.Parameter.empty else p
 
-# %% ../nbs/07_meta.ipynb 56
+# %% ../nbs/07_meta.ipynb 55
 def anno_dict(f):
     "`__annotation__ dictionary with `empty` cast to `None`, returning empty if doesn't exist"
     return {k:empty2none(v) for k,v in getattr(f, '__annotations__', {}).items()}
 
-# %% ../nbs/07_meta.ipynb 58
+# %% ../nbs/07_meta.ipynb 57
 def _mk_param(n,d=None): return inspect.Parameter(n, inspect.Parameter.KEYWORD_ONLY, default=d)
 
-# %% ../nbs/07_meta.ipynb 59
+# %% ../nbs/07_meta.ipynb 58
 def use_kwargs_dict(keep=False, **kwargs):
     "Decorator: replace `**kwargs` in signature with `names` params"
     def _f(f):
@@ -91,7 +91,7 @@ def use_kwargs_dict(keep=False, **kwargs):
         return f
     return _f
 
-# %% ../nbs/07_meta.ipynb 64
+# %% ../nbs/07_meta.ipynb 63
 def use_kwargs(names, keep=False):
     "Decorator: replace `**kwargs` in signature with `names` params"
     def _f(f):
@@ -105,7 +105,7 @@ def use_kwargs(names, keep=False):
         return f
     return _f
 
-# %% ../nbs/07_meta.ipynb 69
+# %% ../nbs/07_meta.ipynb 68
 def delegates(to=None, keep=False, but=None):
     "Decorator: replace `**kwargs` in signature with params from `to`"
     if but is None: but = []
@@ -120,7 +120,6 @@ def delegates(to=None, keep=False, but=None):
         k = sigd.pop('kwargs')
         s2 = {k:v for k,v in inspect.signature(to_f).parameters.items()
               if v.default != inspect.Parameter.empty and k not in sigd and k not in but}
-        s2 = {name: param.replace(kind=inspect.Parameter.KEYWORD_ONLY) for name, param in s2.items()} 
         sigd.update(s2)
         if keep: sigd['kwargs'] = k
         else: from_f.__delwrap__ = to_f
@@ -128,13 +127,13 @@ def delegates(to=None, keep=False, but=None):
         return f
     return _f
 
-# %% ../nbs/07_meta.ipynb 88
+# %% ../nbs/07_meta.ipynb 87
 def method(f):
     "Mark `f` as a method"
     # `1` is a dummy instance since Py3 doesn't allow `None` any more
     return MethodType(f, 1)
 
-# %% ../nbs/07_meta.ipynb 91
+# %% ../nbs/07_meta.ipynb 90
 def _funcs_kwargs(cls, as_method):
     old_init = cls.__init__
     def _init(self, *args, **kwargs):
@@ -150,7 +149,7 @@ def _funcs_kwargs(cls, as_method):
     if hasattr(cls, '__signature__'): cls.__signature__ = _rm_self(inspect.signature(cls.__init__))
     return cls
 
-# %% ../nbs/07_meta.ipynb 92
+# %% ../nbs/07_meta.ipynb 91
 def funcs_kwargs(as_method=False):
     "Replace methods in `cls._methods` with those from `kwargs`"
     if callable(as_method): return _funcs_kwargs(as_method, False)

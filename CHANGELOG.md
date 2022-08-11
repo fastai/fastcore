@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.5.17
+
+### New Features
+
+- Add `fastcore.style`: fast styling for friendly CLIs ([#460](https://github.com/fastai/fastcore/pull/460)), thanks to [@seeM](https://github.com/seeM)
+- add `skip_folder` to `xtras.walk` ([#458](https://github.com/fastai/fastcore/issues/458))
+
+### Bugs Squashed
+
+- Fix scripts not executing ([#449](https://github.com/fastai/fastcore/pull/449)), thanks to [@renato145](https://github.com/renato145)
 
 
 ## 1.5.15

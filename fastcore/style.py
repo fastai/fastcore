@@ -8,7 +8,7 @@ __all__ = ['style_codes', 'S', 'StyleCode', 'Style', 'demo']
 _base = 'red green yellow blue magenta cyan'
 _regular = f'black {_base} light_gray'
 _intense = 'dark_gray ' + ' '.join('light_'+o for o in _base.split()) + ' white'
-_fmt = dict(bold=1,dim=2,underline=4,reverse=7,hidden=8)
+_fmt = 'bold dim italic underline blink <na> invert hidden strikethrough'
 
 # %% ../nbs/10_style.ipynb 4
 class StyleCode:
@@ -30,8 +30,9 @@ style_codes = {**_mk_codes(_regular, 30,  'fg',                default=39),
                **_mk_codes(_intense, 90,  'fg'),
                **_mk_codes(_regular, 40,  'bg',    '{}_bg',    default_bg=49),
                **_mk_codes(_intense, 100, 'bg',    '{}_bg'),
-               **_mk_codes(_fmt,     0,   'fmt'),
+               **_mk_codes(_fmt,     1,   'fmt'),
                **_mk_codes(_fmt,     21,  'reset', 'reset_{}', reset=0, reset_bold=22)}
+style_codes = {k:v for k,v in style_codes.items() if '<na>' not in k}
 
 # %% ../nbs/10_style.ipynb 9
 def _reset_code(s):
@@ -44,10 +45,12 @@ class Style:
     "A minimal terminal text styler."
     def __init__(self, codes=None): self.codes = [] if codes is None else codes
     def __dir__(self): return style_codes.keys()
-    def __getattr__(self, k): return Style(self.codes+[style_codes[k]])
+    def __getattr__(self, k):
+        try: return Style(self.codes+[style_codes[k]])
+        except KeyError: return super().__getattr__(k)
     def __call__(self, obj):
         set_ = ''.join(str(o) for o in self.codes)
-        reset = ''.join('' if o is None else str(o) for o in set(_reset_code(o) for o in self.codes))
+        reset = ''.join(sorted('' if o is None else str(o) for o in set(_reset_code(o) for o in self.codes)))
         return set_ + str(obj) + reset
     def __repr__(self):
         nm = type(self).__name__

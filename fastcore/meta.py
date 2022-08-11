@@ -118,7 +118,7 @@ def delegates(to=None, keep=False, but=None):
         sig = inspect.signature(from_f)
         sigd = dict(sig.parameters)
         k = sigd.pop('kwargs')
-        s2 = {k:v for k,v in inspect.signature(to_f).parameters.items()
+        s2 = {k:v.replace(kind=inspect.Parameter.KEYWORD_ONLY) for k,v in inspect.signature(to_f).parameters.items()
               if v.default != inspect.Parameter.empty and k not in sigd and k not in but}
         sigd.update(s2)
         if keep: sigd['kwargs'] = k

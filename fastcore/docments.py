@@ -155,10 +155,12 @@ def docments(elt, full=False, **kwargs):
     res = _docments(elt, **kwargs)
     if hasattr(elt, "__delwrap__"): #for delegates
         delwrap_dict = _docments(elt.__delwrap__, **kwargs)
+        verbose = getattr(elt,'__delopts__',{}).get('verbose',True)
         for k,v in res.items():
             if k in delwrap_dict and v["docment"] is None and k != "return":
                 if delwrap_dict[k]["docment"] is not None:
-                    v["docment"] = delwrap_dict[k]["docment"] + f" passed to `{qual_name(elt.__delwrap__)}`"
+                    v["docment"] = delwrap_dict[k]["docment"]
+                    if verbose: v["docment"]+=f" passed to `{qual_name(elt.__delwrap__)}`"
                 else: v['docment'] = f"Argument passed to `{qual_name(elt.__delwrap__)}`"
                     
     if not full: res = {k:v['docment'] for k,v in res.items()}

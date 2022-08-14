@@ -29,7 +29,8 @@ docs](https://docs.github.com/en/actions/reference/specifications-for-github-hos
 [docs](https://fastcore.fast.ai) for all the details, which cover the
 modules provided:
 
--   `test`: Simple testing functions
+-   [test](https://fastcore.fast.ai/test.html#test): Simple testing
+    functions
 -   `foundation`: Mixins, delegation, composition, and more
 -   `xtras`: Utility functions to help with functional-style
     programming, parallel processing, and more
@@ -84,13 +85,14 @@ doc(coll_repr)
 <img width="499" src="images/att_00000.png" align="left">
 
 The documentation also contains links to any related functions or
-classes, which appear like this: `coll_repr` (in the notebook itself you
-will just see a word with back-ticks around it; the links are
-auto-generated in the documentation site). The documentation will
-generally show one or more examples of use, along with any background
-context necessary to understand them. As you’ll see, the examples for
-each function and method are shown as tests, rather than example
-outputs, so let’s start by explaining that.
+classes, which appear like this:
+[coll_repr](https://fastcore.fast.ai/foundation.html#coll_repr) (in the
+notebook itself you will just see a word with back-ticks around it; the
+links are auto-generated in the documentation site). The documentation
+will generally show one or more examples of use, along with any
+background context necessary to understand them. As you’ll see, the
+examples for each function and method are shown as tests, rather than
+example outputs, so let’s start by explaining that.
 
 ### Testing
 
@@ -107,8 +109,10 @@ Tests look like this:
 test_eq(coll_repr(range(1000), 5), '(#1000) [0,1,2,3,4...]')
 ```
 
-That’s an example from the docs for `coll_repr`. As you see, it’s not
-showing you the output directly. Here’s what that would look like:
+That’s an example from the docs for
+[coll_repr](https://fastcore.fast.ai/foundation.html#coll_repr). As you
+see, it’s not showing you the output directly. Here’s what that would
+look like:
 
 ``` python
 coll_repr(range(1000), 5)
@@ -124,9 +128,10 @@ So every test shown in the docs is also showing you the behavior of the
 library — and vice versa!
 
 Test functions always start with `test_`, and then follow with the
-operation being tested. So `test_eq` tests for equality (as you saw in
-the example above). This includes tests for equality of arrays and
-tensors, lists and generators, and many more:
+operation being tested. So
+[test_eq](https://fastcore.fast.ai/test.html#test_eq) tests for equality
+(as you saw in the example above). This includes tests for equality of
+arrays and tensors, lists and generators, and many more:
 
 ``` python
 test_eq([0,1,2,3], np.arange(4))
@@ -144,10 +149,12 @@ test_eq([0,1,2,3], np.arange(3))
       [0 1 2]
 
 If you want to check that objects are the same type, rather than the
-just contain the same collection, use `test_eq_type`.
+just contain the same collection, use
+[test_eq_type](https://fastcore.fast.ai/test.html#test_eq_type).
 
-You can test with any comparison function using `test`, e.g test whether
-an object is less than:
+You can test with any comparison function using
+[test](https://fastcore.fast.ai/test.html#test), e.g test whether an
+object is less than:
 
 ``` python
 test(2, 3, operator.lt)
@@ -173,9 +180,10 @@ fast.ai is unusual in that we often use
 widely used in many programming languages, such as Ruby, but not so much
 in Python. We use mixins to attach new behavior to existing libraries,
 or to allow modules to add new behavior to our own classes, such as in
-extension modules. One useful example of a mixin we define is `Path.ls`,
-which lists a directory and returns an `L` (an extended list class which
-we’ll discuss shortly):
+extension modules. One useful example of a mixin we define is
+[Path.ls](https://fastcore.fast.ai/xtras.html#path.ls), which lists a
+directory and returns an [L](https://fastcore.fast.ai/foundation.html#l)
+(an extended list class which we’ll discuss shortly):
 
 ``` python
 p = Path('images')
@@ -184,7 +192,8 @@ p.ls()
 
     (#6) [Path('images/mnist3.png'),Path('images/att_00000.png'),Path('images/att_00005.png'),Path('images/att_00007.png'),Path('images/att_00006.png'),Path('images/puppy.jpg')]
 
-You can easily add you own mixins with the `patch`
+You can easily add you own mixins with the
+[patch](https://fastcore.fast.ai/basics.html#patch)
 [decorator](https://realpython.com/primer-on-python-decorators/), which
 takes advantage of Python 3 [function
 annotations](https://www.python.org/dev/peps/pep-3107/#parameters) to
@@ -203,17 +212,19 @@ We also use `**kwargs` frequently. In python `**kwargs` in a parameter
 like means “*put any additional keyword arguments into a dict called
 `kwargs`*”. Normally, using `kwargs` makes an API quite difficult to
 work with, because it breaks things like tab-completion and popup lists
-of signatures. `utils` provides `use_kwargs` and `delegates` to avoid
-this problem. See our [detailed article on
+of signatures. `utils` provides
+[use_kwargs](https://fastcore.fast.ai/meta.html#use_kwargs) and
+[delegates](https://fastcore.fast.ai/meta.html#delegates) to avoid this
+problem. See our [detailed article on
 delegation](https://www.fast.ai/2019/08/06/delegation/) on this topic.
 
-`GetAttr` solves a similar problem (and is also discussed in the article
-linked above): it’s allows you to use Python’s exceptionally useful
-`__getattr__` magic method, but avoids the problem that normally in
-Python tab-completion and docs break when using this. For instance, you
-can see here that Python’s `dir` function, which is used to find the
-attributes of a python object, finds everything inside the
-`self.default` attribute here:
+[GetAttr](https://fastcore.fast.ai/basics.html#getattr) solves a similar
+problem (and is also discussed in the article linked above): it’s allows
+you to use Python’s exceptionally useful `__getattr__` magic method, but
+avoids the problem that normally in Python tab-completion and docs break
+when using this. For instance, you can see here that Python’s `dir`
+function, which is used to find the attributes of a python object, finds
+everything inside the `self.default` attribute here:
 
 ``` python
 class Author:
@@ -231,8 +242,10 @@ p = ProductPage(Author("Jeremy"), 1.50, 0.50)
 
 Looking at that `ProductPage` example, it’s rather verbose and
 duplicates a lot of attribute names, which can lead to bugs later if you
-change them only in one place. `fastcore` provides `store_attr` to
-simplify this common pattern. It also provides `basic_repr` to give
+change them only in one place. `fastcore` provides
+[store_attr](https://fastcore.fast.ai/basics.html#store_attr) to
+simplify this common pattern. It also provides
+[basic_repr](https://fastcore.fast.ai/basics.html#basic_repr) to give
 simple objects a useful `repr`:
 
 ``` python
@@ -245,11 +258,13 @@ ProductPage("Jeremy", 1.50, 0.50)
 
     ProductPage(author='Jeremy', price=1.5, cost=0.5)
 
-One of the most interesting `fastcore` functions is the `funcs_kwargs`
+One of the most interesting `fastcore` functions is the
+[funcs_kwargs](https://fastcore.fast.ai/meta.html#funcs_kwargs)
 decorator. This allows class behavior to be modified without
 sub-classing. This can allow folks that aren’t familiar with
 object-oriented programming to customize your class more easily. Here’s
-an example of a class that uses `funcs_kwargs`:
+an example of a class that uses
+[funcs_kwargs](https://fastcore.fast.ai/meta.html#funcs_kwargs):
 
 ``` python
 @funcs_kwargs
@@ -265,23 +280,28 @@ p.some_method("hello")
 
 The `assert not kwargs` above is used to ensure that the user doesn’t
 pass an unknown parameter (i.e one that’s not in `_methods`). `fastai`
-uses `funcs_kwargs` in many places, for instance, you can customize any
-part of a `DataLoader` by passing your own methods.
+uses [funcs_kwargs](https://fastcore.fast.ai/meta.html#funcs_kwargs) in
+many places, for instance, you can customize any part of a `DataLoader`
+by passing your own methods.
 
 `fastcore` also provides many utility functions that make a Python
 programmer’s life easier, in `fastcore.utils`. We won’t look at many
 here, since you can easily look at the docs yourself. To get you
-started, have a look at the docs for `chunked` (remember, if you’re in a
-notebook, type `doc(chunked)`), which is a handy function for creating
-lazily generated batches from a collection.
+started, have a look at the docs for
+[chunked](https://fastcore.fast.ai/basics.html#chunked) (remember, if
+you’re in a notebook, type `doc(chunked)`), which is a handy function
+for creating lazily generated batches from a collection.
 
-Python’s `ProcessPoolExecutor` is extended to allow `max_workers` to be
-set to `0`, to easily turn off parallel processing. This makes it easy
-to debug your code in serial, then run it in parallel. It also allows
-you to pass arguments to your parallel function, and to ensure there’s a
-pause between calls, in case the process you are running has race
-conditions. `parallel` makes parallel processing even easier to use, and
-even adds an optional progress bar.
+Python’s
+[ProcessPoolExecutor](https://fastcore.fast.ai/parallel.html#processpoolexecutor)
+is extended to allow `max_workers` to be set to `0`, to easily turn off
+parallel processing. This makes it easy to debug your code in serial,
+then run it in parallel. It also allows you to pass arguments to your
+parallel function, and to ensure there’s a pause between calls, in case
+the process you are running has race conditions.
+[parallel](https://fastcore.fast.ai/parallel.html#parallel) makes
+parallel processing even easier to use, and even adds an optional
+progress bar.
 
 ### L
 
@@ -296,9 +316,10 @@ syntax:
 > shouldn’t waste short sequences on less common constructs.
 
 On this basis, `fastcore` has just one type that has a single letter
-name: `L`. The reason for this is that it is designed to be a
-replacement for `list`, so we want it to be just as easy to use as
-`[1,2,3]`. Here’s how to create that as an `L`:
+name: [L](https://fastcore.fast.ai/foundation.html#l). The reason for
+this is that it is designed to be a replacement for `list`, so we want
+it to be just as easy to use as `[1,2,3]`. Here’s how to create that as
+an [L](https://fastcore.fast.ai/foundation.html#l):
 
 ``` python
 L(1,2,3)
@@ -306,7 +327,8 @@ L(1,2,3)
 
     (#3) [1,2,3]
 
-The first thing to notice is that an `L` object includes in its
+The first thing to notice is that an
+[L](https://fastcore.fast.ai/foundation.html#l) object includes in its
 representation its number of elements; that’s the `(#3)` in the output
 above. If there’s more than 10 elements, it will automatically truncate
 the list:
@@ -318,8 +340,9 @@ p
 
     (#20) [0,10,7,16,5,1,14,17,9,8...]
 
-`L` contains many of the same indexing ideas that NumPy’s `array` does,
-including indexing with a list of indexes, or a boolean mask list:
+[L](https://fastcore.fast.ai/foundation.html#l) contains many of the
+same indexing ideas that NumPy’s `array` does, including indexing with a
+list of indexes, or a boolean mask list:
 
 ``` python
 p[2,4,6]
@@ -327,7 +350,8 @@ p[2,4,6]
 
     (#3) [7,5,14]
 
-It also contains other methods used in `array`, such as `L.argwhere`:
+It also contains other methods used in `array`, such as
+[L.argwhere](https://fastcore.fast.ai/foundation.html#l.argwhere):
 
 ``` python
 p.argwhere(ge(15))
@@ -337,16 +361,19 @@ p.argwhere(ge(15))
 
 As you can see from this example, `fastcore` also includes a number of
 features that make a functional style of programming easier, such as a
-full range of boolean functions (e.g `ge`, `gt`, etc) which give the
-same answer as the functions from Python’s `operator` module if given
-two parameters, but return a [curried
+full range of boolean functions (e.g
+[ge](https://fastcore.fast.ai/basics.html#ge),
+[gt](https://fastcore.fast.ai/basics.html#gt), etc) which give the same
+answer as the functions from Python’s `operator` module if given two
+parameters, but return a [curried
 function](https://en.wikipedia.org/wiki/Currying) if given one
 parameter.
 
 There’s too much functionality to show it all here, so be sure to check
 the docs. Many little things are added that we thought should have been
 in `list` in the first place, such as making this do what you’d expect
-(which is an error with `list`, but works fine with `L`):
+(which is an error with `list`, but works fine with
+[L](https://fastcore.fast.ai/foundation.html#l)):
 
 ``` python
 1 + L(2,3,4)
@@ -364,8 +391,9 @@ functions](https://docs.julialang.org/en/v1/manual/methods/). Python
 provides [single dispatch generic
 functions](https://www.python.org/dev/peps/pep-0443/) as part of the
 standard library. `fastcore` provides multiple dispatch, with the
-`typedispatch` decorator (which is actually an instance of
-`DispatchReg`):
+[typedispatch](https://fastcore.fast.ai/dispatch.html#typedispatch)
+decorator (which is actually an instance of
+[DispatchReg](https://fastcore.fast.ai/dispatch.html#dispatchreg)):
 
 ``` python
 @typedispatch
@@ -380,12 +408,15 @@ _f(3,2.0), _f(3,2)
 
 This approach to dispatch is particularly useful for adding
 implementations of functionality in extension modules or user code. It
-is heavily used in the `Transform` class. A `Transform` is the main
-building block of the fastai data pipelines. In the most general terms a
-transform can be any function you want to apply to your data, however
-the `Transform` class provides several mechanisms that make the process
-of building them easy and flexible (see the docs for information about
-each of these):
+is heavily used in the
+[Transform](https://fastcore.fast.ai/transform.html#transform) class. A
+[Transform](https://fastcore.fast.ai/transform.html#transform) is the
+main building block of the fastai data pipelines. In the most general
+terms a transform can be any function you want to apply to your data,
+however the
+[Transform](https://fastcore.fast.ai/transform.html#transform) class
+provides several mechanisms that make the process of building them easy
+and flexible (see the docs for information about each of these):
 
 -   Type dispatch
 -   Dispatch over tuples
@@ -396,9 +427,9 @@ each of these):
 -   Ordering
 -   Appending new behavior with decorators
 
-`Transform` looks for three special methods, <code>encodes</code>,
-<code>decodes</code>, and <code>setups</code>, which provide the
-implementation for
+[Transform](https://fastcore.fast.ai/transform.html#transform) looks for
+three special methods, <code>encodes</code>, <code>decodes</code>, and
+<code>setups</code>, which provide the implementation for
 [`__call__`](https://www.python-course.eu/python3_magic_methods.php),
 `decode`, and `setup` respectively. For instance:
 
@@ -411,7 +442,8 @@ A()(1)
 
     2
 
-For simple transforms like this, you can also use `Transform` as a
+For simple transforms like this, you can also use
+[Transform](https://fastcore.fast.ai/transform.html#transform) as a
 decorator:
 
 ``` python
@@ -423,7 +455,8 @@ f(1)
 
     2
 
-Transforms can be composed into a `Pipeline`:
+Transforms can be composed into a
+[Pipeline](https://fastcore.fast.ai/transform.html#pipeline):
 
 ``` python
 @Transform
@@ -435,9 +468,11 @@ pipe(3)
 
     2.0
 
-The power of `Transform` and `Pipeline` is best understood by seeing how
-they’re used to create a complete data processing pipeline. This is
-explained in [chapter
+The power of
+[Transform](https://fastcore.fast.ai/transform.html#transform) and
+[Pipeline](https://fastcore.fast.ai/transform.html#pipeline) is best
+understood by seeing how they’re used to create a complete data
+processing pipeline. This is explained in [chapter
 11](https://github.com/fastai/fastbook/blob/master/11_midlevel_data.ipynb)
 of the [fastai
 book](https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527),
@@ -446,17 +481,15 @@ Jupyter Notebook format.
 
 ## Contributing
 
-After you clone this repository, please run `nbdev_install_git_hooks` in
+After you clone this repository, please run `nbdev_install_hooks` in
 your terminal. This sets up git hooks, which clean up the notebooks to
 remove the extraneous stuff stored in the notebooks (e.g. which cells
 you ran) which causes unnecessary merge conflicts.
 
-To run the tests in parallel, launch `nbdev_test_nbs` or `make test`.
+To run the tests in parallel, launch `nbdev_test`.
 
 Before submitting a PR, check that the local library and notebooks
-match. The script `nbdev_diff_nbs` can let you know if there is a
-difference between the local library and the notebooks. \* If you made a
-change to the notebooks in one of the exported cells, you can export it
-to the library with `nbdev_build_lib` or `make fastcore`. \* If you made
-a change to the library, you can export it back to the notebooks with
-`nbdev_update_lib`.
+match. \* If you made a change to the notebooks in one of the exported
+cells, you can export it to the library with `nbdev_prepare`. \* If you
+made a change to the library, you can export it back to the notebooks
+with `nbdev_update`.

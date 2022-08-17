@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 # %% auto 0
-__all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps',
+__all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps',
            'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'dict2obj', 'obj2dict',
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
            'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
@@ -73,6 +73,14 @@ def maybe_open(f, mode='r', **kwargs):
     if isinstance(f, (str,os.PathLike)):
         with open(f, mode, **kwargs) as f: yield f
     else: yield f
+
+# %% ../nbs/03_xtras.ipynb 26
+def mkdir(path, exist_ok=False, parents=False, overwrite=False, **kwargs):
+    "Creates and returns a directory defined by `path`, optionally removing previous existing directory if `overwrite` is `True`"
+    path = Path(path)
+    if path.exists() and overwrite: shutil.rmtree(path)
+    path.mkdir(exist_ok=exist_ok, parents=parents, **kwargs)
+    return path
 
 # %% ../nbs/03_xtras.ipynb 28
 def image_size(fn):

@@ -1,1 +1,2 @@
-*.ipynb merge=nbdev-merge
+**/*.ipynb filter=clean-nbs
+**/*.ipynb diff=ipynb

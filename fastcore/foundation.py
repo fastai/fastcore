@@ -233,20 +233,20 @@ L.__signature__ = inspect.signature(_f)
 # %% ../nbs/02_foundation.ipynb 49
 Sequence.register(L);
 
-# %% ../nbs/02_foundation.ipynb 127
+# %% ../nbs/02_foundation.ipynb 129
 def save_config_file(file, d, **kwargs):
     "Write settings dict to a new config file, or overwrite the existing one."
     config = ConfigParser(**kwargs)
     config['DEFAULT'] = d
     config.write(open(file, 'w'))
 
-# %% ../nbs/02_foundation.ipynb 128
+# %% ../nbs/02_foundation.ipynb 130
 def read_config_file(file, **kwargs):
     config = ConfigParser(**kwargs)
     config.read(file)
     return config['DEFAULT']
 
-# %% ../nbs/02_foundation.ipynb 131
+# %% ../nbs/02_foundation.ipynb 133
 class Config:
     "Reading and writing `ConfigParser` ini files"
     def __init__(self, cfg_path, cfg_name, create=None, save=True, extra_files=None):

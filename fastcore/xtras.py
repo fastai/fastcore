@@ -77,6 +77,7 @@ def maybe_open(f, mode='r', **kwargs):
 # %% ../nbs/03_xtras.ipynb 26
 def mkdir(path, exist_ok=False, parents=False, overwrite=False, **kwargs):
     "Creates and returns a directory defined by `path`, optionally removing previous existing directory if `overwrite` is `True`"
+    import shutil
     path = Path(path)
     if path.exists() and overwrite: shutil.rmtree(path)
     path.mkdir(exist_ok=exist_ok, parents=parents, **kwargs)

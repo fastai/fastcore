@@ -41,18 +41,18 @@ def xdg_data_dirs():
     "Paths corresponding to XDG_DATA_DIRS`"
     return _paths_from_env( "XDG_DATA_DIRS", [Path(o) for o in "/usr/local/share/:/usr/share/".split(":")])
 
-# %% ../nbs/09_xdg.ipynb 21
+# %% ../nbs/09_xdg.ipynb 20
 def xdg_data_home():
     "Path corresponding to `XDG_DATA_HOME`"
     return _path_from_env("XDG_DATA_HOME", Path.home()/".local"/"share")
 
-# %% ../nbs/09_xdg.ipynb 23
+# %% ../nbs/09_xdg.ipynb 22
 def xdg_runtime_dir():
     "Path corresponding to `XDG_RUNTIME_DIR`"
     value = os.getenv("XDG_RUNTIME_DIR")
     return Path(value) if value and os.path.isabs(value) else None
 
-# %% ../nbs/09_xdg.ipynb 25
+# %% ../nbs/09_xdg.ipynb 23
 def xdg_state_home():
     "Path corresponding to `XDG_STATE_HOME`"
     return _path_from_env("XDG_STATE_HOME", Path.home()/".local"/"state")

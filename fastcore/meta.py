@@ -109,7 +109,7 @@ def use_kwargs(names, keep=False):
 def delegates(to:FunctionType=None, # Delegatee
               keep=False, # Keep `kwargs` in decorated function?
               but:list=None, # Exclude these parameters from signature
-              verbose=True): # Include `to` in docments?
+              verbose=False): # Include `passed to` in docments?
     "Decorator: replace `**kwargs` in signature with params from `to`"
     if but is None: but = []
     def _f(f):

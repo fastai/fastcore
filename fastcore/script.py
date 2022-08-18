@@ -68,7 +68,8 @@ class _HelpFormatter(argparse.HelpFormatter):
     def _expand_help(self, action): return self._get_help_string(action)
 
 # %% ../nbs/08_script.ipynb 29
-def anno_parser(func, prog=None, from_name=False):
+def anno_parser(func,  # Function to get arguments from
+                prog:str=None):  # The name of the program
     "Look at params (annotated with `Param`) in func and return an `ArgumentParser`"
     p = argparse.ArgumentParser(description=func.__doc__, prog=prog, formatter_class=_HelpFormatter)
     for k,v in docments(func, full=True, returns=False, eval_str=True).items():

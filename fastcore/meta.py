@@ -108,8 +108,7 @@ def use_kwargs(names, keep=False):
 # %% ../nbs/07_meta.ipynb 68
 def delegates(to:FunctionType=None, # Delegatee
               keep=False, # Keep `kwargs` in decorated function?
-              but:list=None, # Exclude these parameters from signature
-              verbose=False): # Include `passed to` in docments?
+              but:list=None): # Exclude these parameters from signature
     "Decorator: replace `**kwargs` in signature with params from `to`"
     if but is None: but = []
     def _f(f):
@@ -123,11 +122,12 @@ def delegates(to:FunctionType=None, # Delegatee
         k = sigd.pop('kwargs')
         s2 = {k:v.replace(kind=inspect.Parameter.KEYWORD_ONLY) for k,v in inspect.signature(to_f).parameters.items()
               if v.default != inspect.Parameter.empty and k not in sigd and k not in but}
+        anno = {k:v for k,v in to_f.__annotations__.items() if k not in sigd and k not in but}
         sigd.update(s2)
         if keep: sigd['kwargs'] = k
         else: from_f.__delwrap__ = to_f
-        from_f.__delopts__ = dict(verbose=verbose)
         from_f.__signature__ = sig.replace(parameters=sigd.values())
+        from_f.__annotations__.update(anno)
         return f
     return _f
 

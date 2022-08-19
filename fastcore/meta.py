@@ -127,7 +127,7 @@ def delegates(to:FunctionType=None, # Delegatee
         if keep: sigd['kwargs'] = k
         else: from_f.__delwrap__ = to_f
         from_f.__signature__ = sig.replace(parameters=sigd.values())
-        from_f.__annotations__.update(anno)
+        if hasattr(from_f, '__annotations__'): from_f.__annotations__.update(anno)
         return f
     return _f
 

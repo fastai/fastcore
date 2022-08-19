@@ -155,14 +155,12 @@ def _docments(s, returns=True, eval_str=False):
 @delegates(_docments)
 def docments(elt, full=False, **kwargs):
     "Generates a `docment`"
-    res = _docments(elt, **kwargs)
-    if hasattr(elt, "__delwrap__"): # for delegates
-        delwrap_dict = _docments(elt.__delwrap__, **kwargs)
-        for k,v in res.items():
-            if k in delwrap_dict and v["docment"] is None and k != "return":
-                if delwrap_dict[k]["docment"] is not None:
-                    v["docment"] = delwrap_dict[k]["docment"]
-                else: v['docment'] = f"Argument passed to `{qual_name(elt.__delwrap__)}`"
-                    
-    if not full: res = {k:v['docment'] for k,v in res.items()}
-    return AttrDict(res)
+    def _update_docments(f, r):
+        if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
+        d = {k:v for k,v in _docments(f, **kwargs).items() if k not in r or v.get('docment',None)}
+        r.update(d)
+
+    r = {}
+    _update_docments(elt, r)
+    if not full: r = {k:v['docment'] for k,v in r.items()}
+    return AttrDict(r)

@@ -39,14 +39,17 @@ def isdataclass(s):
     "Check if `s` is a dataclass but not a dataclass' instance"
     return is_dataclass(s) and isclass(s)
 
+# %% ../nbs/06_docments.ipynb 19
 def get_dataclass_source(s):
     "Get source code for dataclass `s`"
     return getsource(s) if not getattr(s, "__module__") == '__main__' else ""
 
+# %% ../nbs/06_docments.ipynb 20
 def get_source(s):
     "Get source code for string, function object or dataclass `s`"
     return getsource(s) if isfunction(s) or ismethod(s) else get_dataclass_source(s) if isdataclass(s) else s
 
+# %% ../nbs/06_docments.ipynb 21
 def _parses(s):
     "Parse Python code in string, function object or dataclass `s`"
     return parse(dedent(get_source(s)))
@@ -75,10 +78,10 @@ def _param_locs(s, returns=True):
             return res
     return None
 
-# %% ../nbs/06_docments.ipynb 19
+# %% ../nbs/06_docments.ipynb 22
 empty = Parameter.empty
 
-# %% ../nbs/06_docments.ipynb 20
+# %% ../nbs/06_docments.ipynb 23
 def _get_comment(line, arg, comments, parms):
     if line in comments: return comments[line].strip()
     line -= 1
@@ -92,7 +95,7 @@ def _get_full(anno, name, default, docs):
     if anno==empty and default!=empty: anno = type(default)
     return AttrDict(docment=docs.get(name), anno=anno, default=default)
 
-# %% ../nbs/06_docments.ipynb 21
+# %% ../nbs/06_docments.ipynb 24
 def _merge_doc(dm, npdoc):
     if not npdoc: return dm
     if not dm.anno or dm.anno==empty: dm.anno = npdoc.type
@@ -105,14 +108,14 @@ def _merge_docs(dms, npdocs):
     if 'return' in dms: params['return'] = _merge_doc(dms['return'], npdocs['Returns'])
     return params
 
-# %% ../nbs/06_docments.ipynb 22
+# %% ../nbs/06_docments.ipynb 25
 def _get_property_name(p):
     "Get the name of property `p`"
     if hasattr(p, 'fget'):
         return p.fget.func.__qualname__ if hasattr(p.fget, 'func') else p.fget.__qualname__
     else: return next(iter(re.findall(r'\'(.*)\'', str(p)))).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 23
+# %% ../nbs/06_docments.ipynb 26
 def get_name(obj):
     "Get the name of `obj`"
     if hasattr(obj, '__name__'):       return obj.__name__
@@ -121,14 +124,14 @@ def get_name(obj):
     elif type(obj)==property:          return _get_property_name(obj)
     else:                              return str(obj).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 25
+# %% ../nbs/06_docments.ipynb 28
 def qual_name(obj):
     "Get the qualified name of `obj`"
     if hasattr(obj,'__qualname__'): return obj.__qualname__
     if ismethod(obj):       return f"{get_name(obj.__self__)}.{get_name(fn)}"
     return get_name(obj)
 
-# %% ../nbs/06_docments.ipynb 27
+# %% ../nbs/06_docments.ipynb 30
 def _docments(s, returns=True, eval_str=False):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
     nps = parse_docstring(s)
@@ -148,20 +151,16 @@ def _docments(s, returns=True, eval_str=False):
             if k in hints: v['anno'] = hints.get(k)
     return res
 
-# %% ../nbs/06_docments.ipynb 28
+# %% ../nbs/06_docments.ipynb 31
 @delegates(_docments)
 def docments(elt, full=False, **kwargs):
     "Generates a `docment`"
-    res = _docments(elt, **kwargs)
-    if hasattr(elt, "__delwrap__"): #for delegates
-        delwrap_dict = _docments(elt.__delwrap__, **kwargs)
-        verbose = getattr(elt,'__delopts__',{}).get('verbose',True)
-        for k,v in res.items():
-            if k in delwrap_dict and v["docment"] is None and k != "return":
-                if delwrap_dict[k]["docment"] is not None:
-                    v["docment"] = delwrap_dict[k]["docment"]
-                    if verbose: v["docment"]+=f" passed to `{qual_name(elt.__delwrap__)}`"
-                else: v['docment'] = f"Argument passed to `{qual_name(elt.__delwrap__)}`"
-                    
-    if not full: res = {k:v['docment'] for k,v in res.items()}
-    return AttrDict(res)
+    def _update_docments(f, r):
+        if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
+        d = {k:v for k,v in _docments(f, **kwargs).items() if k in r and v.get('docment',None)}
+        r.update(d)
+
+    r = _docments(elt, **kwargs)
+    if hasattr(elt, '__delwrap__'): _update_docments(elt.__delwrap__, r)
+    if not full: r = {k:v['docment'] for k,v in r.items()}
+    return AttrDict(r)

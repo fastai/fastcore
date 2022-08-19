@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.5.18
+
+### New Features
+
+- exclude `passed to {func}` from docments by passing `verbose=False` to `delegates` ([#464](https://github.com/fastai/fastcore/pull/464)), thanks to [@seeM](https://github.com/seeM)
+- enable meta.delegates to enforce KEYWORD_ONLY for kwargs from ([#459](https://github.com/fastai/fastcore/pull/459)), thanks to [@EmbraceLife](https://github.com/EmbraceLife)
+
+### Bugs Squashed
+
+- fix `fastcore.style` format resets and auto-complete ([#462](https://github.com/fastai/fastcore/pull/462)), thanks to [@seeM](https://github.com/seeM)
+
+
 ## 1.5.17
 
 ### New Features

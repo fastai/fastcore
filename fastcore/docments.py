@@ -157,10 +157,10 @@ def docments(elt, full=False, **kwargs):
     "Generates a `docment`"
     def _update_docments(f, r):
         if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
-        d = {k:v for k,v in _docments(f, **kwargs).items() if k not in r or v.get('docment',None)}
+        d = {k:v for k,v in _docments(f, **kwargs).items() if k in r and v.get('docment',None)}
         r.update(d)
 
-    r = {}
-    _update_docments(elt, r)
+    r = _docments(elt, **kwargs)
+    if hasattr(elt, '__delwrap__'): _update_docments(elt.__delwrap__, r)
     if not full: r = {k:v['docment'] for k,v in r.items()}
     return AttrDict(r)

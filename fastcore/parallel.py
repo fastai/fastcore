@@ -123,7 +123,7 @@ def add_one(x, a=1):
     time.sleep(random.random()/80)
     return x+a
 
-# %% ../nbs/03a_parallel.ipynb 21
+# %% ../nbs/03a_parallel.ipynb 22
 def run_procs(f, f_done, args):
     "Call `f` for each item in `args` in parallel, yielding `f_done`"
     processes = L(args).map(Process, args=arg0, target=f)
@@ -131,13 +131,13 @@ def run_procs(f, f_done, args):
     yield from f_done()
     processes.map(Self.join())
 
-# %% ../nbs/03a_parallel.ipynb 22
+# %% ../nbs/03a_parallel.ipynb 23
 def _f_pg(obj, queue, batch, start_idx):
     for i,b in enumerate(obj(batch)): queue.put((start_idx+i,b))
 
 def _done_pg(queue, items): return (queue.get() for _ in items)
 
-# %% ../nbs/03a_parallel.ipynb 23
+# %% ../nbs/03a_parallel.ipynb 24
 def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     "Instantiate `cls` in `n_workers` procs & call each on a subset of `items` in parallel."
     if not parallelable('n_workers', n_workers): n_workers = 0

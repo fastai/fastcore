@@ -17,21 +17,19 @@ and bringing ideas from NumPy over to Python’s `list` type.
 To install fastcore run: `conda install fastcore` (if you use Anaconda,
 which we recommend) or `pip install fastcore`. For an [editable
 install](https://stackoverflow.com/questions/35064426/when-would-the-e-editable-option-be-useful-with-pip-install),
-clone this repo and run: `pip install -e ".[dev]"`.
-
-fastcore is tested to work on Ubuntu, Macos and Windows, for the
-versions tagged with the `-latest` suffix in [these
-docs](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources).
+clone this repo and run: `pip install -e ".[dev]"`. fastcore is tested
+to work on Ubuntu, macOS and Windows (versions tested are those show
+with the `-latest` suffix
+[here](https://docs.github.com/en/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources).
 
 `fastcore` contains many features, including:
 
-- [`test`](https://fastcore.fast.ai/test.html#test): Simple testing
-  functions
-- `foundation`: Mixins, delegation, composition, and more
-- `xtras`: Utility functions to help with functional-style programming,
-  parallel processing, and more
-- `dispatch`: Multiple dispatch methods
-- `transform`: Pipelines of composed partially reversible
+- `fastcore.test`: Simple testing functions
+- `fastcore.foundation`: Mixins, delegation, composition, and more
+- `fastcore.xtras`: Utility functions to help with functional-style
+  programming, parallel processing, and more
+- `fastcore.dispatch`: Multiple dispatch methods
+- `fastcore.transform`: Pipelines of composed partially reversible
   transformations
 
 To get started, we recommend you read through [the fastcore

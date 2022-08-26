@@ -20,7 +20,6 @@ website:
   description: "Python supercharged for fastai development"
   twitter-card: true
   open-graph: true
-  reader-mode: true
   repo-branch: master
   repo-url: "https://github.com/fastai/fastcore/"
   repo-actions: [issue]

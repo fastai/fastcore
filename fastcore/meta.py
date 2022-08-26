@@ -122,7 +122,7 @@ def delegates(to:FunctionType=None, # Delegatee
         k = sigd.pop('kwargs')
         s2 = {k:v.replace(kind=inspect.Parameter.KEYWORD_ONLY) for k,v in inspect.signature(to_f).parameters.items()
               if v.default != inspect.Parameter.empty and k not in sigd and k not in but}
-        anno = {k:v for k,v in to_f.__annotations__.items() if k not in sigd and k not in but}
+        anno = {k:v for k,v in getattr(to_f, "__annotations__", {}).items() if k not in sigd and k not in but}
         sigd.update(s2)
         if keep: sigd['kwargs'] = k
         else: from_f.__delwrap__ = to_f

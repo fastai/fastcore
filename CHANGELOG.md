@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.22
+
+### New Features
+
+- Recursively search for docments ([#468](https://github.com/fastai/fastcore/issues/468))
+- `delegates()` now works with annotations too ([#467](https://github.com/fastai/fastcore/issues/467))
+
+
 ## 1.5.18
 
 ### New Features

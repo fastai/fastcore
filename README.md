@@ -25,13 +25,13 @@ with the `-latest` suffix
 
 `fastcore` contains many features, including:
 
--   `fastcore.test`: Simple testing functions
--   `fastcore.foundation`: Mixins, delegation, composition, and more
--   `fastcore.xtras`: Utility functions to help with functional-style
-    programming, parallel processing, and more
--   `fastcore.dispatch`: Multiple dispatch methods
--   `fastcore.transform`: Pipelines of composed partially reversible
-    transformations
+- `fastcore.test`: Simple testing functions
+- `fastcore.foundation`: Mixins, delegation, composition, and more
+- `fastcore.xtras`: Utility functions to help with functional-style
+  programming, parallel processing, and more
+- `fastcore.dispatch`: Multiple dispatch methods
+- `fastcore.transform`: Pipelines of composed partially reversible
+  transformations
 
 To get started, we recommend you read through [the fastcore
 tour](https://fastcore.fast.ai/000_tour.html).
@@ -48,7 +48,7 @@ To run the tests in parallel, launch `nbdev_test`.
 Before submitting a PR, check that the local library and notebooks
 match.
 
--   If you made a change to the notebooks in one of the exported cells,
-    you can export it to the library with `nbdev_prepare`.
--   If you made a change to the library, you can export it back to the
-    notebooks with `nbdev_update`.
+- If you made a change to the notebooks in one of the exported cells,
+  you can export it to the library with `nbdev_prepare`.
+- If you made a change to the library, you can export it back to the
+  notebooks with `nbdev_update`.

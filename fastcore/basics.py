@@ -4,8 +4,8 @@
 __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'Self',
            'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType', 'tonull',
            'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'Inf', 'in_',
-           'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'get_annotations_ex', 'eval_type',
-           'type_hints', 'annotations', 'anno_ret', 'signature_ex', 'union2tuple', 'argnames', 'with_cast',
+           'ret_true', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'get_annotations_ex',
+           'eval_type', 'type_hints', 'annotations', 'anno_ret', 'signature_ex', 'union2tuple', 'argnames', 'with_cast',
            'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake', 'snake2camel', 'class2attr',
            'getcallable', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr',
            'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify',
@@ -201,7 +201,7 @@ _all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not
 for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op, globals())
 
 # %% ../nbs/01_basics.ipynb 84
-def true(*args, **kwargs):
+def ret_true(*args, **kwargs):
     "Predicate: always `True`"
     return True
 
@@ -211,7 +211,7 @@ def stop(e=StopIteration):
     raise e
 
 # %% ../nbs/01_basics.ipynb 87
-def gen(func, seq, cond=true):
+def gen(func, seq, cond=ret_true):
     "Like `(func(o) for o in seq if cond(func(o)))` but handles `StopIteration`"
     return itertools.takewhile(cond, map(func,seq))
 

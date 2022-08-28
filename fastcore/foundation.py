@@ -249,7 +249,8 @@ def read_config_file(file, **kwargs):
 # %% ../nbs/02_foundation.ipynb 133
 class Config:
     "Reading and writing `ConfigParser` ini files"
-    def __init__(self, cfg_path, cfg_name, create=None, save=True, extra_files=None):
+    def __init__(self, cfg_path, cfg_name, create=None, save=True, extra_files=None, types=None):
+        self.types = types or {}
         cfg_path = Path(cfg_path).expanduser().absolute()
         self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
         self._cfg = ConfigParser()
@@ -267,7 +268,15 @@ class Config:
     def save(self):            save_config_file(self.config_file,self.d)
     def __getattr__(self,k):   return stop(AttributeError(k)) if k=='d' or k not in self.d else self.get(k)
     def __getitem__(self,k):   return stop(IndexError(k)) if k not in self.d else self.get(k)
-    def get(self,k,default=None): return self.d.get(k, default)
+
+    def get(self,k,default=None):
+        v = self.d.get(k, default)
+        typ = self.types.get(k, None)
+        if typ==bool: return str2bool(v)
+        if v is None: return None
+        if not typ: return str(v)
+        if typ==Path: return self.config_path/v
+        return typ(v)
 
     def path(self,k,default=None):
         v = self.get(k, default)

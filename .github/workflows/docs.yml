@@ -12,5 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: fastai/workflows/quarto-ghp@master
-      #with:
-      #ghtoken: ${{ secrets.GITHUB_TOKEN }}
+      with: {pre: 1}

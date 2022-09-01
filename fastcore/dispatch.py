@@ -12,14 +12,14 @@ from collections import defaultdict
 __all__ = ['typedispatch', 'lenient_issubclass', 'sorted_topologically', 'TypeDispatch', 'DispatchReg', 'retain_meta',
            'default_set_meta', 'cast', 'retain_type', 'retain_types', 'explode_types']
 
-# %% ../nbs/04_dispatch.ipynb 6
+# %% ../nbs/04_dispatch.ipynb 5
 def lenient_issubclass(cls, types):
     "If possible return whether `cls` is a subclass of `types`, otherwise return False."
     if cls is object and types is not object: return False # treat `object` as highest level
     try: return isinstance(cls, types) or issubclass(cls, types)
     except: return False
 
-# %% ../nbs/04_dispatch.ipynb 8
+# %% ../nbs/04_dispatch.ipynb 7
 def sorted_topologically(iterable, *, cmp=operator.lt, reverse=False):
     "Return a new list containing all items from the iterable sorted topologically"
     l,res = L(list(iterable)),[]
@@ -28,7 +28,7 @@ def sorted_topologically(iterable, *, cmp=operator.lt, reverse=False):
         res.append(t), l.remove(t)
     return res[::-1] if reverse else res
 
-# %% ../nbs/04_dispatch.ipynb 12
+# %% ../nbs/04_dispatch.ipynb 11
 def _chk_defaults(f, ann):
     pass
 # Implementation removed until we can figure out how to do this without `inspect` module
@@ -38,7 +38,7 @@ def _chk_defaults(f, ann):
 #             warn(f"{f.__name__} has default params. These will be ignored.")
 #     except ValueError: pass
 
-# %% ../nbs/04_dispatch.ipynb 13
+# %% ../nbs/04_dispatch.ipynb 12
 def _p2_anno(f):
     "Get the 1st 2 annotations of `f`, defaulting to `object`"
     hints = type_hints(f)
@@ -47,7 +47,7 @@ def _p2_anno(f):
     while len(ann)<2: ann.append(object)
     return ann[:2]
 
-# %% ../nbs/04_dispatch.ipynb 18
+# %% ../nbs/04_dispatch.ipynb 17
 class _TypeDict:
     def __init__(self): self.d,self.cache = {},{}
 
@@ -76,7 +76,7 @@ class _TypeDict:
     def __repr__(self): return self.d.__repr__()
     def first(self): return first(self.d.values())
 
-# %% ../nbs/04_dispatch.ipynb 19
+# %% ../nbs/04_dispatch.ipynb 18
 class TypeDispatch:
     "Dictionary-like object; `__getitem__` matches keys of types using `issubclass`"
     def __init__(self, funcs=(), bases=()):
@@ -137,7 +137,7 @@ class TypeDispatch:
             if res is not None: return res
         return None
 
-# %% ../nbs/04_dispatch.ipynb 78
+# %% ../nbs/04_dispatch.ipynb 77
 class DispatchReg:
     "A global registry for `TypeDispatch` objects keyed by function name"
     def __init__(self): self.d = defaultdict(TypeDispatch)
@@ -150,16 +150,16 @@ class DispatchReg:
 
 typedispatch = DispatchReg()
 
-# %% ../nbs/04_dispatch.ipynb 85
+# %% ../nbs/04_dispatch.ipynb 84
 _all_=['cast']
 
-# %% ../nbs/04_dispatch.ipynb 86
+# %% ../nbs/04_dispatch.ipynb 85
 def retain_meta(x, res, as_copy=False):
     "Call `res.set_meta(x)`, if it exists"
     if hasattr(res,'set_meta'): res.set_meta(x, as_copy=as_copy)
     return res
 
-# %% ../nbs/04_dispatch.ipynb 87
+# %% ../nbs/04_dispatch.ipynb 86
 def default_set_meta(self, x, as_copy=False):
     "Copy over `_meta` from `x` to `res`, if it's missing"
     if hasattr(x, '_meta') and not hasattr(self, '_meta'):
@@ -168,7 +168,7 @@ def default_set_meta(self, x, as_copy=False):
         self._meta = meta
     return self
 
-# %% ../nbs/04_dispatch.ipynb 88
+# %% ../nbs/04_dispatch.ipynb 87
 @typedispatch
 def cast(x, typ):
     "cast `x` to type `typ` (may also change `x` inplace)"
@@ -180,7 +180,7 @@ def cast(x, typ):
         except: res = typ(res)
     return retain_meta(x, res)
 
-# %% ../nbs/04_dispatch.ipynb 94
+# %% ../nbs/04_dispatch.ipynb 93
 def retain_type(new, old=None, typ=None, as_copy=False):
     "Cast `new` to type of `old` or `typ` if it's a superclass"
     # e.g. old is TensorImage, new is Tensor - if not subclass then do nothing
@@ -193,7 +193,7 @@ def retain_type(new, old=None, typ=None, as_copy=False):
     if typ==NoneType or isinstance(new, typ): return new
     return retain_meta(old, cast(new, typ), as_copy=as_copy)
 
-# %% ../nbs/04_dispatch.ipynb 98
+# %% ../nbs/04_dispatch.ipynb 97
 def retain_types(new, old=None, typs=None):
     "Cast each item of `new` to type of matching item in `old` if it's a superclass"
     if not is_listy(new): return retain_type(new, old, typs)
@@ -205,7 +205,7 @@ def retain_types(new, old=None, typs=None):
     else: t = type(old) if old is not None and isinstance(old,type(new)) else type(new)
     return t(L(new, old, typs).map_zip(retain_types, cycled=True))
 
-# %% ../nbs/04_dispatch.ipynb 100
+# %% ../nbs/04_dispatch.ipynb 99
 def explode_types(o):
     "Return the type of `o`, potentially in nested dictionaries for thing that are listy"
     if not is_listy(o): return type(o)

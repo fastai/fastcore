@@ -2,6 +2,20 @@
 
 <!-- do not remove -->
 
+## 1.5.23
+
+### New Features
+
+- Optional types for `Config` ([#472](https://github.com/fastai/fastcore/issues/472))
+- Add `ret_false()`
+
+### Bugs Squashed
+
+- `docments` using nested delegates comments incorrectly ([#475](https://github.com/fastai/fastcore/issues/475))
+- `true()` defined twice; replace 2nd with `ret_true()` ([#471](https://github.com/fastai/fastcore/issues/471))
+- 'method-wrapper' object has no attribute '__annotations__' ([#470](https://github.com/fastai/fastcore/issues/470))
+
+
 ## 1.5.22
 
 ### New Features
@@ -15,7 +29,7 @@
 ### New Features
 
 - exclude `passed to {func}` from docments by passing `verbose=False` to `delegates` ([#464](https://github.com/fastai/fastcore/pull/464)), thanks to [@seeM](https://github.com/seeM)
-- enable meta.delegates to enforce KEYWORD_ONLY for kwargs from ([#459](https://github.com/fastai/fastcore/pull/459)), thanks to [@EmbraceLife](https://github.com/EmbraceLife)
+- enable meta.delegates to enforce `KEYWORD_ONLY` for kwargs from ([#459](https://github.com/fastai/fastcore/pull/459)), thanks to [@EmbraceLife](https://github.com/EmbraceLife)
 
 ### Bugs Squashed
 

@@ -155,12 +155,15 @@ def _docments(s, returns=True, eval_str=False):
 @delegates(_docments)
 def docments(elt, full=False, **kwargs):
     "Generates a `docment`"
+    r = {}
+    params = set(signature(elt).parameters)
+    params.add('return')
+
     def _update_docments(f, r):
         if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
         r.update({k:v for k,v in _docments(f, **kwargs).items()
-                  if full or v.get('docment',None)})
+                  if k in params and (full or v.get('docment',None))})
 
-    r = {}
     _update_docments(elt, r)
     if not full: r = {k:v['docment'] for k,v in r.items()}
     return AttrDict(r)

@@ -110,26 +110,26 @@ def urlopen(url, data=None, headers=None, timeout=None, **kwargs):
         raise e
     except Exception as e: raise e
 
-# %% ../nbs/03b_net.ipynb 18
+# %% ../nbs/03b_net.ipynb 20
 def urlread(url, data=None, headers=None, decode=True, return_json=False, return_headers=False, timeout=None, **kwargs):
     "Retrieve `url`, using `data` dict or `kwargs` to `POST` if present"
     try:
         with urlopen(url, data=data, headers=headers, timeout=timeout, **kwargs) as u: res,hdrs = u.read(),u.headers
     except HTTPError as e:
-        if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp) from None
+        if 400 <= e.code < 500: raise ExceptionsHTTP[e.code](e.url, e.hdrs, e.fp, msg=e.msg) from None
         else: raise
 
     if decode: res = res.decode()
     if return_json: res = loads(res)
     return (res,dict(hdrs)) if return_headers else res
 
-# %% ../nbs/03b_net.ipynb 20
+# %% ../nbs/03b_net.ipynb 21
 def urljson(url, data=None, timeout=None):
     "Retrieve `url` and decode json"
     res = urlread(url, data=data, timeout=timeout)
     return json.loads(res) if res else {}
 
-# %% ../nbs/03b_net.ipynb 22
+# %% ../nbs/03b_net.ipynb 23
 def urlcheck(url, timeout=10):
     if not url: return True
     try:
@@ -138,12 +138,12 @@ def urlcheck(url, timeout=10):
     except socket.timeout: return False
     except InvalidURL: return False
 
-# %% ../nbs/03b_net.ipynb 23
+# %% ../nbs/03b_net.ipynb 24
 def urlclean(url):
     "Remove fragment, params, and querystring from `url` if present"
     return urlunparse(urlparse(str(url))[:3]+('','',''))
 
-# %% ../nbs/03b_net.ipynb 25
+# %% ../nbs/03b_net.ipynb 26
 def urlretrieve(url, filename=None, reporthook=None, data=None, timeout=None):
     "Same as `urllib.request.urlretrieve` but also works with `Request` objects"
     with contextlib.closing(urlopen(url, data, timeout=timeout)) as fp:
@@ -169,14 +169,14 @@ def urlretrieve(url, filename=None, reporthook=None, data=None, timeout=None):
         raise ContentTooShortError(f"retrieval incomplete: got only {read} out of {size} bytes", headers)
     return filename,headers
 
-# %% ../nbs/03b_net.ipynb 26
+# %% ../nbs/03b_net.ipynb 27
 def urldest(url, dest=None):
     name = urlclean(Path(url).name)
     if dest is None: dest = name
     dest = Path(dest)
     return dest/name if dest.is_dir() else dest
 
-# %% ../nbs/03b_net.ipynb 27
+# %% ../nbs/03b_net.ipynb 28
 def urlsave(url, dest=None, reporthook=None, timeout=None):
     "Retrieve `url` and save based on its name"
     dest = urldest(url, dest)
@@ -184,12 +184,12 @@ def urlsave(url, dest=None, reporthook=None, timeout=None):
     nm,msg = urlretrieve(url, dest, reporthook, timeout=timeout)
     return nm
 
-# %% ../nbs/03b_net.ipynb 29
+# %% ../nbs/03b_net.ipynb 30
 def urlvalid(x):
     "Test if `x` is a valid URL"
     return all (getattrs(urlparse(str(x)), 'scheme', 'netloc'))
 
-# %% ../nbs/03b_net.ipynb 31
+# %% ../nbs/03b_net.ipynb 32
 def urlrequest(url, verb, headers=None, route=None, query=None, data=None, json_data=True):
     "`Request` for `url` with optional route params replaced by `route`, plus `query` string, and post `data`"
     if route: url = url.format(**route)
@@ -197,7 +197,7 @@ def urlrequest(url, verb, headers=None, route=None, query=None, data=None, json_
     if isinstance(data,dict): data = (json.dumps if json_data else urlencode)(data).encode('ascii')
     return Request(url, headers=headers or {}, data=data or None, method=verb.upper())
 
-# %% ../nbs/03b_net.ipynb 34
+# %% ../nbs/03b_net.ipynb 35
 @patch
 def summary(self:Request, skip=None)->dict:
     "Summary containing full_url, headers, method, and data, removing `skip` from headers"
@@ -205,7 +205,7 @@ def summary(self:Request, skip=None)->dict:
     res['headers'] = {k:v for k,v in self.headers.items() if k not in listify(skip)}
     return res
 
-# %% ../nbs/03b_net.ipynb 36
+# %% ../nbs/03b_net.ipynb 37
 def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True,
             return_json=True, return_headers=False, debug=None):
     "Send request with `urlrequest`, converting result to json if `return_json`"
@@ -217,7 +217,7 @@ def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_dat
 
     return urlread(req, return_json=return_json, return_headers=return_headers)
 
-# %% ../nbs/03b_net.ipynb 37
+# %% ../nbs/03b_net.ipynb 38
 def do_request(url, post=False, headers=None, **data):
     "Call GET or json-encoded POST on `url`, depending on `post`"
     if data:
@@ -227,13 +227,13 @@ def do_request(url, post=False, headers=None, **data):
             data = None
     return urljson(Request(url, headers=headers, data=data or None))
 
-# %% ../nbs/03b_net.ipynb 38
+# %% ../nbs/03b_net.ipynb 39
 def _socket_det(port,host,dgram):
     if isinstance(port,int): family,addr = socket.AF_INET,(host or socket.gethostname(),port)
     else: family,addr = socket.AF_UNIX,port
     return family,addr,(socket.SOCK_STREAM,socket.SOCK_DGRAM)[dgram]
 
-# %% ../nbs/03b_net.ipynb 39
+# %% ../nbs/03b_net.ipynb 40
 def start_server(port, host=None, dgram=False, reuse_addr=True, n_queue=None):
     "Create a `socket` server on `port`, with optional `host`, of type `dgram`"
     listen_args = [n_queue] if n_queue else []
@@ -247,7 +247,7 @@ def start_server(port, host=None, dgram=False, reuse_addr=True, n_queue=None):
     s.listen(*listen_args)
     return s
 
-# %% ../nbs/03b_net.ipynb 41
+# %% ../nbs/03b_net.ipynb 42
 def start_client(port, host=None, dgram=False):
     "Create a `socket` client on `port`, with optional `host`, of type `dgram`"
     family,addr,typ = _socket_det(port,host,dgram)

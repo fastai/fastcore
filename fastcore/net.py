@@ -17,8 +17,8 @@ __all__ = ['url_default_headers', 'ExceptionsHTTP', 'urlquote', 'urlwrap', 'HTTP
 # %% ../nbs/03b_net.ipynb 1
 from .utils import *
 from .parallel import *
+
 from functools import wraps
-from pprint import pformat
 import json,urllib,contextlib
 import socket,urllib.request,http,urllib
 from contextlib import contextmanager,ExitStack
@@ -106,9 +106,8 @@ def urlopen(url, data=None, headers=None, timeout=None, **kwargs):
         if not isinstance(data, bytes): data = data.encode('ascii')
     try: return urlopener().open(urlwrap(url, data=data, headers=headers), timeout=timeout)
     except HTTPError as e: 
-        e.msg += f"\n====Error Body====\n{pformat(json.loads(e.read()))}"
-        raise e
-    except Exception as e: raise e
+        e.msg += f"\n====Error Body====\n{e.read().decode(errors='ignore')}"
+        raise
 
 # %% ../nbs/03b_net.ipynb 20
 def urlread(url, data=None, headers=None, decode=True, return_json=False, return_headers=False, timeout=None, **kwargs):

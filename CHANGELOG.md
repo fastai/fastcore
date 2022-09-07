@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.5.25
+
+### New Features
+
+- Add more information upon HTTP request failures ([#479](https://github.com/fastai/fastcore/issues/479))
+
+### Bugs Squashed
+
+- fix: `Config.get` returns `False` instead of `None` for missing `bool` keys ([#482](https://github.com/fastai/fastcore/pull/482)), thanks to [@seeM](https://github.com/seeM)
+- `but` in delegates ignored in `docments` ([#478](https://github.com/fastai/fastcore/issues/478))
+
+
 ## 1.5.23
 
 ### New Features

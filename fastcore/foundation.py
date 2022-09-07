@@ -271,9 +271,9 @@ class Config:
 
     def get(self,k,default=None):
         v = self.d.get(k, default)
+        if v is None: return None
         typ = self.types.get(k, None)
         if typ==bool: return str2bool(v)
-        if v is None: return None
         if not typ: return str(v)
         if typ==Path: return self.config_path/v
         return typ(v)

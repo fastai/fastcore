@@ -243,7 +243,7 @@ def save_config_file(file, d, **kwargs):
 # %% ../nbs/02_foundation.ipynb 130
 def read_config_file(file, **kwargs):
     config = ConfigParser(**kwargs)
-    config.read(file)
+    config.read(file, encoding='utf8')
     return config['DEFAULT']
 
 # %% ../nbs/02_foundation.ipynb 133
@@ -255,7 +255,7 @@ class Config:
         self.config_path,self.config_file = cfg_path,cfg_path/cfg_name
         self._cfg = ConfigParser()
         self.d = self._cfg['DEFAULT']
-        found = [Path(o) for o in self._cfg.read(L(extra_files)+[self.config_file])]
+        found = [Path(o) for o in self._cfg.read(L(extra_files)+[self.config_file], encoding='utf8')]
         if self.config_file not in found and create is not None:
             self._cfg.read_dict({'DEFAULT':create})
             if save:

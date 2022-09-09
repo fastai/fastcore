@@ -34,22 +34,22 @@ def parse_docstring(sym):
     docs = docstring(sym)
     return AttrDict(**docscrape.NumpyDocString(docstring(sym)))
 
-# %% ../nbs/06_docments.ipynb 17
+# %% ../nbs/06_docments.ipynb 16
 def isdataclass(s):
     "Check if `s` is a dataclass but not a dataclass' instance"
     return is_dataclass(s) and isclass(s)
 
-# %% ../nbs/06_docments.ipynb 18
+# %% ../nbs/06_docments.ipynb 17
 def get_dataclass_source(s):
     "Get source code for dataclass `s`"
     return getsource(s) if not getattr(s, "__module__") == '__main__' else ""
 
-# %% ../nbs/06_docments.ipynb 19
+# %% ../nbs/06_docments.ipynb 18
 def get_source(s):
     "Get source code for string, function object or dataclass `s`"
     return getsource(s) if isfunction(s) or ismethod(s) else get_dataclass_source(s) if isdataclass(s) else s
 
-# %% ../nbs/06_docments.ipynb 20
+# %% ../nbs/06_docments.ipynb 19
 def _parses(s):
     "Parse Python code in string, function object or dataclass `s`"
     return parse(dedent(get_source(s)))
@@ -78,10 +78,10 @@ def _param_locs(s, returns=True):
             return res
     return None
 
-# %% ../nbs/06_docments.ipynb 21
+# %% ../nbs/06_docments.ipynb 20
 empty = Parameter.empty
 
-# %% ../nbs/06_docments.ipynb 22
+# %% ../nbs/06_docments.ipynb 21
 def _get_comment(line, arg, comments, parms):
     if line in comments: return comments[line].strip()
     line -= 1
@@ -95,7 +95,7 @@ def _get_full(anno, name, default, docs):
     if anno==empty and default!=empty: anno = type(default)
     return AttrDict(docment=docs.get(name), anno=anno, default=default)
 
-# %% ../nbs/06_docments.ipynb 23
+# %% ../nbs/06_docments.ipynb 22
 def _merge_doc(dm, npdoc):
     if not npdoc: return dm
     if not dm.anno or dm.anno==empty: dm.anno = npdoc.type
@@ -108,14 +108,14 @@ def _merge_docs(dms, npdocs):
     if 'return' in dms: params['return'] = _merge_doc(dms['return'], npdocs['Returns'])
     return params
 
-# %% ../nbs/06_docments.ipynb 24
+# %% ../nbs/06_docments.ipynb 23
 def _get_property_name(p):
     "Get the name of property `p`"
     if hasattr(p, 'fget'):
         return p.fget.func.__qualname__ if hasattr(p.fget, 'func') else p.fget.__qualname__
     else: return next(iter(re.findall(r'\'(.*)\'', str(p)))).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 25
+# %% ../nbs/06_docments.ipynb 24
 def get_name(obj):
     "Get the name of `obj`"
     if hasattr(obj, '__name__'):       return obj.__name__
@@ -124,7 +124,7 @@ def get_name(obj):
     elif type(obj)==property:          return _get_property_name(obj)
     else:                              return str(obj).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 27
+# %% ../nbs/06_docments.ipynb 26
 def qual_name(obj):
     "Get the qualified name of `obj`"
     if hasattr(obj,'__qualname__'): return obj.__qualname__
@@ -161,8 +161,8 @@ def docments(elt, full=False, **kwargs):
 
     def _update_docments(f, r):
         if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
-        r.update({k:v for k,v in _docments(f, **kwargs).items()
-                  if k in params and (full or v.get('docment',None))})
+        r.update({k:v for k,v in _docments(f, **kwargs).items() if k in params
+                  and (v.get('docment', None) or not nested_idx(r, k, 'docment'))})
 
     _update_docments(elt, r)
     if not full: r = {k:v['docment'] for k,v in r.items()}

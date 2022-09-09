@@ -2,6 +2,62 @@
 
 <!-- do not remove -->
 
+## 1.5.26
+
+
+### Bugs Squashed
+
+- UnicodeDecodeError occurs when reading `settings.ini` file containing CJK characters on Windows, due to missing encoding parameter ([#483](https://github.com/fastai/fastcore/issues/483))
+  - When I tried to preview/test/prepare an nbdev project with `settings.ini` (UTF-8 encorded) which containing some CKJ (or maybe other non-ascii) characters, an error such as `UnicodeDecodeError: 'cp932' codec can't decode byte 0x82 in position 725: illegal multibyte sequence` ocurred.
+
+<details><summary>Example of settings and full error message</summary>
+
+When a setting file containing a line like
+```
+description = サンプル プロジェクト (sample project)
+```
+
+and nbdev_* command executed, output is like below:
+```
+$ nbdev_preview.exe
+Traceback (most recent call last):
+  File "C:\Users\<user_home>\AppData\Local\Programs\Python\Python310\lib\runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "C:\Users\<user_home>\AppData\Local\Programs\Python\Python310\lib\runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "<path_to_venv>\Scripts\nbdev_preview.exe\__main__.py", line 7, in <module>
+  File "<path_to_venv>\lib\site-packages\fastcore\script.py", line 119, in _f
+    return tfunc(**merge(args, args_from_prog(func, xtra)))
+  File "<path_to_venv>\lib\site-packages\nbdev\quarto.py", line 278, in preview
+    nbdev_quarto.__wrapped__(path, preview=True, **kwargs)
+  File "<path_to_venv>\lib\site-packages\nbdev\quarto.py", line 256, in nbdev_quarto
+    nbdev.doclinks._build_modidx(skip_exists=True)
+  File "<path_to_venv>\lib\site-packages\nbdev\doclinks.py", line 74, in _build_modidx
+    if dest is None: dest = get_config().lib_path
+  File "<path_to_venv>\lib\site-packages\nbdev\config.py", line 199, in get_config
+    cfg = Config(cfg_file.parent, cfg_file.name, extra_files=extra_files, types=_types)
+  File "<path_to_venv>\lib\site-packages\fastcore\foundation.py", line 258, in __init__
+    found = [Path(o) for o in self._cfg.read(L(extra_files)+[self.config_file])]#, encoding='utf-8')]
+  File "C:\Users\<user_home>\AppData\Local\Programs\Python\Python310\lib\configparser.py", line 698, in read
+    self._read(fp, filename)
+  File "C:\Users\<user_home>\AppData\Local\Programs\Python\Python310\lib\configparser.py", line 1021, in _read
+    for lineno, line in enumerate(fp, start=1):
+UnicodeDecodeError: 'cp932' codec can't decode byte 0x82 in position 725: illegal multibyte sequence
+```
+
+Version info:
+Operating system: Windows 11 Pro (Japanese)
+Python 3.10.6
+nbdev 2.1.7
+
+</details>
+
+This error is likely caused due to no encoding being specified here:
+https://github.com/fastai/fastcore/blob/894bf94a3fcab91c85f05bc9a974a747533e9040/fastcore/foundation.py#L258
+
+The error seems to be resolved by adding `encoding='utf-8'` to the argument of the ConfigParser.read() method.
+
+
 ## 1.5.25
 
 ### New Features

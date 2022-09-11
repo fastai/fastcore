@@ -91,7 +91,8 @@ _httperrors = (
 
 for code,msg in _httperrors:
     nm = f'HTTP{code}{msg.replace(" ","")}Error'
-    cls = get_class(nm, 'url', 'hdrs', 'fp', sup=HTTP4xxClientError, msg=msg, code=code)
+    def _init(self, url, hdrs, fp, msg=msg, code=code): HTTP4xxClientError.__init__(self, url, code, msg, hdrs, fp)
+    cls = type(nm, (HTTP4xxClientError,), {'__init__':_init})
     globals()[nm] = ExceptionsHTTP[code] = cls
 
 # %% ../nbs/03b_net.ipynb 16

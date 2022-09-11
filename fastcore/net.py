@@ -89,15 +89,11 @@ _httperrors = (
     (431,'Header Fields Too Large'),(451,'Legal Reasons')
 )
 
-def _mk_error(nm, code, msg):
-    cls = get_class(nm, 'url', 'hdrs', 'fp', sup=HTTP4xxClientError, msg=msg, code=code)
-    def _init(self, url, hdrs, fp, msg=msg, code=code): super(cls, self).__init__(url, code, msg, hdrs, fp)
-    cls.__init__ = _init
-    return cls
-
 for code,msg in _httperrors:
     nm = f'HTTP{code}{msg.replace(" ","")}Error'
-    globals()[nm] = ExceptionsHTTP[code] = _mk_error(nm, code, msg)
+    def _init(self, url, hdrs, fp, msg=msg, code=code): HTTP4xxClientError.__init__(self, url, code, msg, hdrs, fp)
+    cls = type(nm, (HTTP4xxClientError,), {'__init__':_init})
+    globals()[nm] = ExceptionsHTTP[code] = cls
 
 # %% ../nbs/03b_net.ipynb 16
 _all_ = ['HTTP400BadRequestError', 'HTTP401UnauthorizedError', 'HTTP402PaymentRequiredError', 'HTTP403ForbiddenError', 'HTTP404NotFoundError', 'HTTP405MethodNotAllowedError', 'HTTP406NotAcceptableError', 'HTTP407ProxyAuthRequiredError', 'HTTP408RequestTimeoutError', 'HTTP409ConflictError', 'HTTP410GoneError', 'HTTP411LengthRequiredError', 'HTTP412PreconditionFailedError', 'HTTP413PayloadTooLargeError', 'HTTP414URITooLongError', 'HTTP415UnsupportedMediaTypeError', 'HTTP416RangeNotSatisfiableError', 'HTTP417ExpectationFailedError', 'HTTP418AmAteapotError', 'HTTP421MisdirectedRequestError', 'HTTP422UnprocessableEntityError', 'HTTP423LockedError', 'HTTP424FailedDependencyError', 'HTTP425TooEarlyError', 'HTTP426UpgradeRequiredError', 'HTTP428PreconditionRequiredError', 'HTTP429TooManyRequestsError', 'HTTP431HeaderFieldsTooLargeError', 'HTTP451LegalReasonsError']

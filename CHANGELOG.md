@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.5.27
+
+
+### Bugs Squashed
+
+- fix: error in IPython while handling `HTTP4xxClientError` ([#486](https://github.com/fastai/fastcore/pull/486)), thanks to [@seeM](https://github.com/seeM)
+- fix: `Config.get` returns `False` instead of `None` for missing `bool` keys ([#482](https://github.com/fastai/fastcore/pull/482)), thanks to [@seeM](https://github.com/seeM)
+- params overriding `delegates` ignored in `call_parse` ([#473](https://github.com/fastai/fastcore/issues/473))
+
+
 ## 1.5.26
 
 ### Bugs Squashed

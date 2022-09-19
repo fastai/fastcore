@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "fastcore"
+  site-url: "https://fastcore.fast.ai/"
+  description: "Python supercharged for fastai development"
+  repo-branch: master
+  repo-url: "https://github.com/fastai/fastcore/"

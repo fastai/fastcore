@@ -34,7 +34,7 @@ with the `-latest` suffix
   transformations
 
 To get started, we recommend you read through [the fastcore
-tour](https://fastcore.fast.ai/000_tour.html).
+tour](https://fastcore.fast.ai/tour.html).
 
 ## Contributing
 

@@ -558,8 +558,10 @@ def shufflish(x, pct=0.04):
 def console_help(
     libname:str):  # name of library for console script listing
     "Show help for all console scripts from `libname`"
+    from fastcore.style import S
     from pkg_resources import iter_entry_points as ep
     for e in ep('console_scripts'): 
-        if e.module_name.startswith(libname+'.'): 
-            nm = f'\033[1m\033[94m{e.name}\033[0m'
+        if e.module_name == libname or e.module_name.startswith(libname+'.'): 
+            nm = S.bold.light_blue(e.name)
             print(f'{nm:45}{e.load().__doc__}')
+

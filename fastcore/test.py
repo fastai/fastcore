@@ -12,8 +12,8 @@ from contextlib import redirect_stdout
 
 # %% ../nbs/00_test.ipynb 6
 def test_fail(f, msg='', contains='', args=None, kwargs=None):
-    args, kwargs = args or [], kwargs or {}
     "Fails with `msg` unless `f()` raises an exception and (optionally) has `contains` in `e.args`"
+    args, kwargs = args or [], kwargs or {}
     try: f(*args, **kwargs)
     except Exception as e:
         assert not contains or contains in str(e)
@@ -21,7 +21,7 @@ def test_fail(f, msg='', contains='', args=None, kwargs=None):
     assert False,f"Expected exception but none raised. {msg}"
 
 # %% ../nbs/00_test.ipynb 10
-def test(a, b, cmp,cname=None):
+def test(a, b, cmp, cname=None):
     "`assert` that `cmp(a,b)`; display inputs and `cname or cmp.__name__` if it fails"
     if cname is None: cname=cmp.__name__
     assert cmp(a,b),f"{cname}:\n{a}\n{b}"
@@ -34,7 +34,7 @@ def nequals(a,b):
 # %% ../nbs/00_test.ipynb 20
 def test_eq(a,b):
     "`test` that `a==b`"
-    test(a,b,equals, '==')
+    test(a,b,equals, cname='==')
 
 # %% ../nbs/00_test.ipynb 25
 def test_eq_type(a,b):

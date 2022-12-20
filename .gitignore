@@ -145,3 +145,7 @@ checklink/cookies.txt
 .gitconfig
 
 _docs
+
+# Pipenv
+Pipfile
+Pipfile.lock

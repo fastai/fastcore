@@ -41,7 +41,8 @@ def test_eq_type(a,b):
     "`test` that `a==b` and are same type"
     test_eq(a,b)
     test_eq(type(a),type(b))
-    if isinstance(a,(list,tuple)): test_eq(map(type,a),map(type,b))
+    if isinstance(a,(list,tuple)): test_eq(map(type,a),map(type,b)) # type of each element
+    if isinstance(a, (torch.Tensor, pd.Series, np.ndarray)): test_eq(a.dtype, b.dtype) # dtypes of both tensors
 
 # %% ../nbs/00_test.ipynb 27
 def test_ne(a,b):

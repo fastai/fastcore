@@ -78,14 +78,14 @@ def test_stdout(f, exp, regex=False):
     "Test that `f` prints `exp` to stdout, optionally checking as `regex`"
     s = io.StringIO()
     with redirect_stdout(s): f()
-    if regex: assert re.search(exp, s.getvalue()) is not None
+    if regex: assert re.search(exp, s.getvalue()) is not None, f"regex '{exp}' did not not match stdout '{s.getvalue()}'"
     else: test_eq(s.getvalue(), f'{exp}\n' if len(exp) > 0 else '')
 
 # %% ../nbs/00_test.ipynb 40
 def test_warns(f, show=False):
     with warnings.catch_warnings(record=True) as w:
         f()
-        test_ne(len(w), 0)
+        assert w, "No warnings raised"
         if show:
             for e in w: print(f"{e.category}: {e.message}")
 

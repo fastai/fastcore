@@ -155,7 +155,9 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
 
     def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self, f, *args, gen=gen, **kwargs))
     def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self, f, negate, **kwargs))
-    def argfirst(self, f, negate=False): return first(i for i,o in self.enumerate() if f(o))
+    def argfirst(self, f, negate=False): 
+        if negate: f = not_(f)
+        return first(i for i,o in self.enumerate() if f(o))
     def filter(self, f=noop, negate=False, gen=False, **kwargs):
         return self._new(filter_ex(self, f=f, negate=negate, gen=gen, **kwargs))
 

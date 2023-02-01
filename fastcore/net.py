@@ -130,10 +130,10 @@ def urljson(url, data=None, timeout=None):
     return json.loads(res) if res else {}
 
 # %% ../nbs/03b_net.ipynb 23
-def urlcheck(url, timeout=10):
+def urlcheck(url, headers=None, timeout=10):
     if not url: return True
     try:
-        with urlopen(url, timeout=timeout) as u: return u.status<400
+        with urlopen(url, headers=headers, timeout=timeout) as u: return u.status<400
     except URLError: return False
     except socket.timeout: return False
     except InvalidURL: return False
@@ -144,9 +144,9 @@ def urlclean(url):
     return urlunparse(urlparse(str(url))[:3]+('','',''))
 
 # %% ../nbs/03b_net.ipynb 26
-def urlretrieve(url, filename=None, reporthook=None, data=None, timeout=None):
+def urlretrieve(url, filename=None, reporthook=None, data=None, headers=None, timeout=None):
     "Same as `urllib.request.urlretrieve` but also works with `Request` objects"
-    with contextlib.closing(urlopen(url, data, timeout=timeout)) as fp:
+    with contextlib.closing(urlopen(url, data, headers=headers, timeout=timeout)) as fp:
         headers = fp.info()
         if filename: tfp = open(filename, 'wb')
         else:
@@ -177,11 +177,11 @@ def urldest(url, dest=None):
     return dest/name if dest.is_dir() else dest
 
 # %% ../nbs/03b_net.ipynb 28
-def urlsave(url, dest=None, reporthook=None, timeout=None):
+def urlsave(url, dest=None, reporthook=None, headers=None, timeout=None):
     "Retrieve `url` and save based on its name"
     dest = urldest(url, dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    nm,msg = urlretrieve(url, dest, reporthook, timeout=timeout)
+    nm,msg = urlretrieve(url, dest, reporthook, headers=headers, timeout=timeout)
     return nm
 
 # %% ../nbs/03b_net.ipynb 30

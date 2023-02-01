@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.28
+
+### Bugs Squashed
+
+- fix: `console_help` excludes entrypoints from the root module ([#495](https://github.com/fastai/fastcore/pull/495)), thanks to [@seeM](https://github.com/seeM)
+- Improvements to test messages ([#508](https://github.com/fastai/fastcore/pull/508)), thanks to [@ddobrinskiy](https://github.com/ddobrinskiy)
+
+
 ## 1.5.27
 
 

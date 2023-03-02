@@ -934,6 +934,11 @@ def copy_func(f):
     fn.__qualname__ = f.__qualname__
     return fn
 
+# %% ../nbs/01_basics.ipynb 366
+class _clsmethod:
+    def __init__(self, f): self.f = f
+    def __get__(self, _, f_cls): return MethodType(self.f, f_cls)
+
 # %% ../nbs/01_basics.ipynb 367
 def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"

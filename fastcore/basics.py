@@ -934,7 +934,7 @@ def copy_func(f):
     fn.__qualname__ = f.__qualname__
     return fn
 
-# %% ../nbs/01_basics.ipynb 366
+# %% ../nbs/01_basics.ipynb 367
 def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"
     if not isinstance(cls, (tuple,list)): cls=(cls,)
@@ -946,14 +946,14 @@ def patch_to(cls, as_prop=False, cls_method=False):
             for o in functools.WRAPPER_ASSIGNMENTS: setattr(nf, o, getattr(f,o))
             nf.__qualname__ = f"{c_.__name__}.{nm}"
             if cls_method:
-                setattr(c_, nm, MethodType(nf, c_))
+                setattr(c_, nm, _clsmethod(nf))
             else:
                 setattr(c_, nm, property(nf) if as_prop else nf)
         # Avoid clobbering existing functions
         return globals().get(nm, builtins.__dict__.get(nm, None))
     return _inner
 
-# %% ../nbs/01_basics.ipynb 377
+# %% ../nbs/01_basics.ipynb 378
 def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
@@ -961,19 +961,19 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     cls = union2tuple(eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())), glb, loc))
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
-# %% ../nbs/01_basics.ipynb 385
+# %% ../nbs/01_basics.ipynb 386
 def patch_property(f):
     "Deprecated; use `patch(as_prop=True)` instead"
     warnings.warn("`patch_property` is deprecated and will be removed; use `patch(as_prop=True)` instead")
     cls = next(iter(f.__annotations__.values()))
     return patch_to(cls, as_prop=True)(f)
 
-# %% ../nbs/01_basics.ipynb 387
+# %% ../nbs/01_basics.ipynb 390
 def compile_re(pat):
     "Compile `pat` if it's not None"
     return None if pat is None else re.compile(pat)
 
-# %% ../nbs/01_basics.ipynb 389
+# %% ../nbs/01_basics.ipynb 392
 class ImportEnum(enum.Enum):
     "An `Enum` that can have its values imported"
     @classmethod
@@ -981,17 +981,17 @@ class ImportEnum(enum.Enum):
         g = sys._getframe(1).f_locals
         for o in cls: g[o.name]=o
 
-# %% ../nbs/01_basics.ipynb 392
+# %% ../nbs/01_basics.ipynb 395
 class StrEnum(str,ImportEnum):
     "An `ImportEnum` that behaves like a `str`"
     def __str__(self): return self.name
 
-# %% ../nbs/01_basics.ipynb 394
+# %% ../nbs/01_basics.ipynb 397
 def str_enum(name, *vals):
     "Simplified creation of `StrEnum` types"
     return StrEnum(name, {o:o for o in vals})
 
-# %% ../nbs/01_basics.ipynb 396
+# %% ../nbs/01_basics.ipynb 399
 class Stateful:
     "A base class/mixin for objects that should not serialize all their state"
     _stateattrs=()
@@ -1011,12 +1011,12 @@ class Stateful:
         "Override for custom init and deserialization logic"
         self._state = {}
 
-# %% ../nbs/01_basics.ipynb 402
+# %% ../nbs/01_basics.ipynb 405
 class PrettyString(str):
     "Little hack to get strings to show properly in Jupyter."
     def __repr__(self): return self
 
-# %% ../nbs/01_basics.ipynb 408
+# %% ../nbs/01_basics.ipynb 411
 def even_mults(start, stop, n):
     "Build log-stepped array from `start` to `stop` in `n` steps."
     if n==1: return stop
@@ -1024,7 +1024,7 @@ def even_mults(start, stop, n):
     step = mult**(1/(n-1))
     return [start*(step**i) for i in range(n)]
 
-# %% ../nbs/01_basics.ipynb 410
+# %% ../nbs/01_basics.ipynb 413
 def num_cpus():
     "Get number of cpus"
     try:                   return len(os.sched_getaffinity(0))
@@ -1032,16 +1032,16 @@ def num_cpus():
 
 defaults.cpus = num_cpus()
 
-# %% ../nbs/01_basics.ipynb 412
+# %% ../nbs/01_basics.ipynb 415
 def add_props(f, g=None, n=2):
     "Create properties passing each of `range(n)` to f"
     if g is None: return (property(partial(f,i)) for i in range(n))
     return (property(partial(f,i), partial(g,i)) for i in range(n))
 
-# %% ../nbs/01_basics.ipynb 415
+# %% ../nbs/01_basics.ipynb 418
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
-# %% ../nbs/01_basics.ipynb 416
+# %% ../nbs/01_basics.ipynb 419
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
@@ -1058,7 +1058,7 @@ def typed(f):
         return res
     return functools.update_wrapper(_f, f)
 
-# %% ../nbs/01_basics.ipynb 424
+# %% ../nbs/01_basics.ipynb 427
 def exec_new(code):
     "Execute `code` in a new environment and return it"
     pkg = None if __name__=='__main__' else Path().cwd().name
@@ -1066,13 +1066,13 @@ def exec_new(code):
     exec(code, g)
     return g
 
-# %% ../nbs/01_basics.ipynb 426
+# %% ../nbs/01_basics.ipynb 429
 def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
 
-# %% ../nbs/01_basics.ipynb 427
+# %% ../nbs/01_basics.ipynb 430
 def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)

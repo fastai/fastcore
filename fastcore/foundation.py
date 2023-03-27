@@ -130,7 +130,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def __eq__(self,b):
         if b is None: return False
         if risinstance('ndarray', b): return array_equal(b, self)
-        if isinstance(b, (str,dict)): return False
+        if isinstance(b, (str,dict)) or callable(b): return False
         return all_equal(b,self)
 
     def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self, key=key, reverse=reverse))

@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.29
+
+### New Features
+
+- extend test_eq_type ([#507](https://github.com/fastai/fastcore/pull/507)), thanks to [@ddobrinskiy](https://github.com/ddobrinskiy)
+- PyTorch 2.0 compile compatibility, thanks to [@ggosline](https://github.com/ggosline)
+
+
 ## 1.5.28
 
 ### Bugs Squashed

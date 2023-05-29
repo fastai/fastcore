@@ -18,6 +18,7 @@ from .basics import *
 from importlib import import_module
 from functools import wraps
 import string,time
+import shutil, gzip
 from contextlib import contextmanager,ExitStack
 from datetime import datetime, timezone
 
@@ -153,8 +154,14 @@ def dumps(obj, **kw):
 
 # %% ../nbs/03_xtras.ipynb 36
 def _unpack(fname, out):
-    import shutil
-    shutil.unpack_archive(str(fname), str(out))
+    fname = Path(fname)
+    if "".join(fname.suffixes) in ['.gz', '.gzip']:
+        with gzip.open(fname, 'rb') as gzip_file:
+            with open(out / fname.stem, 'wb') as extracted_file:
+                extracted_file.write(gzip_file.read())
+    else:
+        shutil.unpack_archive(str(fname), str(out))
+        
     ls = out.ls()
     return ls[0] if len(ls) == 1 else out
 

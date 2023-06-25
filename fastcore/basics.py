@@ -145,7 +145,7 @@ class ignore_exceptions:
 
 # %% ../nbs/01_basics.ipynb 55
 def exec_local(code, var_name):
-    "Call `exec` on `code` and return the var `var_name"
+    "Call `exec` on `code` and return the var `var_name`"
     loc = {}
     exec(code, globals(), loc)
     return loc[var_name]

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from tokenize import tokenize,COMMENT
-from ast import parse,FunctionDef,AnnAssign
+from ast import parse,FunctionDef,AsyncFunctionDef,AnnAssign
 from io import BytesIO
 from textwrap import dedent
 from types import SimpleNamespace
@@ -69,7 +69,7 @@ def _param_locs(s, returns=True):
     body = _parses(s).body
     if len(body)==1: #or not isinstance(body[0], FunctionDef): return None
         defn = body[0]
-        if isinstance(defn, FunctionDef):
+        if isinstance(defn, (FunctionDef, AsyncFunctionDef)):
             res = {arg.lineno:arg.arg for arg in defn.args.args}
             if returns and defn.returns: res[defn.returns.lineno] = 'return'
             return res

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.32
+
+### Bugs Squashed
+
+- Revert "Python 3.12 Deprecation of pkg_resources" ([#544](https://github.com/fastai/fastcore/pull/544))
+
+
 ## 1.5.30
 
 ### New Features

@@ -26,7 +26,7 @@ py_versions = '2.0 2.1 2.2 2.3 2.4 2.5 2.6 2.7 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3
 min_python = cfg['min_python']
 lic = licenses[cfg['license']]
 
-requirements = ['pip', 'packaging']
+requirements = []
 if cfg.get('requirements'): requirements += cfg.get('requirements','').split()
 if cfg.get('pip_requirements'): requirements += cfg.get('pip_requirements','').split()
 dev_requirements = (cfg.get('dev_requirements') or '').split()

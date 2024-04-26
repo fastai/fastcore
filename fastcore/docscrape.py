@@ -92,9 +92,48 @@ class ParseError(Exception):
         return message
 
 
+NUMPY_DOC_STRING_SECTIONS = {
+    'Summary',
+    'Extended',
+    'Parameters',
+    'Returns',
+    'Yields',
+    'Receives',
+    'Other Parameters',
+    'Raises',
+    'Warns',
+    'Warnings',
+    'See Also',
+    'Notes',
+    'References',
+    'Examples',
+    'Attributes',
+    'Methods',
+}
+'''Set of the strings corresponding to the sections outlined in numpydoc v1.8.0.''';
+
+CORE_NUMPY_DOC_STRING_SECTIONS = {
+    'Summary', 'Extended', 'Parameters', 'Returns',
+}
+'''The original four numpydoc sections supported by fastcore.''';
+
 class NumpyDocString(Mapping):
-    """Parses a numpydoc string to an abstract representation """
-    sections = { 'Summary': [''], 'Extended': [], 'Parameters': [], 'Returns': [] }
+    """Parses a numpydoc string to an abstract representation 
+    
+    Notes
+    -----
+    See the NumPy Doc `Manual <https://numpydoc.readthedocs.io/en/latest/format.html>`_.
+    """
+    sections = { 
+        'Summary': [''], 'Extended': [], 
+        'Parameters': [], 'Returns': [],
+        'Yields': [], 'Receives': [],
+        'Other Parameters': [], 'Raises': [],
+        'Warns': [], 'Warnings': [],
+        'See Also': [], 'Notes': [],
+        'References': [], 'Examples': [],
+        'Attributes': [], 'Methods': [],
+    }
 
     def __init__(self, docstring, config=None):
         docstring = textwrap.dedent(docstring).split('\n')
@@ -105,6 +144,12 @@ class NumpyDocString(Mapping):
         if self['Returns']: self['Returns'] = self['Returns'][0]
         self['Summary'] = dedent_lines(self['Summary'], split=False)
         self['Extended'] = dedent_lines(self['Extended'], split=False)
+        for section in NUMPY_DOC_STRING_SECTIONS ^ CORE_NUMPY_DOC_STRING_SECTIONS:
+            try:
+                self[section] = dedent_lines(self[section], split=False)
+            except Exception as err:
+                ...
+
 
     def __iter__(self): return iter(self._parsed_data)
     def __len__(self): return len(self._parsed_data)

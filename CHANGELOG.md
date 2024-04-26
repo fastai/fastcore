@@ -2,6 +2,18 @@
 
 <!-- do not remove -->
 
+## 1.5.30
+
+### New Features
+
+- allow docments to parse async function definitions
+- expose timeout in `urlsend`
+
+### Bugs Squashed
+
+- patch classmethod not supporting subclasses correctly
+
+
 ## 1.5.29
 
 ### New Features

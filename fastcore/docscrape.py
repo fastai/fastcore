@@ -92,48 +92,15 @@ class ParseError(Exception):
         return message
 
 
-NUMPY_DOC_STRING_SECTIONS = {
-    'Summary',
-    'Extended',
-    'Parameters',
-    'Returns',
-    'Yields',
-    'Receives',
-    'Other Parameters',
-    'Raises',
-    'Warns',
-    'Warnings',
-    'See Also',
-    'Notes',
-    'References',
-    'Examples',
-    'Attributes',
-    'Methods',
-}
-'''Set of the strings corresponding to the sections outlined in numpydoc v1.8.0.''';
-
-CORE_NUMPY_DOC_STRING_SECTIONS = {
-    'Summary', 'Extended', 'Parameters', 'Returns',
-}
-'''The original four numpydoc sections supported by fastcore.''';
+SECTIONS = 'Summary Extended Yields Receives Other Raises Warns Warnings See Also Notes References Examples Attributes Methods'.split()
 
 class NumpyDocString(Mapping):
-    """Parses a numpydoc string to an abstract representation 
-    
-    Notes
-    -----
-    See the NumPy Doc `Manual <https://numpydoc.readthedocs.io/en/latest/format.html>`_.
-    """
-    sections = { 
-        'Summary': [''], 'Extended': [], 
-        'Parameters': [], 'Returns': [],
-        'Yields': [], 'Receives': [],
-        'Other Parameters': [], 'Raises': [],
-        'Warns': [], 'Warnings': [],
-        'See Also': [], 'Notes': [],
-        'References': [], 'Examples': [],
-        'Attributes': [], 'Methods': [],
-    }
+    "Parses a numpydoc string to an abstract representation"
+    # See the NumPy Doc Manual https://numpydoc.readthedocs.io/en/latest/format.html>
+    sections = {o:[] for o in SECTIONS}
+    sections['Summary'] = ['']
+    sections['Parameters'] = []
+    sections['Returns'] = []
 
     def __init__(self, docstring, config=None):
         docstring = textwrap.dedent(docstring).split('\n')
@@ -142,14 +109,7 @@ class NumpyDocString(Mapping):
         self._parse()
         self['Parameters'] = {o.name:o for o in self['Parameters']}
         if self['Returns']: self['Returns'] = self['Returns'][0]
-        self['Summary'] = dedent_lines(self['Summary'], split=False)
-        self['Extended'] = dedent_lines(self['Extended'], split=False)
-        for section in NUMPY_DOC_STRING_SECTIONS ^ CORE_NUMPY_DOC_STRING_SECTIONS:
-            try:
-                self[section] = dedent_lines(self[section], split=False)
-            except Exception as err:
-                ...
-
+        for section in SECTIONS: self[section] = dedent_lines(self[section], split=False)
 
     def __iter__(self): return iter(self._parsed_data)
     def __len__(self): return len(self._parsed_data)

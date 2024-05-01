@@ -2,11 +2,19 @@
 
 <!-- do not remove -->
 
+## 1.5.33
+
+### New Features
+
+- Add deprecated python stdlib `imghdr` to fastcore, and add additional jpeg header ([#546](https://github.com/fastai/fastcore/issues/546))
+- Add additional numpydoc sections ([#545](https://github.com/fastai/fastcore/pull/545)), thanks to [@dsm-72](https://github.com/dsm-72)
+
+
 ## 1.5.32
 
 ### Bugs Squashed
 
-- Revert "Python 3.12 Deprecation of pkg_resources" ([#544](https://github.com/fastai/fastcore/pull/544))
+- Revert "Python 3.12 Deprecation of `pkg_resources`" ([#544](https://github.com/fastai/fastcore/pull/544))
 
 
 ## 1.5.30

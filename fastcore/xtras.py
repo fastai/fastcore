@@ -91,7 +91,8 @@ def mkdir(path, exist_ok=False, parents=False, overwrite=False, **kwargs):
 # %% ../nbs/03_xtras.ipynb 28
 def image_size(fn):
     "Tuple of (w,h) for png, gif, or jpg; `None` otherwise"
-    import imghdr,struct
+    from fastcore import imghdr
+    import struct
     def _jpg_size(f):
         size,ftype = 2,0
         while not 0xc0 <= ftype <= 0xcf:

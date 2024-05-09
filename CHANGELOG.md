@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.5.34
+
+### New Features
+
+- Add `xml` module for XML and HTML generation ([#549](https://github.com/fastai/fastcore/issues/549))
+- Add `NotStr`, which behaves like a `str`, but is not an instance of one ([#548](https://github.com/fastai/fastcore/issues/548))
+- Add `NS`, a `SimpleNamespace` subclass that also adds `iter` and `dict` support ([#547](https://github.com/fastai/fastcore/issues/547))
+
+
 ## 1.5.33
 
 ### New Features

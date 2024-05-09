@@ -59,7 +59,7 @@ def _tokens(s):
     s = get_source(s)
     return tokenize(BytesIO(s.encode('utf-8')).readline)
 
-_clean_re = re.compile('^\s*#(.*)\s*$')
+_clean_re = re.compile(r'^\s*#(.*)\s*$')
 def _clean_comment(s):
     res = _clean_re.findall(s)
     return res[0] if res else None

@@ -14,9 +14,9 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'nested_attr', 'nested_setdefault', 'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx',
            'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'first_match', 'last_match', 'fastuple', 'bind',
            'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'PrettyString',
-           'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import', 'str2bool', 'lt', 'gt', 'le',
-           'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not']
+           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'NotStr',
+           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import', 'str2bool', 'lt',
+           'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not']
 
 # %% ../nbs/01_basics.ipynb 1
 from .imports import *
@@ -1034,11 +1034,28 @@ class Stateful:
         self._state = {}
 
 # %% ../nbs/01_basics.ipynb 418
+class NotStr(GetAttr):
+    "Behaves like a `str`, but isn't an instance of one"
+    _default = 's'
+    def __init__(self, s): self.s = s
+    def __repr__(self): return repr(self.s)
+    def __str__(self): return self.s
+    def __add__(self, b): return NotStr(self.s+str(b))
+    def __mul__(self, b): return NotStr(self.s*b)
+    def __len__(self): return len(self.s)
+    def __eq__(self, b): return self.s==b.s if isinstance(b, NotStr) else b
+    def __lt__(self, b): return self.s<b
+    def __hash__(self): return hash(self.s)
+    def __bool__(self): return bool(self.s)
+    def __contains__(self, b): return b in self.s
+    def __iter__(self): return iter(self.s)
+
+# %% ../nbs/01_basics.ipynb 420
 class PrettyString(str):
     "Little hack to get strings to show properly in Jupyter."
     def __repr__(self): return self
 
-# %% ../nbs/01_basics.ipynb 424
+# %% ../nbs/01_basics.ipynb 426
 def even_mults(start, stop, n):
     "Build log-stepped array from `start` to `stop` in `n` steps."
     if n==1: return stop
@@ -1046,7 +1063,7 @@ def even_mults(start, stop, n):
     step = mult**(1/(n-1))
     return [start*(step**i) for i in range(n)]
 
-# %% ../nbs/01_basics.ipynb 426
+# %% ../nbs/01_basics.ipynb 428
 def num_cpus():
     "Get number of cpus"
     try:                   return len(os.sched_getaffinity(0))
@@ -1054,16 +1071,16 @@ def num_cpus():
 
 defaults.cpus = num_cpus()
 
-# %% ../nbs/01_basics.ipynb 428
+# %% ../nbs/01_basics.ipynb 430
 def add_props(f, g=None, n=2):
     "Create properties passing each of `range(n)` to f"
     if g is None: return (property(partial(f,i)) for i in range(n))
     return (property(partial(f,i), partial(g,i)) for i in range(n))
 
-# %% ../nbs/01_basics.ipynb 431
+# %% ../nbs/01_basics.ipynb 433
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
-# %% ../nbs/01_basics.ipynb 432
+# %% ../nbs/01_basics.ipynb 434
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
@@ -1080,7 +1097,7 @@ def typed(f):
         return res
     return functools.update_wrapper(_f, f)
 
-# %% ../nbs/01_basics.ipynb 440
+# %% ../nbs/01_basics.ipynb 442
 def exec_new(code):
     "Execute `code` in a new environment and return it"
     pkg = None if __name__=='__main__' else Path().cwd().name
@@ -1088,13 +1105,13 @@ def exec_new(code):
     exec(code, g)
     return g
 
-# %% ../nbs/01_basics.ipynb 442
+# %% ../nbs/01_basics.ipynb 444
 def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
 
-# %% ../nbs/01_basics.ipynb 443
+# %% ../nbs/01_basics.ipynb 445
 def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)

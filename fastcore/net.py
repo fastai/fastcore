@@ -22,7 +22,7 @@ from functools import wraps
 import json,urllib,contextlib
 import socket,urllib.request,http,urllib
 from contextlib import contextmanager,ExitStack
-from urllib.request import Request,urlretrieve,install_opener,HTTPErrorProcessor
+from urllib.request import Request,urlretrieve,install_opener,HTTPErrorProcessor,HTTPRedirectHandler
 from urllib.error import HTTPError,URLError
 from urllib.parse import urlencode,urlparse,urlunparse
 from http.client import InvalidURL

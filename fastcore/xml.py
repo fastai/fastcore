@@ -45,6 +45,7 @@ for o in _all_: _g[o] = partial(xt, o.lower())
 # %% ../nbs/11_xml.ipynb 9
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
+    if hasattr(elm, '__xt__'): elm = elm.__xt__()
     sp = ' ' * lvl
     if not isinstance(elm, list):
         if isinstance(elm, str): elm = escape(elm)

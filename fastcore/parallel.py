@@ -20,14 +20,20 @@ try:
 except: pass
 
 # %% ../nbs/03a_parallel.ipynb 4
-def threaded(f):
-    "Run `f` in a thread, and returns the thread"
-    @wraps(f)
-    def _f(*args, **kwargs):
-        res = Thread(target=f, args=args, kwargs=kwargs)
-        res.start()
-        return res
-    return _f
+def threaded(process=False):
+    "Run `f` in a `Thread` (or `Process` if `process=True`), and returns it"
+    def _r(f):
+        @wraps(f)
+        def _f(*args, **kwargs):
+            res = (Thread,Process)[process](target=f, args=args, kwargs=kwargs)
+            res.start()
+            return res
+        return _f
+    if callable(process):
+        o = process
+        process = False
+        return _r(o)
+    return _r
 
 # %% ../nbs/03a_parallel.ipynb 6
 def startthread(f):

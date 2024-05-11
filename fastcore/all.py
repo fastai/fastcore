@@ -9,3 +9,4 @@ from .test import *
 from .meta import *
 from .imports import *
 from .script import *
+from .xml import *

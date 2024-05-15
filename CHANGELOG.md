@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.36
+
+### New Features
+
+- Add tuple support to `to_xml`
+- Add `start_proc()`
+
+
 ## 1.5.35
 
 ### New Features

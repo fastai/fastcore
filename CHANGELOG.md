@@ -2,11 +2,11 @@
 
 <!-- do not remove -->
 
-
-## 1.5.36
+## 1.5.37
 
 ### New Features
 
+- Do not add closing tags for void tag types ([#551](https://github.com/fastai/fastcore/issues/551))
 - Add tuple support to `to_xml`
 - Add `start_proc()`
 

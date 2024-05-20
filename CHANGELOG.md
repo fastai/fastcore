@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.38
+
+### New Features
+
+- add `fastcore.xml.highlight()` ([#553](https://github.com/fastai/fastcore/issues/553))
+
+
 ## 1.5.37
 
 ### New Features

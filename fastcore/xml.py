@@ -29,7 +29,7 @@ class XT(list): pass
 def xt(tag:str, *c, **kw):
     "Create an XML tag structure `[tag,children,attrs]` for `toxml()`"
     if len(c)==1 and isinstance(c[0], types.GeneratorType): c = tuple(c[0])
-    kw = {_attrmap(k):str(v) for k,v in kw.items() if v is not None}
+    kw = {_attrmap(k):(v if isinstance(v,bool) else str(v)) for k,v in kw.items() if v is not None}
     return XT([tag.lower(),c,kw])
 
 # %% ../nbs/11_xml.ipynb 7
@@ -47,9 +47,15 @@ _all_ = ['Html', 'Head', 'Title', 'Meta', 'Link', 'Style', 'Body', 'Pre', 'Code'
 for o in _all_: _g[o] = partial(xt, o.lower())
 
 # %% ../nbs/11_xml.ipynb 10
-voids = set('area base br col command embed hr img input keygen link meta param source track wbr'.split())
+voids = set('area base br col command embed hr img input keygen link meta param source track wbr !doctype'.split())
 
 # %% ../nbs/11_xml.ipynb 11
+def _to_attr(k,v):
+    if v==True: return str(k)
+    if v==False: return ''
+    return f'{k}="{escape(str(v), quote=False)}"'
+
+# %% ../nbs/11_xml.ipynb 12
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
     if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
@@ -62,7 +68,7 @@ def to_xml(elm, lvl=0):
     tag,cs,attrs = elm
     stag = tag
     if attrs:
-        sattrs = (f'{k}="{escape(str(v), quote=False)}"' for k,v in attrs.items())
+        sattrs = (_to_attr(k,v) for k,v in attrs.items())
         stag += ' ' + ' '.join(sattrs)
     
     cltag = '' if tag in voids else f'</{tag}>'
@@ -72,12 +78,12 @@ def to_xml(elm, lvl=0):
     if tag not in voids: res += f'{sp}{cltag}\n'
     return res
 
-# %% ../nbs/11_xml.ipynb 13
+# %% ../nbs/11_xml.ipynb 14
 def highlight(s, lang='html'):
     "Markdown to syntax-highlight `s` in language `lang`"
     return f'```{lang}\n{to_xml(s)}\n```'
 
-# %% ../nbs/11_xml.ipynb 14
+# %% ../nbs/11_xml.ipynb 15
 def showtags(s):
     return f"""<code><pre>
 {escape(to_xml(s))}

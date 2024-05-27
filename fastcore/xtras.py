@@ -9,7 +9,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
            'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'modified_env', 'ContextManagers', 'shufflish', 'console_help']
+           'modified_env', 'ContextManagers', 'shufflish', 'console_help', 'hl_md']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -566,3 +566,13 @@ def console_help(
             nm = S.bold.light_blue(e.name)
             print(f'{nm:45}{e.load().__doc__}')
 
+
+# %% ../nbs/03_xtras.ipynb 159
+def hl_md(s, lang='xml', show=True):
+    "Syntax highlight `s` using `lang`."
+    md = f'```{lang}\n{s}\n```'
+    if not show: return md
+    try:
+        from IPython import display
+        return display.Markdown(md)
+    except ImportError: print(s)

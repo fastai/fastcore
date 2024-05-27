@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.5.39
+
+### New Features
+
+- add `hl_md()` ([#557](https://github.com/fastai/fastcore/issues/557))
+- bool value handling for `xt` ([#556](https://github.com/fastai/fastcore/issues/556))
+- Add py2pyi ([#555](https://github.com/fastai/fastcore/issues/555))
+- Add attr support to `nested_idx` ([#554](https://github.com/fastai/fastcore/issues/554))
+
+
 ## 1.5.38
 
 ### New Features

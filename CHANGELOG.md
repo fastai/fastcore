@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.41
+
+### New Features
+
+- Add `type2str` and `dataclass_src` to `xtras` ([#559](https://github.com/fastai/fastcore/issues/559))
+
+
 ## 1.5.40
 
 ### New Features

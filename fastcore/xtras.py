@@ -9,7 +9,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
            'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'modified_env', 'ContextManagers', 'shufflish', 'console_help', 'hl_md']
+           'modified_env', 'ContextManagers', 'shufflish', 'console_help', 'hl_md', 'type2str', 'dataclass_src']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -576,3 +576,23 @@ def hl_md(s, lang='xml', show=True):
         from IPython import display
         return display.Markdown(md)
     except ImportError: print(s)
+
+# %% ../nbs/03_xtras.ipynb 162
+def type2str(typ:type)->str:
+    "Stringify `typ`"
+    if typ is None or typ is NoneType: return 'None'
+    if hasattr(typ, '__origin__'):
+        args = ", ".join(type2str(arg) for arg in typ.__args__)
+        if typ.__origin__ is Union: return f"Union[{args}]"
+        return f"{typ.__origin__.__name__}[{args}]"
+    elif isinstance(typ, type): return typ.__name__
+    return str(typ)
+
+# %% ../nbs/03_xtras.ipynb 164
+def dataclass_src(cls):
+    import dataclasses
+    src = f"@dataclass\nclass {cls.__name__}:\n"
+    for f in dataclasses.fields(cls):
+        d = "" if f.default is dataclasses.MISSING else f" = {f.default!r}"
+        src += f"    {f.name}: {type2str(f.type)}{d}\n"
+    return src

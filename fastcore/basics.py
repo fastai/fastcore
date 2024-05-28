@@ -20,7 +20,7 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
 
 # %% ../nbs/01_basics.ipynb 1
 from .imports import *
-import builtins,types
+import builtins,types,typing
 import pprint
 try: from types import UnionType
 except ImportError: UnionType = None
@@ -975,10 +975,13 @@ def patch_to(cls, as_prop=False, cls_method=False):
             # `functools.update_wrapper` when passing patched function to `Pipeline`, so we do it manually
             for o in functools.WRAPPER_ASSIGNMENTS: setattr(nf, o, getattr(f,o))
             nf.__qualname__ = f"{c_.__name__}.{nm}"
-            if cls_method:
-                setattr(c_, nm, _clsmethod(nf))
+            if cls_method: setattr(c_, nm, _clsmethod(nf))
             else:
-                setattr(c_, nm, property(nf) if as_prop else nf)
+                if as_prop: setattr(c_, nm, property(nf))
+                else:
+                    onm = '_orig_'+nm
+                    if hasattr(c_, nm) and not hasattr(c_, onm): setattr(c_, onm, getattr(c_, nm))
+                    setattr(c_, nm, nf)
         # Avoid clobbering existing functions
         return globals().get(nm, builtins.__dict__.get(nm, None))
     return _inner

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.40
+
+### New Features
+
+- Save orig method in `patch` and `patch_to` ([#558](https://github.com/fastai/fastcore/issues/558))
+
+
 ## 1.5.39
 
 ### New Features

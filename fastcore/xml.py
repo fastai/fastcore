@@ -23,14 +23,21 @@ def _attrmap(o):
     return o.lstrip('_').replace('_', '-')
 
 # %% ../nbs/11_xml.ipynb 5
-class XT(list): pass
+class XT(list):
+    def __init__(self, tag, cs, attrs): super().__init__([tag, cs, attrs])
+    @property
+    def tag(self): return self[0]
+    @property
+    def children(self): return self[1]
+    @property
+    def attrs(self): return self[2]
 
 # %% ../nbs/11_xml.ipynb 6
 def xt(tag:str, *c, **kw):
     "Create an XML tag structure `[tag,children,attrs]` for `toxml()`"
     if len(c)==1 and isinstance(c[0], types.GeneratorType): c = tuple(c[0])
     kw = {_attrmap(k):(v if isinstance(v,bool) else str(v)) for k,v in kw.items() if v is not None}
-    return XT([tag.lower(),c,kw])
+    return XT(tag.lower(),c,kw)
 
 # %% ../nbs/11_xml.ipynb 7
 _g = globals()
@@ -46,16 +53,16 @@ _all_ = ['Html', 'Head', 'Title', 'Meta', 'Link', 'Style', 'Body', 'Pre', 'Code'
 
 for o in _all_: _g[o] = partial(xt, o.lower())
 
-# %% ../nbs/11_xml.ipynb 10
+# %% ../nbs/11_xml.ipynb 12
 voids = set('area base br col command embed hr img input keygen link meta param source track wbr !doctype'.split())
 
-# %% ../nbs/11_xml.ipynb 11
+# %% ../nbs/11_xml.ipynb 13
 def _to_attr(k,v):
     if v==True: return str(k)
     if v==False: return ''
     return f'{k}="{escape(str(v), quote=False)}"'
 
-# %% ../nbs/11_xml.ipynb 12
+# %% ../nbs/11_xml.ipynb 14
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
     if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
@@ -78,15 +85,15 @@ def to_xml(elm, lvl=0):
     if tag not in voids: res += f'{sp}{cltag}\n'
     return res
 
-# %% ../nbs/11_xml.ipynb 14
-def highlight(s, lang='html'):
+# %% ../nbs/11_xml.ipynb 16
+def highlight(s, lang='xml'):
     "Markdown to syntax-highlight `s` in language `lang`"
     return f'```{lang}\n{to_xml(s)}\n```'
 
-# %% ../nbs/11_xml.ipynb 15
+# %% ../nbs/11_xml.ipynb 17
 def showtags(s):
     return f"""<code><pre>
 {escape(to_xml(s))}
 </code></pre>"""
 
-XT._repr_html_ = showtags
+XT._repr_markdown_ = highlight

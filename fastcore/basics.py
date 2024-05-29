@@ -98,10 +98,13 @@ def tonull(x):
     return null if x is None else x
 
 # %% ../nbs/01_basics.ipynb 41
-def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, **flds):
+def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, anno=None, **flds):
     "Dynamically create a class, optionally inheriting from `sup`, containing `fld_names`"
     attrs = {}
-    for f in fld_names: attrs[f] = None
+    if not anno: anno = {}
+    for f in fld_names:
+        attrs[f] = None
+        if f not in anno: anno[f] = typing.Any
     for f in listify(funcs): attrs[f.__name__] = f
     for k,v in flds.items(): attrs[k] = v
     sup = ifnone(sup, ())
@@ -111,22 +114,23 @@ def get_class(nm, *fld_names, sup=None, doc=None, funcs=None, **flds):
         for i,v in enumerate(args): setattr(self, list(attrs.keys())[i], v)
         for k,v in kwargs.items(): setattr(self,k,v)
 
-    all_flds = [*fld_names,*flds.keys()]
+    attrs['_fields'] = [*fld_names,*flds.keys()]
     def _eq(self,b):
-        return all([getattr(self,k)==getattr(b,k) for k in all_flds])
+        return all([getattr(self,k)==getattr(b,k) for k in self._fields])
 
-    if not sup: attrs['__repr__'] = basic_repr(all_flds)
+    if not sup: attrs['__repr__'] = basic_repr(attrs['_fields'])
     attrs['__init__'] = _init
     attrs['__eq__'] = _eq
+    if anno: attrs['__annotations__'] = anno
     res = type(nm, sup, attrs)
     if doc is not None: res.__doc__ = doc
     return res
 
 # %% ../nbs/01_basics.ipynb 45
-def mk_class(nm, *fld_names, sup=None, doc=None, funcs=None, mod=None, **flds):
+def mk_class(nm, *fld_names, sup=None, doc=None, funcs=None, mod=None, anno=None, **flds):
     "Create a class using `get_class` and add to the caller's module"
     if mod is None: mod = sys._getframe(1).f_locals
-    res = get_class(nm, *fld_names, sup=sup, doc=doc, funcs=funcs, **flds)
+    res = get_class(nm, *fld_names, sup=sup, doc=doc, funcs=funcs, anno=anno, **flds)
     mod[nm] = res
 
 # %% ../nbs/01_basics.ipynb 50

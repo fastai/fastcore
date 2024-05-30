@@ -92,9 +92,15 @@ class ParseError(Exception):
         return message
 
 
+SECTIONS = 'Summary Extended Yields Receives Other Raises Warns Warnings See Also Notes References Examples Attributes Methods'.split()
+
 class NumpyDocString(Mapping):
-    """Parses a numpydoc string to an abstract representation """
-    sections = { 'Summary': [''], 'Extended': [], 'Parameters': [], 'Returns': [] }
+    "Parses a numpydoc string to an abstract representation"
+    # See the NumPy Doc Manual https://numpydoc.readthedocs.io/en/latest/format.html>
+    sections = {o:[] for o in SECTIONS}
+    sections['Summary'] = ['']
+    sections['Parameters'] = []
+    sections['Returns'] = []
 
     def __init__(self, docstring, config=None):
         docstring = textwrap.dedent(docstring).split('\n')
@@ -103,8 +109,7 @@ class NumpyDocString(Mapping):
         self._parse()
         self['Parameters'] = {o.name:o for o in self['Parameters']}
         if self['Returns']: self['Returns'] = self['Returns'][0]
-        self['Summary'] = dedent_lines(self['Summary'], split=False)
-        self['Extended'] = dedent_lines(self['Extended'], split=False)
+        for section in SECTIONS: self[section] = dedent_lines(self[section], split=False)
 
     def __iter__(self): return iter(self._parsed_data)
     def __len__(self): return len(self._parsed_data)

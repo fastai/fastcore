@@ -30,8 +30,8 @@ def bool_arg(v):
 # %% ../nbs/08_script.ipynb 18
 def clean_type_str(x:str):
     x = str(x)
-    x = re.sub("(enum |class|function|__main__\.|\ at.*)", '', x)
-    x = re.sub("(<|>|'|\ )", '', x) # spl characters
+    x = re.sub(r"(enum |class|function|__main__\.|\ at.*)", '', x)
+    x = re.sub(r"(<|>|'|\ )", '', x) # spl characters
     return x
 
 # %% ../nbs/08_script.ipynb 21

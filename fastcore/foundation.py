@@ -130,7 +130,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def __eq__(self,b):
         if b is None: return False
         if risinstance('ndarray', b): return array_equal(b, self)
-        if isinstance(b, (str,dict)): return False
+        if isinstance(b, (str,dict)) or callable(b): return False
         return all_equal(b,self)
 
     def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self, key=key, reverse=reverse))
@@ -153,20 +153,22 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     @classmethod
     def range(cls, a, b=None, step=None): return cls(range_of(a, b=b, step=step))
 
-    def map(self, f, *args, gen=False, **kwargs): return self._new(map_ex(self, f, *args, gen=gen, **kwargs))
+    def map(self, f, *args, **kwargs): return self._new(map_ex(self, f, *args, gen=False, **kwargs))
     def argwhere(self, f, negate=False, **kwargs): return self._new(argwhere(self, f, negate, **kwargs))
-    def argfirst(self, f, negate=False): return first(i for i,o in self.enumerate() if f(o))
-    def filter(self, f=noop, negate=False, gen=False, **kwargs):
-        return self._new(filter_ex(self, f=f, negate=negate, gen=gen, **kwargs))
+    def argfirst(self, f, negate=False): 
+        if negate: f = not_(f)
+        return first(i for i,o in self.enumerate() if f(o))
+    def filter(self, f=noop, negate=False, **kwargs):
+        return self._new(filter_ex(self, f=f, negate=negate, gen=False, **kwargs))
 
     def enumerate(self): return L(enumerate(self))
     def renumerate(self): return L(renumerate(self))
     def unique(self, sort=False, bidir=False, start=None): return L(uniqueify(self, sort=sort, bidir=bidir, start=start))
     def val2idx(self): return val2idx(self)
     def cycle(self): return cycle(self)
-    def map_dict(self, f=noop, *args, gen=False, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
+    def map_dict(self, f=noop, *args, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_first(self, f=noop, g=noop, *args, **kwargs):
-        return first(self.map(f, *args, gen=True, **kwargs), g)
+        return first(self.map(f, *args, **kwargs), g)
 
     def itemgot(self, *idxs):
         x = self

@@ -9,7 +9,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'repr_dict', 'is_listy', 'mapped', 'IterLen', 'ReindexCollection', 'get_source_link', 'truncstr',
            'sparkline', 'modify_exception', 'round_multiple', 'set_num_threads', 'join_path_file', 'autostart',
            'EventTimer', 'stringfmt_names', 'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace',
-           'modified_env', 'ContextManagers', 'shufflish', 'console_help']
+           'modified_env', 'ContextManagers', 'shufflish', 'console_help', 'hl_md', 'type2str', 'dataclass_src']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -91,7 +91,8 @@ def mkdir(path, exist_ok=False, parents=False, overwrite=False, **kwargs):
 # %% ../nbs/03_xtras.ipynb 28
 def image_size(fn):
     "Tuple of (w,h) for png, gif, or jpg; `None` otherwise"
-    import imghdr,struct
+    from fastcore import imghdr
+    import struct
     def _jpg_size(f):
         size,ftype = 2,0
         while not 0xc0 <= ftype <= 0xcf:
@@ -441,7 +442,7 @@ def join_path_file(file, path, ext=''):
     path.mkdir(parents=True, exist_ok=True)
     return path/f'{file}{ext}'
 
-# %% ../nbs/03_xtras.ipynb 135
+# %% ../nbs/03_xtras.ipynb 134
 def autostart(g):
     "Decorator that automatically starts a generator"
     @functools.wraps(g)
@@ -451,7 +452,7 @@ def autostart(g):
         return r
     return f
 
-# %% ../nbs/03_xtras.ipynb 136
+# %% ../nbs/03_xtras.ipynb 135
 class EventTimer:
     "An event timer with history of `store` items of time `span`"
 
@@ -475,15 +476,15 @@ class EventTimer:
     @property
     def freq(self): return self.events/self.duration
 
-# %% ../nbs/03_xtras.ipynb 140
+# %% ../nbs/03_xtras.ipynb 139
 _fmt = string.Formatter()
 
-# %% ../nbs/03_xtras.ipynb 141
+# %% ../nbs/03_xtras.ipynb 140
 def stringfmt_names(s:str)->list:
     "Unique brace-delimited names in `s`"
     return uniqueify(o[1] for o in _fmt.parse(s) if o[1])
 
-# %% ../nbs/03_xtras.ipynb 143
+# %% ../nbs/03_xtras.ipynb 142
 class PartialFormatter(string.Formatter):
     "A `string.Formatter` that doesn't error on missing fields, and tracks missing fields and unused args"
     def __init__(self):
@@ -499,24 +500,24 @@ class PartialFormatter(string.Formatter):
     def check_unused_args(self, used, args, kwargs):
         self.xtra = filter_keys(kwargs, lambda o: o not in used)
 
-# %% ../nbs/03_xtras.ipynb 145
+# %% ../nbs/03_xtras.ipynb 144
 def partial_format(s:str, **kwargs):
     "string format `s`, ignoring missing field errors, returning missing and extra fields"
     fmt = PartialFormatter()
     res = fmt.format(s, **kwargs)
     return res,list(fmt.missing),fmt.xtra
 
-# %% ../nbs/03_xtras.ipynb 148
+# %% ../nbs/03_xtras.ipynb 147
 def utc2local(dt:datetime)->datetime:
     "Convert `dt` from UTC to local time"
     return dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
-# %% ../nbs/03_xtras.ipynb 150
+# %% ../nbs/03_xtras.ipynb 149
 def local2utc(dt:datetime)->datetime:
     "Convert `dt` from local to UTC time"
     return dt.replace(tzinfo=None).astimezone(tz=timezone.utc)
 
-# %% ../nbs/03_xtras.ipynb 152
+# %% ../nbs/03_xtras.ipynb 151
 def trace(f):
     "Add `set_trace` to an existing function `f`"
     from pdb import set_trace
@@ -527,7 +528,7 @@ def trace(f):
     _inner._traced = True
     return _inner
 
-# %% ../nbs/03_xtras.ipynb 154
+# %% ../nbs/03_xtras.ipynb 153
 @contextmanager
 def modified_env(*delete, **replace):
     "Context manager temporarily modifying `os.environ` by deleting `delete` and replacing `replace`"
@@ -540,26 +541,58 @@ def modified_env(*delete, **replace):
         os.environ.clear()
         os.environ.update(prev)
 
-# %% ../nbs/03_xtras.ipynb 156
+# %% ../nbs/03_xtras.ipynb 155
 class ContextManagers(GetAttr):
     "Wrapper for `contextlib.ExitStack` which enters a collection of context managers"
     def __init__(self, mgrs): self.default,self.stack = L(mgrs),ExitStack()
     def __enter__(self): self.default.map(self.stack.enter_context)
     def __exit__(self, *args, **kwargs): self.stack.__exit__(*args, **kwargs)
 
-# %% ../nbs/03_xtras.ipynb 158
+# %% ../nbs/03_xtras.ipynb 157
 def shufflish(x, pct=0.04):
     "Randomly relocate items of `x` up to `pct` of `len(x)` from their starting location"
     n = len(x)
     import random
     return L(x[i] for i in sorted(range_of(x), key=lambda o: o+n*(1+random.random()*pct)))
 
-# %% ../nbs/03_xtras.ipynb 159
+# %% ../nbs/03_xtras.ipynb 158
 def console_help(
     libname:str):  # name of library for console script listing
     "Show help for all console scripts from `libname`"
+    from fastcore.style import S
     from pkg_resources import iter_entry_points as ep
     for e in ep('console_scripts'): 
-        if e.module_name.startswith(libname+'.'): 
-            nm = f'\033[1m\033[94m{e.name}\033[0m'
+        if e.module_name == libname or e.module_name.startswith(libname+'.'): 
+            nm = S.bold.light_blue(e.name)
             print(f'{nm:45}{e.load().__doc__}')
+
+
+# %% ../nbs/03_xtras.ipynb 159
+def hl_md(s, lang='xml', show=True):
+    "Syntax highlight `s` using `lang`."
+    md = f'```{lang}\n{s}\n```'
+    if not show: return md
+    try:
+        from IPython import display
+        return display.Markdown(md)
+    except ImportError: print(s)
+
+# %% ../nbs/03_xtras.ipynb 162
+def type2str(typ:type)->str:
+    "Stringify `typ`"
+    if typ is None or typ is NoneType: return 'None'
+    if hasattr(typ, '__origin__'):
+        args = ", ".join(type2str(arg) for arg in typ.__args__)
+        if typ.__origin__ is Union: return f"Union[{args}]"
+        return f"{typ.__origin__.__name__}[{args}]"
+    elif isinstance(typ, type): return typ.__name__
+    return str(typ)
+
+# %% ../nbs/03_xtras.ipynb 164
+def dataclass_src(cls):
+    import dataclasses
+    src = f"@dataclass\nclass {cls.__name__}:\n"
+    for f in dataclasses.fields(cls):
+        d = "" if f.default is dataclasses.MISSING else f" = {f.default!r}"
+        src += f"    {f.name}: {type2str(f.type)}{d}\n"
+    return src

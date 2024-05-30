@@ -2,6 +2,115 @@
 
 <!-- do not remove -->
 
+## 1.5.42
+
+### New Features
+
+- Add HTTP functions: `tobytes`, `http_response`, and `recv_once` ([#562](https://github.com/fastai/fastcore/issues/562))
+- Convenience props for `XT` ([#561](https://github.com/fastai/fastcore/issues/561))
+- annotations for `get_class` / `mk_class` ([#560](https://github.com/fastai/fastcore/issues/560))
+
+
+## 1.5.41
+
+### New Features
+
+- Add `type2str` and `dataclass_src` to `xtras` ([#559](https://github.com/fastai/fastcore/issues/559))
+
+
+## 1.5.40
+
+### New Features
+
+- Save orig method in `patch` and `patch_to` ([#558](https://github.com/fastai/fastcore/issues/558))
+
+
+## 1.5.39
+
+### New Features
+
+- add `hl_md()` ([#557](https://github.com/fastai/fastcore/issues/557))
+- bool value handling for `xt` ([#556](https://github.com/fastai/fastcore/issues/556))
+- Add py2pyi ([#555](https://github.com/fastai/fastcore/issues/555))
+- Add attr support to `nested_idx` ([#554](https://github.com/fastai/fastcore/issues/554))
+
+
+## 1.5.38
+
+### New Features
+
+- add `fastcore.xml.highlight()` ([#553](https://github.com/fastai/fastcore/issues/553))
+
+
+## 1.5.37
+
+### New Features
+
+- Do not add closing tags for void tag types ([#551](https://github.com/fastai/fastcore/issues/551))
+- Add tuple support to `to_xml`
+- Add `start_proc()`
+
+
+## 1.5.35
+
+### New Features
+
+- Add `process` param to `threaded` ([#550](https://github.com/fastai/fastcore/issues/550))
+- Check for `__xt__` in `to_xml`
+
+
+## 1.5.34
+
+### New Features
+
+- Add `xml` module for XML and HTML generation ([#549](https://github.com/fastai/fastcore/issues/549))
+- Add `NotStr`, which behaves like a `str`, but is not an instance of one ([#548](https://github.com/fastai/fastcore/issues/548))
+- Add `NS`, a `SimpleNamespace` subclass that also adds `iter` and `dict` support ([#547](https://github.com/fastai/fastcore/issues/547))
+
+
+## 1.5.33
+
+### New Features
+
+- Add deprecated python stdlib `imghdr` to fastcore, and add additional jpeg header ([#546](https://github.com/fastai/fastcore/issues/546))
+- Add additional numpydoc sections ([#545](https://github.com/fastai/fastcore/pull/545)), thanks to [@dsm-72](https://github.com/dsm-72)
+
+
+## 1.5.32
+
+### Bugs Squashed
+
+- Revert "Python 3.12 Deprecation of `pkg_resources`" ([#544](https://github.com/fastai/fastcore/pull/544))
+
+
+## 1.5.30
+
+### New Features
+
+- allow docments to parse async function definitions
+- expose timeout in `urlsend`
+
+### Bugs Squashed
+
+- patch classmethod not supporting subclasses correctly
+
+
+## 1.5.29
+
+### New Features
+
+- extend test_eq_type ([#507](https://github.com/fastai/fastcore/pull/507)), thanks to [@ddobrinskiy](https://github.com/ddobrinskiy)
+- PyTorch 2.0 compile compatibility, thanks to [@ggosline](https://github.com/ggosline)
+
+
+## 1.5.28
+
+### Bugs Squashed
+
+- fix: `console_help` excludes entrypoints from the root module ([#495](https://github.com/fastai/fastcore/pull/495)), thanks to [@seeM](https://github.com/seeM)
+- Improvements to test messages ([#508](https://github.com/fastai/fastcore/pull/508)), thanks to [@ddobrinskiy](https://github.com/ddobrinskiy)
+
+
 ## 1.5.27
 
 

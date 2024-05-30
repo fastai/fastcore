@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.5.42
+
+### New Features
+
+- Add HTTP functions: `tobytes`, `http_response`, and `recv_once` ([#562](https://github.com/fastai/fastcore/issues/562))
+- Convenience props for `XT` ([#561](https://github.com/fastai/fastcore/issues/561))
+- annotations for `get_class` / `mk_class` ([#560](https://github.com/fastai/fastcore/issues/560))
+
+
 ## 1.5.41
 
 ### New Features

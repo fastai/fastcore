@@ -19,7 +19,8 @@ from html import escape
 
 # %% ../nbs/11_xml.ipynb 4
 def _attrmap(o):
-    o = dict(htmlClass='class', cls='class', klass='class', fr='for', htmlFor='for').get(o, o)
+    o = dict(htmlClass='class', cls='class', _class='class', klass='class',
+             _for='for', fr='for', htmlFor='for').get(o, o)
     return o.lstrip('_').replace('_', '-')
 
 # %% ../nbs/11_xml.ipynb 5

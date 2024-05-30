@@ -274,8 +274,9 @@ def http_response(body=None, status=200, hdrs=None, **kwargs):
 
 # %% ../nbs/03b_net.ipynb 49
 @threaded
-def recv_once(d:dict, host:str='localhost', port:int=8000):
+def recv_once(host:str='localhost', port:int=8000):
     "Spawn a thread to receive a single HTTP request and store in `d['r']`"
     conn,addr = start_server(port,host).accept()
-    d['r'] = conn.recv(1024)
-    conn.sendall(http_response(d['r']))
+    res = conn.recv(1024)
+    conn.sendall(http_response(res))
+    return res

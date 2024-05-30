@@ -23,9 +23,13 @@ except: pass
 def threaded(process=False):
     "Run `f` in a `Thread` (or `Process` if `process=True`), and returns it"
     def _r(f):
+        def g(_obj_td, *args, **kwargs):
+            res = f(*args, **kwargs)
+            _obj_td.result = res
         @wraps(f)
         def _f(*args, **kwargs):
-            res = (Thread,Process)[process](target=f, args=args, kwargs=kwargs)
+            res = (Thread,Process)[process](target=g, args=args, kwargs=kwargs)
+            res._args = (res,)+res._args
             res.start()
             return res
         return _f
@@ -35,17 +39,17 @@ def threaded(process=False):
         return _r(o)
     return _r
 
-# %% ../nbs/03a_parallel.ipynb 6
+# %% ../nbs/03a_parallel.ipynb 8
 def startthread(f):
     "Like `threaded`, but start thread immediately"
     return threaded(f)()
 
-# %% ../nbs/03a_parallel.ipynb 8
+# %% ../nbs/03a_parallel.ipynb 10
 def startproc(f):
     "Like `threaded(True)`, but start Process immediately"
     return threaded(True)(f)()
 
-# %% ../nbs/03a_parallel.ipynb 10
+# %% ../nbs/03a_parallel.ipynb 12
 def _call(lock, pause, n, g, item):
     l = False
     if pause:
@@ -56,7 +60,7 @@ def _call(lock, pause, n, g, item):
             if l: lock.release()
     return g(item)
 
-# %% ../nbs/03a_parallel.ipynb 11
+# %% ../nbs/03a_parallel.ipynb 13
 def parallelable(param_name, num_workers, f=None):
     f_in_main = f == None or sys.modules[f.__module__].__name__ == "__main__"
     if sys.platform == "win32" and IN_NOTEBOOK and num_workers > 0 and f_in_main:
@@ -65,7 +69,7 @@ def parallelable(param_name, num_workers, f=None):
         return False
     return True
 
-# %% ../nbs/03a_parallel.ipynb 12
+# %% ../nbs/03a_parallel.ipynb 14
 class ThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
     "Same as Python's ThreadPoolExecutor, except can pass `max_workers==0` for serial execution"
     def __init__(self, max_workers=defaults.cpus, on_exc=print, pause=0, **kwargs):
@@ -83,7 +87,7 @@ class ThreadPoolExecutor(concurrent.futures.ThreadPoolExecutor):
         try: return super().map(_g, items, timeout=timeout, chunksize=chunksize)
         except Exception as e: self.on_exc(e)
 
-# %% ../nbs/03a_parallel.ipynb 14
+# %% ../nbs/03a_parallel.ipynb 16
 @delegates()
 class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
     "Same as Python's ProcessPoolExecutor, except can pass `max_workers==0` for serial execution"
@@ -106,11 +110,11 @@ class ProcessPoolExecutor(concurrent.futures.ProcessPoolExecutor):
         try: return super().map(_g, items, timeout=timeout, chunksize=chunksize)
         except Exception as e: self.on_exc(e)
 
-# %% ../nbs/03a_parallel.ipynb 16
+# %% ../nbs/03a_parallel.ipynb 18
 try: from fastprogress import progress_bar
 except: progress_bar = None
 
-# %% ../nbs/03a_parallel.ipynb 17
+# %% ../nbs/03a_parallel.ipynb 19
 def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None, pause=0,
              method=None, threadpool=False, timeout=None, chunksize=1, **kwargs):
     "Applies `func` in parallel to `items`, using `n_workers`"
@@ -127,14 +131,14 @@ def parallel(f, items, *args, n_workers=defaults.cpus, total=None, progress=None
             r = progress_bar(r, total=total, leave=False)
         return L(r)
 
-# %% ../nbs/03a_parallel.ipynb 18
+# %% ../nbs/03a_parallel.ipynb 20
 def add_one(x, a=1):
     # this import is necessary for multiprocessing in notebook on windows
     import random
     time.sleep(random.random()/80)
     return x+a
 
-# %% ../nbs/03a_parallel.ipynb 24
+# %% ../nbs/03a_parallel.ipynb 26
 def run_procs(f, f_done, args):
     "Call `f` for each item in `args` in parallel, yielding `f_done`"
     processes = L(args).map(Process, args=arg0, target=f)
@@ -142,13 +146,13 @@ def run_procs(f, f_done, args):
     yield from f_done()
     processes.map(Self.join())
 
-# %% ../nbs/03a_parallel.ipynb 25
+# %% ../nbs/03a_parallel.ipynb 27
 def _f_pg(obj, queue, batch, start_idx):
     for i,b in enumerate(obj(batch)): queue.put((start_idx+i,b))
 
 def _done_pg(queue, items): return (queue.get() for _ in items)
 
-# %% ../nbs/03a_parallel.ipynb 26
+# %% ../nbs/03a_parallel.ipynb 28
 def parallel_gen(cls, items, n_workers=defaults.cpus, **kwargs):
     "Instantiate `cls` in `n_workers` procs & call each on a subset of `items` in parallel."
     if not parallelable('n_workers', n_workers): n_workers = 0

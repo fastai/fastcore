@@ -8,15 +8,15 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'get_annotations_ex', 'eval_type', 'type_hints', 'annotations', 'anno_ret', 'signature_ex', 'union2tuple',
            'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake', 'snake2camel',
            'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
-           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate',
-           'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values',
-           'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'renumerate', 'first', 'only',
-           'nested_attr', 'nested_setdefault', 'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx',
+           'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'partition', 'flatten', 'concat', 'strcat', 'detuplify',
+           'replicate', 'setify', 'merge', 'range_of', 'groupby', 'last_index', 'filter_dict', 'filter_keys',
+           'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_', 'argwhere', 'filter_ex', 'renumerate', 'first',
+           'only', 'nested_attr', 'nested_setdefault', 'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx',
            'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'first_match', 'last_match', 'fastuple', 'bind',
            'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to',
            'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'NotStr',
            'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import', 'str2bool', 'lt',
-           'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not']
+           'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'mod']
 
 # %% ../nbs/01_basics.ipynb 1
 from .imports import *
@@ -199,10 +199,10 @@ def in_(x, a):
 operator.in_ = in_
 
 # %% ../nbs/01_basics.ipynb 77
-_all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']
+_all_ = ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_', 'mod']
 
 # %% ../nbs/01_basics.ipynb 78
-for op in ['lt','gt','le','ge','eq','ne','add','sub','mul','truediv','is_','is_not','in_']: _mk_op(op, globals())
+for op in _all_: _mk_op(op, globals())
 
 # %% ../nbs/01_basics.ipynb 84
 def ret_true(*args, **kwargs):
@@ -536,6 +536,16 @@ class Float(float,ShowPrint):
     pass
 
 # %% ../nbs/01_basics.ipynb 232
+def partition(coll, f):
+    "Partition a collection by a predicate"
+    ts,fs = [],[]
+    for o in coll: (fs,ts)[f(o)].append(o)
+    if isinstance(coll,tuple):
+        typ = type(coll)
+        ts,fs = typ(ts),typ(fs)
+    return ts,fs
+
+# %% ../nbs/01_basics.ipynb 234
 def flatten(o):
     "Concatenate all collections and items as a generator"
     for item in o:
@@ -543,42 +553,42 @@ def flatten(o):
         try: yield from flatten(item)
         except TypeError: yield item
 
-# %% ../nbs/01_basics.ipynb 233
+# %% ../nbs/01_basics.ipynb 235
 def concat(colls)->list:
     "Concatenate all collections and items as a list"
     return list(flatten(colls))
 
-# %% ../nbs/01_basics.ipynb 236
+# %% ../nbs/01_basics.ipynb 238
 def strcat(its, sep:str='')->str:
     "Concatenate stringified items `its`"
     return sep.join(map(str,its))
 
-# %% ../nbs/01_basics.ipynb 238
+# %% ../nbs/01_basics.ipynb 240
 def detuplify(x):
     "If `x` is a tuple with one thing, extract it"
     return None if len(x)==0 else x[0] if len(x)==1 and getattr(x, 'ndim', 1)==1 else x
 
-# %% ../nbs/01_basics.ipynb 240
+# %% ../nbs/01_basics.ipynb 242
 def replicate(item,match):
     "Create tuple of `item` copied `len(match)` times"
     return (item,)*len(match)
 
-# %% ../nbs/01_basics.ipynb 242
+# %% ../nbs/01_basics.ipynb 244
 def setify(o):
     "Turn any list like-object into a set."
     return o if isinstance(o,set) else set(listify(o))
 
-# %% ../nbs/01_basics.ipynb 244
+# %% ../nbs/01_basics.ipynb 246
 def merge(*ds):
     "Merge all dictionaries in `ds`"
     return {k:v for d in ds if d is not None for k,v in d.items()}
 
-# %% ../nbs/01_basics.ipynb 246
+# %% ../nbs/01_basics.ipynb 248
 def range_of(x):
     "All indices of collection `x` (i.e. `list(range(len(x)))`)"
     return list(range(len(x)))
 
-# %% ../nbs/01_basics.ipynb 248
+# %% ../nbs/01_basics.ipynb 250
 def groupby(x, key, val=noop):
     "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy, plus some extensions"
     if   isinstance(key,int): key = itemgetter(key)
@@ -589,39 +599,39 @@ def groupby(x, key, val=noop):
     for o in x: res.setdefault(key(o), []).append(val(o))
     return res
 
-# %% ../nbs/01_basics.ipynb 252
+# %% ../nbs/01_basics.ipynb 254
 def last_index(x, o):
     "Finds the last index of occurence of `x` in `o` (returns -1 if no occurence)"
     try: return next(i for i in reversed(range(len(o))) if o[i] == x)
     except StopIteration: return -1
 
-# %% ../nbs/01_basics.ipynb 254
+# %% ../nbs/01_basics.ipynb 256
 def filter_dict(d, func):
     "Filter a `dict` using `func`, applied to keys and values"
     return {k:v for k,v in d.items() if func(k,v)}
 
-# %% ../nbs/01_basics.ipynb 257
+# %% ../nbs/01_basics.ipynb 259
 def filter_keys(d, func):
     "Filter a `dict` using `func`, applied to keys"
     return {k:v for k,v in d.items() if func(k)}
 
-# %% ../nbs/01_basics.ipynb 259
+# %% ../nbs/01_basics.ipynb 261
 def filter_values(d, func):
     "Filter a `dict` using `func`, applied to values"
     return {k:v for k,v in d.items() if func(v)}
 
-# %% ../nbs/01_basics.ipynb 261
+# %% ../nbs/01_basics.ipynb 263
 def cycle(o):
     "Like `itertools.cycle` except creates list of `None`s if `o` is empty"
     o = listify(o)
     return itertools.cycle(o) if o is not None and len(o) > 0 else itertools.cycle([None])
 
-# %% ../nbs/01_basics.ipynb 263
+# %% ../nbs/01_basics.ipynb 265
 def zip_cycle(x, *args):
     "Like `itertools.zip_longest` but `cycle`s through elements of all but first argument"
     return zip(x, *map(cycle,args))
 
-# %% ../nbs/01_basics.ipynb 265
+# %% ../nbs/01_basics.ipynb 267
 def sorted_ex(iterable, key=None, reverse=False):
     "Like `sorted`, but if key is str use `attrgetter`; if int use `itemgetter`"
     if isinstance(key,str):   k=lambda o:getattr(o,key,0)
@@ -629,20 +639,20 @@ def sorted_ex(iterable, key=None, reverse=False):
     else: k=key
     return sorted(iterable, key=k, reverse=reverse)
 
-# %% ../nbs/01_basics.ipynb 266
+# %% ../nbs/01_basics.ipynb 268
 def not_(f):
     "Create new function that negates result of `f`"
     def _f(*args, **kwargs): return not f(*args, **kwargs)
     return _f
 
-# %% ../nbs/01_basics.ipynb 268
+# %% ../nbs/01_basics.ipynb 270
 def argwhere(iterable, f, negate=False, **kwargs):
     "Like `filter_ex`, but return indices for matching items"
     if kwargs: f = partial(f,**kwargs)
     if negate: f = not_(f)
     return [i for i,o in enumerate(iterable) if f(o)]
 
-# %% ../nbs/01_basics.ipynb 269
+# %% ../nbs/01_basics.ipynb 271
 def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
     "Like `filter`, but passing `kwargs` to `f`, defaulting `f` to `noop`, and adding `negate` and `gen`"
     if f is None: f = lambda _: True
@@ -652,25 +662,25 @@ def filter_ex(iterable, f=noop, negate=False, gen=False, **kwargs):
     if gen: return res
     return list(res)
 
-# %% ../nbs/01_basics.ipynb 270
+# %% ../nbs/01_basics.ipynb 272
 def range_of(a, b=None, step=None):
     "All indices of collection `a`, if `a` is a collection, otherwise `range`"
     if is_coll(a): a = len(a)
     return list(range(a,b,step) if step is not None else range(a,b) if b is not None else range(a))
 
-# %% ../nbs/01_basics.ipynb 272
+# %% ../nbs/01_basics.ipynb 274
 def renumerate(iterable, start=0):
     "Same as `enumerate`, but returns index as 2nd element instead of 1st"
     return ((o,i) for i,o in enumerate(iterable, start=start))
 
-# %% ../nbs/01_basics.ipynb 274
+# %% ../nbs/01_basics.ipynb 276
 def first(x, f=None, negate=False, **kwargs):
     "First element of `x`, optionally filtered by `f`, or None if missing"
     x = iter(x)
     if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
     return next(x, None)
 
-# %% ../nbs/01_basics.ipynb 276
+# %% ../nbs/01_basics.ipynb 278
 def only(o):
     "Return the only item of `o`, raise if `o` doesn't have exactly one item"
     it = iter(o)
@@ -680,7 +690,7 @@ def only(o):
     except StopIteration: return res
     raise ValueError(f'iterable has more than 1 item')
 
-# %% ../nbs/01_basics.ipynb 278
+# %% ../nbs/01_basics.ipynb 280
 def nested_attr(o, attr, default=None):
     "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
     try:
@@ -688,19 +698,19 @@ def nested_attr(o, attr, default=None):
     except AttributeError: return default
     return o
 
-# %% ../nbs/01_basics.ipynb 280
+# %% ../nbs/01_basics.ipynb 282
 def nested_setdefault(o, attr, default):
     "Same as `setdefault`, but if `attr` includes a `.`, then looks inside nested objects"
     attrs = attr.split('.')
     for a in attrs[:-1]: o = o.setdefault(a, type(o)())
     return o.setdefault(attrs[-1], default)
 
-# %% ../nbs/01_basics.ipynb 284
+# %% ../nbs/01_basics.ipynb 286
 def nested_callable(o, attr):
     "Same as `nested_attr` but if not found will return `noop`"
     return nested_attr(o, attr, noop)
 
-# %% ../nbs/01_basics.ipynb 286
+# %% ../nbs/01_basics.ipynb 288
 def _access(coll, idx):
     if isinstance(idx,str) and hasattr(coll, idx): return getattr(coll, idx)
     if hasattr(coll, 'get'): return coll.get(idx, None)
@@ -718,7 +728,7 @@ def _nested_idx(coll, *idxs):
             coll = coll.get(idx, None) if hasattr(coll, 'get') else coll[idx] if idx<len(coll) else None
     return coll,last_idx
 
-# %% ../nbs/01_basics.ipynb 287
+# %% ../nbs/01_basics.ipynb 289
 def nested_idx(coll, *idxs):
     "Index into nested collections, dicts, etc, with `idxs`"
     if not coll or not idxs: return coll
@@ -726,18 +736,18 @@ def nested_idx(coll, *idxs):
     if not coll or not idxs: return coll
     return _access(coll, idx)
 
-# %% ../nbs/01_basics.ipynb 290
+# %% ../nbs/01_basics.ipynb 292
 def set_nested_idx(coll, value, *idxs):
     "Set value indexed like `nested_idx"
     coll,idx = _nested_idx(coll, *idxs)
     coll[idx] = value
 
-# %% ../nbs/01_basics.ipynb 292
+# %% ../nbs/01_basics.ipynb 294
 def val2idx(x):
     "Dict from value to index"
     return {v:k for k,v in enumerate(x)}
 
-# %% ../nbs/01_basics.ipynb 294
+# %% ../nbs/01_basics.ipynb 296
 def uniqueify(x, sort=False, bidir=False, start=None):
     "Unique elements in `x`, optional `sort`, optional return reverse correspondence, optional prepend with elements."
     res = list(dict.fromkeys(x))
@@ -745,7 +755,7 @@ def uniqueify(x, sort=False, bidir=False, start=None):
     if sort: res.sort()
     return (res,val2idx(res)) if bidir else res
 
-# %% ../nbs/01_basics.ipynb 296
+# %% ../nbs/01_basics.ipynb 298
 # looping functions from https://github.com/willmcgugan/rich/blob/master/rich/_loop.py
 def loop_first_last(values):
     "Iterate and generate a tuple with a flag for first and last value."
@@ -758,27 +768,27 @@ def loop_first_last(values):
         first,previous_value = False,value
     yield first,True,previous_value
 
-# %% ../nbs/01_basics.ipynb 298
+# %% ../nbs/01_basics.ipynb 300
 def loop_first(values):
     "Iterate and generate a tuple with a flag for first value."
     return ((b,o) for b,_,o in loop_first_last(values))
 
-# %% ../nbs/01_basics.ipynb 300
+# %% ../nbs/01_basics.ipynb 302
 def loop_last(values):
     "Iterate and generate a tuple with a flag for last value."
     return ((b,o) for _,b,o in loop_first_last(values))
 
-# %% ../nbs/01_basics.ipynb 302
+# %% ../nbs/01_basics.ipynb 304
 def first_match(lst, f, default=None):
     "First element of `lst` matching predicate `f`, or `default` if none"
     return next((i for i,o in enumerate(lst) if f(o)), default)
 
-# %% ../nbs/01_basics.ipynb 304
+# %% ../nbs/01_basics.ipynb 306
 def last_match(lst, f, default=None):
     "Last element of `lst` matching predicate `f`, or `default` if none"
     return next((i for i in range(len(lst)-1, -1, -1) if f(lst[i])), default)
 
-# %% ../nbs/01_basics.ipynb 308
+# %% ../nbs/01_basics.ipynb 310
 num_methods = """
     __add__ __sub__ __mul__ __matmul__ __truediv__ __floordiv__ __mod__ __divmod__ __pow__
     __lshift__ __rshift__ __and__ __xor__ __or__ __neg__ __pos__ __abs__
@@ -792,7 +802,7 @@ inum_methods = """
     __ifloordiv__ __imod__ __ipow__ __ilshift__ __irshift__ __iand__ __ixor__ __ior__
 """.split()
 
-# %% ../nbs/01_basics.ipynb 309
+# %% ../nbs/01_basics.ipynb 311
 class fastuple(tuple):
     "A `tuple` with elementwise ops and more friendly __init__ behavior"
     def __new__(cls, x=None, *rest):
@@ -829,7 +839,7 @@ setattr(fastuple,'__invert__',_get_op('__not__'))
 setattr(fastuple,'max',_get_op(max))
 setattr(fastuple,'min',_get_op(min))
 
-# %% ../nbs/01_basics.ipynb 327
+# %% ../nbs/01_basics.ipynb 329
 class _Arg:
     def __init__(self,i): self.i = i
 arg0 = _Arg(0)
@@ -838,7 +848,7 @@ arg2 = _Arg(2)
 arg3 = _Arg(3)
 arg4 = _Arg(4)
 
-# %% ../nbs/01_basics.ipynb 328
+# %% ../nbs/01_basics.ipynb 330
 class bind:
     "Same as `partial`, except you can use `arg0` `arg1` etc param placeholders"
     def __init__(self, func, *pargs, **pkwargs):
@@ -853,12 +863,12 @@ class bind:
         fargs = [args[x.i] if isinstance(x, _Arg) else x for x in self.pargs] + args[self.maxi+1:]
         return self.func(*fargs, **kwargs)
 
-# %% ../nbs/01_basics.ipynb 340
+# %% ../nbs/01_basics.ipynb 342
 def mapt(func, *iterables):
     "Tuplified `map`"
     return tuple(map(func, *iterables))
 
-# %% ../nbs/01_basics.ipynb 342
+# %% ../nbs/01_basics.ipynb 344
 def map_ex(iterable, f, *args, gen=False, **kwargs):
     "Like `map`, but use `bind`, and supports `str` and indexing"
     g = (bind(f,*args,**kwargs) if callable(f)
@@ -868,7 +878,7 @@ def map_ex(iterable, f, *args, gen=False, **kwargs):
     if gen: return res
     return list(res)
 
-# %% ../nbs/01_basics.ipynb 350
+# %% ../nbs/01_basics.ipynb 352
 def compose(*funcs, order=None):
     "Create a function that composes all functions in `funcs`, passing along remaining `*args` and `**kwargs` to all"
     funcs = listify(funcs)
@@ -880,14 +890,14 @@ def compose(*funcs, order=None):
         return x
     return _inner
 
-# %% ../nbs/01_basics.ipynb 352
+# %% ../nbs/01_basics.ipynb 354
 def maps(*args, retain=noop):
     "Like `map`, except funcs are composed first"
     f = compose(*args[:-1])
     def _f(b): return retain(f(b), b)
     return map(_f, args[-1])
 
-# %% ../nbs/01_basics.ipynb 354
+# %% ../nbs/01_basics.ipynb 356
 def partialler(f, *args, order=None, **kwargs):
     "Like `functools.partial` but also copies over docstring"
     fnew = partial(f,*args,**kwargs)
@@ -896,20 +906,20 @@ def partialler(f, *args, order=None, **kwargs):
     elif hasattr(f,'order'): fnew.order=f.order
     return fnew
 
-# %% ../nbs/01_basics.ipynb 358
+# %% ../nbs/01_basics.ipynb 360
 def instantiate(t):
     "Instantiate `t` if it's a type, otherwise do nothing"
     return t() if isinstance(t, type) else t
 
-# %% ../nbs/01_basics.ipynb 360
+# %% ../nbs/01_basics.ipynb 362
 def _using_attr(f, attr, x): return f(getattr(x,attr))
 
-# %% ../nbs/01_basics.ipynb 361
+# %% ../nbs/01_basics.ipynb 363
 def using_attr(f, attr):
     "Construct a function which applies `f` to the argument's attribute `attr`"
     return partial(_using_attr, f, attr)
 
-# %% ../nbs/01_basics.ipynb 365
+# %% ../nbs/01_basics.ipynb 367
 class _Self:
     "An alternative to `lambda` for calling methods on passed object."
     def __init__(self): self.nms,self.args,self.kwargs,self.ready = [],[],[],True
@@ -941,7 +951,7 @@ class _Self:
         self.ready = True
         return self
 
-# %% ../nbs/01_basics.ipynb 366
+# %% ../nbs/01_basics.ipynb 368
 class _SelfCls:
     def __getattr__(self,k): return getattr(_Self(),k)
     def __getitem__(self,i): return self.__getattr__('__getitem__')(i)
@@ -949,10 +959,10 @@ class _SelfCls:
 
 Self = _SelfCls()
 
-# %% ../nbs/01_basics.ipynb 367
+# %% ../nbs/01_basics.ipynb 369
 _all_ = ['Self']
 
-# %% ../nbs/01_basics.ipynb 373
+# %% ../nbs/01_basics.ipynb 375
 def copy_func(f):
     "Copy a non-builtin function (NB `copy.copy` does not work for this)"
     if not isinstance(f,FunctionType): return copy(f)
@@ -963,12 +973,12 @@ def copy_func(f):
     fn.__qualname__ = f.__qualname__
     return fn
 
-# %% ../nbs/01_basics.ipynb 380
+# %% ../nbs/01_basics.ipynb 382
 class _clsmethod:
     def __init__(self, f): self.f = f
     def __get__(self, _, f_cls): return MethodType(self.f, f_cls)
 
-# %% ../nbs/01_basics.ipynb 381
+# %% ../nbs/01_basics.ipynb 383
 def patch_to(cls, as_prop=False, cls_method=False):
     "Decorator: add `f` to `cls`"
     if not isinstance(cls, (tuple,list)): cls=(cls,)
@@ -990,7 +1000,7 @@ def patch_to(cls, as_prop=False, cls_method=False):
         return globals().get(nm, builtins.__dict__.get(nm, None))
     return _inner
 
-# %% ../nbs/01_basics.ipynb 392
+# %% ../nbs/01_basics.ipynb 394
 def patch(f=None, *, as_prop=False, cls_method=False):
     "Decorator: add `f` to the first parameter's class (based on f's type annotations)"
     if f is None: return partial(patch, as_prop=as_prop, cls_method=cls_method)
@@ -998,19 +1008,19 @@ def patch(f=None, *, as_prop=False, cls_method=False):
     cls = union2tuple(eval_type(ann.pop('cls') if cls_method else next(iter(ann.values())), glb, loc))
     return patch_to(cls, as_prop=as_prop, cls_method=cls_method)(f)
 
-# %% ../nbs/01_basics.ipynb 400
+# %% ../nbs/01_basics.ipynb 402
 def patch_property(f):
     "Deprecated; use `patch(as_prop=True)` instead"
     warnings.warn("`patch_property` is deprecated and will be removed; use `patch(as_prop=True)` instead")
     cls = next(iter(f.__annotations__.values()))
     return patch_to(cls, as_prop=True)(f)
 
-# %% ../nbs/01_basics.ipynb 404
+# %% ../nbs/01_basics.ipynb 406
 def compile_re(pat):
     "Compile `pat` if it's not None"
     return None if pat is None else re.compile(pat)
 
-# %% ../nbs/01_basics.ipynb 406
+# %% ../nbs/01_basics.ipynb 408
 class ImportEnum(enum.Enum):
     "An `Enum` that can have its values imported"
     @classmethod
@@ -1018,17 +1028,17 @@ class ImportEnum(enum.Enum):
         g = sys._getframe(1).f_locals
         for o in cls: g[o.name]=o
 
-# %% ../nbs/01_basics.ipynb 409
+# %% ../nbs/01_basics.ipynb 411
 class StrEnum(str,ImportEnum):
     "An `ImportEnum` that behaves like a `str`"
     def __str__(self): return self.name
 
-# %% ../nbs/01_basics.ipynb 411
+# %% ../nbs/01_basics.ipynb 413
 def str_enum(name, *vals):
     "Simplified creation of `StrEnum` types"
     return StrEnum(name, {o:o for o in vals})
 
-# %% ../nbs/01_basics.ipynb 413
+# %% ../nbs/01_basics.ipynb 415
 class Stateful:
     "A base class/mixin for objects that should not serialize all their state"
     _stateattrs=()
@@ -1048,7 +1058,7 @@ class Stateful:
         "Override for custom init and deserialization logic"
         self._state = {}
 
-# %% ../nbs/01_basics.ipynb 419
+# %% ../nbs/01_basics.ipynb 421
 class NotStr(GetAttr):
     "Behaves like a `str`, but isn't an instance of one"
     _default = 's'
@@ -1065,12 +1075,12 @@ class NotStr(GetAttr):
     def __contains__(self, b): return b in self.s
     def __iter__(self): return iter(self.s)
 
-# %% ../nbs/01_basics.ipynb 421
+# %% ../nbs/01_basics.ipynb 423
 class PrettyString(str):
     "Little hack to get strings to show properly in Jupyter."
     def __repr__(self): return self
 
-# %% ../nbs/01_basics.ipynb 427
+# %% ../nbs/01_basics.ipynb 429
 def even_mults(start, stop, n):
     "Build log-stepped array from `start` to `stop` in `n` steps."
     if n==1: return stop
@@ -1078,7 +1088,7 @@ def even_mults(start, stop, n):
     step = mult**(1/(n-1))
     return [start*(step**i) for i in range(n)]
 
-# %% ../nbs/01_basics.ipynb 429
+# %% ../nbs/01_basics.ipynb 431
 def num_cpus():
     "Get number of cpus"
     try:                   return len(os.sched_getaffinity(0))
@@ -1086,16 +1096,16 @@ def num_cpus():
 
 defaults.cpus = num_cpus()
 
-# %% ../nbs/01_basics.ipynb 431
+# %% ../nbs/01_basics.ipynb 433
 def add_props(f, g=None, n=2):
     "Create properties passing each of `range(n)` to f"
     if g is None: return (property(partial(f,i)) for i in range(n))
     return (property(partial(f,i), partial(g,i)) for i in range(n))
 
-# %% ../nbs/01_basics.ipynb 434
+# %% ../nbs/01_basics.ipynb 436
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
-# %% ../nbs/01_basics.ipynb 435
+# %% ../nbs/01_basics.ipynb 437
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
@@ -1112,7 +1122,7 @@ def typed(f):
         return res
     return functools.update_wrapper(_f, f)
 
-# %% ../nbs/01_basics.ipynb 443
+# %% ../nbs/01_basics.ipynb 445
 def exec_new(code):
     "Execute `code` in a new environment and return it"
     pkg = None if __name__=='__main__' else Path().cwd().name
@@ -1120,13 +1130,13 @@ def exec_new(code):
     exec(code, g)
     return g
 
-# %% ../nbs/01_basics.ipynb 445
+# %% ../nbs/01_basics.ipynb 447
 def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
 
-# %% ../nbs/01_basics.ipynb 446
+# %% ../nbs/01_basics.ipynb 448
 def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)

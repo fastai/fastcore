@@ -78,7 +78,7 @@ def to_xml(elm, lvl=0):
     if attrs:
         sattrs = (_to_attr(k,v) for k,v in attrs.items())
         stag += ' ' + ' '.join(sattrs)
-    
+
     cltag = '' if tag in voids else f'</{tag}>'
     if not cs: return f'{sp}<{stag}>{cltag}\n'
     res = f'{sp}<{stag}>\n'

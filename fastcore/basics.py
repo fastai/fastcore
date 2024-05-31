@@ -216,7 +216,7 @@ def ret_false(*args, **kwargs):
 
 # %% ../nbs/01_basics.ipynb 87
 def stop(e=StopIteration):
-    "Raises exception `e` (by default `StopException`)"
+    "Raises exception `e` (by default `StopIteration`)"
     raise e
 
 # %% ../nbs/01_basics.ipynb 88

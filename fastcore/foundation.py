@@ -129,6 +129,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
 
     def __eq__(self,b):
         if b is None: return False
+        if not hasattr(b, '__iter__'): return False
         if risinstance('ndarray', b): return array_equal(b, self)
         if isinstance(b, (str,dict)) or callable(b): return False
         return all_equal(b,self)

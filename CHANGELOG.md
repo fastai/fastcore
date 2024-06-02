@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.5.43
+
+### New Features
+
+- Add `parse_env` to provide similar functionality to `dotenv` pypi lib ([#568](https://github.com/fastai/fastcore/issues/568))
+- Add `partition` ([#567](https://github.com/fastai/fastcore/issues/567))
+- Add return value to `result` attr in `threaded` functions ([#563](https://github.com/fastai/fastcore/issues/563))
+
+
 ## 1.5.42
 
 ### New Features

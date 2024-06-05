@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.44
+
+### Bugs Squashed
+
+- bool args incorrectly parsed in `fastcore.xml` ([#569](https://github.com/fastai/fastcore/issues/569))
+
+
 ## 1.5.43
 
 ### New Features

@@ -59,8 +59,9 @@ voids = set('area base br col command embed hr img input keygen link meta param 
 
 # %% ../nbs/11_xml.ipynb 13
 def _to_attr(k,v):
-    if v==True: return str(k)
-    if v==False: return ''
+    if isinstance(v,bool):
+        if v==True : return str(k)
+        if v==False: return ''
     return f'{k}="{escape(str(v), quote=False)}"'
 
 # %% ../nbs/11_xml.ipynb 14

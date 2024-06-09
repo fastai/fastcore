@@ -58,21 +58,23 @@ for o in _all_: _g[o] = partial(xt, o.lower())
 voids = set('area base br col command embed hr img input keygen link meta param source track wbr !doctype'.split())
 
 # %% ../nbs/11_xml.ipynb 13
+def _escape(s): return '' if s is None else escape(s) if isinstance(s, str) else s
+
+# %% ../nbs/11_xml.ipynb 14
 def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
         if v==False: return ''
-    return f'{k}="{escape(str(v), quote=False)}"'
+    return f'{k}="{escape(str(v), quote=True)}"'
 
-# %% ../nbs/11_xml.ipynb 14
+# %% ../nbs/11_xml.ipynb 15
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
+    if elm is None: return ''
     if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
     if hasattr(elm, '__xt__'): elm = elm.__xt__()
     sp = ' ' * lvl
-    if not isinstance(elm, list):
-        if isinstance(elm, str): elm = escape(elm)
-        return f'{elm}\n'
+    if not isinstance(elm, list): return f'{_escape(elm)}\n'
 
     tag,cs,attrs = elm
     stag = tag
@@ -82,17 +84,19 @@ def to_xml(elm, lvl=0):
 
     cltag = '' if tag in voids else f'</{tag}>'
     if not cs: return f'{sp}<{stag}>{cltag}\n'
+    if len(cs)==1 and not isinstance(cs[0],(list,tuple)) and not hasattr(cs[0],'__xt__'):
+        return f'{sp}<{stag}>{_escape(cs[0])}{cltag}\n'
     res = f'{sp}<{stag}>\n'
     res += ''.join(to_xml(c, lvl=lvl+2) for c in cs)
     if tag not in voids: res += f'{sp}{cltag}\n'
     return res
 
-# %% ../nbs/11_xml.ipynb 16
+# %% ../nbs/11_xml.ipynb 17
 def highlight(s, lang='xml'):
     "Markdown to syntax-highlight `s` in language `lang`"
     return f'```{lang}\n{to_xml(s)}\n```'
 
-# %% ../nbs/11_xml.ipynb 17
+# %% ../nbs/11_xml.ipynb 18
 def showtags(s):
     return f"""<code><pre>
 {escape(to_xml(s))}

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.45
+
+### New Features
+
+- Improve formatting of single child nodes in `to_xml` ([#570](https://github.com/fastai/fastcore/issues/570))
+
+
 ## 1.5.44
 
 ### Bugs Squashed

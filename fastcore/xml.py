@@ -12,8 +12,10 @@ __all__ = ['voids', 'XT', 'xt', 'to_xml', 'highlight', 'showtags', 'Html', 'Head
 # %% ../nbs/11_xml.ipynb 2
 from .utils import *
 
+import types,json
+
 from dataclasses import dataclass, asdict
-import types
+from typing import Mapping
 from functools import partial
 from html import escape
 
@@ -37,7 +39,7 @@ class XT(list):
 def xt(tag:str, *c, **kw):
     "Create an XML tag structure `[tag,children,attrs]` for `toxml()`"
     if len(c)==1 and isinstance(c[0], types.GeneratorType): c = tuple(c[0])
-    kw = {_attrmap(k):(v if isinstance(v,bool) else str(v)) for k,v in kw.items() if v is not None}
+    kw = {_attrmap(k):v for k,v in kw.items() if v is not None}
     return XT(tag.lower(),c,kw)
 
 # %% ../nbs/11_xml.ipynb 7
@@ -65,7 +67,12 @@ def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
         if v==False: return ''
-    return f'{k}="{escape(str(v), quote=True)}"'
+    if isinstance(v,str): v = escape(v, quote=True)
+    elif isinstance(v, Mapping): v = json.dumps(v)
+    else: v = str(v)
+    qt = '"'
+    if qt in v: qt = "'"
+    return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb 15
 def to_xml(elm, lvl=0):

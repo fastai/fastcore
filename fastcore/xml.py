@@ -27,13 +27,21 @@ def _attrmap(o):
 
 # %% ../nbs/11_xml.ipynb 5
 class XT(list):
-    def __init__(self, tag, cs, attrs): super().__init__([tag, cs, attrs])
+    def __init__(self, tag, cs, attrs=None, **kwargs): super().__init__([tag, cs, {**(attrs or {}), **kwargs}])
     @property
     def tag(self): return self[0]
     @property
     def children(self): return self[1]
     @property
     def attrs(self): return self[2]
+
+    def __setattr__(self, k, v):
+        if k.startswith('__') or k in ('tag','cs','attrs'): return super().__setattr__(k,v)
+        self.attrs[k.lstrip('_').replace('_', '-')] = v
+
+    def __getattr__(self, k):
+        if k.startswith('__') or k not in self.attrs: raise AttributeError(k)
+        return self.attrs[k.lstrip('_').replace('_', '-')]
 
 # %% ../nbs/11_xml.ipynb 6
 def xt(tag:str, *c, **kw):
@@ -56,13 +64,13 @@ _all_ = ['Html', 'Head', 'Title', 'Meta', 'Link', 'Style', 'Body', 'Pre', 'Code'
 
 for o in _all_: _g[o] = partial(xt, o.lower())
 
-# %% ../nbs/11_xml.ipynb 12
+# %% ../nbs/11_xml.ipynb 14
 voids = set('area base br col command embed hr img input keygen link meta param source track wbr !doctype'.split())
 
-# %% ../nbs/11_xml.ipynb 13
+# %% ../nbs/11_xml.ipynb 15
 def _escape(s): return '' if s is None else escape(s) if isinstance(s, str) else s
 
-# %% ../nbs/11_xml.ipynb 14
+# %% ../nbs/11_xml.ipynb 16
 def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
@@ -74,7 +82,7 @@ def _to_attr(k,v):
     if qt in v: qt = "'"
     return f'{k}={qt}{v}{qt}'
 
-# %% ../nbs/11_xml.ipynb 15
+# %% ../nbs/11_xml.ipynb 17
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
     if elm is None: return ''
@@ -98,12 +106,12 @@ def to_xml(elm, lvl=0):
     if tag not in voids: res += f'{sp}{cltag}\n'
     return res
 
-# %% ../nbs/11_xml.ipynb 17
+# %% ../nbs/11_xml.ipynb 19
 def highlight(s, lang='xml'):
     "Markdown to syntax-highlight `s` in language `lang`"
     return f'```{lang}\n{to_xml(s)}\n```'
 
-# %% ../nbs/11_xml.ipynb 18
+# %% ../nbs/11_xml.ipynb 20
 def showtags(s):
     return f"""<code><pre>
 {escape(to_xml(s))}

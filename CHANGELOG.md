@@ -6,6 +6,7 @@
 
 ### New Features
 
+- Unwrap `NotStr` passed to `NotStr.__init__` ([#574](https://github.com/fastai/fastcore/issues/574))
 - Provide attr get/set in `XT` ([#572](https://github.com/fastai/fastcore/issues/572))
 - Handle non-str types in `to_xml` ([#571](https://github.com/fastai/fastcore/issues/571))
 

@@ -1062,7 +1062,7 @@ class Stateful:
 class NotStr(GetAttr):
     "Behaves like a `str`, but isn't an instance of one"
     _default = 's'
-    def __init__(self, s): self.s = s
+    def __init__(self, s): self.s = s.s if isinstance(s, NotStr) else s
     def __repr__(self): return repr(self.s)
     def __str__(self): return self.s
     def __add__(self, b): return NotStr(self.s+str(b))

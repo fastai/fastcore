@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.46
+
+### New Features
+
+- Provide attr get/set in `XT` ([#572](https://github.com/fastai/fastcore/issues/572))
+- Handle non-str types in `to_xml` ([#571](https://github.com/fastai/fastcore/issues/571))
+
+
 ## 1.5.45
 
 ### New Features

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.47
+
+### New Features
+
+- Add `void_` attr to `XT` and use for skipping closing tags in `to_xml` ([#575](https://github.com/fastai/fastcore/issues/575))
+
+
 ## 1.5.46
 
 ### New Features

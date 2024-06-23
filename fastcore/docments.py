@@ -91,9 +91,9 @@ def _get_comment(line, arg, comments, parms):
         line -= 1
     return dedent('\n'.join(reversed(res))) if res else None
 
-def _get_full(anno, name, default, docs):
+def _get_full(anno, name, default, docs, kind):
     if anno==empty and default!=empty: anno = type(default)
-    return AttrDict(docment=docs.get(name), anno=anno, default=default)
+    return AttrDict(docment=docs.get(name), anno=anno, default=default, kind=kind)
 
 # %% ../nbs/06_docments.ipynb 22
 def _merge_doc(dm, npdoc):
@@ -142,8 +142,8 @@ def _docments(s, returns=True, eval_str=False):
 
     if isinstance(s,str): s = eval(s)
     sig = signature(s)
-    res = {arg:_get_full(p.annotation, p.name, p.default, docs) for arg,p in sig.parameters.items()}
-    if returns: res['return'] = _get_full(sig.return_annotation, 'return', empty, docs)
+    res = {arg:_get_full(p.annotation, p.name, p.default, docs, p.kind) for arg,p in sig.parameters.items()}
+    if returns: res['return'] = _get_full(sig.return_annotation, 'return', empty, docs, '')
     res = _merge_docs(res, nps)
     if eval_str:
         hints = type_hints(s)
@@ -158,7 +158,6 @@ def docments(elt, full=False, **kwargs):
     r = {}
     params = set(signature(elt).parameters)
     params.add('return')
-
     def _update_docments(f, r):
         if hasattr(f, '__delwrap__'): _update_docments(f.__delwrap__, r)
         r.update({k:v for k,v in _docments(f, **kwargs).items() if k in params

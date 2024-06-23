@@ -10,6 +10,7 @@ from functools import wraps,partial
 from .imports import *
 from .utils import *
 from .docments import docments
+from inspect import Parameter
 
 # %% ../nbs/08_script.ipynb 15
 def store_true():
@@ -50,7 +51,6 @@ class Param:
             else: self.default = d
         if self.default is not None:
             self.help += f" (default: {self.default})"
-
     @property
     def pre(self): return '--' if self.opt else ''
     @property
@@ -78,12 +78,13 @@ def anno_parser(func,  # Function to get arguments from
         param = v.anno
         if not isinstance(param,Param): param = Param(v.docment, v.anno)
         param.set_default(v.default)
-        p.add_argument(f"{param.pre}{k}", **param.kwargs)
+        if getattr(v, 'kind', '') == Parameter.VAR_POSITIONAL: p.add_argument(f"{param.pre}{k}",**param.kwargs, nargs='*')
+        else: p.add_argument(f"{param.pre}{k}", **param.kwargs)
     p.add_argument(f"--pdb", help=argparse.SUPPRESS, action='store_true')
     p.add_argument(f"--xtra", help=argparse.SUPPRESS, type=str)
     return p
 
-# %% ../nbs/08_script.ipynb 34
+# %% ../nbs/08_script.ipynb 36
 def args_from_prog(func, prog):
     "Extract args from `prog`"
     if prog is None or '#' not in prog: return {}
@@ -96,10 +97,10 @@ def args_from_prog(func, prog):
         if t: args[k] = t(v)
     return args
 
-# %% ../nbs/08_script.ipynb 37
+# %% ../nbs/08_script.ipynb 39
 SCRIPT_INFO = SimpleNamespace(func=None)
 
-# %% ../nbs/08_script.ipynb 39
+# %% ../nbs/08_script.ipynb 41
 def call_parse(func=None, nested=False):
     "Decorator to create a simple CLI from `func` using `anno_parser`"
     if func is None: return partial(call_parse, nested=nested)
@@ -113,10 +114,12 @@ def call_parse(func=None, nested=False):
         p = anno_parser(func)
         if nested: args, sys.argv[1:] = p.parse_known_args()
         else: args = p.parse_args()
-        args = args.__dict__
+        nvar = [v for v in list(args.__dict__.values()) + [[]] if isinstance(v, list)]
+        args = {k:v for k,v in args.__dict__.items() if not isinstance(v, list)}
         xtra = otherwise(args.pop('xtra', ''), eq(1), p.prog)
         tfunc = trace(func) if args.pop('pdb', False) else func
-        return tfunc(**merge(args, args_from_prog(func, xtra)))
+        tfunc = partial(tfunc, **merge(args, args_from_prog(func, xtra)))
+        return tfunc(*nvar[0])
 
     mod = inspect.getmodule(inspect.currentframe().f_back)
     if getattr(mod, '__name__', '') =="__main__":

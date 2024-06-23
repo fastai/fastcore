@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.48
+
+### New Features
+
+- New `expand_wildcards` function ([#576](https://github.com/fastai/fastcore/issues/576))
+- New `replace_wildcards` CLI ([#576](https://github.com/fastai/fastcore/issues/576))
+
+
 ## 1.5.47
 
 ### New Features

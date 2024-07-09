@@ -653,23 +653,27 @@ def nullable_dc(cls):
     return dataclass(cls)
 
 # %% ../nbs/03_xtras.ipynb 173
-def make_nullable(cls):
+def make_nullable(clas):
     from dataclasses import dataclass, fields, MISSING
-    if hasattr(cls, '_nullable'): return
-    cls._nullable = True
+    if hasattr(clas, '_nullable'): return
+    clas._nullable = True
 
-    @patch
-    def __init__(self:cls, *args, **kwargs):
-        flds = fields(cls)
+    original_init = clas.__init__
+    def __init__(self, *args, **kwargs):
+        flds = fields(clas)
         dargs = {k.name:v for k,v in zip(flds, args)}
         for f in flds:
             nm = f.name
             if nm not in dargs and nm not in kwargs and f.default is None and f.default_factory is MISSING:
                 kwargs[nm] = None
-        self._orig___init__(*args, **kwargs)
+        original_init(self, *args, **kwargs)
     
-    for f in fields(cls):
+    clas.__init__ = __init__
+
+    for f in fields(clas):
         if f.default is MISSING and f.default_factory is MISSING: f.default = None
+    
+    return clas
 
 # %% ../nbs/03_xtras.ipynb 177
 def mk_dataclass(cls):

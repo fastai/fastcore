@@ -10,7 +10,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'ReindexCollection', 'get_source_link', 'truncstr', 'sparkline', 'modify_exception', 'round_multiple',
            'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
            'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish',
-           'console_help', 'hl_md', 'type2str', 'dataclass_src']
+           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'nullable_dc', 'make_nullable', 'mk_dataclass']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -642,3 +642,41 @@ def dataclass_src(cls):
         d = "" if f.default is dataclasses.MISSING else f" = {f.default!r}"
         src += f"    {f.name}: {type2str(f.type)}{d}\n"
     return src
+
+# %% ../nbs/03_xtras.ipynb 171
+def nullable_dc(cls):
+    "Like `dataclass`, but default of `None` added to fields without defaults"
+    from dataclasses import dataclass, field
+    from inspect import get_annotations
+    for k,v in get_annotations(cls).items():
+        if not hasattr(cls,k): setattr(cls, k, field(default=None))
+    return dataclass(cls)
+
+# %% ../nbs/03_xtras.ipynb 173
+def make_nullable(cls):
+    from dataclasses import dataclass, fields, MISSING
+    if hasattr(cls, '_nullable'): return
+    cls._nullable = True
+
+    @patch
+    def __init__(self:cls, *args, **kwargs):
+        flds = fields(cls)
+        dargs = {k.name:v for k,v in zip(flds, args)}
+        for f in flds:
+            nm = f.name
+            if nm not in dargs and nm not in kwargs and f.default is None and f.default_factory is MISSING:
+                kwargs[nm] = None
+        self._orig___init__(*args, **kwargs)
+    
+    for f in fields(cls):
+        if f.default is MISSING and f.default_factory is MISSING: f.default = None
+
+# %% ../nbs/03_xtras.ipynb 177
+def mk_dataclass(cls):
+    from dataclasses import dataclass, field, is_dataclass, MISSING
+    from inspect import get_annotations
+    if is_dataclass(cls): return make_nullable(cls)
+    for k,v in get_annotations(cls).items():
+        if not hasattr(cls,k) or getattr(cls,k) is MISSING:
+            setattr(cls, k, field(default=None))
+    dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)

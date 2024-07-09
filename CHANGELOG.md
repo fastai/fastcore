@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+
+## 1.5.49
+
+### New Features
+
+- Add nullable dataclass functions ([#577](https://github.com/fastai/fastcore/issues/577))
+
+
 ## 1.5.48
 
 ### New Features

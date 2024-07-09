@@ -647,8 +647,7 @@ def dataclass_src(cls):
 def nullable_dc(cls):
     "Like `dataclass`, but default of `None` added to fields without defaults"
     from dataclasses import dataclass, field
-    from inspect import get_annotations
-    for k,v in get_annotations(cls).items():
+    for k,v in get_annotations_ex(cls)[0].items():
         if not hasattr(cls,k): setattr(cls, k, field(default=None))
     return dataclass(cls)
 
@@ -678,9 +677,8 @@ def make_nullable(clas):
 # %% ../nbs/03_xtras.ipynb 177
 def mk_dataclass(cls):
     from dataclasses import dataclass, field, is_dataclass, MISSING
-    from inspect import get_annotations
     if is_dataclass(cls): return make_nullable(cls)
-    for k,v in get_annotations(cls).items():
+    for k,v in get_annotations_ex(cls)[0].items():
         if not hasattr(cls,k) or getattr(cls,k) is MISSING:
             setattr(cls, k, field(default=None))
     dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)

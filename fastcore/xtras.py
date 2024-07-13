@@ -10,7 +10,8 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'ReindexCollection', 'get_source_link', 'truncstr', 'sparkline', 'modify_exception', 'round_multiple',
            'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
            'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish',
-           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'nullable_dc', 'make_nullable', 'mk_dataclass']
+           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'nullable_dc', 'make_nullable', 'mk_dataclass',
+           'timed_cache']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -21,6 +22,7 @@ from functools import wraps
 import string,time
 from contextlib import contextmanager,ExitStack
 from datetime import datetime, timezone
+from time import sleep,time,perf_counter
 
 # %% ../nbs/03_xtras.ipynb 7
 def walk(
@@ -504,7 +506,7 @@ class EventTimer:
 
     def __init__(self, store=5, span=60):
         import collections
-        self.hist,self.span,self.last = collections.deque(maxlen=store),span,time.perf_counter()
+        self.hist,self.span,self.last = collections.deque(maxlen=store),span,perf_counter()
         self._reset()
 
     def _reset(self): self.start,self.events = self.last,0
@@ -515,10 +517,10 @@ class EventTimer:
             self.hist.append(self.freq)
             self._reset()
         self.events +=n
-        self.last = time.perf_counter()
+        self.last = perf_counter()
 
     @property
-    def duration(self): return time.perf_counter()-self.start
+    def duration(self): return perf_counter()-self.start
     @property
     def freq(self): return self.events/self.duration
 
@@ -682,3 +684,25 @@ def mk_dataclass(cls):
         if not hasattr(cls,k) or getattr(cls,k) is MISSING:
             setattr(cls, k, field(default=None))
     dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
+
+# %% ../nbs/03_xtras.ipynb 180
+def timed_cache(seconds=60, maxsize=128):
+    "Like `lru_cache`, but also with time-based eviction"
+    def decorator(func):
+        cache = {}
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            key = str(args) + str(kwargs)
+            now = time()
+            if key in cache:
+                result, timestamp = cache[key]
+                if seconds == 0 or now - timestamp < seconds:
+                    cache[key] = cache.pop(key)
+                    return result
+                del cache[key]
+            result = func(*args, **kwargs)
+            cache[key] = (result, now)
+            if len(cache) > maxsize: cache.pop(next(iter(cache)))
+            return result
+        return wrapper
+    return decorator

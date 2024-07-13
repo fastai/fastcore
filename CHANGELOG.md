@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.52
+
+### New Features
+
+- Add `timed_cache` ([#580](https://github.com/fastai/fastcore/issues/580))
+
+
 ## 1.5.51
 
 ### New Features

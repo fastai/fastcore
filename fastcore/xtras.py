@@ -11,7 +11,7 @@ __all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_si
            'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
            'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish',
            'console_help', 'hl_md', 'type2str', 'dataclass_src', 'nullable_dc', 'make_nullable', 'mk_dataclass',
-           'timed_cache']
+           'flexicache', 'time_policy', 'mtime_policy', 'timed_cache']
 
 # %% ../nbs/03_xtras.ipynb 2
 from .imports import *
@@ -23,6 +23,7 @@ import string,time
 from contextlib import contextmanager,ExitStack
 from datetime import datetime, timezone
 from time import sleep,time,perf_counter
+from os.path import getmtime
 
 # %% ../nbs/03_xtras.ipynb 7
 def walk(
@@ -685,24 +686,41 @@ def mk_dataclass(cls):
             setattr(cls, k, field(default=None))
     dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
 
-# %% ../nbs/03_xtras.ipynb 180
-def timed_cache(seconds=60, maxsize=128):
-    "Like `lru_cache`, but also with time-based eviction"
-    def decorator(func):
-        cache = {}
+# %% ../nbs/03_xtras.ipynb 179
+def flexicache(*funcs, maxsize=128):
+    def _f(func):
+        cache,states = {}, [None]*len(funcs)
         @wraps(func)
         def wrapper(*args, **kwargs):
             key = str(args) + str(kwargs)
-            now = time()
             if key in cache:
-                result, timestamp = cache[key]
-                if seconds == 0 or now - timestamp < seconds:
+                result, states = cache[key]
+                if not any(func(state) for func, state in zip(funcs, states)):
                     cache[key] = cache.pop(key)
                     return result
                 del cache[key]
             result = func(*args, **kwargs)
-            cache[key] = (result, now)
+            cache[key] = (result, [func(None) for func in funcs])
             if len(cache) > maxsize: cache.pop(next(iter(cache)))
             return result
         return wrapper
-    return decorator
+    return _f
+
+# %% ../nbs/03_xtras.ipynb 180
+def time_policy(seconds):
+    def policy(last_time):
+        now = time()
+        return now if last_time is None or now-last_time>seconds else None
+    return policy
+
+# %% ../nbs/03_xtras.ipynb 181
+def mtime_policy(filepath):
+    def policy(mtime):
+        current_mtime = getmtime(filepath)
+        return current_mtime if mtime is None or current_mtime>mtime else None
+    return policy
+
+# %% ../nbs/03_xtras.ipynb 184
+def timed_cache(seconds=60, maxsize=128):
+    "Like `lru_cache`, but also with time-based eviction"
+    return flexicache(time_policy(seconds), maxsize=maxsize)

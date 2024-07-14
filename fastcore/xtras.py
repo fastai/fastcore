@@ -686,28 +686,32 @@ def mk_dataclass(cls):
             setattr(cls, k, field(default=None))
     dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
 
-# %% ../nbs/03_xtras.ipynb 179
+# %% ../nbs/03_xtras.ipynb 181
 def flexicache(*funcs, maxsize=128):
     "Like `lru_cache`, but customisable with policy `funcs`"
     def _f(func):
         cache,states = {}, [None]*len(funcs)
         @wraps(func)
         def wrapper(*args, **kwargs):
-            key = str(args) + str(kwargs)
+            key = f"{args} // {kwargs}"
             if key in cache:
-                result, states = cache[key]
-                if not any(func(state) for func, state in zip(funcs, states)):
+                result,states = cache[key]
+                if not any(f(state) for f,state in zip(funcs, states)):
                     cache[key] = cache.pop(key)
                     return result
                 del cache[key]
-            result = func(*args, **kwargs)
-            cache[key] = (result, [func(None) for func in funcs])
-            if len(cache) > maxsize: cache.pop(next(iter(cache)))
-            return result
+            try: newres = func(*args, **kwargs)
+            except:
+                if key not in cache: raise
+                cache[key] = cache.pop(key)
+                return result
+            cache[key] = (newres, [f(None) for f in funcs])
+            if len(cache) > maxsize: cache.popitem()
+            return newres
         return wrapper
     return _f
 
-# %% ../nbs/03_xtras.ipynb 181
+# %% ../nbs/03_xtras.ipynb 183
 def time_policy(seconds):
     "A `flexicache` policy that expires cached items after `seconds` have passed"
     def policy(last_time):
@@ -715,7 +719,7 @@ def time_policy(seconds):
         return now if last_time is None or now-last_time>seconds else None
     return policy
 
-# %% ../nbs/03_xtras.ipynb 182
+# %% ../nbs/03_xtras.ipynb 184
 def mtime_policy(filepath):
     "A `flexicache` policy that expires cached items after `filepath` modified-time changes"
     def policy(mtime):
@@ -723,7 +727,7 @@ def mtime_policy(filepath):
         return current_mtime if mtime is None or current_mtime>mtime else None
     return policy
 
-# %% ../nbs/03_xtras.ipynb 185
+# %% ../nbs/03_xtras.ipynb 187
 def timed_cache(seconds=60, maxsize=128):
     "Like `lru_cache`, but also with time-based eviction"
     return flexicache(time_policy(seconds), maxsize=maxsize)

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.5.53
+
+### New Features
+
+- add `flexicache`, along with policies `time_policy` and `mtime_policy` ([#581](https://github.com/fastai/fastcore/issues/581))
+
+
 ## 1.5.52
 
 ### New Features

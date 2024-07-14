@@ -686,7 +686,7 @@ def mk_dataclass(cls):
             setattr(cls, k, field(default=None))
     dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
 
-# %% ../nbs/03_xtras.ipynb 181
+# %% ../nbs/03_xtras.ipynb 179
 def flexicache(*funcs, maxsize=128):
     "Like `lru_cache`, but customisable with policy `funcs`"
     def _f(func):
@@ -711,7 +711,7 @@ def flexicache(*funcs, maxsize=128):
         return wrapper
     return _f
 
-# %% ../nbs/03_xtras.ipynb 183
+# %% ../nbs/03_xtras.ipynb 181
 def time_policy(seconds):
     "A `flexicache` policy that expires cached items after `seconds` have passed"
     def policy(last_time):
@@ -719,7 +719,7 @@ def time_policy(seconds):
         return now if last_time is None or now-last_time>seconds else None
     return policy
 
-# %% ../nbs/03_xtras.ipynb 184
+# %% ../nbs/03_xtras.ipynb 182
 def mtime_policy(filepath):
     "A `flexicache` policy that expires cached items after `filepath` modified-time changes"
     def policy(mtime):
@@ -727,7 +727,7 @@ def mtime_policy(filepath):
         return current_mtime if mtime is None or current_mtime>mtime else None
     return policy
 
-# %% ../nbs/03_xtras.ipynb 187
+# %% ../nbs/03_xtras.ipynb 185
 def timed_cache(seconds=60, maxsize=128):
     "Like `lru_cache`, but also with time-based eviction"
     return flexicache(time_policy(seconds), maxsize=maxsize)

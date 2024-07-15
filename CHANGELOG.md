@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.5.54
+
+### New Features
+
+- `flexicache` async support
+- Handle exceptions in `flexicache` function ([#582](https://github.com/fastai/fastcore/issues/582))
+
+
 ## 1.5.53
 
 ### New Features

@@ -689,18 +689,17 @@ def mk_dataclass(cls):
 # %% ../nbs/03_xtras.ipynb 179
 def flexicache(*funcs, maxsize=128):
     "Like `lru_cache`, but customisable with policy `funcs`"
+    import asyncio
     def _f(func):
         cache,states = {}, [None]*len(funcs)
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            key = f"{args} // {kwargs}"
+        def _cache_logic(key, execute_func):
             if key in cache:
                 result,states = cache[key]
                 if not any(f(state) for f,state in zip(funcs, states)):
                     cache[key] = cache.pop(key)
                     return result
                 del cache[key]
-            try: newres = func(*args, **kwargs)
+            try: newres = execute_func()
             except:
                 if key not in cache: raise
                 cache[key] = cache.pop(key)
@@ -708,7 +707,16 @@ def flexicache(*funcs, maxsize=128):
             cache[key] = (newres, [f(None) for f in funcs])
             if len(cache) > maxsize: cache.popitem()
             return newres
-        return wrapper
+
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return _cache_logic(f"{args} // {kwargs}", lambda: func(*args, **kwargs))
+
+        @wraps(func)
+        async def async_wrapper(*args, **kwargs):
+            return await _cache_logic(f"{args} // {kwargs}", lambda: asyncio.ensure_future(func(*args, **kwargs)))
+
+        return async_wrapper if asyncio.iscoroutinefunction(func) else wrapper
     return _f
 
 # %% ../nbs/03_xtras.ipynb 181

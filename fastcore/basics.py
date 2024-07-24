@@ -62,7 +62,7 @@ def listify(o=None, *rest, use_list=False, match=None):
     if use_list: res = list(o)
     elif o is None: res = []
     elif isinstance(o, list): res = o
-    elif isinstance(o, str) or is_array(o): res = [o]
+    elif isinstance(o, str) or isinstance(o, bytes) or is_array(o): res = [o]
     elif is_iter(o): res = list(o)
     else: res = [o]
     if match is not None:

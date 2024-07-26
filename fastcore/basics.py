@@ -14,9 +14,9 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'only', 'nested_attr', 'nested_setdefault', 'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx',
            'uniqueify', 'loop_first_last', 'loop_first', 'loop_last', 'first_match', 'last_match', 'fastuple', 'bind',
            'mapt', 'map_ex', 'compose', 'maps', 'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to',
-           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'Stateful', 'NotStr',
-           'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import', 'str2bool', 'lt',
-           'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'mod']
+           'patch', 'patch_property', 'compile_re', 'ImportEnum', 'StrEnum', 'str_enum', 'ValEnum', 'Stateful',
+           'NotStr', 'PrettyString', 'even_mults', 'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import',
+           'str2bool', 'lt', 'gt', 'le', 'ge', 'eq', 'ne', 'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'mod']
 
 # %% ../nbs/01_basics.ipynb 1
 from .imports import *
@@ -1038,7 +1038,12 @@ def str_enum(name, *vals):
     "Simplified creation of `StrEnum` types"
     return StrEnum(name, {o:o for o in vals})
 
-# %% ../nbs/01_basics.ipynb 415
+# %% ../nbs/01_basics.ipynb 414
+class ValEnum(str,ImportEnum):
+    "An `ImportEnum` that stringifies using values"
+    def __str__(self): return self.value
+
+# %% ../nbs/01_basics.ipynb 417
 class Stateful:
     "A base class/mixin for objects that should not serialize all their state"
     _stateattrs=()
@@ -1058,7 +1063,7 @@ class Stateful:
         "Override for custom init and deserialization logic"
         self._state = {}
 
-# %% ../nbs/01_basics.ipynb 421
+# %% ../nbs/01_basics.ipynb 423
 class NotStr(GetAttr):
     "Behaves like a `str`, but isn't an instance of one"
     _default = 's'
@@ -1075,12 +1080,12 @@ class NotStr(GetAttr):
     def __contains__(self, b): return b in self.s
     def __iter__(self): return iter(self.s)
 
-# %% ../nbs/01_basics.ipynb 423
+# %% ../nbs/01_basics.ipynb 425
 class PrettyString(str):
     "Little hack to get strings to show properly in Jupyter."
     def __repr__(self): return self
 
-# %% ../nbs/01_basics.ipynb 429
+# %% ../nbs/01_basics.ipynb 431
 def even_mults(start, stop, n):
     "Build log-stepped array from `start` to `stop` in `n` steps."
     if n==1: return stop
@@ -1088,7 +1093,7 @@ def even_mults(start, stop, n):
     step = mult**(1/(n-1))
     return [start*(step**i) for i in range(n)]
 
-# %% ../nbs/01_basics.ipynb 431
+# %% ../nbs/01_basics.ipynb 433
 def num_cpus():
     "Get number of cpus"
     try:                   return len(os.sched_getaffinity(0))
@@ -1096,16 +1101,16 @@ def num_cpus():
 
 defaults.cpus = num_cpus()
 
-# %% ../nbs/01_basics.ipynb 433
+# %% ../nbs/01_basics.ipynb 435
 def add_props(f, g=None, n=2):
     "Create properties passing each of `range(n)` to f"
     if g is None: return (property(partial(f,i)) for i in range(n))
     return (property(partial(f,i), partial(g,i)) for i in range(n))
 
-# %% ../nbs/01_basics.ipynb 436
+# %% ../nbs/01_basics.ipynb 438
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
-# %% ../nbs/01_basics.ipynb 437
+# %% ../nbs/01_basics.ipynb 439
 def typed(f):
     "Decorator to check param and return types at runtime"
     names = f.__code__.co_varnames
@@ -1122,7 +1127,7 @@ def typed(f):
         return res
     return functools.update_wrapper(_f, f)
 
-# %% ../nbs/01_basics.ipynb 445
+# %% ../nbs/01_basics.ipynb 447
 def exec_new(code):
     "Execute `code` in a new environment and return it"
     pkg = None if __name__=='__main__' else Path().cwd().name
@@ -1130,13 +1135,13 @@ def exec_new(code):
     exec(code, g)
     return g
 
-# %% ../nbs/01_basics.ipynb 447
+# %% ../nbs/01_basics.ipynb 449
 def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
 
-# %% ../nbs/01_basics.ipynb 448
+# %% ../nbs/01_basics.ipynb 450
 def str2bool(s):
     "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
     if not isinstance(s,str): return bool(s)

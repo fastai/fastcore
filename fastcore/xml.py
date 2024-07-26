@@ -9,7 +9,7 @@ __all__ = ['XT', 'xt', 'Html', 'to_xml', 'highlight', 'showtags', 'Head', 'Title
            'Aside', 'Figure', 'Figcaption', 'Mark', 'Small', 'Iframe', 'Object', 'Embed', 'Param', 'Video', 'Audio',
            'Source', 'Canvas', 'Svg', 'Math', 'Script', 'Noscript', 'Template', 'Slot']
 
-# %% ../nbs/11_xml.ipynb 2
+# %% ../nbs/11_xml.ipynb
 from .utils import *
 
 import types,json
@@ -19,13 +19,13 @@ from typing import Mapping
 from functools import partial
 from html import escape
 
-# %% ../nbs/11_xml.ipynb 4
+# %% ../nbs/11_xml.ipynb
 def _attrmap(o):
     o = dict(htmlClass='class', cls='class', _class='class', klass='class',
              _for='for', fr='for', htmlFor='for').get(o, o)
     return o.lstrip('_').replace('_', '-')
 
-# %% ../nbs/11_xml.ipynb 5
+# %% ../nbs/11_xml.ipynb
 class XT(list):
     def __init__(self, tag, cs, attrs=None, void_=False, **kwargs):
         super().__init__([tag, cs, {**(attrs or {}), **kwargs}])
@@ -46,14 +46,14 @@ class XT(list):
         if k.startswith('__') or k not in self.attrs: raise AttributeError(k)
         return self.attrs[k.lstrip('_').replace('_', '-')]
 
-# %% ../nbs/11_xml.ipynb 6
+# %% ../nbs/11_xml.ipynb
 def xt(tag:str, *c, void_=False, **kw):
     "Create an XML tag structure `[tag,children,attrs]` for `toxml()`"
     if len(c)==1 and isinstance(c[0], types.GeneratorType): c = tuple(c[0])
     kw = {_attrmap(k):v for k,v in kw.items() if v is not None}
     return XT(tag.lower(),c,kw, void_=void_)
 
-# %% ../nbs/11_xml.ipynb 7
+# %% ../nbs/11_xml.ipynb
 _g = globals()
 _all_ = ['Head', 'Title', 'Meta', 'Link', 'Style', 'Body', 'Pre', 'Code',
     'Div', 'Span', 'P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Strong', 'Em', 'B',
@@ -67,17 +67,17 @@ _all_ = ['Head', 'Title', 'Meta', 'Link', 'Style', 'Body', 'Pre', 'Code',
 
 for o in _all_: _g[o] = partial(xt, o.lower())
 
-# %% ../nbs/11_xml.ipynb 9
+# %% ../nbs/11_xml.ipynb
 def Html(*c, doctype=True, **kwargs)->XT:
     "An HTML tag, optionally preceeded by `!DOCTYPE HTML`"
     res = xt('html', *c, **kwargs)
     if not doctype: return res
     return (xt('!DOCTYPE', html=True, void_=True), res)
 
-# %% ../nbs/11_xml.ipynb 15
+# %% ../nbs/11_xml.ipynb
 def _escape(s): return '' if s is None else escape(s) if isinstance(s, str) else s
 
-# %% ../nbs/11_xml.ipynb 16
+# %% ../nbs/11_xml.ipynb
 def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
@@ -89,7 +89,7 @@ def _to_attr(k,v):
     if qt in v: qt = "'"
     return f'{k}={qt}{v}{qt}'
 
-# %% ../nbs/11_xml.ipynb 17
+# %% ../nbs/11_xml.ipynb
 def to_xml(elm, lvl=0):
     "Convert `xt` element tree into an XML string"
     if elm is None: return ''
@@ -114,12 +114,12 @@ def to_xml(elm, lvl=0):
     if not isvoid: res += f'{sp}{cltag}\n'
     return res
 
-# %% ../nbs/11_xml.ipynb 19
+# %% ../nbs/11_xml.ipynb
 def highlight(s, lang='xml'):
     "Markdown to syntax-highlight `s` in language `lang`"
     return f'```{lang}\n{to_xml(s)}\n```'
 
-# %% ../nbs/11_xml.ipynb 20
+# %% ../nbs/11_xml.ipynb
 def showtags(s):
     return f"""<code><pre>
 {escape(to_xml(s))}
@@ -127,7 +127,7 @@ def showtags(s):
 
 XT._repr_markdown_ = highlight
 
-# %% ../nbs/11_xml.ipynb 21
+# %% ../nbs/11_xml.ipynb
 def __getattr__(tag):
     if tag.startswith('_') or tag[0].islower(): raise AttributeError
     def _f(*c, target_id=None, **kwargs): return xt(tag, *c, target_id=target_id, **kwargs)

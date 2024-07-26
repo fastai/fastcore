@@ -4,7 +4,7 @@
 __all__ = ['working_directory', 'add_docs', 'docs', 'coll_repr', 'is_bool', 'mask2idxs', 'cycle', 'zip_cycle', 'is_indexer',
            'CollBase', 'L', 'save_config_file', 'read_config_file', 'Config']
 
-# %% ../nbs/02_foundation.ipynb 1
+# %% ../nbs/02_foundation.ipynb
 from .imports import *
 from .basics import *
 from functools import lru_cache
@@ -13,7 +13,7 @@ from copy import copy
 from configparser import ConfigParser
 import random,pickle,inspect
 
-# %% ../nbs/02_foundation.ipynb 5
+# %% ../nbs/02_foundation.ipynb
 @contextmanager
 def working_directory(path):
     "Change working directory to `path` and return to previous on exit."
@@ -22,7 +22,7 @@ def working_directory(path):
     try: yield
     finally: os.chdir(prev_cwd)
 
-# %% ../nbs/02_foundation.ipynb 6
+# %% ../nbs/02_foundation.ipynb
 def add_docs(cls, cls_doc=None, **docs):
     "Copy values from `docs` to `cls` docstrings, and confirm all public methods are documented"
     if cls_doc is not None: cls.__doc__ = cls_doc
@@ -36,24 +36,24 @@ def add_docs(cls, cls_doc=None, **docs):
     assert not nodoc, f"Missing docs: {nodoc}"
     assert cls.__doc__ is not None, f"Missing class docs: {cls}"
 
-# %% ../nbs/02_foundation.ipynb 16
+# %% ../nbs/02_foundation.ipynb
 def docs(cls):
     "Decorator version of `add_docs`, using `_docs` dict"
     add_docs(cls, **cls._docs)
     return cls
 
-# %% ../nbs/02_foundation.ipynb 23
+# %% ../nbs/02_foundation.ipynb
 def coll_repr(c, max_n=10):
     "String repr of up to `max_n` items of (possibly lazy) collection `c`"
     return f'(#{len(c)}) [' + ','.join(itertools.islice(map(repr,c), max_n)) + (
         '...' if len(c)>max_n else '') + ']'
 
-# %% ../nbs/02_foundation.ipynb 28
+# %% ../nbs/02_foundation.ipynb
 def is_bool(x):
     "Check whether `x` is a bool or None"
     return isinstance(x,(bool,NoneType)) or risinstance('bool_', x)
 
-# %% ../nbs/02_foundation.ipynb 29
+# %% ../nbs/02_foundation.ipynb
 def mask2idxs(mask):
     "Convert bool mask or index list to index `L`"
     if isinstance(mask,slice): return mask
@@ -64,23 +64,23 @@ def mask2idxs(mask):
     if is_bool(it): return [i for i,m in enumerate(mask) if m]
     return [int(i) for i in mask]
 
-# %% ../nbs/02_foundation.ipynb 31
+# %% ../nbs/02_foundation.ipynb
 def cycle(o):
     "Like `itertools.cycle` except creates list of `None`s if `o` is empty"
     o = listify(o)
     return itertools.cycle(o) if o is not None and len(o) > 0 else itertools.cycle([None])
 
-# %% ../nbs/02_foundation.ipynb 33
+# %% ../nbs/02_foundation.ipynb
 def zip_cycle(x, *args):
     "Like `itertools.zip_longest` but `cycle`s through elements of all but first argument"
     return zip(x, *map(cycle,args))
 
-# %% ../nbs/02_foundation.ipynb 35
+# %% ../nbs/02_foundation.ipynb
 def is_indexer(idx):
     "Test whether `idx` will index a single item in a list"
     return isinstance(idx,int) or not getattr(idx,'ndim',1)
 
-# %% ../nbs/02_foundation.ipynb 41
+# %% ../nbs/02_foundation.ipynb
 class CollBase:
     "Base class for composing a list of `items`"
     def __init__(self, items): self.items = items
@@ -91,13 +91,13 @@ class CollBase:
     def __repr__(self): return self.items.__repr__()
     def __iter__(self): return self.items.__iter__()
 
-# %% ../nbs/02_foundation.ipynb 45
+# %% ../nbs/02_foundation.ipynb
 class _L_Meta(type):
     def __call__(cls, x=None, *args, **kwargs):
         if not args and not kwargs and x is not None and isinstance(x,cls): return x
         return super().__call__(x, *args, **kwargs)
 
-# %% ../nbs/02_foundation.ipynb 46
+# %% ../nbs/02_foundation.ipynb
 class L(GetAttr, CollBase, metaclass=_L_Meta):
     "Behaves like a list of `items` but can also index with list of indices or masks"
     _default='items'
@@ -194,7 +194,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def product(self): return self.reduce(operator.mul, 1)
     def setattrs(self, attr, val): [setattr(o,attr,val) for o in self]
 
-# %% ../nbs/02_foundation.ipynb 47
+# %% ../nbs/02_foundation.ipynb
 add_docs(L,
          __getitem__="Retrieve `idx` (can be list of indices, or mask, or int) items",
          range="Class Method: Same as `range`, but returns `L`. Can pass collection for `a`, to use `len(a)`",
@@ -227,29 +227,29 @@ add_docs(L,
          setattrs="Call `setattr` on all items"
         )
 
-# %% ../nbs/02_foundation.ipynb 48
+# %% ../nbs/02_foundation.ipynb
 # Here we are fixing the signature of L. What happens is that the __call__ method on the MetaClass of L shadows the __init__
 # giving the wrong signature (https://stackoverflow.com/questions/49740290/call-from-metaclass-shadows-signature-of-init).
 def _f(items=None, *rest, use_list=False, match=None): ...
 L.__signature__ = inspect.signature(_f)
 
-# %% ../nbs/02_foundation.ipynb 49
+# %% ../nbs/02_foundation.ipynb
 Sequence.register(L);
 
-# %% ../nbs/02_foundation.ipynb 129
+# %% ../nbs/02_foundation.ipynb
 def save_config_file(file, d, **kwargs):
     "Write settings dict to a new config file, or overwrite the existing one."
     config = ConfigParser(**kwargs)
     config['DEFAULT'] = d
     config.write(open(file, 'w'))
 
-# %% ../nbs/02_foundation.ipynb 130
+# %% ../nbs/02_foundation.ipynb
 def read_config_file(file, **kwargs):
     config = ConfigParser(**kwargs)
     config.read(file, encoding='utf8')
     return config['DEFAULT']
 
-# %% ../nbs/02_foundation.ipynb 133
+# %% ../nbs/02_foundation.ipynb
 class Config:
     "Reading and writing `ConfigParser` ini files"
     def __init__(self, cfg_path, cfg_name, create=None, save=True, extra_files=None, types=None):

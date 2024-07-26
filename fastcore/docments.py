@@ -20,7 +20,7 @@ from inspect import isclass,getdoc
 __all__ = ['empty', 'docstring', 'parse_docstring', 'isdataclass', 'get_dataclass_source', 'get_source', 'get_name', 'qual_name',
            'docments']
 
-# %% ../nbs/06_docments.ipynb 12
+# %% ../nbs/06_docments.ipynb
 def docstring(sym):
     "Get docstring for `sym` for functions ad classes"
     if isinstance(sym, str): return sym
@@ -28,28 +28,28 @@ def docstring(sym):
     if not res and isclass(sym): res = getdoc(sym.__init__)
     return res or ""
 
-# %% ../nbs/06_docments.ipynb 14
+# %% ../nbs/06_docments.ipynb
 def parse_docstring(sym):
     "Parse a numpy-style docstring in `sym`"
     docs = docstring(sym)
     return AttrDict(**docscrape.NumpyDocString(docstring(sym)))
 
-# %% ../nbs/06_docments.ipynb 16
+# %% ../nbs/06_docments.ipynb
 def isdataclass(s):
     "Check if `s` is a dataclass but not a dataclass' instance"
     return is_dataclass(s) and isclass(s)
 
-# %% ../nbs/06_docments.ipynb 17
+# %% ../nbs/06_docments.ipynb
 def get_dataclass_source(s):
     "Get source code for dataclass `s`"
     return getsource(s) if not getattr(s, "__module__") == '__main__' else ""
 
-# %% ../nbs/06_docments.ipynb 18
+# %% ../nbs/06_docments.ipynb
 def get_source(s):
     "Get source code for string, function object or dataclass `s`"
     return getsource(s) if isfunction(s) or ismethod(s) else get_dataclass_source(s) if isdataclass(s) else s
 
-# %% ../nbs/06_docments.ipynb 19
+# %% ../nbs/06_docments.ipynb
 def _parses(s):
     "Parse Python code in string, function object or dataclass `s`"
     return parse(dedent(get_source(s)))
@@ -78,10 +78,10 @@ def _param_locs(s, returns=True):
             return res
     return None
 
-# %% ../nbs/06_docments.ipynb 20
+# %% ../nbs/06_docments.ipynb
 empty = Parameter.empty
 
-# %% ../nbs/06_docments.ipynb 21
+# %% ../nbs/06_docments.ipynb
 def _get_comment(line, arg, comments, parms):
     if line in comments: return comments[line].strip()
     line -= 1
@@ -95,7 +95,7 @@ def _get_full(anno, name, default, docs):
     if anno==empty and default!=empty: anno = type(default)
     return AttrDict(docment=docs.get(name), anno=anno, default=default)
 
-# %% ../nbs/06_docments.ipynb 22
+# %% ../nbs/06_docments.ipynb
 def _merge_doc(dm, npdoc):
     if not npdoc: return dm
     if not dm.anno or dm.anno==empty: dm.anno = npdoc.type
@@ -108,14 +108,14 @@ def _merge_docs(dms, npdocs):
     if 'return' in dms: params['return'] = _merge_doc(dms['return'], npdocs['Returns'])
     return params
 
-# %% ../nbs/06_docments.ipynb 23
+# %% ../nbs/06_docments.ipynb
 def _get_property_name(p):
     "Get the name of property `p`"
     if hasattr(p, 'fget'):
         return p.fget.func.__qualname__ if hasattr(p.fget, 'func') else p.fget.__qualname__
     else: return next(iter(re.findall(r'\'(.*)\'', str(p)))).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 24
+# %% ../nbs/06_docments.ipynb
 def get_name(obj):
     "Get the name of `obj`"
     if hasattr(obj, '__name__'):       return obj.__name__
@@ -124,14 +124,14 @@ def get_name(obj):
     elif type(obj)==property:          return _get_property_name(obj)
     else:                              return str(obj).split('.')[-1]
 
-# %% ../nbs/06_docments.ipynb 26
+# %% ../nbs/06_docments.ipynb
 def qual_name(obj):
     "Get the qualified name of `obj`"
     if hasattr(obj,'__qualname__'): return obj.__qualname__
     if ismethod(obj):       return f"{get_name(obj.__self__)}.{get_name(fn)}"
     return get_name(obj)
 
-# %% ../nbs/06_docments.ipynb 29
+# %% ../nbs/06_docments.ipynb
 def _docments(s, returns=True, eval_str=False):
     "`dict` of parameter names to 'docment-style' comments in function or string `s`"
     nps = parse_docstring(s)
@@ -151,7 +151,7 @@ def _docments(s, returns=True, eval_str=False):
             if k in hints: v['anno'] = hints.get(k)
     return res
 
-# %% ../nbs/06_docments.ipynb 30
+# %% ../nbs/06_docments.ipynb
 @delegates(_docments)
 def docments(elt, full=False, **kwargs):
     "Generates a `docment`"

@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.5.55
+
+### New Features
+
+- Add `ValEnum`
+
+### Bugs Squashed
+
+- `<!doctype html>` should be a void tag type ([#585](https://github.com/fastai/fastcore/issues/585))
+
+
 ## 1.5.54
 
 ### New Features

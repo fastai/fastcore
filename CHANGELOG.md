@@ -143,7 +143,7 @@
 ### New Features
 
 - Add `process` param to `threaded` ([#550](https://github.com/fastai/fastcore/issues/550))
-- Check for `__xt__` in `to_xml`
+- Check for `__ft__` in `to_xml`
 
 
 ## 1.5.34

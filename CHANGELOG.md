@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.6.0
+
+### Breaking Changes
+
+- Rename `XT` to `FT` ([#586](https://github.com/fastai/fastcore/issues/586))
+
+
 ## 1.5.55
 
 ### New Features

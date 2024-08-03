@@ -81,7 +81,7 @@ def Html(*c, doctype=True, **kwargs)->FT:
     return (ft('!DOCTYPE', html=True, void_=True), res)
 
 # %% ../nbs/11_xml.ipynb
-def _escape(s): return '' if s is None else escape(s) if isinstance(s, str) else s
+def _escape(s): return '' if s is None else s.__html__() if hasattr(s, '__html__') else escape(s) if isinstance(s, str) else s
 
 # %% ../nbs/11_xml.ipynb
 def _to_attr(k,v):
@@ -119,6 +119,8 @@ def to_xml(elm, lvl=0):
     res += ''.join(to_xml(c, lvl=lvl+2) for c in cs)
     if not isvoid: res += f'{sp}{cltag}\n'
     return res
+
+FT.__html__ = to_xml
 
 # %% ../nbs/11_xml.ipynb
 def highlight(s, lang='xml'):

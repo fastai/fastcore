@@ -29,6 +29,7 @@ def _attrmap(o):
 class FT(list):
     "A 'Fast Tag' structure, which is a `list` of `[tag,children,attrs]`"
     def __init__(self, tag, cs, attrs=None, void_=False, **kwargs):
+        assert isinstance(cs, tuple)
         super().__init__([tag, cs, {**(attrs or {}), **kwargs}])
         self.void_ = void_
 
@@ -46,6 +47,10 @@ class FT(list):
     def __getattr__(self, k):
         if k.startswith('__') or k not in self.attrs: raise AttributeError(k)
         return self.attrs[k.lstrip('_').replace('_', '-')]
+    
+    def __call__(self, *c):
+        self[1] = self[1]+c
+        return self
 
 # %% ../nbs/11_xml.ipynb
 def ft(tag:str, *c, void_=False, **kw):

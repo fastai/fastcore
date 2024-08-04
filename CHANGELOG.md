@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.6.2
+
+### New Features
+
+- Allow attrs to be added to `FT` using `__call__` ([#591](https://github.com/fastai/fastcore/issues/591))
+- Experimental support for `FT.__call__`, h/t @cgarciae ([#590](https://github.com/fastai/fastcore/issues/590))
+- `FT` interoperability with Django and Jinja using `__html__()` protocol ([#589](https://github.com/fastai/fastcore/pull/589)), thanks to [@collinanderson](https://github.com/collinanderson)
+
+
 ## 1.6.1
 
 ### Breaking Changes

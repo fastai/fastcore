@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.6.3
+
+### New Features
+
+- add `ver2tuple` ([#593](https://github.com/fastai/fastcore/issues/593))
+
+
 ## 1.6.2
 
 ### New Features

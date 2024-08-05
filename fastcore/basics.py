@@ -22,6 +22,7 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
 from .imports import *
 import builtins,types,typing
 import pprint
+from copy import copy
 try: from types import UnionType
 except ImportError: UnionType = None
 

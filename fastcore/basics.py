@@ -3,8 +3,8 @@
 # %% auto 0
 __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'Self',
            'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType', 'tonull',
-           'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'Inf', 'in_',
-           'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'NS',
+           'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'ver2tuple', 'Inf',
+           'in_', 'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict', 'NS',
            'get_annotations_ex', 'eval_type', 'type_hints', 'annotations', 'anno_ret', 'signature_ex', 'union2tuple',
            'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties', 'camel2words', 'camel2snake', 'snake2camel',
            'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr',
@@ -162,6 +162,10 @@ def risinstance(types, obj=None):
     if any(isinstance(t,str) for t in types):
         return any(t.__name__ in types for t in type(obj).__mro__)
     return isinstance(obj, types)
+
+# %% ../nbs/01_basics.ipynb
+def ver2tuple(v:str)->tuple:
+    return tuple(int(o or 0) for o in re.search(r'(\d+)(?:\.(\d+))?(?:\.(\d+))?', v).groups())
 
 # %% ../nbs/01_basics.ipynb
 class _InfMeta(type):

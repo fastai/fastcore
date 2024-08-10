@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.6.5
+
+### New Features
+
+- Add `valmap` to `ft` ([#598](https://github.com/fastai/fastcore/issues/598))
+- Allow embedding raw HTML inside FT templates using UTF-8 encoded bytes ([#597](https://github.com/fastai/fastcore/pull/597)), thanks to [@adamritter](https://github.com/adamritter)
+- Inline flag for `to_xml()` ([#594](https://github.com/fastai/fastcore/pull/594)), thanks to [@phact](https://github.com/phact)
+
+
 ## 1.6.4
 
 ### New Features

@@ -104,14 +104,15 @@ def _to_attr(k,v):
     return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb
-def to_xml(elm, lvl=0):
+def to_xml(elm, lvl=0, indent:bool=True):
     "Convert `ft` element tree into an XML string"
+    nl = '\n'
+    if not indent: lvl,nl = 0,''
     if elm is None: return ''
-    if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
+    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent) for o in elm)
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
-    if isinstance(elm, bytes): return elm.decode('utf-8')
     sp = ' ' * lvl
-    if not isinstance(elm, list): return f'{_escape(elm)}\n'
+    if not isinstance(elm, list): return f'{_escape(elm)}{nl}'
 
     tag,cs,attrs = elm
     stag = tag
@@ -121,12 +122,12 @@ def to_xml(elm, lvl=0):
 
     isvoid = getattr(elm, 'void_', False)
     cltag = '' if isvoid else f'</{tag}>'
-    if not cs: return f'{sp}<{stag}>{cltag}\n'
+    if not cs: return f'{sp}<{stag}>{cltag}{nl}'
     if len(cs)==1 and not isinstance(cs[0],(list,tuple)) and not hasattr(cs[0],'__ft__'):
-        return f'{sp}<{stag}>{_escape(cs[0])}{cltag}\n'
-    res = f'{sp}<{stag}>\n'
-    res += ''.join(to_xml(c, lvl=lvl+2) for c in cs)
-    if not isvoid: res += f'{sp}{cltag}\n'
+        return f'{sp}<{stag}>{_escape(cs[0])}{cltag}{nl}'
+    res = f'{sp}<{stag}>{nl}'
+    res += ''.join(to_xml(c, lvl=lvl+2, indent=indent) for c in cs)
+    if not isvoid: res += f'{sp}{cltag}{nl}'
     return res
 
 FT.__html__ = to_xml

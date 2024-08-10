@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.6.4
+
+### New Features
+
+- `attrmap` and hyperscript support in fastcore.xml.FT ([#595](https://github.com/fastai/fastcore/issues/595))
+
+
 ## 1.6.3
 
 ### New Features

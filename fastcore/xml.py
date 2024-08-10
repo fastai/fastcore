@@ -53,7 +53,7 @@ def attrmap(o):
 # %% ../nbs/11_xml.ipynb
 def _preproc(c, kw, attrmap=attrmap):
     if len(c)==1 and isinstance(c[0], (types.GeneratorType, map, filter)): c = tuple(c[0])
-    return c,{attrmap(k):v for k,v in kw.items() if v is not None}
+    return c,{attrmap(k.lower()):v for k,v in kw.items() if v is not None}
 
 # %% ../nbs/11_xml.ipynb
 def ft(tag:str, *c, void_=False, attrmap=attrmap, **kw):

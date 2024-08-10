@@ -101,8 +101,8 @@ def _to_attr(k,v):
 def to_xml(elm, lvl=0):
     "Convert `ft` element tree into an XML string"
     if elm is None: return ''
-    if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
+    if isinstance(elm, tuple): return '\n'.join(to_xml(o) for o in elm)
     sp = ' ' * lvl
     if not isinstance(elm, list): return f'{_escape(elm)}\n'
 

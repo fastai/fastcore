@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.6.7
+
+### New Features
+
+- Do not update `-` to `_` if special chars present in `ft` ([#601](https://github.com/fastai/fastcore/issues/601))
+
+
 ## 1.6.6
 
 ### New Features

@@ -46,8 +46,10 @@ class FT(list):
     def get(self, k, default=None): return self[2].get(k.lstrip('_').replace('_', '-'), default)
 
 # %% ../nbs/11_xml.ipynb
+_specials = set('@.-!~:[](){}$%^&*+=|/?<>,`')
+
 def attrmap(o):
-    if o=='_': return o
+    if o=='_' or (_specials & set(o)): return o
     o = dict(htmlClass='class', cls='class', _class='class', klass='class',
              _for='for', fr='for', htmlFor='for').get(o, o)
     return o.lstrip('_').replace('_', '-')

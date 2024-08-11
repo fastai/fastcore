@@ -2,6 +2,22 @@
 
 <!-- do not remove -->
 
+## 1.6.7
+
+### New Features
+
+- Do not update `-` to `_` if special chars present in `ft` ([#601](https://github.com/fastai/fastcore/issues/601))
+
+
+## 1.6.6
+
+### New Features
+
+- Add `FT.get(k,default)` ([#600](https://github.com/fastai/fastcore/issues/600))
+- Add `Safe` str and return it from `to_xml` ([#599](https://github.com/fastai/fastcore/issues/599))
+- Feat: add an `indent` flag for `to_xml()` ([#594](https://github.com/fastai/fastcore/pull/594)), thanks to [@phact](https://github.com/phact)
+
+
 ## 1.6.5
 
 ### New Features

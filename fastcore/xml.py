@@ -41,7 +41,9 @@ class FT(list):
 
     def __getattr__(self, k):
         if k.startswith('__') or k not in self.attrs: raise AttributeError(k)
-        return self.attrs[k.lstrip('_').replace('_', '-')]
+        return self.get(k)
+
+    def get(self, k, default=None): return self[2].get(k.lstrip('_').replace('_', '-'), default)
 
 # %% ../nbs/11_xml.ipynb
 def attrmap(o):

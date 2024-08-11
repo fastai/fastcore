@@ -116,8 +116,8 @@ def _to_xml(elm, lvl, indent:bool):
     nl = '\n'
     if not indent: lvl,nl = 0,''
     if elm is None: return ''
-    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent) for o in elm)
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
+    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent) for o in elm)
     if isinstance(elm, bytes): return elm.decode('utf-8')
     sp = ' ' * lvl
     if not isinstance(elm, list): return f'{_escape(elm)}{nl}'

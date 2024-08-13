@@ -818,7 +818,7 @@ class fastuple(tuple):
                 try: x = tuple(iter(x))
                 except TypeError: x = (x,)
         return super().__new__(cls, x+rest if rest else x)
-
+    
     def _op(self,op,*args):
         if not isinstance(self,fastuple): self = fastuple(self)
         return type(self)(map(op,self,*map(cycle, args)))

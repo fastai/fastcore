@@ -105,11 +105,13 @@ def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
         if v==False: return ''
-    if isinstance(v,str): v = escape(v, quote=True)
+    if isinstance(v,str): v = escape(v, quote=False)
     elif isinstance(v, Mapping): v = json.dumps(v)
     else: v = str(v)
     qt = '"'
-    if qt in v: qt = "'"
+    if qt in v:
+        qt = "'"
+        if "'" in v: v = v.replace("'", "&#39;")
     return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb

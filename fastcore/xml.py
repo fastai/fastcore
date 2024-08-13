@@ -56,7 +56,7 @@ def attrmap(o):
 
 # %% ../nbs/11_xml.ipynb
 def valmap(o):
-    if is_listy(o): return ' '.join(o)
+    if is_listy(o): return ' '.join(map(str,o))
     if isinstance(o, dict): return '; '.join(f"{k}:{v}" for k,v in o.items())
     return o
 

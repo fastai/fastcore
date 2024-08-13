@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.6.8
+
+### New Features
+
+- stringify list values in `ft` attr vals ([#602](https://github.com/fastai/fastcore/issues/602))
+- Allow `__ft__` methods to return tuples ([#596](https://github.com/fastai/fastcore/pull/596)), thanks to [@Rahulbeniwal26119](https://github.com/Rahulbeniwal26119)
+
+
 ## 1.6.7
 
 ### New Features

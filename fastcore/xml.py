@@ -56,14 +56,15 @@ def attrmap(o):
 
 # %% ../nbs/11_xml.ipynb
 def valmap(o):
-    if is_listy(o): return ' '.join(map(str,o))
-    if isinstance(o, dict): return '; '.join(f"{k}:{v}" for k,v in o.items())
+    if is_listy(o): return ' '.join(map(str,o)) if o else None
+    if isinstance(o, dict): return '; '.join(f"{k}:{v}" for k,v in o.items()) if o else None
     return o
 
 # %% ../nbs/11_xml.ipynb
 def _preproc(c, kw, attrmap=attrmap, valmap=valmap):
     if len(c)==1 and isinstance(c[0], (types.GeneratorType, map, filter)): c = tuple(c[0])
-    return c,{attrmap(k.lower()):valmap(v) for k,v in kw.items() if v is not None}
+    attrs = {attrmap(k.lower()):valmap(v) for k,v in kw.items()}
+    return c,filter_values(attrs, noop)
 
 # %% ../nbs/11_xml.ipynb
 def ft(tag:str, *c, void_=False, attrmap=attrmap, valmap=valmap, **kw):

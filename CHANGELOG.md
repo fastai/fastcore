@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.6.9
+
+### New Features
+
+- Handle embedded quotes in `to_xml` ([#604](https://github.com/fastai/fastcore/issues/604))
+- Skip dict and listy valued attrs if empty in `ft` ([#603](https://github.com/fastai/fastcore/issues/603))
+
+
 ## 1.6.8
 
 ### New Features

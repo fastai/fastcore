@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.7.1
+
+### New Features
+
+- nullable dataclass overhaul ([#607](https://github.com/fastai/fastcore/issues/607))
+- Flatten nested tuples in `ft`
+
+
 ## 1.7.0
 
 ### Breaking Changes

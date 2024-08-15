@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 # %% auto 0
-__all__ = ['spark_chars', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_size', 'bunzip', 'loads', 'loads_multi', 'dumps',
-           'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'parse_env',
+__all__ = ['spark_chars', 'UNSET', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_size', 'bunzip', 'loads', 'loads_multi',
+           'dumps', 'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'parse_env',
            'expand_wildcards', 'dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'mapped', 'IterLen',
            'ReindexCollection', 'get_source_link', 'truncstr', 'sparkline', 'modify_exception', 'round_multiple',
            'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
            'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish',
-           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'nullable_dc', 'make_nullable', 'mk_dataclass',
-           'flexicache', 'time_policy', 'mtime_policy', 'timed_cache']
+           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'Unset', 'nullable_dc', 'make_nullable', 'flexiclass',
+           'asdict', 'is_typeddict', 'is_namedtuple', 'flexicache', 'time_policy', 'mtime_policy', 'timed_cache']
 
 # %% ../nbs/03_xtras.ipynb
 from .imports import *
@@ -19,11 +19,13 @@ from .foundation import *
 from .basics import *
 from importlib import import_module
 from functools import wraps
-import string,time
+import string,time,dataclasses
+from enum import Enum
 from contextlib import contextmanager,ExitStack
 from datetime import datetime, timezone
 from time import sleep,time,perf_counter
 from os.path import getmtime
+from dataclasses import dataclass, field, fields, is_dataclass, MISSING, make_dataclass
 
 # %% ../nbs/03_xtras.ipynb
 def walk(
@@ -639,7 +641,6 @@ def type2str(typ:type)->str:
 
 # %% ../nbs/03_xtras.ipynb
 def dataclass_src(cls):
-    import dataclasses
     src = f"@dataclass\nclass {cls.__name__}:\n"
     for f in dataclasses.fields(cls):
         d = "" if f.default is dataclasses.MISSING else f" = {f.default!r}"
@@ -647,16 +648,22 @@ def dataclass_src(cls):
     return src
 
 # %% ../nbs/03_xtras.ipynb
+class Unset(Enum):
+    _Unset=''
+    def __repr__(self): return 'UNSET'
+    def __str__ (self): return 'UNSET'
+    def __bool__(self): return False
+UNSET = Unset._Unset
+
+# %% ../nbs/03_xtras.ipynb
 def nullable_dc(cls):
-    "Like `dataclass`, but default of `None` added to fields without defaults"
-    from dataclasses import dataclass, field
+    "Like `dataclass`, but default of `UNSET` added to fields without defaults"
     for k,v in get_annotations_ex(cls)[0].items():
-        if not hasattr(cls,k): setattr(cls, k, field(default=None))
+        if not hasattr(cls,k): setattr(cls, k, field(default=UNSET))
     return dataclass(cls)
 
 # %% ../nbs/03_xtras.ipynb
 def make_nullable(clas):
-    from dataclasses import dataclass, fields, MISSING
     if hasattr(clas, '_nullable'): return
     clas._nullable = True
 
@@ -667,7 +674,7 @@ def make_nullable(clas):
         for f in flds:
             nm = f.name
             if nm not in dargs and nm not in kwargs and f.default is None and f.default_factory is MISSING:
-                kwargs[nm] = None
+                kwargs[nm] = UNSET
         original_init(self, *args, **kwargs)
     
     clas.__init__ = __init__
@@ -678,13 +685,37 @@ def make_nullable(clas):
     return clas
 
 # %% ../nbs/03_xtras.ipynb
-def mk_dataclass(cls):
-    from dataclasses import dataclass, field, is_dataclass, MISSING
+def flexiclass(cls):
+    "Convert `cls` into a `dataclass` like `make_nullable`"
     if is_dataclass(cls): return make_nullable(cls)
     for k,v in get_annotations_ex(cls)[0].items():
         if not hasattr(cls,k) or getattr(cls,k) is MISSING:
-            setattr(cls, k, field(default=None))
-    dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
+            setattr(cls, k, field(default=UNSET))
+    return dataclass(cls, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
+
+# %% ../nbs/03_xtras.ipynb
+def asdict(o)->dict:
+    "Convert `o` to a `dict`, supporting dataclasses, namedtuples, iterables, and `__dict__` attrs."
+    if isinstance(o, dict): return o
+    if is_dataclass(o): r = dataclasses.asdict(o)
+    elif hasattr(o, '_asdict'): r = o._asdict()
+    elif hasattr(o, '__iter__'):
+        try: r = dict(o)
+        except TypeError: pass
+    elif hasattr(o, '__dict__'): r = o.__dict__
+    else: raise TypeError(f'Can not convert {o} to a dict')
+    return {k:v for k,v in r.items() if v not in (UNSET,MISSING)}
+
+# %% ../nbs/03_xtras.ipynb
+def is_typeddict(cls:type)->bool:
+    "Check if `cls` is a `TypedDict`"
+    attrs = 'annotations', 'required_keys', 'optional_keys'
+    return isinstance(cls, type) and all(hasattr(cls, f'__{attr}__') for attr in attrs)
+
+# %% ../nbs/03_xtras.ipynb
+def is_namedtuple(cls):
+    "`True` if `cls` is a namedtuple type"
+    return issubclass(cls, tuple) and hasattr(cls, '_fields')
 
 # %% ../nbs/03_xtras.ipynb
 def flexicache(*funcs, maxsize=128):

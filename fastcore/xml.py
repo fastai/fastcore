@@ -63,10 +63,19 @@ def valmap(o):
     return o
 
 # %% ../nbs/11_xml.ipynb
+def _flatten_tuple(tup):
+    if not any(isinstance(item, tuple) for item in tup): return tup
+    result = []
+    for item in tup:
+        if isinstance(item, tuple): result.extend(item)
+        else: result.append(item)
+    return tuple(result)
+
+# %% ../nbs/11_xml.ipynb
 def _preproc(c, kw, attrmap=attrmap, valmap=valmap):
     if len(c)==1 and isinstance(c[0], (types.GeneratorType, map, filter)): c = tuple(c[0])
-    attrs = {attrmap(k.lower()):valmap(v) for k,v in kw.items()}
-    return c,filter_values(attrs, noop)
+    attrs = {attrmap(k.lower()):valmap(v) for k,v in kw.items() if v is not None}
+    return _flatten_tuple(c),attrs
 
 # %% ../nbs/11_xml.ipynb
 def ft(tag:str, *c, void_:bool=False, attrmap:callable=attrmap, valmap:callable=valmap, **kw):

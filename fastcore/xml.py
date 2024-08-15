@@ -21,29 +21,31 @@ from functools import partial
 from html import escape
 
 # %% ../nbs/11_xml.ipynb
-class FT(list):
-    "A 'Fast Tag' structure, which is a `list` of `[tag,children,attrs]`"
-    def __init__(self, tag, cs, attrs=None, void_=False, **kwargs):
+class FT:
+    "A 'Fast Tag' structure, containing `tag`,`children`,and `attrs`"
+    def __init__(self, tag:str, cs:tuple, attrs:dict=None, void_=False, **kwargs):
         assert isinstance(cs, tuple)
-        super().__init__([tag, cs, {**(attrs or {}), **kwargs}])
-        self.void_ = void_
-
-    @property
-    def tag(self): return self[0]
-    @property
-    def children(self): return self[1]
-    @property
-    def attrs(self): return self[2]
+        self.tag,self.children,self.attrs,self.void_ = tag,cs,attrs,void_
 
     def __setattr__(self, k, v):
-        if k.startswith('__') or k in ('tag','cs','attrs','void_'): return super().__setattr__(k,v)
+        if k.startswith('__') or k in ('tag','children','attrs','void_'): return super().__setattr__(k,v)
         self.attrs[k.lstrip('_').replace('_', '-')] = v
 
     def __getattr__(self, k):
-        if k.startswith('__') or k not in self.attrs: raise AttributeError(k)
+        if k.startswith('__'): raise AttributeError(k)
         return self.get(k)
 
-    def get(self, k, default=None): return self[2].get(k.lstrip('_').replace('_', '-'), default)
+    @property
+    def list(self): return [self.tag,self.children,self.attrs]
+    def get(self, k, default=None): return self.attrs.get(k.lstrip('_').replace('_', '-'), default)
+    def __repr__(self): return f'{self.tag}({self.children},{self.attrs})'
+
+    def __add__(self, b):
+        self.children = self.children + tuplify(b)
+        return self
+    
+    def __getitem__(self, idx): return self.children[idx]
+    def __iter__(self): return iter(self.children)
 
 # %% ../nbs/11_xml.ipynb
 _specials = set('@.-!~:[](){}$%^&*+=|/?<>,`')
@@ -67,7 +69,7 @@ def _preproc(c, kw, attrmap=attrmap, valmap=valmap):
     return c,filter_values(attrs, noop)
 
 # %% ../nbs/11_xml.ipynb
-def ft(tag:str, *c, void_=False, attrmap=attrmap, valmap=valmap, **kw):
+def ft(tag:str, *c, void_:bool=False, attrmap:callable=attrmap, valmap:callable=valmap, **kw):
     "Create an `FT` structure for `to_xml()`"
     return FT(tag.lower(),*_preproc(c,kw,attrmap=attrmap, valmap=valmap), void_=void_)
 
@@ -123,9 +125,9 @@ def _to_xml(elm, lvl, indent:bool):
     if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent) for o in elm)
     if isinstance(elm, bytes): return elm.decode('utf-8')
     sp = ' ' * lvl
-    if not isinstance(elm, list): return f'{_escape(elm)}{nl}'
+    if not isinstance(elm, FT): return f'{_escape(elm)}{nl}'
 
-    tag,cs,attrs = elm
+    tag,cs,attrs = elm.list
     stag = tag
     if attrs:
         sattrs = (_to_attr(k,v) for k,v in attrs.items())
@@ -170,6 +172,6 @@ def __getattr__(tag):
 @patch
 def __call__(self:FT, *c, **kw):
     c,kw = _preproc(c,kw)
-    if c: self[1] = self[1]+c
-    if kw: self[2] = {**self[2], **kw}
+    if c: self = self+c
+    if kw: self.attrs = {**self.attrs, **kw}
     return self

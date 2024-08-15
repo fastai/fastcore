@@ -2,6 +2,16 @@
 
 <!-- do not remove -->
 
+## 1.7.0
+
+### Breaking Changes
+
+- The FT structure has been changed so it no longer inherits from `list` ([#606](https://github.com/fastai/fastcore/issues/606))
+  - `.list` property added so you can still destructure it
+  - `__getitem__` now returns the approach child element
+  - `__add__` adds children
+
+
 ## 1.6.9
 
 ### New Features

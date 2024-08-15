@@ -2,11 +2,18 @@
 
 <!-- do not remove -->
 
+
 ## 1.7.1
 
 ### New Features
 
+- Add `UNSET` singleton
 - nullable dataclass overhaul ([#607](https://github.com/fastai/fastcore/issues/607))
+    - Update `nullable_dc` to use `UNSET` instead of `None`
+    - Rename `mk_dataclass` to `flexiclass`
+    - `flexiclass` uses `UNSET` instead of `None`
+- Add `asdict`, like the `dataclasses` version but works on more types
+- Add `is_typeddict` and `is_namedtuple`
 - Flatten nested tuples in `ft`
 
 

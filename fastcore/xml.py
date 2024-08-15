@@ -115,21 +115,20 @@ def _to_attr(k,v):
     return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb
-def _to_xml(elm, lvl, indent:bool, inline_tags:list[str]=None):
+def _to_xml(elm, lvl, indent:bool, inline_tags:list[str]=None, is_parent:bool=True):
     nl = '\n'
     if not indent: lvl,nl = 0,''
     if elm is None: return ''
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
-    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent, inline_tags=inline_tags) for o in elm)
+    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent, inline_tags=inline_tags, is_parent=False) for o in elm)
     if isinstance(elm, bytes): return elm.decode('utf-8')
     sp = ' ' * lvl
     if not isinstance(elm, list): return f'{_escape(elm)}{nl}'
 
-    res=''
     tag,cs,attrs = elm
     if inline_tags is not None and tag in inline_tags:
-        res=f'{nl}'
         indent,lvl,nl,sp = False,0,'',''
+
     stag = tag
     if attrs:
         sattrs = (_to_attr(k,v) for k,v in attrs.items())
@@ -140,14 +139,19 @@ def _to_xml(elm, lvl, indent:bool, inline_tags:list[str]=None):
     if not cs: return f'{nl}{sp}<{stag}>{cltag}'
     if len(cs)==1 and not isinstance(cs[0],(list,tuple)) and not hasattr(cs[0],'__ft__'):
         return f'{nl}{sp}<{stag}>{_escape(cs[0])}{cltag}'
-    res += f'{nl}{sp}<{stag}>'
-    res += ''.join(to_xml(c, lvl=lvl+2, indent=indent, inline_tags=inline_tags) for c in cs)
+    if is_parent:
+        res = f'{sp}<{stag}>'
+    else:
+        res = f'{nl}{sp}<{stag}>'
+    res += ''.join(to_xml(c, lvl=lvl+2, indent=indent, inline_tags=inline_tags, is_parent=False) for c in cs)
     if not isvoid: res += f'{nl}{sp}{cltag}'
+    if is_parent:
+        res+=f'{nl}'
     return Safe(res)
 
-def to_xml(elm, lvl=0, indent:bool=True, inline_tags:list[str]=None):
+def to_xml(elm, lvl=0, indent:bool=True, inline_tags:list[str]=None, is_parent=True):
     "Convert `ft` element tree into an XML string"
-    return Safe(_to_xml(elm, lvl, indent, inline_tags))
+    return Safe(_to_xml(elm, lvl, indent, inline_tags, is_parent=is_parent))
 
 FT.__html__ = to_xml
 

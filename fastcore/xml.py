@@ -41,7 +41,7 @@ class FT:
     def __repr__(self): return f'{self.tag}({self.children},{self.attrs})'
 
     def __add__(self, b):
-        self.children = self.children + tuplify(b)
+        self.children = list(self.children) + listify(b)
         return self
     
     def __getitem__(self, idx): return self.children[idx]

@@ -66,9 +66,66 @@ def _proc_tree(tree, mod):
         if proc: proc(node, mod)
 
 # %% ../nbs/12_py2pyi.ipynb
+def _clean_patched_node(node):
+    "Clean the patched node in-place."
+    # When moving a patched node to its parent, we no longer need the patch decorator and parent annotation.
+    node.decorator_list = [deco for deco in node.decorator_list if getattr(deco, "id", None) != "patch"]
+    node.args.args[0].annotation = None
+
+# %% ../nbs/12_py2pyi.ipynb
+def _is_empty_class(node):
+    if not isinstance(node, ast.ClassDef): return False
+    if len(node.body) != 1: return False
+    child = node.body[0]
+    if isinstance(child, ast.Pass): return True
+    if isinstance(child, ast.Expr) and isinstance(child.value, (ast.Ellipsis, ast.Str)): return True
+    return False
+
+# %% ../nbs/12_py2pyi.ipynb
+def _add_patched_node_to_parent(node, parent):
+    "Add a patched node to its parent."
+    # if the patch node updates an existing class method, let's replace it.
+    for i, child in enumerate(parent.body):
+        if hasattr(child, "name") and child.name == node.name:
+            parent.body[i] = node
+            return
+    # if we've made it this far the patched node must be new, so we append it to the parent's list of children
+    if _is_empty_class(parent): parent.body = [node]
+    else: parent.body.append(node)
+
+# %% ../nbs/12_py2pyi.ipynb
+def _proc_patches(tree, mod):
+    "Move all patched methods to their parents."
+    class_nodes = {}  # {class_name: position in node tree}
+    i = 0
+    while i < len(tree.body):
+        node = tree.body[i]
+        if isinstance(node, ast.ClassDef):
+            # patched nodes can access their parent using different scopes:
+            #  - local scope (e.g. self: A)
+            #  - modular scope (e.g. self: example.A) [used by @delegates]
+            class_nodes.update({node.name: i, f"{mod.__name__}.{node.name}": i})
+        elif isinstance(node, ast.FunctionDef) and has_deco(node, "patch"):
+            annotation = node.args.args[0].annotation
+            # a patched node can have 1 or more parents
+            parents = annotation.elts if hasattr(annotation, "elts") else [annotation]
+            parents = list(map(str, parents))
+            parents_in_mod = [parent for parent in parents if parent in class_nodes]
+            # we can move the patched node if at least one parent lives in the current module
+            if parents_in_mod:
+                _clean_patched_node(node)
+                for parent in parents_in_mod:
+                    parent_node = tree.body[class_nodes[parent]]
+                    _add_patched_node_to_parent(node, parent_node)
+                tree.body.pop(i)
+                i -= 1  # as we've removed the patched node from the tree we need to decrement the loop counter
+        i += 1
+
+# %% ../nbs/12_py2pyi.ipynb
 def _proc_mod(mod):
     tree = _get_tree(mod)
     _proc_tree(tree, mod)
+    _proc_patches(tree, mod)
     return tree
 
 # %% ../nbs/12_py2pyi.ipynb

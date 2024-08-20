@@ -207,7 +207,7 @@ def summary(self:Request, skip=None)->dict:
     return res
 
 # %% ../nbs/03b_net.ipynb
-def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_data=True,
+def urlsend(url, verb, headers=None, decode=True, route=None, query=None, data=None, json_data=True,
             return_json=True, return_headers=False, debug=None, timeout=None):
     "Send request with `urlrequest`, converting result to json if `return_json`"
     req = urlrequest(url, verb, headers, route=route, query=query, data=data, json_data=json_data)
@@ -216,7 +216,7 @@ def urlsend(url, verb, headers=None, route=None, query=None, data=None, json_dat
     if route and route.get('archive_format', None):
         return urlread(req, decode=False, return_json=False, return_headers=return_headers, timeout=timeout)
 
-    return urlread(req, return_json=return_json, return_headers=return_headers, timeout=timeout)
+    return urlread(req, decode=decode, return_json=return_json, return_headers=return_headers, timeout=timeout)
 
 # %% ../nbs/03b_net.ipynb
 def do_request(url, post=False, headers=None, **data):

@@ -140,8 +140,7 @@ def _docments(s, returns=True, eval_str=False):
     parms = _param_locs(s, returns=returns) or {}
     docs = {arg:_get_comment(line, arg, comments, parms) for line,arg in parms.items()}
 
-    if isinstance(s,str): s = eval(s)
-    sig = signature(s)
+    sig = signature_ex(s, True)
     res = {arg:_get_full(p.annotation, p.name, p.default, docs) for arg,p in sig.parameters.items()}
     if returns: res['return'] = _get_full(sig.return_annotation, 'return', empty, docs)
     res = _merge_docs(res, nps)

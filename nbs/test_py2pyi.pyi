@@ -9,7 +9,7 @@ def f(a: int, b: str='a') -> str:
     """I am f"""
     ...
 
-def g(c, d: test_py2pyi.X, *, b: str='a') -> str:
+def g(c, d: X, *, b: str='a') -> str:
     """I am g"""
     ...
 

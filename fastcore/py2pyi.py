@@ -149,7 +149,16 @@ def _body_ellip(n: ast.AST):
 def _update_func(node, sym):
     """Replace the parameter list of the source code of a function `f` with a different signature.
     Replace the body of the function with just `pass`, and remove any decorators named 'delegates'"""
-    node.args = ast_args(sym)
+    # sym_args contains the complete set of node args including any delegates kwargs.
+    # when adding the delegates kwargs any annotation with a user-defined type is given a fully qualified name (e.g. mod.submod.func).
+    # unfortunately the fully qualified names don't match the import statements in the node tree.
+    # this can break downstream applications such as "jump to definition" in IDEs.
+    # to resolve this issue we replace the annotations of user-defined types with the original annotations.
+    sym_args = ast_args(sym)
+    node_args = {arg.arg: arg.annotation for arg in node.args.args + node.args.kwonlyargs}
+    for arg in sym_args.args + sym_args.kwonlyargs:
+        arg.annotation = node_args.get(arg.arg, arg.annotation)
+    node.args = sym_args
     _body_ellip(node)
     node.decorator_list = [d for d in node.decorator_list if _deco_id(d) != 'delegates']
 

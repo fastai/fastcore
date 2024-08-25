@@ -1,0 +1,31 @@
+project:
+  type: website
+  preview:
+    navigate: false
+    port: 3000
+
+format:
+  html:
+    theme:
+      - cosmo
+    css: styles.css
+    toc: true
+    keep-md: true
+  commonmark: default
+
+website:
+  twitter-card: true
+  open-graph: true
+  repo-actions: [issue]
+  navbar:
+    title: fastcore
+    background: primary
+    search: true
+    right:
+      - icon: github
+        href: "https://github.com/fastai/fastcore"
+      - icon: twitter
+        href: https://x.com/fastdotai
+        aria-label: Fast.ai Twitter
+
+metadata-files: [nbdev.yml, sidebar.yml]

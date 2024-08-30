@@ -114,6 +114,9 @@ class Safe(str):
 def _escape(s): return '' if s is None else s.__html__() if hasattr(s, '__html__') else escape(s) if isinstance(s, str) else s
 
 # %% ../nbs/11_xml.ipynb
+def _noescape(s): return '' if s is None else s.__html__() if hasattr(s, '__html__') else s
+
+# %% ../nbs/11_xml.ipynb
 def _to_attr(k,v):
     if isinstance(v,bool):
         if v==True : return str(k)
@@ -128,15 +131,16 @@ def _to_attr(k,v):
     return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb
-def _to_xml(elm, lvl, indent:bool):
+def _to_xml(elm, lvl, indent, do_escape):
+    esc_fn = _escape if do_escape else _noescape
     nl = '\n'
     if not indent: lvl,nl = 0,''
     if elm is None: return ''
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
-    if isinstance(elm, tuple): return f'{nl}'.join(to_xml(o, indent=indent) for o in elm)
+    if isinstance(elm, tuple): return f'{nl}'.join(_to_xml(o, lvl=lvl, indent=indent, do_escape=do_escape) for o in elm)
     if isinstance(elm, bytes): return elm.decode('utf-8')
     sp = ' ' * lvl
-    if not isinstance(elm, FT): return f'{_escape(elm)}{nl}'
+    if not isinstance(elm, FT): return f'{esc_fn(elm)}{nl}'
 
     tag,cs,attrs = elm.list
     stag = tag
@@ -147,16 +151,16 @@ def _to_xml(elm, lvl, indent:bool):
     isvoid = getattr(elm, 'void_', False)
     cltag = '' if isvoid else f'</{tag}>'
     if not cs: return f'{sp}<{stag}>{cltag}{nl}'
-    if len(cs)==1 and not isinstance(cs[0],(list,tuple)) and not hasattr(cs[0],'__ft__'):
-        return f'{sp}<{stag}>{_escape(cs[0])}{cltag}{nl}'
+    if len(cs)==1 and not isinstance(cs[0],(list,tuple,FT)) and not hasattr(cs[0],'__ft__'):
+        return f'{sp}<{stag}>{esc_fn(cs[0])}{cltag}{nl}'
     res = f'{sp}<{stag}>{nl}'
-    res += ''.join(to_xml(c, lvl=lvl+2, indent=indent) for c in cs)
+    res += ''.join(_to_xml(c, lvl=lvl+2, indent=indent, do_escape=do_escape) for c in cs)
     if not isvoid: res += f'{sp}{cltag}{nl}'
     return Safe(res)
 
-def to_xml(elm, lvl=0, indent:bool=True):
+def to_xml(elm, lvl=0, indent:bool=True, do_escape:bool=True):
     "Convert `ft` element tree into an XML string"
-    return Safe(_to_xml(elm, lvl, indent))
+    return Safe(_to_xml(elm, lvl, indent, do_escape=do_escape))
 
 FT.__html__ = to_xml
 

@@ -5,7 +5,7 @@
 # %% ../nbs/06_docments.ipynb 2
 from __future__ import annotations
 
-import re
+import re,ast
 from tokenize import tokenize,COMMENT
 from ast import parse,FunctionDef,AsyncFunctionDef,AnnAssign
 from io import BytesIO
@@ -20,7 +20,7 @@ from inspect import isclass,getdoc
 
 # %% auto 0
 __all__ = ['empty', 'docstring', 'parse_docstring', 'isdataclass', 'get_dataclass_source', 'get_source', 'get_name', 'qual_name',
-           'docments']
+           'docments', 'extract_docstrings']
 
 # %% ../nbs/06_docments.ipynb
 def docstring(sym):
@@ -168,3 +168,47 @@ def docments(elt, full=False, **kwargs):
     _update_docments(elt, r)
     if not full: r = {k:v['docment'] for k,v in r.items()}
     return AttrDict(r)
+
+# %% ../nbs/06_docments.ipynb
+def _get_params(node):
+    params = [a.arg for a in node.args.args]
+    if node.args.vararg: params.append(f"*{node.args.vararg.arg}")
+    if node.args.kwarg: params.append(f"**{node.args.kwarg.arg}")
+    return ", ".join(params)
+
+class _DocstringExtractor(ast.NodeVisitor):
+    def __init__(self): self.docstrings,self.cls,self.cls_init = {},None,None
+
+    def visit_FunctionDef(self, node):
+        name = node.name
+        if name == '__init__':
+            self.cls_init = node
+            return
+        elif name.startswith('_'): return
+        elif self.cls: name = f"{self.cls}.{node.name}"
+        docs = ast.get_docstring(node)
+        params = _get_params(node)
+        if docs: self.docstrings[name] = (docs, params)
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node):
+        self.cls,self.cls_init = node.name,None
+        docs = ast.get_docstring(node)
+        if docs: self.docstrings[node.name] = ()
+        self.generic_visit(node)
+        if not docs and self.cls_init: docs = ast.get_docstring(self.cls_init)
+        params = _get_params(self.cls_init) if self.cls_init else ""
+        if docs: self.docstrings[node.name] = (docs, params)
+        self.cls,self.cls_init = None,None
+
+    def visit_Module(self, node):
+        module_doc = ast.get_docstring(node)
+        if module_doc: self.docstrings['_module'] = (module_doc, "")
+        self.generic_visit(node)
+
+# %% ../nbs/06_docments.ipynb
+def extract_docstrings(code):
+    "Create a dict from function/class/method names to tuples of docstrings and param lists"
+    extractor = _DocstringExtractor()
+    extractor.visit(ast.parse(code))
+    return extractor.docstrings

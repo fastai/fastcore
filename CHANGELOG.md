@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.3
+
+### Bugs Squashed
+
+- Curried `risinstance` fails when passed `None` ([#618](https://github.com/fastai/fastcore/issues/618))
+
+
 ## 1.7.2
 
 ### New Features

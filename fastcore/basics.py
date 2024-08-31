@@ -159,13 +159,16 @@ def exec_local(code, var_name):
     return loc[var_name]
 
 # %% ../nbs/01_basics.ipynb
-def risinstance(types, obj=None):
-    "Curried `isinstance` but with args reversed"
-    types = tuplify(types)
-    if obj is None: return partial(risinstance,types)
+def _risinstance(types, obj):
     if any(isinstance(t,str) for t in types):
         return any(t.__name__ in types for t in type(obj).__mro__)
     return isinstance(obj, types)
+
+def risinstance(types, obj=None):
+    "Curried `isinstance` but with args reversed"
+    types = tuplify(types)
+    if obj is None: return partial(_risinstance,types)
+    return _risinstance(types, obj)
 
 # %% ../nbs/01_basics.ipynb
 def ver2tuple(v:str)->tuple:

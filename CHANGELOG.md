@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.4
+
+### New Features
+
+- Add module `__getattr__` to `fastcore.xml` ([#619](https://github.com/fastai/fastcore/issues/619))
+
+
 ## 1.7.3
 
 ### Bugs Squashed

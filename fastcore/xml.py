@@ -178,12 +178,6 @@ def showtags(s):
 FT._repr_markdown_ = highlight
 
 # %% ../nbs/11_xml.ipynb
-def __getattr__(tag):
-    if tag.startswith('_') or tag[0].islower(): raise AttributeError
-    def _f(*c, target_id=None, **kwargs): return ft(tag, *c, target_id=target_id, **kwargs)
-    return _f
-
-# %% ../nbs/11_xml.ipynb
 @patch
 def __call__(self:FT, *c, **kw):
     c,kw = _preproc(c,kw)

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.5
+
+### New Features
+
+- Add `ft_cls` to `ft` ([#620](https://github.com/fastai/fastcore/issues/620))
+
+
 ## 1.7.4
 
 ### New Features

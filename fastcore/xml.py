@@ -80,9 +80,9 @@ def _preproc(c, kw, attrmap=attrmap, valmap=valmap):
     return _flatten_tuple(c),attrs
 
 # %% ../nbs/11_xml.ipynb
-def ft(tag:str, *c, void_:bool=False, attrmap:callable=attrmap, valmap:callable=valmap, **kw):
+def ft(tag:str, *c, void_:bool=False, attrmap:callable=attrmap, valmap:callable=valmap, ft_cls=FT, **kw):
     "Create an `FT` structure for `to_xml()`"
-    return FT(tag.lower(),*_preproc(c,kw,attrmap=attrmap, valmap=valmap), void_=void_)
+    return ft_cls(tag.lower(),*_preproc(c,kw,attrmap=attrmap, valmap=valmap), void_=void_)
 
 # %% ../nbs/11_xml.ipynb
 voids = set('area base br col command embed hr img input keygen link meta param source track wbr !doctype'.split())

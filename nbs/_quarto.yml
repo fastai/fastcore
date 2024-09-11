@@ -1,7 +1,7 @@
 project:
   type: website
   pre-render: 
-    - ./update.sh
+    - pysym2md --output_file apilist.txt fastcore # https://github.com/AnswerDotAI/pysymbol-llm
   resources: 
     - "*.txt"
   preview:

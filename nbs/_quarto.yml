@@ -1,5 +1,9 @@
 project:
   type: website
+  pre-render: 
+    - ./update.sh
+  resources: 
+    - "*.txt"
   preview:
     navigate: false
     port: 3000

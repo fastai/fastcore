@@ -279,7 +279,7 @@ class Config:
         if v is None: return None
         typ = self.types.get(k, None)
         if typ==bool: return str2bool(v)
-        if not typ: return str(v)
+        if not typ: return v if isinstance(v, bool) else str(v)
         if typ==Path: return self.config_path/v
         return typ(v)
 

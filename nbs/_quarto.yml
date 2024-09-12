@@ -1,5 +1,9 @@
 project:
   type: website
+  pre-render: 
+    - pysym2md --output_file apilist.txt fastcore # https://github.com/AnswerDotAI/pysymbol-llm
+  resources: 
+    - "*.txt"
   preview:
     navigate: false
     port: 3000

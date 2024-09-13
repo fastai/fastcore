@@ -1167,6 +1167,6 @@ def str2bool(s):
     if not isinstance(s,str): return bool(s)
     if not s: return False
     s = s.lower()
-    if s in ('y', 'yes', 't', 'true', 'on', '1'): return 1
-    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return 0
+    if s in ('y', 'yes', 't', 'true', 'on', '1'): return True
+    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return False
     else: raise ValueError()

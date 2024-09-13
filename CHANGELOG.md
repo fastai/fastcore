@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.7
+
+### New Features
+
+- auto-update context ([#624](https://github.com/fastai/fastcore/pull/624)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+
+
 ## 1.7.6
 
 ### New Features

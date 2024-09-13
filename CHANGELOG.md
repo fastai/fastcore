@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.7.6
+
+### New Features
+
+- Add llm context files ([#621](https://github.com/fastai/fastcore/pull/621)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+
+### Bugs Squashed
+
+- str2bool does not return a bool ([#625](https://github.com/fastai/fastcore/issues/625))
+
+
 ## 1.7.5
 
 ### New Features

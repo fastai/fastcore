@@ -118,8 +118,6 @@ class Safe(str):
 
 # %% ../nbs/11_xml.ipynb
 def _escape(s): return '' if s is None else s.__html__() if hasattr(s, '__html__') else escape(s) if isinstance(s, str) else s
-
-# %% ../nbs/11_xml.ipynb
 def _noescape(s): return '' if s is None else s.__html__() if hasattr(s, '__html__') else s
 
 # %% ../nbs/11_xml.ipynb
@@ -137,34 +135,57 @@ def _to_attr(k,v):
     return f'{k}={qt}{v}{qt}'
 
 # %% ../nbs/11_xml.ipynb
-def _to_xml(elm, lvl, indent, do_escape):
+_block_tags = {'div', 'p', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tfoot',
+               'html', 'head', 'body', 'meta', '!doctype', 'input', 'script', 'link', 'style',
+               'tr', 'th', 'td', 'section', 'article', 'nav', 'aside', 'header',
+               'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'}
+_inline_tags = {'a', 'span', 'b', 'i', 'u', 'em', 'strong', 'img', 'br', 'small',
+                'big', 'sub', 'sup', 'label', 'input', 'select', 'option'}
+
+def _is_whitespace_significant(elm):
+    return elm.tag in {'pre', 'code', 'textarea', 'script'} or elm.get('contenteditable') == 'true'
+
+# %% ../nbs/11_xml.ipynb
+def _to_xml(elm, lvl=0, indent=True, do_escape=True):
+    "Convert `FT` element tree into an XML string"
     esc_fn = _escape if do_escape else _noescape
-    nl = '\n'
-    if not indent: lvl,nl = 0,''
     if elm is None: return ''
     if hasattr(elm, '__ft__'): elm = elm.__ft__()
-    if isinstance(elm, tuple): return f'{nl}'.join(_to_xml(o, lvl=lvl, indent=indent, do_escape=do_escape) for o in elm)
+    if isinstance(elm, tuple):
+        return ''.join(_to_xml(o, lvl=lvl, indent=indent, do_escape=do_escape) for o in elm)
     if isinstance(elm, bytes): return elm.decode('utf-8')
-    sp = ' ' * lvl
-    if not isinstance(elm, FT): return f'{esc_fn(elm)}{nl}'
+    if not isinstance(elm, FT): return f'{esc_fn(elm)}'
 
-    tag,cs,attrs = elm.list
+    tag, cs, attrs = elm.list
+    is_void = getattr(elm, 'void_', False)
+    is_block = tag in _block_tags
+    if _is_whitespace_significant(elm): indent = False
+
+    sp,nl = (' ' * lvl,'\n') if indent and is_block else ('','')
+    nl_end = nl
+
     stag = tag
     if attrs:
-        sattrs = (_to_attr(k,v) for k,v in attrs.items())
-        stag += ' ' + ' '.join(sattrs)
+        sattrs = ' '.join(_to_attr(k, v) for k, v in attrs.items() if v not in (False, None, ''))
+        stag += f' {sattrs}' if sattrs else stag
 
-    isvoid = getattr(elm, 'void_', False)
-    cltag = '' if isvoid else f'</{tag}>'
-    if not cs: return f'{sp}<{stag}>{cltag}{nl}'
-    if len(cs)==1 and not isinstance(cs[0],(list,tuple,FT)) and not hasattr(cs[0],'__ft__'):
-        return f'{sp}<{stag}>{esc_fn(cs[0])}{cltag}{nl}'
+    cltag = '' if is_void else f'</{tag}>'
+
+    if not cs:
+        if is_void: return f'{sp}<{stag}>{nl_end}'
+        else: return f'{sp}<{stag}>{cltag}{nl_end}'
+    if len(cs) == 1 and not isinstance(cs[0], (list, tuple, FT)) and not hasattr(cs[0], '__ft__'):
+        content = esc_fn(cs[0])
+        return f'{sp}<{stag}>{content}{cltag}{nl_end}'
+
     res = f'{sp}<{stag}>{nl}'
-    res += ''.join(_to_xml(c, lvl=lvl+2, indent=indent, do_escape=do_escape) for c in cs)
-    if not isvoid: res += f'{sp}{cltag}{nl}'
+    for c in cs:
+        res += _to_xml(c, lvl=lvl+2 if indent else 0, indent=indent, do_escape=do_escape)
+    if not is_void: res += f'{sp}{cltag}{nl_end}'
     return Safe(res)
 
-def to_xml(elm, lvl=0, indent:bool=True, do_escape:bool=True):
+# %% ../nbs/11_xml.ipynb
+def to_xml(elm, lvl=0, indent=True, do_escape=True):
     "Convert `ft` element tree into an XML string"
     return Safe(_to_xml(elm, lvl, indent, do_escape=do_escape))
 

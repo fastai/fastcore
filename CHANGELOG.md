@@ -2,6 +2,11 @@
 
 <!-- do not remove -->
 
+## 1.7.8
+
+### New Features
+
+- Handle whitespace-sensitive situations in `to_xml` automatically ([#626](https://github.com/fastai/fastcore/issues/626))
 
 
 ## 1.7.7

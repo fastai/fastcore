@@ -286,3 +286,10 @@ class Config:
     def path(self,k,default=None):
         v = self.get(k, default)
         return v if v is None else self.config_path/v
+
+    @classmethod
+    def find(cls, cfg_name, cfg_path=None, **kwargs):
+        "Search `cfg_path` and its parents to find `cfg_name`"
+        p = Path(cfg_path or Path.cwd()).expanduser().absolute()
+        return first(cls(o, cfg_name, **kwargs)
+                      for o in [p, *p.parents] if (o/cfg_name).exists())

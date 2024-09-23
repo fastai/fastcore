@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 1.7.9
+
+### New Features
+
+- Add `Config.find` ([#628](https://github.com/fastai/fastcore/issues/628))
+
+### Bugs Squashed
+
+- Falsey attrs result in doubled tags in `to_xml` ([#629](https://github.com/fastai/fastcore/issues/629))
+
+
 ## 1.7.8
 
 ### New Features

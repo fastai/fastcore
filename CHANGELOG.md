@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.10
+
+### Bugs Squashed
+
+- `dict2obj does not handle `list_func` correctly or pass it recursively ([#630](https://github.com/fastai/fastcore/issues/630))
+
+
 ## 1.7.9
 
 ### New Features

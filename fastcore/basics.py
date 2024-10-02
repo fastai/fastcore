@@ -717,6 +717,7 @@ def nested_attr(o, attr, default=None):
         for a in attr.split("."):
             if hasattr(o, a): o = getattr(o, a)
             elif hasattr(o, '__getitem__'): o = o[a]
+            else: return default
     except (AttributeError, KeyError): return default
     return o
 

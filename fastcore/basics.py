@@ -715,9 +715,9 @@ def nested_attr(o, attr, default=None):
     "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
     try:
         for a in attr.split("."): 
-            try: o = getattr(o, a)
-            except AttributeError: o = o[a]
-    except (KeyError,IndexError, TypeError, ValueError):
+            if hasattr(o,a): o = getattr(o, a)
+            else: o = o[a]
+    except (AttributeError, KeyError,IndexError, TypeError, ValueError):
         return default
     return o
 

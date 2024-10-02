@@ -714,8 +714,11 @@ def only(o):
 def nested_attr(o, attr, default=None):
     "Same as `getattr`, but if `attr` includes a `.`, then looks inside nested objects"
     try:
-        for a in attr.split("."): o = getattr(o, a)
-    except AttributeError: return default
+        for a in attr.split("."):
+            if hasattr(o, a): o = getattr(o, a)
+            elif hasattr(o, '__getitem__'): o = o[a]
+            else: return default
+    except (AttributeError, KeyError): return default
     return o
 
 # %% ../nbs/01_basics.ipynb

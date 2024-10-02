@@ -716,9 +716,11 @@ def nested_attr(o, attr, default=None):
     try:
         for a in attr.split("."):
             if hasattr(o, a): o = getattr(o, a)
+            elif isinstance(o, (list, tuple, dict)) and a.isdigit():o = o[int(a)]
             elif hasattr(o, '__getitem__'): o = o[a]
             else: return default
-    except (AttributeError, KeyError): return default
+    except (AttributeError, KeyError, IndexError, TypeError):
+        return default
     return o
 
 # %% ../nbs/01_basics.ipynb

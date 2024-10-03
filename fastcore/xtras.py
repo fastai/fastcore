@@ -171,6 +171,7 @@ def _unpack(fname, out):
 def untar_dir(fname, dest, rename=False, overwrite=False):
     "untar `file` into `dest`, creating a directory if the root contains more than one item"
     import tempfile,shutil
+    dest = Path(dest)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d)/remove_suffix(Path(fname).stem, '.tar')
         out.mkdir()

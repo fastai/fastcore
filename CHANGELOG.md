@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.7.11
+
+### New Features
+
+- Show instance vars in `basic_repr()` ([#633](https://github.com/fastai/fastcore/issues/633))
+- add Path to `untar` dest ([#632](https://github.com/fastai/fastcore/pull/632)), thanks to [@hamelsmu](https://github.com/hamelsmu)
+- Nested attr supporting keys ([#631](https://github.com/fastai/fastcore/pull/631)), thanks to [@Isaac-Flath](https://github.com/Isaac-Flath)
+
+
 ## 1.7.10
 
 ### Bugs Squashed

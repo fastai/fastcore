@@ -49,8 +49,8 @@ def basic_repr(flds=None):
     flds = list(flds or [])
     def _f(self):
         res = f'{type(self).__module__}.{type(self).__name__}'
-        if not flds: return f'<{res}>'
-        sig = ', '.join(f'{o}={getattr(self,o)!r}' for o in flds)
+        fs = flds if flds else [o for o in vars(self) if not o.startswith('_')]
+        sig = ', '.join(f'{o}={getattr(self,o)!r}' for o in fs)
         return f'{res}({sig})'
     return _f
 

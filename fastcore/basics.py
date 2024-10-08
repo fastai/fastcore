@@ -4,11 +4,11 @@
 
 # %% auto 0
 __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'Self',
-           'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType', 'tonull',
-           'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance', 'ver2tuple', 'Inf',
-           'in_', 'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir', 'AttrDict',
-           'AttrDictDefault', 'NS', 'get_annotations_ex', 'eval_type', 'type_hints', 'annotations', 'anno_ret',
-           'signature_ex', 'union2tuple', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
+           'type_map', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType',
+           'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
+           'ver2tuple', 'Inf', 'in_', 'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir',
+           'AttrDict', 'AttrDictDefault', 'NS', 'get_annotations_ex', 'eval_type', 'type_hints', 'annotations',
+           'anno_ret', 'signature_ex', 'union2tuple', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
            'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs',
            'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'partition',
            'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
@@ -1134,21 +1134,36 @@ def add_props(f, g=None, n=2):
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
 # %% ../nbs/01_basics.ipynb
-def typed(f):
-    "Decorator to check param and return types at runtime"
-    names = f.__code__.co_varnames
-    anno = annotations(f)
-    ret = anno.pop('return',None)
-    def _f(*args,**kwargs):
-        kw = {**kwargs}
-        if len(anno) > 0:
-            for i,arg in enumerate(args): kw[names[i]] = arg
-            for k,v in kw.items():
-                if k in anno and not isinstance(v,anno[k]): raise _typeerr(k, v, anno[k])
-        res = f(*args,**kwargs)
-        if ret is not None and not isinstance(res,ret): raise _typeerr("return", res, ret)
-        return res
-    return functools.update_wrapper(_f, f)
+type_map = {int: int, float: float, str: str, bool: bool}
+
+# %% ../nbs/01_basics.ipynb
+def typed(_func=None, *, cast=False):
+    "Decorator to check param and return types at runtime, with optional casting"
+    def decorator(f):
+        names = f.__code__.co_varnames
+        anno = annotations(f)
+        ret = anno.pop('return', None)
+        def _f(*args, **kwargs):
+            kw = {**kwargs}
+            if len(anno) > 0:
+                for i,arg in enumerate(args): kw[names[i]] = arg
+                for k,v in kw.items():
+                    if k in anno:
+                        expected_type = anno[k]
+                        if cast:
+                            try: kw[k] = type_map[expected_type](v)
+                            except (ValueError, TypeError) as e: raise _typeerr(k, v, expected_type) from e
+                        elif not isinstance(v, expected_type): raise _typeerr(k, v, expected_type)
+            res = f(**kw)
+            if ret is not None:
+                if cast:
+                    try: res = type_map[ret](res)
+                    except (ValueError, TypeError) as e: raise _typeerr("return", res, ret) from e
+                elif not isinstance(res, ret): raise _typeerr("return", res, ret)
+            return res
+        return functools.update_wrapper(_f, f)
+    if _func is None: return decorator # Decorator was called with arguments
+    else: return decorator(_func) # Decorator was called without arguments
 
 # %% ../nbs/01_basics.ipynb
 def exec_new(code):

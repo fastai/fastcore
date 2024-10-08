@@ -18,14 +18,15 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'loop_last', 'first_match', 'last_match', 'fastuple', 'bind', 'mapt', 'map_ex', 'compose', 'maps',
            'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re',
            'ImportEnum', 'StrEnum', 'str_enum', 'ValEnum', 'Stateful', 'NotStr', 'PrettyString', 'even_mults',
-           'num_cpus', 'add_props', 'typed', 'exec_new', 'exec_import', 'str2bool', 'lt', 'gt', 'le', 'ge', 'eq', 'ne',
+           'num_cpus', 'add_props', 'str2bool', 'str2int', 'str2float', 'str2list', 'str2date', 'to_bool', 'to_int',
+           'to_float', 'to_list', 'to_date', 'typed', 'exec_new', 'exec_import', 'lt', 'gt', 'le', 'ge', 'eq', 'ne',
            'add', 'sub', 'mul', 'truediv', 'is_', 'is_not', 'mod']
 
 # %% ../nbs/01_basics.ipynb
 from .imports import *
-import builtins,types,typing
-import pprint
+import ast,builtins,pprint,types,typing
 from copy import copy
+from datetime import date
 try: from types import UnionType
 except ImportError: UnionType = None
 
@@ -1134,7 +1135,54 @@ def add_props(f, g=None, n=2):
 def _typeerr(arg, val, typ): return TypeError(f"{arg}=={val} not {typ}")
 
 # %% ../nbs/01_basics.ipynb
-type_map = {int: int, float: float, str: str, bool: bool}
+def str2bool(s):
+    "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
+    if not isinstance(s,str): return bool(s)
+    if not s: return False
+    s = s.lower()
+    if s in ('y', 'yes', 't', 'true', 'on', '1'): return True
+    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return False
+    else: raise _typeerr('s', s, 'bool')
+
+# %% ../nbs/01_basics.ipynb
+def str2int(s) -> int:
+    "Convert `s` to an `int`"
+    s = s.lower().strip()
+    if s in ('', 'none'): return 0
+    if s == 'on': return 1
+    if s == 'off': return 0
+    return int(s)
+
+# %% ../nbs/01_basics.ipynb
+def str2float(s:str):
+    "Convert `s` to a float"
+    s = s.lower().strip()
+    if not s: return 0.0
+    return float(s)
+
+# %% ../nbs/01_basics.ipynb
+def str2list(s:str):
+    "Convert `s` to a list"
+    s = s.strip()
+    if not s: return []
+    if s[0] != '[': s = '['+s + ']'
+    return ast.literal_eval(s)
+
+# %% ../nbs/01_basics.ipynb
+def str2date(s:str)->date:
+    "`date.fromisoformat` with empty string handling"
+    return date.fromisoformat(s) if s else None
+
+# %% ../nbs/01_basics.ipynb
+def to_bool(arg): return str2bool(arg) if isinstance(arg, str) else bool(arg)
+def to_int(arg): return str2int(arg) if isinstance(arg, str) else int(arg)
+def to_float(arg): return str2float(arg) if isinstance(arg, str) else float(arg) 
+def to_list(arg): return str2list(arg) if isinstance(arg,str) else listify(arg)
+def to_date(arg):
+    if isinstance(arg, str): return str2date(arg)
+    raise _typeerr('arg', arg, 'date')
+
+type_map = {int: to_int, float: to_float, str: str, bool: to_bool, date: to_date}
 
 # %% ../nbs/01_basics.ipynb
 def typed(_func=None, *, cast=False):
@@ -1150,16 +1198,18 @@ def typed(_func=None, *, cast=False):
                 for k,v in kw.items():
                     if k in anno:
                         expected_type = anno[k]
-                        if cast:
-                            try: kw[k] = type_map[expected_type](v)
+                        if isinstance(v, expected_type): continue
+                        elif cast:
+                            try: kw[k] = type_map.get(expected_type, expected_type)(v)
                             except (ValueError, TypeError) as e: raise _typeerr(k, v, expected_type) from e
-                        elif not isinstance(v, expected_type): raise _typeerr(k, v, expected_type)
+                        else: raise _typeerr(k, v, expected_type)
             res = f(**kw)
             if ret is not None:
-                if cast:
-                    try: res = type_map[ret](res)
+                if isinstance(res, ret): return res
+                elif cast:
+                    try: res = type_map.get(ret, ret)(res)
                     except (ValueError, TypeError) as e: raise _typeerr("return", res, ret) from e
-                elif not isinstance(res, ret): raise _typeerr("return", res, ret)
+                else: raise _typeerr("return", res, ret)
             return res
         return functools.update_wrapper(_f, f)
     if _func is None: return decorator # Decorator was called with arguments
@@ -1178,13 +1228,3 @@ def exec_import(mod, sym):
     "Import `sym` from `mod` in a new environment"
 #     pref = '' if __name__=='__main__' or mod[0]=='.' else '.'
     return exec_new(f'from {mod} import {sym}')
-
-# %% ../nbs/01_basics.ipynb
-def str2bool(s):
-    "Case-insensitive convert string `s` too a bool (`y`,`yes`,`t`,`true`,`on`,`1`->`True`)"
-    if not isinstance(s,str): return bool(s)
-    if not s: return False
-    s = s.lower()
-    if s in ('y', 'yes', 't', 'true', 'on', '1'): return True
-    elif s in ('n', 'no', 'f', 'false', 'off', '0'): return False
-    else: raise ValueError()

@@ -2,6 +2,11 @@
 
 <!-- do not remove -->
 
+## 1.7.12
+
+### New Features
+
+- Add `BasicRepr` ([#634](https://github.com/fastai/fastcore/issues/634))
 
 
 ## 1.7.11

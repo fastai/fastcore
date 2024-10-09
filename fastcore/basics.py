@@ -4,16 +4,16 @@
 
 # %% auto 0
 __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'arg0', 'arg1', 'arg2', 'arg3', 'arg4', 'Self',
-           'type_map', 'ifnone', 'maybe_attr', 'basic_repr', 'is_array', 'listify', 'tuplify', 'true', 'NullType',
-           'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local', 'risinstance',
-           'ver2tuple', 'Inf', 'in_', 'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise', 'custom_dir',
-           'AttrDict', 'AttrDictDefault', 'NS', 'get_annotations_ex', 'eval_type', 'type_hints', 'annotations',
-           'anno_ret', 'signature_ex', 'union2tuple', 'argnames', 'with_cast', 'store_attr', 'attrdict', 'properties',
-           'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs', 'hasattrs', 'setattrs',
-           'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str', 'Float', 'partition',
-           'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of', 'groupby',
-           'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex', 'not_',
-           'argwhere', 'filter_ex', 'renumerate', 'first', 'only', 'nested_attr', 'nested_setdefault',
+           'type_map', 'ifnone', 'maybe_attr', 'basic_repr', 'BasicRepr', 'is_array', 'listify', 'tuplify', 'true',
+           'NullType', 'tonull', 'get_class', 'mk_class', 'wrap_class', 'ignore_exceptions', 'exec_local',
+           'risinstance', 'ver2tuple', 'Inf', 'in_', 'ret_true', 'ret_false', 'stop', 'gen', 'chunked', 'otherwise',
+           'custom_dir', 'AttrDict', 'AttrDictDefault', 'NS', 'get_annotations_ex', 'eval_type', 'type_hints',
+           'annotations', 'anno_ret', 'signature_ex', 'union2tuple', 'argnames', 'with_cast', 'store_attr', 'attrdict',
+           'properties', 'camel2words', 'camel2snake', 'snake2camel', 'class2attr', 'getcallable', 'getattrs',
+           'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str',
+           'Float', 'partition', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of',
+           'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex',
+           'not_', 'argwhere', 'filter_ex', 'renumerate', 'first', 'only', 'nested_attr', 'nested_setdefault',
            'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first',
            'loop_last', 'first_match', 'last_match', 'fastuple', 'bind', 'mapt', 'map_ex', 'compose', 'maps',
            'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re',
@@ -49,11 +49,18 @@ def basic_repr(flds=None):
     if isinstance(flds, str): flds = re.split(', *', flds)
     flds = list(flds or [])
     def _f(self):
-        res = f'{type(self).__module__}.{type(self).__name__}'
+        m = str(type(self).__module__) + '.'
+        if m == '__main__.': m = ''
+        res = f'{m}{type(self).__name__}'
         fs = flds if flds else [o for o in vars(self) if not o.startswith('_')]
         sig = ', '.join(f'{o}={getattr(self,o)!r}' for o in fs)
         return f'{res}({sig})'
     return _f
+
+# %% ../nbs/01_basics.ipynb
+class BasicRepr:
+    "Base class for objects needing a basic `__repr__`"
+    __repr__=basic_repr()
 
 # %% ../nbs/01_basics.ipynb
 def is_array(x):

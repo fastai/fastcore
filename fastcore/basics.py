@@ -1197,12 +1197,16 @@ def typed(_func=None, *, cast=False):
                 for i,arg in enumerate(args): kw[names[i]] = arg
                 for k,v in kw.items():
                     if k in anno:
-                        expected_type = anno[k]
-                        if isinstance(v, expected_type): continue
+                        expected_types = tuplify(union2tuple(anno[k]))
+                        if isinstance(v, expected_types): continue
                         elif cast:
+                            expected_types = listify(filter(lambda x: x is not NoneType, expected_types))
+                            assert not len(expected_types) > 1, "Cannot cast with union types."
+                            # Grab the first type that is not None
+                            expected_type = expected_types[0]
                             try: kw[k] = type_map.get(expected_type, expected_type)(v)
                             except (ValueError, TypeError) as e: raise _typeerr(k, v, expected_type) from e
-                        else: raise _typeerr(k, v, expected_type)
+                        else: raise _typeerr(k, v, expected_types)
             res = f(**kw)
             if ret is not None:
                 if isinstance(res, ret): return res

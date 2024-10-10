@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.13
+
+### New Features
+
+- Add support for type casting in the typed decorator ([#635](https://github.com/fastai/fastcore/pull/635)), thanks to [@ncoop57](https://github.com/ncoop57)
+
+
 ## 1.7.12
 
 ### New Features

@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.14
+
+### New Features
+
+- Add `parallel_async` ([#637](https://github.com/fastai/fastcore/issues/637))
+
+
 ## 1.7.13
 
 ### New Features

@@ -141,13 +141,11 @@ def _add_one(x, a=1):
     return x+a
 
 # %% ../nbs/03a_parallel.ipynb
-async def parallel_async(f, items, *args, n_workers=16, total=None,
+async def parallel_async(f, items, *args, n_workers=16,
                          timeout=None, chunksize=1, on_exc=print, **kwargs):
     "Applies `f` to `items` in parallel using asyncio and a semaphore to limit concurrency."
     import asyncio
-    if n_workers is None: n_workers = defaults.cpus
     semaphore = asyncio.Semaphore(n_workers)
-    results = []
 
     async def limited_task(item):
         coro = f(item, *args, **kwargs) if asyncio.iscoroutinefunction(f) else asyncio.to_thread(f, item, *args, **kwargs)
@@ -155,7 +153,6 @@ async def parallel_async(f, items, *args, n_workers=16, total=None,
             return await asyncio.wait_for(coro, timeout) if timeout else await coro
 
     tasks = [limited_task(item) for item in items]
-    if total is None: total = len(items)
     return asyncio.gather(*tasks)
 
 # %% ../nbs/03a_parallel.ipynb

@@ -153,7 +153,7 @@ async def parallel_async(f, items, *args, n_workers=16,
             return await asyncio.wait_for(coro, timeout) if timeout else await coro
 
     tasks = [limited_task(item) for item in items]
-    return asyncio.gather(*tasks)
+    return await asyncio.gather(*tasks)
 
 # %% ../nbs/03a_parallel.ipynb
 def run_procs(f, f_done, args):

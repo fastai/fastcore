@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.15
+
+### New Features
+
+- Add FT.set ([#638](https://github.com/fastai/fastcore/issues/638))
+
+
 ## 1.7.14
 
 ### New Features

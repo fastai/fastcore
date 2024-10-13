@@ -76,6 +76,9 @@ class FT:
         self.children = self.children + tuplify(b)
         return self
     
+    def __setitem__(self, i, o):
+        self.children = self.children[:i] + (o,) + self.children[i+1:]
+
     def __getitem__(self, idx): return self.children[idx]
     def __iter__(self): return iter(self.children)
 
@@ -83,6 +86,12 @@ class FT:
         c,kw = _preproc(c,kw)
         if c: self = self+c
         if kw: self.attrs = {**self.attrs, **kw}
+        return self
+
+    def set(self, *o, **k):
+        "Set children and/or attributes—chainable"
+        if o: self.children = o
+        for k,v in k.items(): setattr(self,k,v)
         return self
 
 # %% ../nbs/11_xml.ipynb

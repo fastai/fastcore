@@ -288,7 +288,7 @@ def expand_wildcards(code):
 # %% ../nbs/03_xtras.ipynb
 def dict2obj(d, list_func=L, dict_func=AttrDict):
     "Convert (possibly nested) dicts (or lists of dicts) to `AttrDict`"
-    if isinstance(d, (L,list)): return list_func(map(dict2obj, d))
+    if isinstance(d, (L,list)): return list_func([dict2obj(v, list_func=list_func, dict_func=dict_func) for v in d])
     if not isinstance(d, dict): return d
     return dict_func(**{k:dict2obj(v, list_func=list_func, dict_func=dict_func) for k,v in d.items()})
 

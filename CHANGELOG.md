@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.17
+
+### New Features
+
+- Add `FT.on` ([#640](https://github.com/fastai/fastcore/issues/640))
+
+
 ## 1.7.16
 
 ### Bugs Squashed

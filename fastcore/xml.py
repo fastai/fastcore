@@ -58,10 +58,17 @@ class FT:
     def __init__(self, tag:str, cs:tuple, attrs:dict=None, void_=False, **kwargs):
         assert isinstance(cs, tuple)
         self.tag,self.children,self.attrs,self.void_ = tag,cs,attrs,void_
+        self.listeners_ = []
+    
+    def on(self, f): self.listeners_.append(f)
+    def changed(self):
+        [f(self) for f in self.listeners_]
+        return self
 
     def __setattr__(self, k, v):
-        if k.startswith('__') or k in ('tag','children','attrs','void_'): return super().__setattr__(k,v)
+        if k.startswith('__') or k[-1]=='_' or k in ('tag','children','attrs','void_'): return super().__setattr__(k,v)
         self.attrs[k.lstrip('_').replace('_', '-')] = v
+        self.changed()
 
     def __getattr__(self, k):
         if k.startswith('__'): raise AttributeError(k)
@@ -71,28 +78,27 @@ class FT:
     def list(self): return [self.tag,self.children,self.attrs]
     def get(self, k, default=None): return self.attrs.get(k.lstrip('_').replace('_', '-'), default)
     def __repr__(self): return f'{self.tag}({self.children},{self.attrs})'
-
-    def __add__(self, b):
-        self.children = self.children + tuplify(b)
-        return self
+    def __iter__(self): return iter(self.children)
+    def __getitem__(self, idx): return self.children[idx]
     
     def __setitem__(self, i, o):
         self.children = self.children[:i] + (o,) + self.children[i+1:]
-
-    def __getitem__(self, idx): return self.children[idx]
-    def __iter__(self): return iter(self.children)
+        self.changed()
 
     def __call__(self, *c, **kw):
         c,kw = _preproc(c,kw)
-        if c: self = self+c
+        if c: self.children = self.children+c
         if kw: self.attrs = {**self.attrs, **kw}
-        return self
+        return self.changed()
 
-    def set(self, *o, **k):
-        "Set children and/or attributes—chainable"
-        if o: self.children = o
-        for k,v in k.items(): setattr(self,k,v)
-        return self
+    def set(self, *c, **kw):
+        "Set children and/or attributes (chainable)"
+        c,kw = _preproc(c,kw)
+        if c: self.children = c
+        if kw:
+            self.attrs = {k:v for k,v in self.attrs.items() if k in ('id','name')}
+            self.attrs = {**self.attrs, **kw}
+        return self.changed()
 
 # %% ../nbs/11_xml.ipynb
 def ft(tag:str, *c, void_:bool=False, attrmap:callable=attrmap, valmap:callable=valmap, ft_cls=FT, **kw):
@@ -175,7 +181,7 @@ def _to_xml(elm, lvl=0, indent=True, do_escape=True):
 
     stag = tag
     if attrs:
-        sattrs = ' '.join(_to_attr(k, v) for k, v in attrs.items() if v not in (False, None, ''))
+        sattrs = ' '.join(_to_attr(k, v) for k, v in attrs.items() if v not in (False, None, '') and k[-1]!='_')
         if sattrs: stag += f' {sattrs}'
 
     cltag = '' if is_void else f'</{tag}>'

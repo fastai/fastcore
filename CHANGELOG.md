@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.18
+
+### Bugs Squashed
+
+- Hyperscript attrs do not work in `FT` ([#642](https://github.com/fastai/fastcore/issues/642))
+
+
 ## 1.7.17
 
 ### New Features

@@ -2,7 +2,7 @@
 
 <!-- do not remove -->
 
-## 1.7.18
+## 1.7.19
 
 ### Bugs Squashed
 

@@ -23,13 +23,16 @@ from functools import partial
 from html import escape
 
 # %% ../nbs/11_xml.ipynb
+def _fix_k(k): return k if k=='_' else k.lstrip('_').replace('_', '-')
+
+# %% ../nbs/11_xml.ipynb
 _specials = set('@.-!~:[](){}$%^&*+=|/?<>,`')
 
 def attrmap(o):
-    if o=='_' or (_specials & set(o)): return o
+    if _specials & set(o): return o
     o = dict(htmlClass='class', cls='class', _class='class', klass='class',
              _for='for', fr='for', htmlFor='for').get(o, o)
-    return o.lstrip('_').replace('_', '-')
+    return _fix_k(o)
 
 # %% ../nbs/11_xml.ipynb
 def valmap(o):
@@ -66,8 +69,8 @@ class FT:
         return self
 
     def __setattr__(self, k, v):
-        if k.startswith('__') or k[-1]=='_' or k in ('tag','children','attrs','void_'): return super().__setattr__(k,v)
-        self.attrs[k.lstrip('_').replace('_', '-')] = v
+        if len(k)>1 and k.startswith('__') or k[-1]=='_' or k in ('tag','children','attrs','void_'): return super().__setattr__(k,v)
+        self.attrs[_fix_k(k)] = v
         self.changed()
 
     def __getattr__(self, k):
@@ -76,7 +79,8 @@ class FT:
 
     @property
     def list(self): return [self.tag,self.children,self.attrs]
-    def get(self, k, default=None): return self.attrs.get(k.lstrip('_').replace('_', '-'), default)
+    def get(self, k, default=None): return self.attrs.get(_fix_k(k), default)
+    
     def __repr__(self): return f'{self.tag}({self.children},{self.attrs})'
     def __iter__(self): return iter(self.children)
     def __getitem__(self, idx): return self.children[idx]
@@ -151,7 +155,7 @@ def _to_attr(k,v):
 
 # %% ../nbs/11_xml.ipynb
 _block_tags = {'div', 'p', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tfoot',
-               'html', 'head', 'body', 'meta', '!doctype', 'input', 'script', 'link', 'style',
+               'html', 'head', 'body', 'meta', 'title', '!doctype', 'input', 'script', 'link', 'style',
                'tr', 'th', 'td', 'section', 'article', 'nav', 'aside', 'header',
                'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'}
 _inline_tags = {'a', 'span', 'b', 'i', 'u', 'em', 'strong', 'img', 'br', 'small',
@@ -222,6 +226,6 @@ FT._repr_markdown_ = highlight
 # %% ../nbs/11_xml.ipynb
 def __getattr__(tag):
     if tag.startswith('_') or tag[0].islower(): raise AttributeError
-    tag = tag.replace("_", "-")
+    tag = _fix_k(tag)
     def _f(*c, target_id=None, **kwargs): return ft(tag, *c, target_id=target_id, **kwargs)
     return _f

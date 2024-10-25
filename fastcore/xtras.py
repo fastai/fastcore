@@ -417,8 +417,8 @@ def exec_eval(code,   # Code to exec/eval
     "Evaluate `code` in `g` (defaults to `globals()`) and `l` (defaults to `locals()`)"
     import ast, inspect
     frame = inspect.currentframe().f_back
-    if l is None: l = g if g else frame.f_locals
     if g is None: g = frame.f_globals
+    if l is None: l = g
     tree = ast.parse(code, mode='exec')
     if tree.body and isinstance(tree.body[-1], ast.Expr):
         *statements, expr = tree.body

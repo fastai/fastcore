@@ -9,11 +9,12 @@ from __future__ import annotations
 __all__ = ['spark_chars', 'UNSET', 'walk', 'globtastic', 'maybe_open', 'mkdir', 'image_size', 'bunzip', 'loads', 'loads_multi',
            'dumps', 'untar_dir', 'repo_details', 'run', 'open_file', 'save_pickle', 'load_pickle', 'parse_env',
            'expand_wildcards', 'dict2obj', 'obj2dict', 'repr_dict', 'is_listy', 'mapped', 'IterLen',
-           'ReindexCollection', 'get_source_link', 'truncstr', 'sparkline', 'modify_exception', 'round_multiple',
-           'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names', 'PartialFormatter',
-           'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers', 'shufflish',
-           'console_help', 'hl_md', 'type2str', 'dataclass_src', 'Unset', 'nullable_dc', 'make_nullable', 'flexiclass',
-           'asdict', 'is_typeddict', 'is_namedtuple', 'flexicache', 'time_policy', 'mtime_policy', 'timed_cache']
+           'ReindexCollection', 'exec_eval', 'get_source_link', 'truncstr', 'sparkline', 'modify_exception',
+           'round_multiple', 'set_num_threads', 'join_path_file', 'autostart', 'EventTimer', 'stringfmt_names',
+           'PartialFormatter', 'partial_format', 'utc2local', 'local2utc', 'trace', 'modified_env', 'ContextManagers',
+           'shufflish', 'console_help', 'hl_md', 'type2str', 'dataclass_src', 'Unset', 'nullable_dc', 'make_nullable',
+           'flexiclass', 'asdict', 'is_typeddict', 'is_namedtuple', 'flexicache', 'time_policy', 'mtime_policy',
+           'timed_cache']
 
 # %% ../nbs/03_xtras.ipynb
 from .imports import *
@@ -407,6 +408,25 @@ class ReindexCollection(GetAttr, IterLen):
     _docs = dict(reindex="Replace `self.idxs` with idxs",
                 shuffle="Randomly shuffle indices",
                 cache_clear="Clear LRU cache")
+
+# %% ../nbs/03_xtras.ipynb
+def exec_eval(code,   # Code to exec/eval
+              g=None, # Globals namespace dict
+              l=None  # Locals namespace dict
+             ):
+    "Evaluate `code` in `g` (defaults to `globals()`) and `l` (defaults to `locals()`)"
+    import ast, inspect
+    frame = inspect.currentframe().f_back
+    if l is None: l = g if g else frame.f_locals
+    if g is None: g = frame.f_globals
+    tree = ast.parse(code, mode='exec')
+    if tree.body and isinstance(tree.body[-1], ast.Expr):
+        *statements, expr = tree.body
+        exec_code = compile(ast.Module(statements, []), filename="<string>", mode="exec")
+        expr_code = compile(ast.Expression(expr.value), filename="<string>", mode="eval")
+        exec(exec_code, g, l)
+        return eval(expr_code, g, l)
+    else: exec(code, g, l)
 
 # %% ../nbs/03_xtras.ipynb
 def _is_type_dispatch(x): return type(x).__name__ == "TypeDispatch"

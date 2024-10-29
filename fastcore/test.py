@@ -100,6 +100,7 @@ TEST_IMAGE_BW = 'images/mnist3.png'
 # %% ../nbs/00_test.ipynb
 def test_fig_exists(ax):
     "Test there is a figure displayed in `ax`"
+    if not hasattr(ax.figure.canvas, 'renderer'): ax.figure.canvas.draw()
     assert ax and len(ax.figure.canvas.tostring_argb())
 
 # %% ../nbs/00_test.ipynb

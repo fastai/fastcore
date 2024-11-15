@@ -2,6 +2,15 @@
 
 <!-- do not remove -->
 
+## 1.7.20
+
+### New Features
+
+- Add ansi.py (from nbconvert) ([#647](https://github.com/fastai/fastcore/issues/647))
+- Support latest CaptureShell version ([#644](https://github.com/fastai/fastcore/issues/644))
+- Add `exec_eval` ([#643](https://github.com/fastai/fastcore/issues/643))
+
+
 ## 1.7.19
 
 ### Bugs Squashed

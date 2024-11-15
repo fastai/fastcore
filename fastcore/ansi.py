@@ -3,7 +3,8 @@
 # Copyright (c) IPython Development Team.
 # Modifications by Jeremy Howard.
 
-import re, markupsafe
+import re
+from html import escape
 
 __all__ = ["strip_ansi", "ansi2html", "ansi2latex"]
 
@@ -19,7 +20,7 @@ def strip_ansi(source):
 
 def ansi2html(text):
     "Convert ANSI colors to HTML colors."
-    text = markupsafe.escape(text)
+    text = escape(text)
     return _ansi2anything(text, _htmlconverter)
 
 

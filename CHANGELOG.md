@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.21
+
+### New Features
+
+- Add `last` ([#651](https://github.com/AnswerDotAI/fastcore/issues/651))
+
+
 ## 1.7.20
 
 ### New Features

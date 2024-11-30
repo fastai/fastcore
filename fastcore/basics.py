@@ -13,7 +13,7 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
            'hasattrs', 'setattrs', 'try_attrs', 'GetAttrBase', 'GetAttr', 'delegate_attr', 'ShowPrint', 'Int', 'Str',
            'Float', 'partition', 'flatten', 'concat', 'strcat', 'detuplify', 'replicate', 'setify', 'merge', 'range_of',
            'groupby', 'last_index', 'filter_dict', 'filter_keys', 'filter_values', 'cycle', 'zip_cycle', 'sorted_ex',
-           'not_', 'argwhere', 'filter_ex', 'renumerate', 'first', 'only', 'nested_attr', 'nested_setdefault',
+           'not_', 'argwhere', 'filter_ex', 'renumerate', 'first', 'last', 'only', 'nested_attr', 'nested_setdefault',
            'nested_callable', 'nested_idx', 'set_nested_idx', 'val2idx', 'uniqueify', 'loop_first_last', 'loop_first',
            'loop_last', 'first_match', 'last_match', 'fastuple', 'bind', 'mapt', 'map_ex', 'compose', 'maps',
            'partialler', 'instantiate', 'using_attr', 'copy_func', 'patch_to', 'patch', 'patch_property', 'compile_re',
@@ -707,6 +707,14 @@ def first(x, f=None, negate=False, **kwargs):
     x = iter(x)
     if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
     return next(x, None)
+
+# %% ../nbs/01_basics.ipynb
+def last(x, f=None, negate=False, **kwargs):
+    "Last element of `x`, optionally filtered by `f`, or None if missing"
+    if f: x = filter_ex(x, f=f, negate=negate, gen=True, **kwargs)
+    res = None
+    for res in x: pass
+    return res
 
 # %% ../nbs/01_basics.ipynb
 def only(o):

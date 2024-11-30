@@ -3,7 +3,7 @@
 d = { 'settings': { 'branch': 'master',
                 'doc_baseurl': '/',
                 'doc_host': 'https://fastcore.fast.ai',
-                'git_url': 'https://github.com/fastai/fastcore/',
+                'git_url': 'https://github.com/AnswerDotAI/fastcore/',
                 'lib_path': 'fastcore'},
   'syms': { 'fastcore.all': {},
             'fastcore.ansi': {},

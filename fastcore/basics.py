@@ -33,6 +33,10 @@ except ImportError: UnionType = None
 # %% ../nbs/01_basics.ipynb
 defaults = SimpleNamespace()
 
+_allowed_types = (types.FunctionType, types.BuiltinFunctionType,
+                  types.MethodType, types.ModuleType,
+                  WrapperDescriptorType, MethodWrapperType, MethodDescriptorType)
+
 # %% ../nbs/01_basics.ipynb
 def ifnone(a, b):
     "`b` if `a` is None else `a`"
@@ -352,7 +356,7 @@ def _eval_type(t, glb, loc):
 
 def type_hints(f):
     "Like `typing.get_type_hints` but returns `{}` if not allowed type"
-    if not isinstance(f, typing._allowed_types): return {}
+    if not isinstance(f, _allowed_types): return {}
     ann,glb,loc = get_annotations_ex(f)
     return {k:_eval_type(v,glb,loc) for k,v in ann.items()}
 

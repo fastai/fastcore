@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.7.23
+
+### New Features
+
+- Add `cmp` and kwargs to `sort_ex` ([#652](https://github.com/AnswerDotAI/fastcore/issues/652))
+- Add `groupby` to `L`
+
+
 ## 1.7.22
 
 ### New Features

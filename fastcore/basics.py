@@ -25,6 +25,7 @@ __all__ = ['defaults', 'null', 'num_methods', 'rnum_methods', 'inum_methods', 'a
 # %% ../nbs/01_basics.ipynb
 from .imports import *
 import ast,builtins,pprint,types,typing
+from functools import cmp_to_key
 from copy import copy
 from datetime import date
 try: from types import UnionType
@@ -660,9 +661,13 @@ def zip_cycle(x, *args):
     return zip(x, *map(cycle,args))
 
 # %% ../nbs/01_basics.ipynb
-def sorted_ex(iterable, key=None, reverse=False):
-    "Like `sorted`, but if key is str use `attrgetter`; if int use `itemgetter`"
-    if isinstance(key,str):   k=lambda o:getattr(o,key,0)
+def sorted_ex(iterable, key=None, reverse=False, cmp=None, **kwargs):
+    "Like `sorted`, but if key is str use `attrgetter`; if int use `itemgetter`; use `cmp` comparator function or `key` with `kwargs`"
+    if callable(key) and kwargs: k=partial(key, **kwargs)
+    elif callable(cmp):
+        if kwargs: cmp=partial(cmp, **kwargs)
+        k = cmp_to_key(cmp)
+    elif isinstance(key,str):   k=lambda o:getattr(o,key,0)
     elif isinstance(key,int): k=itemgetter(key)
     else: k=key
     return sorted(iterable, key=k, reverse=reverse)

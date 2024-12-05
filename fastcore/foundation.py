@@ -136,7 +136,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
         if isinstance(b, (str,dict)) or callable(b): return False
         return all_equal(b,self)
 
-    def sorted(self, key=None, reverse=False): return self._new(sorted_ex(self, key=key, reverse=reverse))
+    def sorted(self, key=None, reverse=False, cmp=None, **kwargs): return self._new(sorted_ex(self, key=key, reverse=reverse, cmp=cmp, **kwargs))
     def __iter__(self): return iter(self.items.itertuples() if hasattr(self.items,'iloc') else self.items)
     def __contains__(self,b): return b in self.items
     def __reversed__(self): return self._new(reversed(self.items))
@@ -154,6 +154,8 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     @classmethod
     def split(cls, s, sep=None, maxsplit=-1): return cls(s.split(sep,maxsplit))
     @classmethod
+    def splitlines(cls, s, keepends=False): return cls(s.splitslines(keepends))
+    @classmethod
     def range(cls, a, b=None, step=None): return cls(range_of(a, b=b, step=step))
 
     def map(self, f, *args, **kwargs): return self._new(map_ex(self, f, *args, gen=False, **kwargs))
@@ -169,6 +171,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def unique(self, sort=False, bidir=False, start=None): return L(uniqueify(self, sort=sort, bidir=bidir, start=start))
     def val2idx(self): return val2idx(self)
     def cycle(self): return cycle(self)
+    def groupby(self, key, val=noop): return L(groupby(self, key, val=val))
     def map_dict(self, f=noop, *args, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_first(self, f=noop, g=noop, *args, **kwargs):
         return first(self.map(f, *args, **kwargs), g)
@@ -201,8 +204,9 @@ add_docs(L,
          __getitem__="Retrieve `idx` (can be list of indices, or mask, or int) items",
          range="Class Method: Same as `range`, but returns `L`. Can pass collection for `a`, to use `len(a)`",
          split="Class Method: Same as `str.split`, but returns an `L`",
+         splitlines="Class Method: Same as `str.splitlines`, but returns an `L`",
          copy="Same as `list.copy`, but returns an `L`",
-         sorted="New `L` sorted by `key`. If key is str use `attrgetter`; if int use `itemgetter`",
+         sorted="New `L` sorted by `key`, using `sort_ex`. If key is str use `attrgetter`; if int use `itemgetter`",
          unique="Unique items, in stable order",
          val2idx="Dict from value to index",
          filter="Create new `L` filtered by predicate `f`, passing `args` and `kwargs` to `f`",
@@ -217,6 +221,7 @@ add_docs(L,
          cycle="Same as `itertools.cycle`",
          enumerate="Same as `enumerate`",
          renumerate="Same as `renumerate`",
+         groupby="Same as `groupby`",
          zip="Create new `L` with `zip(*items)`",
          zipwith="Create new `L` with `self` zip with each of `*rest`",
          map_zip="Combine `zip` and `starmap`",
@@ -226,8 +231,7 @@ add_docs(L,
          reduce="Wrapper for `functools.reduce`",
          sum="Sum of the items",
          product="Product of the items",
-         setattrs="Call `setattr` on all items"
-        )
+         setattrs="Call `setattr` on all items")
 
 # %% ../nbs/02_foundation.ipynb
 # Here we are fixing the signature of L. What happens is that the __call__ method on the MetaClass of L shadows the __init__

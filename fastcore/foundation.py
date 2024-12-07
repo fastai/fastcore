@@ -111,7 +111,9 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     @property
     def _xtra(self): return None
     def _new(self, items, *args, **kwargs): return type(self)(items, *args, use_list=None, **kwargs)
-    def __getitem__(self, idx): return self._get(idx) if is_indexer(idx) else L(self._get(idx), use_list=None)
+    def __getitem__(self, idx):
+        if isinstance(idx,int): return self.items[idx]
+        return self._get(idx) if is_indexer(idx) else L(self._get(idx), use_list=None)
     def copy(self): return self._new(self.items.copy())
 
     def _get(self, i):

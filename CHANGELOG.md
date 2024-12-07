@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 1.7.24
+
+### New Features
+
+- Optimise case of indexing `L` with an `int` ([#653](https://github.com/AnswerDotAI/fastcore/issues/653))
+
+
 ## 1.7.23
 
 ### New Features

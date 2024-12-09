@@ -618,12 +618,16 @@ def range_of(x):
     return list(range(len(x)))
 
 # %% ../nbs/01_basics.ipynb
+def _conv_key(k):
+    if   isinstance(k,int):   return itemgetter(k)
+    elif isinstance(k,str):   return attrgetter(k)
+    elif isinstance(k,tuple): return lambda x: tuple(_conv_key(o)(x) for o in k)
+    return k
+
 def groupby(x, key, val=noop):
     "Like `itertools.groupby` but doesn't need to be sorted, and isn't lazy, plus some extensions"
-    if   isinstance(key,int): key = itemgetter(key)
-    elif isinstance(key,str): key = attrgetter(key)
-    if   isinstance(val,int): val = itemgetter(val)
-    elif isinstance(val,str): val = attrgetter(val)
+    key = _conv_key(key)
+    val = _conv_key(val)
     res = {}
     for o in x: res.setdefault(key(o), []).append(val(o))
     return res

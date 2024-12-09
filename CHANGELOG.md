@@ -2,11 +2,11 @@
 
 <!-- do not remove -->
 
-## 1.7.24
+## 1.7.25
 
 ### New Features
 
-- Optimise case of indexing `L` with an `int` ([#653](https://github.com/AnswerDotAI/fastcore/issues/653))
+- Handle tuples in `groupby` ([#654](https://github.com/AnswerDotAI/fastcore/issues/654))
 
 
 ## 1.7.23

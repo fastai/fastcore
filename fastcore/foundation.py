@@ -156,7 +156,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     @classmethod
     def split(cls, s, sep=None, maxsplit=-1): return cls(s.split(sep,maxsplit))
     @classmethod
-    def splitlines(cls, s, keepends=False): return cls(s.splitslines(keepends))
+    def splitlines(cls, s, keepends=False): return cls(s.splitlines(keepends))
     @classmethod
     def range(cls, a, b=None, step=None): return cls(range_of(a, b=b, step=step))
 

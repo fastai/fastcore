@@ -2,6 +2,14 @@
 
 <!-- do not remove -->
 
+## 1.7.26
+
+
+### Bugs Squashed
+
+- `splitlines` mis-spelled ([#656](https://github.com/AnswerDotAI/fastcore/issues/656))
+
+
 ## 1.7.25
 
 ### New Features

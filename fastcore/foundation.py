@@ -173,7 +173,7 @@ class L(GetAttr, CollBase, metaclass=_L_Meta):
     def unique(self, sort=False, bidir=False, start=None): return L(uniqueify(self, sort=sort, bidir=bidir, start=start))
     def val2idx(self): return val2idx(self)
     def cycle(self): return cycle(self)
-    def groupby(self, key, val=noop): return L(groupby(self, key, val=val))
+    def groupby(self, key, val=noop): return groupby(self, key, val=val)
     def map_dict(self, f=noop, *args, **kwargs): return {k:f(k, *args,**kwargs) for k in self}
     def map_first(self, f=noop, g=noop, *args, **kwargs):
         return first(self.map(f, *args, **kwargs), g)
@@ -223,7 +223,7 @@ add_docs(L,
          cycle="Same as `itertools.cycle`",
          enumerate="Same as `enumerate`",
          renumerate="Same as `renumerate`",
-         groupby="Same as `groupby`",
+         groupby="Same as `fastcore.basics.groupby`",
          zip="Create new `L` with `zip(*items)`",
          zipwith="Create new `L` with `self` zip with each of `*rest`",
          map_zip="Combine `zip` and `starmap`",
